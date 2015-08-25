@@ -12,11 +12,11 @@ void EmptyLinkFunctionForGeneratedCodeHerobattle() {}
 	void ABasePawn::StaticRegisterNativesABasePawn()
 	{
 	}
-	IMPLEMENT_CLASS(ABasePawn, 1091443246);
+	IMPLEMENT_CLASS(ABasePawn, 3927969840);
 	void APlayerPawn::StaticRegisterNativesAPlayerPawn()
 	{
 	}
-	IMPLEMENT_CLASS(APlayerPawn, 3959578197);
+	IMPLEMENT_CLASS(APlayerPawn, 898280420);
 	void AHerobattleGameMode::StaticRegisterNativesAHerobattleGameMode()
 	{
 	}
@@ -24,6 +24,7 @@ void EmptyLinkFunctionForGeneratedCodeHerobattle() {}
 #if USE_COMPILED_IN_NATIVES
 // Cross Module References
 	ENGINE_API class UClass* Z_Construct_UClass_APawn();
+	ENGINE_API class UClass* Z_Construct_UClass_USceneComponent_NoRegister();
 	ENGINE_API class UClass* Z_Construct_UClass_AGameMode();
 
 	HEROBATTLE_API class UClass* Z_Construct_UClass_ABasePawn_NoRegister();
@@ -51,12 +52,18 @@ void EmptyLinkFunctionForGeneratedCodeHerobattle() {}
 				OuterClass->ClassFlags |= 0x20900080;
 
 
+PRAGMA_DISABLE_DEPRECATION_WARNINGS
+				UProperty* NewProp_OurVisibleComponent = new(EC_InternalUseOnlyConstructor, OuterClass, TEXT("OurVisibleComponent"), RF_Public|RF_Transient|RF_Native) UObjectProperty(CPP_PROPERTY_BASE(OurVisibleComponent, ABasePawn), 0x0000000000080009, Z_Construct_UClass_USceneComponent_NoRegister());
+PRAGMA_POP
 				OuterClass->StaticLink();
 #if WITH_METADATA
 				UMetaData* MetaData = OuterClass->GetOutermost()->GetMetaData();
 				MetaData->SetValue(OuterClass, TEXT("HideCategories"), TEXT("Navigation"));
 				MetaData->SetValue(OuterClass, TEXT("IncludePath"), TEXT("BasePawn.h"));
 				MetaData->SetValue(OuterClass, TEXT("ModuleRelativePath"), TEXT("BasePawn.h"));
+				MetaData->SetValue(NewProp_OurVisibleComponent, TEXT("Category"), TEXT("BasePawn"));
+				MetaData->SetValue(NewProp_OurVisibleComponent, TEXT("EditInline"), TEXT("true"));
+				MetaData->SetValue(NewProp_OurVisibleComponent, TEXT("ModuleRelativePath"), TEXT("BasePawn.h"));
 #endif
 			}
 		}
@@ -139,7 +146,7 @@ void EmptyLinkFunctionForGeneratedCodeHerobattle() {}
 			ReturnPackage = CastChecked<UPackage>(StaticFindObjectFast(UPackage::StaticClass(), NULL, FName(TEXT("/Script/Herobattle")), false, false));
 			ReturnPackage->PackageFlags |= PKG_CompiledIn | 0x00000000;
 			FGuid Guid;
-			Guid.A = 0x74C98CB8;
+			Guid.A = 0x32B7A15B;
 			Guid.B = 0x88651208;
 			Guid.C = 0x00000000;
 			Guid.D = 0x00000000;

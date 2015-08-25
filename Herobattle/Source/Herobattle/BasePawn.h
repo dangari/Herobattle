@@ -14,6 +14,8 @@ public:
 	// Sets default values for this pawn's properties
 	ABasePawn();
 
+	FVector CurrentVelocity;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
@@ -28,5 +30,8 @@ public:
 	void Move_XAxis(float AxisValue);
 
 	void Move_YAxis(float AxisValue);
+
+	UPROPERTY(EditAnywhere)
+	USceneComponent* OurVisibleComponent;
 
 };

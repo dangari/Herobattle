@@ -12,8 +12,8 @@ UCLASS()
 class HEROBATTLE_API APlayerPawn : public ABasePawn
 {
 	GENERATED_BODY()
-	
-	
+public:
+
 	
 	
 };

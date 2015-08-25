@@ -4,7 +4,7 @@
 	<ItemGroup>
 		<None Include="..\..\Herobattle.uproject" />
 		<Filter Include="Source">
-			<UniqueIdentifier>{402606CE-4283-42B4-8028-8FC01735481F}</UniqueIdentifier>
+			<UniqueIdentifier>{2D6448B2-8127-4CCE-8C8C-B345AE983EED}</UniqueIdentifier>
 		</Filter>
 		<None Include="..\..\Source\Herobattle.Target.cs">
 			<Filter>Source</Filter>
@@ -13,12 +13,9 @@
 			<Filter>Source</Filter>
 		</None >
 		<Filter Include="Config">
-			<UniqueIdentifier>{F48E8C0A-946C-4EDC-926A-F09DB7F53B28}</UniqueIdentifier>
+			<UniqueIdentifier>{543D86A0-14CE-41FE-A796-BEB1D9A37FBF}</UniqueIdentifier>
 		</Filter>
 		<None Include="..\..\Config\DefaultEditor.ini">
-			<Filter>Config</Filter>
-		</None >
-		<None Include="..\..\Config\DefaultEditorPerProjectUserSettings.ini">
 			<Filter>Config</Filter>
 		</None >
 		<None Include="..\..\Config\DefaultEngine.ini">
@@ -27,11 +24,8 @@
 		<None Include="..\..\Config\DefaultGame.ini">
 			<Filter>Config</Filter>
 		</None >
-		<None Include="..\..\Config\DefaultInput.ini">
-			<Filter>Config</Filter>
-		</None >
 		<Filter Include="Source\Herobattle">
-			<UniqueIdentifier>{8984062F-12BB-4539-A272-45748AB0A5D6}</UniqueIdentifier>
+			<UniqueIdentifier>{3B1D7629-D410-42EC-834F-FB9CE96F87F0}</UniqueIdentifier>
 		</Filter>
 		<None Include="..\..\Source\Herobattle\Herobattle.Build.cs">
 			<Filter>Source\Herobattle</Filter>
@@ -40,12 +34,6 @@
 			<Filter>Source\Herobattle</Filter>
 		</ClCompile >
 		<ClInclude Include="..\..\Source\Herobattle\Herobattle.h">
-			<Filter>Source\Herobattle</Filter>
-		</ClInclude >
-		<ClCompile Include="..\..\Source\Herobattle\HerobattleCharacter.cpp">
-			<Filter>Source\Herobattle</Filter>
-		</ClCompile >
-		<ClInclude Include="..\..\Source\Herobattle\HerobattleCharacter.h">
 			<Filter>Source\Herobattle</Filter>
 		</ClInclude >
 		<ClCompile Include="..\..\Source\Herobattle\HerobattleGameMode.cpp">

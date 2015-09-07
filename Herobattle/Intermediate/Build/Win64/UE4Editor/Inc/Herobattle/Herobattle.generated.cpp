@@ -9,101 +9,81 @@
 #include "Herobattle.generated.dep.h"
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 void EmptyLinkFunctionForGeneratedCodeHerobattle() {}
-	void ABasePawn::StaticRegisterNativesABasePawn()
+	void AHerobattleCharacter::StaticRegisterNativesAHerobattleCharacter()
 	{
 	}
-	IMPLEMENT_CLASS(ABasePawn, 3927969840);
-	void APlayerPawn::StaticRegisterNativesAPlayerPawn()
-	{
-	}
-	IMPLEMENT_CLASS(APlayerPawn, 898280420);
+	IMPLEMENT_CLASS(AHerobattleCharacter, 237994016);
 	void AHerobattleGameMode::StaticRegisterNativesAHerobattleGameMode()
 	{
 	}
-	IMPLEMENT_CLASS(AHerobattleGameMode, 2830976098);
+	IMPLEMENT_CLASS(AHerobattleGameMode, 64554976);
 #if USE_COMPILED_IN_NATIVES
 // Cross Module References
-	ENGINE_API class UClass* Z_Construct_UClass_APawn();
-	ENGINE_API class UClass* Z_Construct_UClass_USceneComponent_NoRegister();
+	ENGINE_API class UClass* Z_Construct_UClass_ACharacter();
+	ENGINE_API class UClass* Z_Construct_UClass_UCameraComponent_NoRegister();
+	ENGINE_API class UClass* Z_Construct_UClass_USpringArmComponent_NoRegister();
 	ENGINE_API class UClass* Z_Construct_UClass_AGameMode();
 
-	HEROBATTLE_API class UClass* Z_Construct_UClass_ABasePawn_NoRegister();
-	HEROBATTLE_API class UClass* Z_Construct_UClass_ABasePawn();
-	HEROBATTLE_API class UClass* Z_Construct_UClass_APlayerPawn_NoRegister();
-	HEROBATTLE_API class UClass* Z_Construct_UClass_APlayerPawn();
+	HEROBATTLE_API class UClass* Z_Construct_UClass_AHerobattleCharacter_NoRegister();
+	HEROBATTLE_API class UClass* Z_Construct_UClass_AHerobattleCharacter();
 	HEROBATTLE_API class UClass* Z_Construct_UClass_AHerobattleGameMode_NoRegister();
 	HEROBATTLE_API class UClass* Z_Construct_UClass_AHerobattleGameMode();
 	HEROBATTLE_API class UPackage* Z_Construct_UPackage_Herobattle();
-	UClass* Z_Construct_UClass_ABasePawn_NoRegister()
+	UClass* Z_Construct_UClass_AHerobattleCharacter_NoRegister()
 	{
-		return ABasePawn::StaticClass();
+		return AHerobattleCharacter::StaticClass();
 	}
-	UClass* Z_Construct_UClass_ABasePawn()
+	UClass* Z_Construct_UClass_AHerobattleCharacter()
 	{
 		static UClass* OuterClass = NULL;
 		if (!OuterClass)
 		{
-			Z_Construct_UClass_APawn();
+			Z_Construct_UClass_ACharacter();
 			Z_Construct_UPackage_Herobattle();
-			OuterClass = ABasePawn::StaticClass();
+			OuterClass = AHerobattleCharacter::StaticClass();
 			if (!(OuterClass->ClassFlags & CLASS_Constructed))
 			{
 				UObjectForceRegistration(OuterClass);
-				OuterClass->ClassFlags |= 0x20900080;
+				OuterClass->ClassFlags |= 0x20800080;
 
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
-				UProperty* NewProp_OurVisibleComponent = new(EC_InternalUseOnlyConstructor, OuterClass, TEXT("OurVisibleComponent"), RF_Public|RF_Transient|RF_Native) UObjectProperty(CPP_PROPERTY_BASE(OurVisibleComponent, ABasePawn), 0x0000000000080009, Z_Construct_UClass_USceneComponent_NoRegister());
+				UProperty* NewProp_BaseLookUpRate = new(EC_InternalUseOnlyConstructor, OuterClass, TEXT("BaseLookUpRate"), RF_Public|RF_Transient|RF_Native) UFloatProperty(CPP_PROPERTY_BASE(BaseLookUpRate, AHerobattleCharacter), 0x0000000000020015);
+				UProperty* NewProp_BaseTurnRate = new(EC_InternalUseOnlyConstructor, OuterClass, TEXT("BaseTurnRate"), RF_Public|RF_Transient|RF_Native) UFloatProperty(CPP_PROPERTY_BASE(BaseTurnRate, AHerobattleCharacter), 0x0000000000020015);
+				UProperty* NewProp_FollowCamera = new(EC_InternalUseOnlyConstructor, OuterClass, TEXT("FollowCamera"), RF_Public|RF_Transient|RF_Native) UObjectProperty(CPP_PROPERTY_BASE(FollowCamera, AHerobattleCharacter), 0x00000000000a001d, Z_Construct_UClass_UCameraComponent_NoRegister());
+				UProperty* NewProp_CameraBoom = new(EC_InternalUseOnlyConstructor, OuterClass, TEXT("CameraBoom"), RF_Public|RF_Transient|RF_Native) UObjectProperty(CPP_PROPERTY_BASE(CameraBoom, AHerobattleCharacter), 0x00000000000a001d, Z_Construct_UClass_USpringArmComponent_NoRegister());
 PRAGMA_POP
+				OuterClass->ClassConfigName = FName(TEXT("Game"));
 				OuterClass->StaticLink();
 #if WITH_METADATA
 				UMetaData* MetaData = OuterClass->GetOutermost()->GetMetaData();
-				MetaData->SetValue(OuterClass, TEXT("HideCategories"), TEXT("Navigation"));
-				MetaData->SetValue(OuterClass, TEXT("IncludePath"), TEXT("BasePawn.h"));
-				MetaData->SetValue(OuterClass, TEXT("ModuleRelativePath"), TEXT("BasePawn.h"));
-				MetaData->SetValue(NewProp_OurVisibleComponent, TEXT("Category"), TEXT("BasePawn"));
-				MetaData->SetValue(NewProp_OurVisibleComponent, TEXT("EditInline"), TEXT("true"));
-				MetaData->SetValue(NewProp_OurVisibleComponent, TEXT("ModuleRelativePath"), TEXT("BasePawn.h"));
+				MetaData->SetValue(OuterClass, TEXT("HideCategories"), TEXT("Pawn|Character|InternalEvents Navigation"));
+				MetaData->SetValue(OuterClass, TEXT("IncludePath"), TEXT("HerobattleCharacter.h"));
+				MetaData->SetValue(OuterClass, TEXT("ModuleRelativePath"), TEXT("HerobattleCharacter.h"));
+				MetaData->SetValue(NewProp_BaseLookUpRate, TEXT("Category"), TEXT("Camera"));
+				MetaData->SetValue(NewProp_BaseLookUpRate, TEXT("ModuleRelativePath"), TEXT("HerobattleCharacter.h"));
+				MetaData->SetValue(NewProp_BaseLookUpRate, TEXT("ToolTip"), TEXT("Base look up/down rate, in deg/sec. Other scaling may affect final rate."));
+				MetaData->SetValue(NewProp_BaseTurnRate, TEXT("Category"), TEXT("Camera"));
+				MetaData->SetValue(NewProp_BaseTurnRate, TEXT("ModuleRelativePath"), TEXT("HerobattleCharacter.h"));
+				MetaData->SetValue(NewProp_BaseTurnRate, TEXT("ToolTip"), TEXT("Base turn rate, in deg/sec. Other scaling may affect final turn rate."));
+				MetaData->SetValue(NewProp_FollowCamera, TEXT("AllowPrivateAccess"), TEXT("true"));
+				MetaData->SetValue(NewProp_FollowCamera, TEXT("Category"), TEXT("Camera"));
+				MetaData->SetValue(NewProp_FollowCamera, TEXT("EditInline"), TEXT("true"));
+				MetaData->SetValue(NewProp_FollowCamera, TEXT("ModuleRelativePath"), TEXT("HerobattleCharacter.h"));
+				MetaData->SetValue(NewProp_FollowCamera, TEXT("ToolTip"), TEXT("Follow camera"));
+				MetaData->SetValue(NewProp_CameraBoom, TEXT("AllowPrivateAccess"), TEXT("true"));
+				MetaData->SetValue(NewProp_CameraBoom, TEXT("Category"), TEXT("Camera"));
+				MetaData->SetValue(NewProp_CameraBoom, TEXT("EditInline"), TEXT("true"));
+				MetaData->SetValue(NewProp_CameraBoom, TEXT("ModuleRelativePath"), TEXT("HerobattleCharacter.h"));
+				MetaData->SetValue(NewProp_CameraBoom, TEXT("ToolTip"), TEXT("Camera boom positioning the camera behind the character"));
 #endif
 			}
 		}
 		check(OuterClass->GetClass());
 		return OuterClass;
 	}
-	static FCompiledInDefer Z_CompiledInDefer_UClass_ABasePawn(Z_Construct_UClass_ABasePawn, TEXT("ABasePawn"));
-	DEFINE_VTABLE_PTR_HELPER_CTOR(ABasePawn);
-	UClass* Z_Construct_UClass_APlayerPawn_NoRegister()
-	{
-		return APlayerPawn::StaticClass();
-	}
-	UClass* Z_Construct_UClass_APlayerPawn()
-	{
-		static UClass* OuterClass = NULL;
-		if (!OuterClass)
-		{
-			Z_Construct_UClass_ABasePawn();
-			Z_Construct_UPackage_Herobattle();
-			OuterClass = APlayerPawn::StaticClass();
-			if (!(OuterClass->ClassFlags & CLASS_Constructed))
-			{
-				UObjectForceRegistration(OuterClass);
-				OuterClass->ClassFlags |= 0x20900080;
-
-
-				OuterClass->StaticLink();
-#if WITH_METADATA
-				UMetaData* MetaData = OuterClass->GetOutermost()->GetMetaData();
-				MetaData->SetValue(OuterClass, TEXT("HideCategories"), TEXT("Navigation"));
-				MetaData->SetValue(OuterClass, TEXT("IncludePath"), TEXT("PlayerPawn.h"));
-				MetaData->SetValue(OuterClass, TEXT("ModuleRelativePath"), TEXT("PlayerPawn.h"));
-#endif
-			}
-		}
-		check(OuterClass->GetClass());
-		return OuterClass;
-	}
-	static FCompiledInDefer Z_CompiledInDefer_UClass_APlayerPawn(Z_Construct_UClass_APlayerPawn, TEXT("APlayerPawn"));
-	DEFINE_VTABLE_PTR_HELPER_CTOR(APlayerPawn);
+	static FCompiledInDefer Z_CompiledInDefer_UClass_AHerobattleCharacter(Z_Construct_UClass_AHerobattleCharacter, TEXT("AHerobattleCharacter"));
+	DEFINE_VTABLE_PTR_HELPER_CTOR(AHerobattleCharacter);
 	UClass* Z_Construct_UClass_AHerobattleGameMode_NoRegister()
 	{
 		return AHerobattleGameMode::StaticClass();
@@ -119,7 +99,7 @@ PRAGMA_POP
 			if (!(OuterClass->ClassFlags & CLASS_Constructed))
 			{
 				UObjectForceRegistration(OuterClass);
-				OuterClass->ClassFlags |= 0x2090028C;
+				OuterClass->ClassFlags |= 0x2088028C;
 
 
 				OuterClass->ClassConfigName = FName(TEXT("Game"));
@@ -146,8 +126,8 @@ PRAGMA_POP
 			ReturnPackage = CastChecked<UPackage>(StaticFindObjectFast(UPackage::StaticClass(), NULL, FName(TEXT("/Script/Herobattle")), false, false));
 			ReturnPackage->PackageFlags |= PKG_CompiledIn | 0x00000000;
 			FGuid Guid;
-			Guid.A = 0x32B7A15B;
-			Guid.B = 0x88651208;
+			Guid.A = 0xACE40315;
+			Guid.B = 0x23D83AE5;
 			Guid.C = 0x00000000;
 			Guid.D = 0x00000000;
 			ReturnPackage->SetGuid(Guid);

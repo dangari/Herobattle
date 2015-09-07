@@ -5,11 +5,8 @@
 	DO NOT modify this manually! Edit the corresponding .h files instead!
 ===========================================================================*/
 
-#ifndef HEROBATTLE_BasePawn_generated_h
-	#include "BasePawn.h"
-#endif
-#ifndef HEROBATTLE_PlayerPawn_generated_h
-	#include "PlayerPawn.h"
+#ifndef HEROBATTLE_HerobattleCharacter_generated_h
+	#include "HerobattleCharacter.h"
 #endif
 #ifndef HEROBATTLE_HerobattleGameMode_generated_h
 	#include "HerobattleGameMode.h"

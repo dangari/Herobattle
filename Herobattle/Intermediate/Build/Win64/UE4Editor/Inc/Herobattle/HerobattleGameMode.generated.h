@@ -13,71 +13,69 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #endif
 #define HEROBATTLE_HerobattleGameMode_generated_h
 
-#define Herobattle_Source_Herobattle_HerobattleGameMode_h_14_RPC_WRAPPERS
-#define Herobattle_Source_Herobattle_HerobattleGameMode_h_14_RPC_WRAPPERS_NO_PURE_DECLS
-#define Herobattle_Source_Herobattle_HerobattleGameMode_h_14_INCLASS_NO_PURE_DECLS \
+#define Herobattle_Source_Herobattle_HerobattleGameMode_h_9_RPC_WRAPPERS
+#define Herobattle_Source_Herobattle_HerobattleGameMode_h_9_RPC_WRAPPERS_NO_PURE_DECLS
+#define Herobattle_Source_Herobattle_HerobattleGameMode_h_9_INCLASS_NO_PURE_DECLS \
 	private: \
 	static void StaticRegisterNativesAHerobattleGameMode(); \
 	friend HEROBATTLE_API class UClass* Z_Construct_UClass_AHerobattleGameMode(); \
 	public: \
-	DECLARE_CLASS(AHerobattleGameMode, AGameMode, COMPILED_IN_FLAGS(0 | CLASS_Transient | CLASS_Config), 0, Herobattle, NO_API) \
+	DECLARE_CLASS(AHerobattleGameMode, AGameMode, COMPILED_IN_FLAGS(0 | CLASS_Transient | CLASS_Config), 0, Herobattle, HEROBATTLE_API) \
 	DECLARE_SERIALIZER(AHerobattleGameMode) \
 	/** Indicates whether the class is compiled into the engine */    enum {IsIntrinsic=COMPILED_IN_INTRINSIC}; \
 	virtual UObject* _getUObject() const override { return const_cast<AHerobattleGameMode*>(this); }
 
 
-#define Herobattle_Source_Herobattle_HerobattleGameMode_h_14_INCLASS \
+#define Herobattle_Source_Herobattle_HerobattleGameMode_h_9_INCLASS \
 	private: \
 	static void StaticRegisterNativesAHerobattleGameMode(); \
 	friend HEROBATTLE_API class UClass* Z_Construct_UClass_AHerobattleGameMode(); \
 	public: \
-	DECLARE_CLASS(AHerobattleGameMode, AGameMode, COMPILED_IN_FLAGS(0 | CLASS_Transient | CLASS_Config), 0, Herobattle, NO_API) \
+	DECLARE_CLASS(AHerobattleGameMode, AGameMode, COMPILED_IN_FLAGS(0 | CLASS_Transient | CLASS_Config), 0, Herobattle, HEROBATTLE_API) \
 	DECLARE_SERIALIZER(AHerobattleGameMode) \
 	/** Indicates whether the class is compiled into the engine */    enum {IsIntrinsic=COMPILED_IN_INTRINSIC}; \
 	virtual UObject* _getUObject() const override { return const_cast<AHerobattleGameMode*>(this); }
 
 
-#define Herobattle_Source_Herobattle_HerobattleGameMode_h_14_STANDARD_CONSTRUCTORS \
+#define Herobattle_Source_Herobattle_HerobattleGameMode_h_9_STANDARD_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
-	NO_API AHerobattleGameMode(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+	HEROBATTLE_API AHerobattleGameMode(const FObjectInitializer& ObjectInitializer); \
 	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(AHerobattleGameMode) \
-	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, AHerobattleGameMode); \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(HEROBATTLE_API, AHerobattleGameMode); \
 DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(AHerobattleGameMode); \
 private: \
 	/** Private copy-constructor, should never be used */ \
-	NO_API AHerobattleGameMode(const AHerobattleGameMode& InCopy); \
+	HEROBATTLE_API AHerobattleGameMode(const AHerobattleGameMode& InCopy); \
 public:
 
 
-#define Herobattle_Source_Herobattle_HerobattleGameMode_h_14_ENHANCED_CONSTRUCTORS \
-	/** Standard constructor, called after all reflected properties have been initialized */ \
-	NO_API AHerobattleGameMode(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()) : Super(ObjectInitializer) { }; \
+#define Herobattle_Source_Herobattle_HerobattleGameMode_h_9_ENHANCED_CONSTRUCTORS \
 private: \
 	/** Private copy-constructor, should never be used */ \
-	NO_API AHerobattleGameMode(const AHerobattleGameMode& InCopy); \
+	HEROBATTLE_API AHerobattleGameMode(const AHerobattleGameMode& InCopy); \
 public: \
-	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, AHerobattleGameMode); \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(HEROBATTLE_API, AHerobattleGameMode); \
 DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(AHerobattleGameMode); \
-	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(AHerobattleGameMode)
+	DEFINE_DEFAULT_CONSTRUCTOR_CALL(AHerobattleGameMode)
 
 
-#define Herobattle_Source_Herobattle_HerobattleGameMode_h_11_PROLOG
-#define Herobattle_Source_Herobattle_HerobattleGameMode_h_14_GENERATED_BODY_LEGACY \
+#define Herobattle_Source_Herobattle_HerobattleGameMode_h_6_PROLOG
+#define Herobattle_Source_Herobattle_HerobattleGameMode_h_9_GENERATED_BODY_LEGACY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	Herobattle_Source_Herobattle_HerobattleGameMode_h_14_RPC_WRAPPERS \
-	Herobattle_Source_Herobattle_HerobattleGameMode_h_14_INCLASS \
-	Herobattle_Source_Herobattle_HerobattleGameMode_h_14_STANDARD_CONSTRUCTORS \
+	Herobattle_Source_Herobattle_HerobattleGameMode_h_9_RPC_WRAPPERS \
+	Herobattle_Source_Herobattle_HerobattleGameMode_h_9_INCLASS \
+	Herobattle_Source_Herobattle_HerobattleGameMode_h_9_STANDARD_CONSTRUCTORS \
 public: \
 PRAGMA_POP
 
 
-#define Herobattle_Source_Herobattle_HerobattleGameMode_h_14_GENERATED_BODY \
+#define Herobattle_Source_Herobattle_HerobattleGameMode_h_9_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	Herobattle_Source_Herobattle_HerobattleGameMode_h_14_RPC_WRAPPERS_NO_PURE_DECLS \
-	Herobattle_Source_Herobattle_HerobattleGameMode_h_14_INCLASS_NO_PURE_DECLS \
-	Herobattle_Source_Herobattle_HerobattleGameMode_h_14_ENHANCED_CONSTRUCTORS \
+	Herobattle_Source_Herobattle_HerobattleGameMode_h_9_RPC_WRAPPERS_NO_PURE_DECLS \
+	Herobattle_Source_Herobattle_HerobattleGameMode_h_9_INCLASS_NO_PURE_DECLS \
+	Herobattle_Source_Herobattle_HerobattleGameMode_h_9_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_POP
 

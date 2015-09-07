@@ -12078,7 +12078,7 @@
 		<ClInclude Include="C:\Program Files\Epic Games\4.8\Engine\Plugins\Slate\SlateRemote\Source\SlateRemote\Private\Shared\SlateRemoteSettings.h" />
 	</ItemGroup>
 	<PropertyGroup Label="Globals">
-		<ProjectGuid>{CAA6BEA0-2834-4EAB-B6B5-3924E1BA714A}</ProjectGuid>
+		<ProjectGuid>{5BA95AA2-F27E-4FE2-87C1-F08480C99B93}</ProjectGuid>
 		<Keyword>MakeFileProj</Keyword>
 		<RootNamespace>UE4</RootNamespace>
 	</PropertyGroup>

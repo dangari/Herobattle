@@ -1,58 +1,84 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<ItemGroup>
-		<None Include="..\..\Herobattle.uproject" />
-		<Filter Include="Source">
-			<UniqueIdentifier>{D4CE2C2F-3D10-47BD-9E51-6F0D5A81F4A8}</UniqueIdentifier>
-		</Filter>
-		<None Include="..\..\Source\Herobattle.Target.cs">
-			<Filter>Source</Filter>
-		</None >
-		<None Include="..\..\Source\HerobattleEditor.Target.cs">
-			<Filter>Source</Filter>
-		</None >
-		<Filter Include="Config">
-			<UniqueIdentifier>{D8C58E4E-A159-445F-A987-18135D066958}</UniqueIdentifier>
-		</Filter>
-		<None Include="..\..\Config\DefaultEditor.ini">
-			<Filter>Config</Filter>
-		</None >
-		<None Include="..\..\Config\DefaultEditorPerProjectUserSettings.ini">
-			<Filter>Config</Filter>
-		</None >
-		<None Include="..\..\Config\DefaultEngine.ini">
-			<Filter>Config</Filter>
-		</None >
-		<None Include="..\..\Config\DefaultGame.ini">
-			<Filter>Config</Filter>
-		</None >
-		<None Include="..\..\Config\DefaultInput.ini">
-			<Filter>Config</Filter>
-		</None >
-		<Filter Include="Source\Herobattle">
-			<UniqueIdentifier>{FECD1FDC-3FDD-494A-ABEE-FB42343A5E0C}</UniqueIdentifier>
-		</Filter>
-		<None Include="..\..\Source\Herobattle\Herobattle.Build.cs">
-			<Filter>Source\Herobattle</Filter>
-		</None >
-		<ClCompile Include="..\..\Source\Herobattle\Herobattle.cpp">
-			<Filter>Source\Herobattle</Filter>
-		</ClCompile >
-		<ClInclude Include="..\..\Source\Herobattle\Herobattle.h">
-			<Filter>Source\Herobattle</Filter>
-		</ClInclude >
-		<ClCompile Include="..\..\Source\Herobattle\HerobattleCharacter.cpp">
-			<Filter>Source\Herobattle</Filter>
-		</ClCompile >
-		<ClInclude Include="..\..\Source\Herobattle\HerobattleCharacter.h">
-			<Filter>Source\Herobattle</Filter>
-		</ClInclude >
-		<ClCompile Include="..\..\Source\Herobattle\HerobattleGameMode.cpp">
-			<Filter>Source\Herobattle</Filter>
-		</ClCompile >
-		<ClInclude Include="..\..\Source\Herobattle\HerobattleGameMode.h">
-			<Filter>Source\Herobattle</Filter>
-		</ClInclude >
-	</ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Herobattle.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{FD46B5C7-9E02-427C-9F1B-0259FE9F42C7}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\Herobattle.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\HerobattleEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <Filter Include="Config">
+      <UniqueIdentifier>{5FA2E455-B270-4B64-B0AD-FAFFEFC2C94B}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEditorPerProjectUserSettings.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultInput.ini">
+      <Filter>Config</Filter>
+    </None>
+    <Filter Include="Source\Herobattle">
+      <UniqueIdentifier>{97E6FFEE-096D-40B8-8153-21C78CC93183}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\Herobattle\Herobattle.Build.cs">
+      <Filter>Source\Herobattle</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\Herobattle\Herobattle.cpp">
+      <Filter>Source\Herobattle</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Herobattle\Herobattle.h">
+      <Filter>Source\Herobattle</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Herobattle\HerobattleCharacter.cpp">
+      <Filter>Source\Herobattle</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Herobattle\HerobattleCharacter.h">
+      <Filter>Source\Herobattle</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Herobattle\HerobattleGameMode.cpp">
+      <Filter>Source\Herobattle</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Herobattle\HerobattleGameMode.h">
+      <Filter>Source\Herobattle</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source\Herobattle\Base">
+      <UniqueIdentifier>{939c0141-95b4-4323-8e08-e3b5c5797a74}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Source\Herobattle\BaseCharacter.cpp">
+      <Filter>Source\Herobattle\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Herobattle\Base\Profession.cpp">
+      <Filter>Source\Herobattle\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Herobattle\Base\Skill.cpp">
+      <Filter>Source\Herobattle\Base</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Source\Herobattle\BaseCharacter.h">
+      <Filter>Source\Herobattle\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Herobattle\Base\Profession.h">
+      <Filter>Source\Herobattle\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Herobattle\Base\Skill.h">
+      <Filter>Source\Herobattle\Base</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>

@@ -80,6 +80,13 @@ void AHerobattleCharacter::SetupPlayerInputComponent(class UInputComponent* Inpu
 void AHerobattleCharacter::BeginPlay()
 {
 	MyController = Cast<APlayerController>(Controller);
+	
+	//Input Mode for hiding courser
+	FInputModeGameAndUI InputMode;
+	InputMode.SetHideCursorDuringCapture(true);
+	InputMode.SetLockMouseToViewport(true);
+	MyController->SetInputMode(InputMode);
+	MyController->SetIgnoreLookInput(true);
 	MyController->bShowMouseCursor = true;
 	MyController->bEnableClickEvents = true;
 	MyController->bEnableMouseOverEvents = true;
@@ -107,19 +114,14 @@ void AHerobattleCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVector L
 void AHerobattleCharacter::TurnAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
-	if (bCameraIsLocked)
-	{
-		AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
-	}
+	//if (bCameraIsLocked)
+	AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
 }
 
 void AHerobattleCharacter::LookUpAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
-	if (bCameraIsLocked)
-	{
-		AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
-	}
+	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 }
 
 void AHerobattleCharacter::MoveForward(float Value)
@@ -153,18 +155,16 @@ void AHerobattleCharacter::MoveRight(float Value)
 
 void AHerobattleCharacter::LockCamera()
 {
-	bCameraIsLocked = true;
+	MyController->SetIgnoreLookInput(false);
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("LockCamera"));
-	MyController->bShowMouseCursor = false;
 	MyController->bEnableClickEvents = false;
 	MyController->bEnableMouseOverEvents = false;
 }
 
 void AHerobattleCharacter::ReleaseCamera()
 {
-	bCameraIsLocked = false;
+	MyController->SetIgnoreLookInput(true);
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ReleaseCamera"));
-	MyController->bShowMouseCursor = true;
 	MyController->bEnableClickEvents = true;
 	MyController->bEnableMouseOverEvents = true;
 }

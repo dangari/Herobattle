@@ -3,10 +3,33 @@
 #include "Herobattle.h"
 #include "BaseCharacter.h"
 
-BaseCharacter::BaseCharacter()
+ABaseCharacter::ABaseCharacter()
+{
+	health = 480;
+	mana = 20;
+}
+
+ABaseCharacter::~ABaseCharacter()
 {
 }
 
-BaseCharacter::~BaseCharacter()
+// Called when the game starts or when spawned
+void ABaseCharacter::BeginPlay()
 {
+	Super::BeginPlay();
+
+}
+
+// Called every frame
+void ABaseCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+}
+
+// Called to bind functionality to input
+void ABaseCharacter::SetupPlayerInputComponent(class UInputComponent* InputComponent)
+{
+	Super::SetupPlayerInputComponent(InputComponent);
+
 }

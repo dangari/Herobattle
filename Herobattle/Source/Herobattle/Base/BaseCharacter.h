@@ -3,19 +3,32 @@
 #pragma once
 
 #include "Base/Profession.h"
+#include "BaseCharacter.generated.h"
 /**
  * 
  */
-class HEROBATTLE_API BaseCharacter
+UCLASS()
+class HEROBATTLE_API ABaseCharacter: public ACharacter
 {
+	GENERATED_BODY()
 public:
-	BaseCharacter();
-	~BaseCharacter();
+	ABaseCharacter();
+	~ABaseCharacter();
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
+	int32 health;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
+	int32 mana;
+
+	virtual void BeginPlay() override;
+
+	// Called every frame
+	virtual void Tick(float DeltaSeconds) override;
+
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
 private:
-
-	int health;
-	int mana;
 
 	int manaRegeneration;
 

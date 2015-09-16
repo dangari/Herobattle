@@ -3,14 +3,17 @@
 #pragma once
 
 #include "GameFramework/Character.h"
+#include "Herobattle/Base/BaseCharacter.h"
 #include "HeroBattleHero.generated.h"
 
 UCLASS()
-class HEROBATTLE_API AHeroBattleHero : public ACharacter
+class HEROBATTLE_API AHeroBattleHero : public ABaseCharacter
 {
 	GENERATED_BODY()
 
 public:
+
+
 	// Sets default values for this character's properties
 	AHeroBattleHero();
 
@@ -24,5 +27,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
 	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
+	int32 test;
 	
 };

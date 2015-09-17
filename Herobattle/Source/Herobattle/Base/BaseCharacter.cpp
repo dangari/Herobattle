@@ -5,8 +5,10 @@
 
 ABaseCharacter::ABaseCharacter()
 {
-	health = 480;
-	mana = 20;
+	maxHealth = 480.0f;
+	maxMana = 20.0f;
+	health = 250;
+	mana = maxMana;
 }
 
 ABaseCharacter::~ABaseCharacter()

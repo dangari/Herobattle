@@ -26,8 +26,4 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
-	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
-	int32 test;
-	
 };

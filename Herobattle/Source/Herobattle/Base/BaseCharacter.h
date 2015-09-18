@@ -25,6 +25,12 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
 	float mana;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
+	int32 manaRegeneration;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
+	int32 healthRegeneration;
+
 	virtual void BeginPlay() override;
 
 	// Called every frame
@@ -35,10 +41,10 @@ public:
 
 private:
 
-	int manaRegeneration;
 
 	Profession primaryProfession;
 	Profession secondaryProfession;
 
+	void UpdateResources(float DeltaSeconds);
 
 };

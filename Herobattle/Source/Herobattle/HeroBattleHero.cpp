@@ -5,14 +5,10 @@
 
 
 // Sets default values
-AHeroBattleHero::AHeroBattleHero()
+AHeroBattleHero::AHeroBattleHero() : AHeroBattleHero::ABaseCharacter()
 {
-
-	health = 480;
-	mana = 20;
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned

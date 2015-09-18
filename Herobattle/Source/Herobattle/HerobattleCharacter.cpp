@@ -7,7 +7,7 @@
 //////////////////////////////////////////////////////////////////////////
 // AHerobattleCharacter
 
-AHerobattleCharacter::AHerobattleCharacter()
+AHerobattleCharacter::AHerobattleCharacter() :AHerobattleCharacter::ABaseCharacter()
 {
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);

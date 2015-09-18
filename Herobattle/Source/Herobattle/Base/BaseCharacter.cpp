@@ -5,12 +5,12 @@
 
 ABaseCharacter::ABaseCharacter()
 {
-	maxHealth = 480;
-	maxMana = 25;
-	health = 240;
-	mana = 10.0f;
-	healthRegeneration = 0;
-	manaRegeneration = 2;
+	m_MaxHealth = 480;
+	m_MaxMana = 25;
+	m_Health = 240;
+	m_Mana = 10.0f;
+	m_HealthRegeneration = 0;
+	m_ManaRegeneration = 2;
 
 }
 
@@ -41,20 +41,20 @@ void ABaseCharacter::SetupPlayerInputComponent(class UInputComponent* InputCompo
 }
 
 void ABaseCharacter::UpdateResources(float DeltaSeconds){
-	if (health >= maxHealth){
-		health = maxHealth;
+	if (m_Health >= m_MaxHealth){
+		m_Health = m_MaxHealth;
 	}
 	else
 	{
-		health += DeltaSeconds * (healthRegeneration * 2.0f);
+		m_Health += DeltaSeconds * (m_HealthRegeneration * 2.0f);
 	}
 	
-	if (mana >= maxMana){
-		mana = maxMana;
+	if (m_Mana >= m_MaxMana){
+		m_Mana = m_MaxMana;
 	}
 	else
 	{
-		mana += DeltaSeconds * (manaRegeneration / 3.0f);
+		m_Mana += DeltaSeconds * (m_ManaRegeneration / 3.0f);
 	}
 
 }

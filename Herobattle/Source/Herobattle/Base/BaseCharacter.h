@@ -16,20 +16,20 @@ public:
 	~ABaseCharacter();
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
-	float maxHealth;
+	float m_MaxHealth;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
-	float maxMana;
+	float m_MaxMana;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
-	float health;
+	float m_Health;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
-	float mana;
+	float m_Mana;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
-	int32 manaRegeneration;
+	int32 m_ManaRegeneration;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
-	int32 healthRegeneration;
+	int32 m_HealthRegeneration;
 
 	virtual void BeginPlay() override;
 

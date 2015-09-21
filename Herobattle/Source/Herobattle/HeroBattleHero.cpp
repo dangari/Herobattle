@@ -15,7 +15,6 @@ AHeroBattleHero::AHeroBattleHero() : AHeroBattleHero::ABaseCharacter()
 void AHeroBattleHero::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame

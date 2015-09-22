@@ -5,6 +5,7 @@
 
 ABaseCharacter::ABaseCharacter()
 {
+	ETeam = TeamColor::BLUE;
 	m_MaxHealth = 480;
 	m_MaxMana = 25;
 	m_Health = 240;
@@ -57,4 +58,21 @@ void ABaseCharacter::UpdateResources(float DeltaSeconds){
 		m_Mana += DeltaSeconds * (m_ManaRegeneration / 3.0f);
 	}
 
+}
+
+void ABaseCharacter::UseSkill_Implementation(ABaseCharacter* Target, int32 SkillSlot)
+{
+}
+
+void ABaseCharacter::ChangeHealth(float value)
+{
+	m_Health += value;
+	if (m_Health > m_MaxHealth)
+	{
+		m_Health = m_MaxHealth;
+	}
+	if (m_Health < 0)
+	{
+		m_Health = 0;
+	}
 }

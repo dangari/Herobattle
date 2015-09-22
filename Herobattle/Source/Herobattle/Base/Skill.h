@@ -6,7 +6,8 @@
  * 
  */
 
-enum SkillType {ENTCHANTMENT, ATTACK, HEX, SPELL};
+enum SkillType {ENTCHANTMENT, ATTACK, HEX, SPELL, HEAL};
+enum TargetType {SELF, ENEMY, FRIEND, SELFFREND};
 
 class HEROBATTLE_API Skill
 {
@@ -17,4 +18,6 @@ public:
 private:
 	float castTime;
 	float recharge;
+	int manaCost;
+
 };

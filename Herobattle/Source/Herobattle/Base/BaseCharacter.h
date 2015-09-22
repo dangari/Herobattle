@@ -7,7 +7,9 @@
 /**
  * 
  */
-enum Team{ RED, BLUE };
+UENUM(BlueprintType)
+enum class TeamColor : uint8
+	{ RED, BLUE };
 UCLASS()
 class HEROBATTLE_API ABaseCharacter: public ACharacter
 {
@@ -16,6 +18,9 @@ public:
 	ABaseCharacter();
 	~ABaseCharacter();
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CharacterProperties)
+	TeamColor ETeam;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
 	float m_MaxHealth;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
@@ -39,6 +44,12 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
+
+	UFUNCTION(BluePrintNativeEvent, BlueprintCallable, Category = Mechanics)
+	void UseSkill(ABaseCharacter* Target, int32 SkillSlot);
+
+	UFUNCTION(BlueprintCallable, Category = Meachnics)
+	void ChangeHealth(float value);
 
 private:
 

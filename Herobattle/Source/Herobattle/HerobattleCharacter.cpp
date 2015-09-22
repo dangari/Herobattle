@@ -79,6 +79,7 @@ void AHerobattleCharacter::SetupPlayerInputComponent(class UInputComponent* Inpu
 
 void AHerobattleCharacter::BeginPlay()
 {
+	Super::BeginPlay();
 	MyController = Cast<APlayerController>(Controller);
 	
 	//Input Mode for hiding courser

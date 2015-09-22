@@ -51,6 +51,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Meachnics)
 	void ChangeHealth(float value);
 
+	UFUNCTION(BlueprintCallable, Category = Meachnics)
+	void ChangeMana(float value);
+
 private:
 
 

@@ -76,3 +76,16 @@ void ABaseCharacter::ChangeHealth(float value)
 		m_Health = 0;
 	}
 }
+
+void ABaseCharacter::ChangeMana(float value)
+{
+	m_Mana += value;
+	if (m_Mana > m_MaxMana)
+	{
+		m_Mana = m_MaxMana;
+	}
+	if (m_Mana < 0)
+	{
+		m_Mana = 0;
+	}
+}

@@ -8,6 +8,7 @@
 
 enum SkillType {ENTCHANTMENT, ATTACK, HEX, SPELL, HEAL};
 enum TargetType {SELF, ENEMY, FRIEND, SELFFREND};
+// Damage 
 
 class HEROBATTLE_API Skill
 {

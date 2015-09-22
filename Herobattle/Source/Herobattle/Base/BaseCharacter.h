@@ -7,6 +7,7 @@
 /**
  * 
  */
+enum Team{ RED, BLUE };
 UCLASS()
 class HEROBATTLE_API ABaseCharacter: public ACharacter
 {

@@ -3,6 +3,7 @@
 #include "Herobattle.h"
 #include "HerobattleGameMode.h"
 #include "HerobattleCharacter.h"
+#include "HeroBattleHero.h"
 
 AHerobattleGameMode::AHerobattleGameMode()
 {
@@ -12,4 +13,12 @@ AHerobattleGameMode::AHerobattleGameMode()
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
+
+	blueHero_1 = nullptr;
+	blueHero_2 = nullptr;
+	blueHero_3 = nullptr;
+
+	redHero_1 = nullptr;
+	redHero_2 = nullptr;
+	redHero_3 = nullptr;
 }

@@ -6,6 +6,13 @@
 #include "Herobattle/Base/BaseCharacter.h"
 #include "HeroBattleHero.generated.h"
 
+UENUM(BlueprintType)
+enum class HeroNumber : uint8
+{
+	HERO1, HERO2, HERO3
+};
+
+class AHerobattleGameMode;
 UCLASS()
 class HEROBATTLE_API AHeroBattleHero : public ABaseCharacter
 {
@@ -17,6 +24,9 @@ public:
 	// Sets default values for this character's properties
 	AHeroBattleHero();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CharacterProperties)
+	HeroNumber heroNum;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
@@ -25,6 +35,14 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
+
+	UFUNCTION(BlueprintCallable, Category = OnStart)
+	void registerHeroToGameMode(AHeroBattleHero* hero);
+
 private:
+
+	void setRedHero(AHerobattleGameMode* hbGamemode, AHeroBattleHero* hero);
+
+	void setBlueHero(AHerobattleGameMode* hbGamemode, AHeroBattleHero* hero);
 
 };

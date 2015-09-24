@@ -2,6 +2,7 @@
 
 #include "Herobattle.h"
 #include "HeroBattleHero.h"
+#include "HerobattleGameMode.h"
 
 
 // Sets default values
@@ -9,6 +10,7 @@ AHeroBattleHero::AHeroBattleHero() : AHeroBattleHero::ABaseCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	heroNum = HeroNumber::HERO1;
 }
 
 // Called when the game starts or when spawned
@@ -31,3 +33,29 @@ void AHeroBattleHero::SetupPlayerInputComponent(class UInputComponent* InputComp
 
 }
 
+void AHeroBattleHero::registerHeroToGameMode(AHeroBattleHero* hero)
+{
+	
+	AHerobattleGameMode* hbGamemode = (AHerobattleGameMode*)AActor::GetWorld()->GetAuthGameMode();
+	
+	switch (ETeam)
+	{
+	case TeamColor::BLUE:
+		setBlueHero(hbGamemode, hero);
+		break;
+	case TeamColor::RED:
+		setRedHero(hbGamemode, hero);
+		break;
+	}
+}
+
+
+void AHeroBattleHero::setRedHero(AHerobattleGameMode* hbGamemode, AHeroBattleHero* hero)
+{
+
+}
+
+void AHeroBattleHero::setBlueHero(AHerobattleGameMode* hbGamemode, AHeroBattleHero* hero)
+{
+
+}

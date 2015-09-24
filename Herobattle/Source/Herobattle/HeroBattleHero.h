@@ -37,12 +37,12 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
 	UFUNCTION(BlueprintCallable, Category = OnStart)
-	void registerHeroToGameMode(AHeroBattleHero* hero);
+	void registerHeroToGameMode();
 
 private:
 
-	void setRedHero(AHerobattleGameMode* hbGamemode, AHeroBattleHero* hero);
+	void setRedHero(AHerobattleGameMode* hbGamemode);
 
-	void setBlueHero(AHerobattleGameMode* hbGamemode, AHeroBattleHero* hero);
+	void setBlueHero(AHerobattleGameMode* hbGamemode);
 
 };

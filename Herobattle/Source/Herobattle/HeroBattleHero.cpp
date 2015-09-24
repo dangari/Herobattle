@@ -17,6 +17,7 @@ AHeroBattleHero::AHeroBattleHero() : AHeroBattleHero::ABaseCharacter()
 void AHeroBattleHero::BeginPlay()
 {
 	Super::BeginPlay();
+	registerHeroToGameMode();
 }
 
 // Called every frame
@@ -33,7 +34,7 @@ void AHeroBattleHero::SetupPlayerInputComponent(class UInputComponent* InputComp
 
 }
 
-void AHeroBattleHero::registerHeroToGameMode(AHeroBattleHero* hero)
+void AHeroBattleHero::registerHeroToGameMode()
 {
 	
 	AHerobattleGameMode* hbGamemode = (AHerobattleGameMode*)AActor::GetWorld()->GetAuthGameMode();
@@ -41,21 +42,43 @@ void AHeroBattleHero::registerHeroToGameMode(AHeroBattleHero* hero)
 	switch (ETeam)
 	{
 	case TeamColor::BLUE:
-		setBlueHero(hbGamemode, hero);
+		setBlueHero(hbGamemode);
 		break;
 	case TeamColor::RED:
-		setRedHero(hbGamemode, hero);
+		setRedHero(hbGamemode);
 		break;
 	}
 }
 
 
-void AHeroBattleHero::setRedHero(AHerobattleGameMode* hbGamemode, AHeroBattleHero* hero)
+void AHeroBattleHero::setRedHero(AHerobattleGameMode* hbGamemode)
 {
-
+	switch (heroNum)
+	{
+	case HeroNumber::HERO1:
+		hbGamemode->redHero_1 = this;
+		break;
+	case HeroNumber::HERO2:
+		hbGamemode->redHero_2 = this;
+		break;
+	case HeroNumber::HERO3:
+		hbGamemode->redHero_3 = this;
+		break;
+	}
 }
 
-void AHeroBattleHero::setBlueHero(AHerobattleGameMode* hbGamemode, AHeroBattleHero* hero)
+void AHeroBattleHero::setBlueHero(AHerobattleGameMode* hbGamemode)
 {
-
+	switch (heroNum)
+	{
+	case HeroNumber::HERO1:
+		hbGamemode->blueHero_1 = this;
+		break;
+	case HeroNumber::HERO2:
+		hbGamemode->blueHero_2 = this;
+		break;
+	case HeroNumber::HERO3:
+		hbGamemode->blueHero_3 = this;
+		break;
+	}
 }

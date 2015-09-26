@@ -32,10 +32,11 @@ public:
 	UPROPERTY(BluePrintReadWrite, EditDefaultsOnly, Category = CamaraZoom)
 	float fMaxCameraRange;
 	UPROPERTY(BluePrintReadWrite, EditDefaultsOnly, Category = CamaraZoom)
-	float fCurrentCameraRange;
+	float fStartRange;
 	UPROPERTY(BluePrintReadWrite, EditDefaultsOnly, Category = CamaraZoom)
 	float fCameraZoomSpeed;
 
+	
 protected:
 
 	/** Called for forwards/backward input */
@@ -84,7 +85,7 @@ public:
 private:
 	bool bCameraIsLocked;
 
-	
+	float fCurrentCameraRange;
 
 	APlayerController* MyController;
 };

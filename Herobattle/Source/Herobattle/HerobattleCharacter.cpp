@@ -17,10 +17,10 @@ AHerobattleCharacter::AHerobattleCharacter() :AHerobattleCharacter::ABaseCharact
 	BaseLookUpRate = 45.f;
 
 	bCameraIsLocked = false;
-
+	fStartRange = 600.0f;
 	fMinCameraRange = 150.0f;
 	fMaxCameraRange = 600.0f;
-	fCurrentCameraRange = 300.0f;
+	fCurrentCameraRange = fStartRange;
 	fCameraZoomSpeed = 50.0f;
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.

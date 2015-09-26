@@ -18,6 +18,10 @@ AHerobattleCharacter::AHerobattleCharacter() :AHerobattleCharacter::ABaseCharact
 
 	bCameraIsLocked = false;
 
+	fMinCameraRange = 150.0f;
+	fMaxCameraRange = 600.0f;
+	fCurrentCameraRange = 300.0f;
+	fCameraZoomSpeed = 50.0f;
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
@@ -33,7 +37,7 @@ AHerobattleCharacter::AHerobattleCharacter() :AHerobattleCharacter::ABaseCharact
 	// Create a camera boom (pulls in towards the player if there is a collision)
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->AttachTo(RootComponent);
-	CameraBoom->TargetArmLength = 300.0f; // The camera follows at this distance behind the character	
+	CameraBoom->TargetArmLength = fCurrentCameraRange; // The camera follows at this distance behind the character	
 	CameraBoom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
 
 	// Create a follow camera
@@ -75,6 +79,10 @@ void AHerobattleCharacter::SetupPlayerInputComponent(class UInputComponent* Inpu
 	// handle touch devices
 	InputComponent->BindTouch(IE_Pressed, this, &AHerobattleCharacter::TouchStarted);
 	InputComponent->BindTouch(IE_Released, this, &AHerobattleCharacter::TouchStopped);
+
+	// Handle Camera Zoom
+	InputComponent->BindAxis("MWheeel", this, &AHerobattleCharacter::CameraZoom);
+
 }
 
 void AHerobattleCharacter::BeginPlay()
@@ -168,4 +176,17 @@ void AHerobattleCharacter::ReleaseCamera()
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ReleaseCamera"));
 	MyController->bEnableClickEvents = true;
 	MyController->bEnableMouseOverEvents = true;
+}
+
+void AHerobattleCharacter::CameraZoom(float Value)
+{
+	if ((Controller != NULL) && (Value != 0.0f)){
+		fCurrentCameraRange -= Value * fCameraZoomSpeed;
+		if (fCurrentCameraRange > fMaxCameraRange)
+			fCurrentCameraRange = fMaxCameraRange;
+		else if (fCurrentCameraRange < fMinCameraRange)
+			fCurrentCameraRange = fMinCameraRange;
+		CameraBoom->TargetArmLength = fCurrentCameraRange;
+	}
+
 }

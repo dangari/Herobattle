@@ -27,6 +27,15 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseLookUpRate;
 
+	UPROPERTY(BluePrintReadWrite, EditDefaultsOnly, Category = CamaraZoom)
+	float fMinCameraRange;
+	UPROPERTY(BluePrintReadWrite, EditDefaultsOnly, Category = CamaraZoom)
+	float fMaxCameraRange;
+	UPROPERTY(BluePrintReadWrite, EditDefaultsOnly, Category = CamaraZoom)
+	float fCurrentCameraRange;
+	UPROPERTY(BluePrintReadWrite, EditDefaultsOnly, Category = CamaraZoom)
+	float fCameraZoomSpeed;
+
 protected:
 
 	/** Called for forwards/backward input */
@@ -57,6 +66,7 @@ protected:
 
 	void ReleaseCamera();
 
+	void CameraZoom(float Value);
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
@@ -73,6 +83,8 @@ public:
 
 private:
 	bool bCameraIsLocked;
+
+	
 
 	APlayerController* MyController;
 };

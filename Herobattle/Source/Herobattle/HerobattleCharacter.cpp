@@ -95,7 +95,7 @@ void AHerobattleCharacter::BeginPlay()
 	InputMode.SetHideCursorDuringCapture(true);
 	InputMode.SetLockMouseToViewport(true);
 	MyController->SetInputMode(InputMode);
-	MyController->SetIgnoreLookInput(true);
+	MyController->SetIgnoreLookInput(false);
 	MyController->bShowMouseCursor = true;
 	MyController->bEnableClickEvents = true;
 	MyController->bEnableMouseOverEvents = true;
@@ -123,7 +123,6 @@ void AHerobattleCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVector L
 void AHerobattleCharacter::TurnAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
-	//if (bCameraIsLocked)
 	AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
 }
 
@@ -151,14 +150,29 @@ void AHerobattleCharacter::MoveRight(float Value)
 {
 	if ( (Controller != NULL) && (Value != 0.0f) )
 	{
-		// find out which way is right
-		const FRotator Rotation = Controller->GetControlRotation();
-		const FRotator YawRotation(0, Rotation.Yaw, 0);
-	
-		// get right vector 
-		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-		// add movement in that direction
-		AddMovementInput(Direction, Value);
+		if (bCameraIsLocked){
+			// find out which way is right
+			const FRotator Rotation = Controller->GetControlRotation();
+			const FRotator YawRotation(0, Rotation.Yaw, 0);
+
+			// get right vector 
+			const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+			// add movement in that direction
+			AddMovementInput(Direction, Value);
+		}
+		else {
+			float deltaRot = Value * 2 * BaseTurnRate * GetWorld()->GetDeltaSeconds();
+			FRotator Rotation(0.0f, deltaRot, 0.0f);
+			//Rotation.Yaw += deltaRot;
+			//MyController->AddActorLocalRotation(Rotation);
+			CameraBoom->AddWorldRotation(Rotation);
+			/*float deltaRot = Value * BaseTurnRate * GetWorld()->GetDeltaSeconds();
+			FRotator Rotation = Controller->GetControlRotation();
+			Rotation.Yaw += deltaRot;
+			//AActor::SetActorRotation(Rotation);
+			GetMesh()->AddLocalRotation(FRotator(0.0f, Rotation.Yaw, 0.0f));*/
+			//AddControllerYawInput(Value * BaseTurnRate * GetWorld()->GetDeltaSeconds());
+		}
 	}
 }
 
@@ -168,6 +182,7 @@ void AHerobattleCharacter::LockCamera()
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("LockCamera"));
 	MyController->bEnableClickEvents = false;
 	MyController->bEnableMouseOverEvents = false;
+	bCameraIsLocked = true;
 }
 
 void AHerobattleCharacter::ReleaseCamera()
@@ -176,6 +191,7 @@ void AHerobattleCharacter::ReleaseCamera()
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ReleaseCamera"));
 	MyController->bEnableClickEvents = true;
 	MyController->bEnableMouseOverEvents = true;
+	bCameraIsLocked = false;
 }
 
 void AHerobattleCharacter::CameraZoom(float Value)

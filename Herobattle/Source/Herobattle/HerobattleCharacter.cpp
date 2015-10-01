@@ -123,7 +123,6 @@ void AHerobattleCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVector L
 void AHerobattleCharacter::TurnAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
-	//if (bCameraIsLocked)
 	AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
 }
 
@@ -144,6 +143,7 @@ void AHerobattleCharacter::MoveForward(float Value)
 		// get forward vector
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 		AddMovementInput(Direction, Value);
+		GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 	}
 }
 
@@ -151,14 +151,25 @@ void AHerobattleCharacter::MoveRight(float Value)
 {
 	if ( (Controller != NULL) && (Value != 0.0f) )
 	{
-		// find out which way is right
-		const FRotator Rotation = Controller->GetControlRotation();
-		const FRotator YawRotation(0, Rotation.Yaw, 0);
-	
-		// get right vector 
-		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-		// add movement in that direction
-		AddMovementInput(Direction, Value);
+		if (bCameraIsLocked){
+			// find out which way is right
+			const FRotator Rotation = Controller->GetControlRotation();
+			const FRotator YawRotation(0, Rotation.Yaw, 0);
+
+			// get right vector 
+			const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+			// add movement in that direction
+			AddMovementInput(Direction, Value);
+		}
+		else {
+			float deltaRot = Value * 2 * BaseTurnRate * GetWorld()->GetDeltaSeconds();
+			FRotator Rotation = Controller->GetControlRotation();
+			Rotation.Yaw += deltaRot;
+			Controller->SetControlRotation(Rotation);
+			GetMesh()->AddRelativeRotation(FRotator(0.0f, deltaRot, 0.0f));
+			/*float meshYaw = GetMesh()->GetRelativeTransform().Rotator().Yaw;
+			Controller->SetControlRotation(Rotation);*/
+		}
 	}
 }
 
@@ -168,6 +179,7 @@ void AHerobattleCharacter::LockCamera()
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("LockCamera"));
 	MyController->bEnableClickEvents = false;
 	MyController->bEnableMouseOverEvents = false;
+	bCameraIsLocked = true;
 }
 
 void AHerobattleCharacter::ReleaseCamera()
@@ -176,6 +188,7 @@ void AHerobattleCharacter::ReleaseCamera()
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ReleaseCamera"));
 	MyController->bEnableClickEvents = true;
 	MyController->bEnableMouseOverEvents = true;
+	bCameraIsLocked = false;
 }
 
 void AHerobattleCharacter::CameraZoom(float Value)

@@ -1,0 +1,100 @@
+
+<profession value="ELEMENTALIST">
+	<spell type="SPELL">
+		<name value="Immolate"/>
+		<costs value="10"/>
+		<casttime value="1"/>
+		<cooldown value="5"/>
+		<targettype value="ENEMY"/>
+		<effects>
+			<impact>
+				<damage value="20" scaling="FIRE_MAGIC">
+					<step key="1" value="24"/>
+					<step key="2" value="27"/>
+					...
+				</damage>
+				<type value="FIRE"/>
+				<conditions>
+					<condition type="BURNING">
+						<duration value="1" scaling="FIRE_MAGIC">
+							<step key="4" value="2"/>
+							<step key="12" value="3"/>
+							...
+						</duration>
+					</condition>
+				</conditions>
+			</impact>
+		</effects>
+	</spell>
+<profession/>
+
+<profession value="MONK">
+	<spell type="SPELL">
+		<name value="Word of Healing"/>
+		<costs value="5"/>
+		<casttime value="0.75"/>
+		<cooldown value="3"/>
+		<targettype value="SELF_ALLY"/>
+		<effects>
+			<impact>
+				<heal value="5" scaling="HEALING_PRAYERS">
+					<step key="1" value="11"/>
+					<step key="2" value="18"/>
+					<step key="3" value="24"/>
+					...
+				<heal/>
+				<when value="TARGERT">
+					<hp value="50" type="-"/>
+					<heal value="30" scaling="HEALING_PRAYERS">
+						<step key="1" value="36"/>
+						<step key="2" value="41"/>
+						<step key="3" value="47"/>
+						...
+					<heal/>
+				<when/>
+			</impact>
+		</effects>
+	</spell>
+
+	<spell type="SPELL">
+		<name value="Guardian"/>
+		<costs value="5"/>
+		<casttime value="1"/>
+		<cooldown value="4"/>
+		<targettype value="SELF_ALLY"/>
+		<effects>
+			<impact>
+				<buff value="2" type="ENCHANTMENT" scaling="PROTECTION_PRAYERS">
+					<block type="ATTACKS" chance="50"/>
+					<step key="2" value="3"/>
+					<step key="5" value="4"/>
+					<step key="11" value="6"/>
+					...
+				<buff/>
+			<impact/>
+		<effects/>
+	<spell/>
+<profession/>
+
+<profession value="WARRIOR">
+	<spell type="UNIQUE_BUFF">
+		<name value="Shield Bash"/>
+		<costs value="5"/>
+		<casttime value="0"/>
+		<cooldown value="20"/>
+		<targettype value="SELF"/>
+		<weapon value="SHIELD"/>
+		<buff value="5" type="STANCE" scaling="STRENGHT">
+			<block type="ATTACKSKILLS" chance="100" usage="1">
+			<step key="2" value="6"/>
+			<step key="4" value="7"/>
+			<step key="7" value="8"/>
+			...
+			<when value="TARGET">
+				<ATTACK value="MELEEATACKSKILL"/>
+				<KNOCKDOWN value="2"/>
+				<COOLDOWN value="15"/>
+			<when>
+		<buff/>
+	<spell/>
+<profession/>

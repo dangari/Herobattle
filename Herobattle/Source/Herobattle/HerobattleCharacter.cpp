@@ -95,7 +95,7 @@ void AHerobattleCharacter::BeginPlay()
 	InputMode.SetHideCursorDuringCapture(true);
 	InputMode.SetLockMouseToViewport(true);
 	MyController->SetInputMode(InputMode);
-	MyController->SetIgnoreLookInput(false);
+	MyController->SetIgnoreLookInput(true);
 	MyController->bShowMouseCursor = true;
 	MyController->bEnableClickEvents = true;
 	MyController->bEnableMouseOverEvents = true;
@@ -143,6 +143,7 @@ void AHerobattleCharacter::MoveForward(float Value)
 		// get forward vector
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 		AddMovementInput(Direction, Value);
+		GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 	}
 }
 
@@ -162,16 +163,12 @@ void AHerobattleCharacter::MoveRight(float Value)
 		}
 		else {
 			float deltaRot = Value * 2 * BaseTurnRate * GetWorld()->GetDeltaSeconds();
-			FRotator Rotation(0.0f, deltaRot, 0.0f);
-			//Rotation.Yaw += deltaRot;
-			//MyController->AddActorLocalRotation(Rotation);
-			CameraBoom->AddWorldRotation(Rotation);
-			/*float deltaRot = Value * BaseTurnRate * GetWorld()->GetDeltaSeconds();
 			FRotator Rotation = Controller->GetControlRotation();
 			Rotation.Yaw += deltaRot;
-			//AActor::SetActorRotation(Rotation);
-			GetMesh()->AddLocalRotation(FRotator(0.0f, Rotation.Yaw, 0.0f));*/
-			//AddControllerYawInput(Value * BaseTurnRate * GetWorld()->GetDeltaSeconds());
+			Controller->SetControlRotation(Rotation);
+			GetMesh()->AddRelativeRotation(FRotator(0.0f, deltaRot, 0.0f));
+			/*float meshYaw = GetMesh()->GetRelativeTransform().Rotator().Yaw;
+			Controller->SetControlRotation(Rotation);*/
 		}
 	}
 }

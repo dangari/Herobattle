@@ -74,6 +74,28 @@
 			<impact/>
 		<effects/>
 	<spell/>
+
+	<spell type="SPELL">
+		<name value="Mend Ailment"/>
+		<costs value="5"/>
+		<casttime value="0.75"/>
+		<cooldown value="5"/>
+		<targettype value="SELF_ALLY"/>
+		<effects>
+			<impact>
+				<remove value="1" type="CONDITION"/>
+				<foreach type="CONDITION">
+					<heal value="30" scaling="PROTECTION_PRAYERS">
+						<step key="1" value="5"/>
+						<step key="2" value="9"/>
+						<step key="3" value="14"/>
+						...
+					<heal/>
+				<foreach/>
+			<impact/>
+		<effects/>
+	<spell/>
+
 <profession/>
 
 <profession value="WARRIOR">
@@ -98,3 +120,26 @@
 		<buff/>
 	<spell/>
 <profession/>
+
+<profession value="DERWISH">
+	<spell type="SPELL">
+		<name value="Mystic Regeneration"/>
+		<costs value="10"/>
+		<casttime value="0.25"/>
+		<cooldown value="12"/>
+		<targettype value="SELF"/>
+		<buff value="5" type="ENCHANTMENT" scaling="EARTH_PRAYERS">
+			<step key="1" value="6"/>
+			<step key="2" value="7"/>
+			<step key="3" value="8"/>
+			...
+			<foreach type="ENCHANTMENT">
+				<regneraion value="1" scaling="EARTH_PRAYERS">
+					<step key="3" value="2"/>
+					<step key="8" value="3"/>
+					....
+				<Regenration/>
+			<foreach/>
+		<buff/>
+	<spell/>
+<profession>

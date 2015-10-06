@@ -17,7 +17,7 @@ AHeroBattleHero::AHeroBattleHero() : AHeroBattleHero::ABaseCharacter()
 void AHeroBattleHero::BeginPlay()
 {
 	Super::BeginPlay();
-	registerHeroToGameMode();
+	//registerHeroToGameMode();
 }
 
 // Called every frame

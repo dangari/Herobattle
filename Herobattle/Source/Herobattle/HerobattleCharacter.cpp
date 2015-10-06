@@ -88,17 +88,20 @@ void AHerobattleCharacter::SetupPlayerInputComponent(class UInputComponent* Inpu
 void AHerobattleCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	MyController = Cast<APlayerController>(Controller);
-	
-	//Input Mode for hiding courser
-	FInputModeGameAndUI InputMode;
-	InputMode.SetHideCursorDuringCapture(true);
-	InputMode.SetLockMouseToViewport(true);
-	MyController->SetInputMode(InputMode);
-	MyController->SetIgnoreLookInput(true);
-	MyController->bShowMouseCursor = true;
-	MyController->bEnableClickEvents = true;
-	MyController->bEnableMouseOverEvents = true;
+	if (Controller && Controller->IsLocalPlayerController())
+	{
+		MyController = Cast<APlayerController>(Controller);
+
+		//Input Mode for hiding courser
+		FInputModeGameAndUI InputMode;
+		InputMode.SetHideCursorDuringCapture(true);
+		InputMode.SetLockMouseToViewport(true);
+		MyController->SetInputMode(InputMode);
+		MyController->SetIgnoreLookInput(true);
+		MyController->bShowMouseCursor = true;
+		MyController->bEnableClickEvents = true;
+		MyController->bEnableMouseOverEvents = true;
+	}
 }
 
 

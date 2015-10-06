@@ -178,20 +178,36 @@ void AHerobattleCharacter::MoveRight(float Value)
 
 void AHerobattleCharacter::LockCamera()
 {
-	MyController->SetIgnoreLookInput(false);
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("LockCamera"));
-	MyController->bEnableClickEvents = false;
-	MyController->bEnableMouseOverEvents = false;
-	bCameraIsLocked = true;
+	if (MyController)
+	{
+		MyController->SetIgnoreLookInput(false);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("LockCamera"));
+		MyController->bEnableClickEvents = false;
+		MyController->bEnableMouseOverEvents = false;
+		bCameraIsLocked = true;
+	}
+	//own function
+	if (Controller && Controller->IsLocalPlayerController())
+	{
+		MyController = Cast<APlayerController>(Controller);
+	}
 }
 
 void AHerobattleCharacter::ReleaseCamera()
 {
-	MyController->SetIgnoreLookInput(true);
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ReleaseCamera"));
-	MyController->bEnableClickEvents = true;
-	MyController->bEnableMouseOverEvents = true;
-	bCameraIsLocked = false;
+	if (MyController)
+	{
+		MyController->SetIgnoreLookInput(true);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ReleaseCamera"));
+		MyController->bEnableClickEvents = true;
+		MyController->bEnableMouseOverEvents = true;
+		bCameraIsLocked = false;
+	}
+	//own function
+	if (Controller && Controller->IsLocalPlayerController())
+	{
+		MyController = Cast<APlayerController>(Controller);
+	}
 }
 
 void AHerobattleCharacter::CameraZoom(float Value)

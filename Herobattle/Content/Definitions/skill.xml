@@ -1,3 +1,53 @@
+<!-- 
+Damage:
+	<damage value="default damage" scaling="scales by this attribute">
+		<step key="attribute rank" value="value of that rank"/> -- scale steps
+		<step key="2" value="27"/>
+		...
+	</damage>
+---------------------------------------------------------------------------------------	
+Heal:
+<heal value="default heal" scaling="scales by this attribute">
+					<step key="attribute rank" value="value of that rank"/> -- scale steps
+					<step key="2" value="18"/>
+					...
+---------------------------------------------------------------------------------------	
+Apply Conditions:
+	<conditions>
+		<condition type="condition type">
+			<duration value="duration in seconds" scaling="scales by this attribute">
+				<step key="attribute rank" value="value of that rank"/> -- scale steps
+				<step key="12" value="3"/>
+				...
+			</duration>
+		</condition>
+	</conditions>
+---------------------------------------------------------------------------------------	
+Buff:
+	<buff value="buff duration in seoncds" type="buff type (stance,enchantment ....)" scaling="scales by this attribute">
+					<block type="ATTACKS" value="50"/>
+					<step key="attribute rank" value="value of that rank"/> -- scale steps
+					<step key="5" value="4"/>
+					...
+	<buff/>
+----------------------------------------------------------------------------------------
+Block:
+	<block type="type that gets blocked" value="default chance block" scaling="scales by this attribute">
+		<step key="attribute rank" value="value of that rank"/> -- scale steps
+		<step key="5" value="4"/>
+	<block/>
+---------------------------------------------------------------------------------------
+when:
+	<when value="Self/target where the condtion needs to be checked">
+		<whencondition>
+			<ATTACK value="MELEEATACKSKILL"/> -- when this happens the when block gets executed
+		<whencondition/>
+		<then>
+			<KNOCKDOWN value="2"/> -- this happens when the all whenconditons are true
+			<COOLDOWN value="15"/>
+		</then>	
+	<when>
+ -->
 
 <profession value="ELEMENTALIST">
 	<spell type="SPELL">
@@ -44,13 +94,17 @@
 					...
 				<heal/>
 				<when value="TARGERT">
-					<hp value="50" type="-"/>
-					<heal value="30" scaling="HEALING_PRAYERS">
-						<step key="1" value="36"/>
-						<step key="2" value="41"/>
-						<step key="3" value="47"/>
-						...
-					<heal/>
+					<whencondition>
+						<hp value="50" type="-"/>
+					<whencondition/>
+					<then>
+						<heal value="30" scaling="HEALING_PRAYERS">
+							<step key="1" value="36"/>
+							<step key="2" value="41"/>
+							<step key="3" value="47"/>
+							...
+						<heal/>
+					<then/>
 				<when/>
 			</impact>
 		</effects>
@@ -65,7 +119,7 @@
 		<effects>
 			<impact>
 				<buff value="2" type="ENCHANTMENT" scaling="PROTECTION_PRAYERS">
-					<block type="ATTACKS" chance="50"/>
+					<block type="ATTACKS" value="50"/>
 					<step key="2" value="3"/>
 					<step key="5" value="4"/>
 					<step key="11" value="6"/>
@@ -107,15 +161,19 @@
 		<targettype value="SELF"/>
 		<weapon value="SHIELD"/>
 		<buff value="5" type="STANCE" scaling="STRENGHT">
-			<block type="ATTACKSKILLS" chance="100" usage="1">
+			<block type="ATTACKSKILLS" value="100" usage="1">
 			<step key="2" value="6"/>
 			<step key="4" value="7"/>
 			<step key="7" value="8"/>
 			...
 			<when value="TARGET">
-				<ATTACK value="MELEEATACKSKILL"/>
-				<KNOCKDOWN value="2"/>
-				<COOLDOWN value="15"/>
+				<whencondition>
+					<ATTACK value="MELEEATACKSKILL"/>
+				<whencondition/>
+				<then>
+					<KNOCKDOWN value="2"/>
+					<COOLDOWN value="15"/>
+				</then>	
 			<when>
 		<buff/>
 	<spell/>
@@ -133,7 +191,7 @@
 			<step key="2" value="7"/>
 			<step key="3" value="8"/>
 			...
-			<foreach type="ENCHANTMENT">
+			<foreach type="ENCHANTMENT"> <
 				<regneraion value="1" scaling="EARTH_PRAYERS">
 					<step key="3" value="2"/>
 					<step key="8" value="3"/>

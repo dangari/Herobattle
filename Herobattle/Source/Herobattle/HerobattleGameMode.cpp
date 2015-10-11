@@ -22,3 +22,12 @@ AHerobattleGameMode::AHerobattleGameMode()
 	redHero_2 = nullptr;
 	redHero_3 = nullptr;
 }
+void AHerobattleGameMode::PostLogin(APlayerController * NewPlayer)
+{
+	Super::PostLogin(NewPlayer);
+	/*AHerobattleCharacter* currentPlayer = (AHerobattleCharacter*)(NewPlayer)->GetControlledPawn();
+	if (currentPlayer)
+	{
+		currentPlayer->initializeMouse();
+	}*/
+}

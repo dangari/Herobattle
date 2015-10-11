@@ -33,6 +33,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = TeamRed)
 	AHeroBattleHero* redHero_3;
+
+	void PostLogin(APlayerController * NewPlayer) override;
+
 };
 
 

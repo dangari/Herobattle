@@ -51,7 +51,6 @@ AHerobattleCharacter::AHerobattleCharacter() :AHerobattleCharacter::ABaseCharact
 
 //////////////////////////////////////////////////////////////////////////
 // Input
-
 void AHerobattleCharacter::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 {
 	
@@ -63,8 +62,8 @@ void AHerobattleCharacter::SetupPlayerInputComponent(class UInputComponent* Inpu
 
 	InputComponent->BindAction("RightMouse", IE_Pressed, this, &AHerobattleCharacter::LockCamera);
 	InputComponent->BindAction("RightMouse", IE_Released, this, &AHerobattleCharacter::ReleaseCamera);
-
-
+	InputComponent->BindAction("TestButton", IE_Released, this, &AHerobattleCharacter::initializeMouse);
+	
 	InputComponent->BindAxis("MoveForward", this, &AHerobattleCharacter::MoveForward);
 	InputComponent->BindAxis("MoveRight", this, &AHerobattleCharacter::MoveRight);
 
@@ -90,17 +89,7 @@ void AHerobattleCharacter::BeginPlay()
 	Super::BeginPlay();
 	if (Controller && Controller->IsLocalPlayerController())
 	{
-		MyController = Cast<APlayerController>(Controller);
-
-		//Input Mode for hiding courser
-		FInputModeGameAndUI InputMode;
-		InputMode.SetHideCursorDuringCapture(true);
-		InputMode.SetLockMouseToViewport(true);
-		MyController->SetInputMode(InputMode);
-		MyController->SetIgnoreLookInput(true);
-		MyController->bShowMouseCursor = true;
-		MyController->bEnableClickEvents = true;
-		MyController->bEnableMouseOverEvents = true;
+		initializeMouse();
 	}
 }
 
@@ -186,11 +175,6 @@ void AHerobattleCharacter::LockCamera()
 		MyController->bEnableMouseOverEvents = false;
 		bCameraIsLocked = true;
 	}
-	//own function
-	if (Controller && Controller->IsLocalPlayerController())
-	{
-		MyController = Cast<APlayerController>(Controller);
-	}
 }
 
 void AHerobattleCharacter::ReleaseCamera()
@@ -202,11 +186,6 @@ void AHerobattleCharacter::ReleaseCamera()
 		MyController->bEnableClickEvents = true;
 		MyController->bEnableMouseOverEvents = true;
 		bCameraIsLocked = false;
-	}
-	//own function
-	if (Controller && Controller->IsLocalPlayerController())
-	{
-		MyController = Cast<APlayerController>(Controller);
 	}
 }
 
@@ -220,5 +199,23 @@ void AHerobattleCharacter::CameraZoom(float Value)
 			fCurrentCameraRange = fMinCameraRange;
 		CameraBoom->TargetArmLength = fCurrentCameraRange;
 	}
+
+}
+
+void AHerobattleCharacter::initializeMouse()
+{
+	MyController = Cast<APlayerController>(Controller);
+
+	//Input Mode for hiding courser
+	FInputModeGameAndUI InputMode;
+	InputMode.SetHideCursorDuringCapture(true);
+	InputMode.SetLockMouseToViewport(true);
+	MyController->SetInputMode(InputMode);
+	MyController->SetIgnoreLookInput(true);
+	MyController->bShowMouseCursor = true;
+	MyController->bEnableClickEvents = true;
+	MyController->bEnableMouseOverEvents = true;
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("MouseInit"));
 
 }

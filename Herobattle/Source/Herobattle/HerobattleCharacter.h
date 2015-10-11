@@ -36,6 +36,8 @@ public:
 	UPROPERTY(BluePrintReadWrite, EditDefaultsOnly, Category = CamaraZoom)
 	float fCameraZoomSpeed;
 
+	UFUNCTION(BlueprintCallable, Category = OnStart)
+	void initializeMouse();
 	
 protected:
 
@@ -88,5 +90,7 @@ private:
 	float fCurrentCameraRange;
 
 	APlayerController* MyController;
+
+
 };
 

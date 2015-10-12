@@ -45,4 +45,6 @@ private:
 
 	void setBlueHero(AHerobattleGameMode* hbGamemode);
 
+
+
 };

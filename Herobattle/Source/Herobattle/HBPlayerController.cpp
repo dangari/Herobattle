@@ -5,15 +5,20 @@
 
 AHBPlayerController::AHBPlayerController()
 {
-	/*FInputModeGameAndUI InputMode;
+	
+}
+
+void AHBPlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+
+	FInputModeGameAndUI InputMode;
 	InputMode.SetHideCursorDuringCapture(true);
 	InputMode.SetLockMouseToViewport(true);
 	this->SetInputMode(InputMode);
 	this->SetIgnoreLookInput(true);
 	this->bShowMouseCursor = true;
 	this->bEnableClickEvents = true;
-	this->bEnableMouseOverEvents = true;*/
+	this->bEnableMouseOverEvents = true;
 }
-
-
 

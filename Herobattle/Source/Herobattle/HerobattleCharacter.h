@@ -4,6 +4,8 @@
 #include "Base/BaseCharacter.h"
 #include "HerobattleCharacter.generated.h"
 
+class AHeroBattleHero;
+
 UCLASS(config=Game)
 class AHerobattleCharacter : public ABaseCharacter
 {
@@ -38,6 +40,12 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = OnStart)
 	void initializeMouse();
+
+	UFUNCTION(BlueprintCallable, Category = OnStart)
+	void addHero(uint8 index, AHeroBattleHero* hero);
+
+	UFUNCTION(BlueprintCallable, Category = OnStart)
+	AHeroBattleHero* getHero(uint8 index);
 	
 protected:
 
@@ -90,6 +98,8 @@ private:
 	float fCurrentCameraRange;
 
 	APlayerController* MyController;
+
+	AHeroBattleHero* heroList[3];
 
 
 };

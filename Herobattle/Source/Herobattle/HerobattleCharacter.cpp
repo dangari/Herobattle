@@ -219,3 +219,22 @@ void AHerobattleCharacter::initializeMouse()
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("MouseInit"));
 
 }
+
+
+void AHerobattleCharacter::addHero(uint8 index, AHeroBattleHero* hero)
+{
+	if (index < 3)
+	{
+		heroList[index] = hero;
+	}
+}
+
+
+AHeroBattleHero* AHerobattleCharacter::getHero(uint8 index)
+{
+	if (index < 3)
+	{
+		return heroList[index];
+	}
+	return nullptr;
+}

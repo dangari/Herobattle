@@ -15,6 +15,7 @@ class HEROBATTLE_API AHBPlayerController : public APlayerController
 	
 public:
 	AHBPlayerController();
+	virtual void BeginPlay() override;
 	
 	
 };

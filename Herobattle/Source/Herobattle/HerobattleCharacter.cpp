@@ -87,7 +87,7 @@ void AHerobattleCharacter::SetupPlayerInputComponent(class UInputComponent* Inpu
 void AHerobattleCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	if (Controller && Controller->IsLocalPlayerController())
+	if (Controller /*&& Controller->IsLocalPlayerController()*/)
 	{
 		initializeMouse();
 	}
@@ -204,8 +204,8 @@ void AHerobattleCharacter::CameraZoom(float Value)
 
 void AHerobattleCharacter::initializeMouse()
 {
-	MyController = Cast<APlayerController>(Controller);
-
+	//MyController = Cast<APlayerController>(Controller);
+	MyController =  GetWorld()->GetFirstPlayerController();
 	//Input Mode for hiding courser
 	FInputModeGameAndUI InputMode;
 	InputMode.SetHideCursorDuringCapture(true);

@@ -25,9 +25,10 @@ AHerobattleGameMode::AHerobattleGameMode()
 void AHerobattleGameMode::PostLogin(APlayerController * NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
-	/*AHerobattleCharacter* currentPlayer = (AHerobattleCharacter*)(NewPlayer)->GetControlledPawn();
+
+	AHerobattleCharacter* currentPlayer = (AHerobattleCharacter*)(NewPlayer)->GetControlledPawn();
 	if (currentPlayer)
 	{
 		currentPlayer->initializeMouse();
-	}*/
+	}
 }

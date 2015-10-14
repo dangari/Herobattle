@@ -73,8 +73,10 @@ protected:
 	/** Handler for when a touch input stops. */
 	void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
 
+	UFUNCTION(BlueprintCallable, Category = Input)
 	void LockCamera();
 
+	UFUNCTION(BlueprintCallable, Category = Input)
 	void ReleaseCamera();
 
 	void CameraZoom(float Value);

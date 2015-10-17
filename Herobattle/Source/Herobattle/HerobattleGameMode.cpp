@@ -4,6 +4,7 @@
 #include "HerobattleGameMode.h"
 #include "HerobattleCharacter.h"
 #include "HeroBattleHero.h"
+#include "HBPlayerController.h"
 
 AHerobattleGameMode::AHerobattleGameMode()
 {
@@ -26,9 +27,9 @@ void AHerobattleGameMode::PostLogin(APlayerController * NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
 
-	AHerobattleCharacter* currentPlayer = (AHerobattleCharacter*)(NewPlayer)->GetControlledPawn();
+	AHerobattleCharacter* currentPlayer = (AHerobattleCharacter*)(NewPlayer)->GetPawn();
 	if (currentPlayer)
 	{
-		currentPlayer->initializeMouse();
+		currentPlayer->setController((AHBPlayerController*)NewPlayer);
 	}
 }

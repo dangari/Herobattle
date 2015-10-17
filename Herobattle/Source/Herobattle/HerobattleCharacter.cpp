@@ -3,6 +3,7 @@
 #include "Herobattle.h"
 #include "HerobattleCharacter.h"
 #include "Engine.h"
+#include "HBPlayerController.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AHerobattleCharacter
@@ -60,8 +61,7 @@ void AHerobattleCharacter::SetupPlayerInputComponent(class UInputComponent* Inpu
 	InputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	InputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
-	InputComponent->BindAction("RightMouse", IE_Pressed, this, &AHerobattleCharacter::LockCamera);
-	InputComponent->BindAction("RightMouse", IE_Released, this, &AHerobattleCharacter::ReleaseCamera);
+	
 	InputComponent->BindAction("TestButton", IE_Released, this, &AHerobattleCharacter::initializeMouse);
 	
 	InputComponent->BindAxis("MoveForward", this, &AHerobattleCharacter::MoveForward);
@@ -87,9 +87,9 @@ void AHerobattleCharacter::SetupPlayerInputComponent(class UInputComponent* Inpu
 void AHerobattleCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	if (Controller /*&& Controller->IsLocalPlayerController()*/)
+	if (Controller && Controller->IsLocalPlayerController())
 	{
-		initializeMouse();
+		//initializeMouse();
 	}
 }
 
@@ -116,6 +116,8 @@ void AHerobattleCharacter::TurnAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
 	AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
+
+
 }
 
 void AHerobattleCharacter::LookUpAtRate(float Rate)
@@ -169,11 +171,17 @@ void AHerobattleCharacter::LockCamera()
 {
 	if (MyController)
 	{
-		MyController->SetIgnoreLookInput(false);
+		/*MyController->SetIgnoreLookInput(false);
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("LockCamera"));
 		MyController->bEnableClickEvents = false;
 		MyController->bEnableMouseOverEvents = false;
+		bCameraIsLocked = true;*/
+		MyController->LockCamera();
 		bCameraIsLocked = true;
+
+	}
+	else if (Controller){
+		MyController = (AHBPlayerController*)GetWorld()->GetFirstPlayerController();
 	}
 }
 
@@ -181,11 +189,16 @@ void AHerobattleCharacter::ReleaseCamera()
 {
 	if (MyController)
 	{
-		MyController->SetIgnoreLookInput(true);
+		/*MyController->SetIgnoreLookInput(true);
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ReleaseCamera"));
 		MyController->bEnableClickEvents = true;
 		MyController->bEnableMouseOverEvents = true;
+		bCameraIsLocked = false;*/
+		MyController->ReleaseCamera();
 		bCameraIsLocked = false;
+	}
+	else if (Controller){
+		MyController = (AHBPlayerController*)GetWorld()->GetFirstPlayerController();
 	}
 }
 
@@ -205,7 +218,7 @@ void AHerobattleCharacter::CameraZoom(float Value)
 void AHerobattleCharacter::initializeMouse()
 {
 	//MyController = Cast<APlayerController>(Controller);
-	MyController =  GetWorld()->GetFirstPlayerController();
+	MyController =  (AHBPlayerController*)GetWorld()->GetFirstPlayerController();
 	//Input Mode for hiding courser
 	FInputModeGameAndUI InputMode;
 	InputMode.SetHideCursorDuringCapture(true);
@@ -237,4 +250,14 @@ AHeroBattleHero* AHerobattleCharacter::getHero(uint8 index)
 		return heroList[index];
 	}
 	return nullptr;
+}
+
+void AHerobattleCharacter::setController(AHBPlayerController* MyController)
+{
+	MyController = MyController;
+}
+
+void AHerobattleCharacter::setCameraLock(bool isLocked)
+{
+	bCameraIsLocked = isLocked;
 }

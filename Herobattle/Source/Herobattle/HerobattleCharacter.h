@@ -5,6 +5,7 @@
 #include "HerobattleCharacter.generated.h"
 
 class AHeroBattleHero;
+class AHBPlayerController;
 
 UCLASS(config=Game)
 class AHerobattleCharacter : public ABaseCharacter
@@ -93,13 +94,17 @@ public:
 
 	virtual void BeginPlay() override;
 
+	UFUNCTION(BlueprintCallable, Category = Input)
+	void setController(AHBPlayerController* MyController);
+
+	void setCameraLock(bool isLocked);
 
 private:
 	bool bCameraIsLocked;
 
 	float fCurrentCameraRange;
 
-	APlayerController* MyController;
+	AHBPlayerController* MyController;
 
 	AHeroBattleHero* heroList[3];
 

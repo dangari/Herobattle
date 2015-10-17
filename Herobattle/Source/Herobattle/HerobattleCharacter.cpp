@@ -167,40 +167,7 @@ void AHerobattleCharacter::MoveRight(float Value)
 	}
 }
 
-void AHerobattleCharacter::LockCamera()
-{
-	if (MyController)
-	{
-		/*MyController->SetIgnoreLookInput(false);
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("LockCamera"));
-		MyController->bEnableClickEvents = false;
-		MyController->bEnableMouseOverEvents = false;
-		bCameraIsLocked = true;*/
-		MyController->LockCamera();
-		bCameraIsLocked = true;
 
-	}
-	else if (Controller){
-		MyController = (AHBPlayerController*)GetWorld()->GetFirstPlayerController();
-	}
-}
-
-void AHerobattleCharacter::ReleaseCamera()
-{
-	if (MyController)
-	{
-		/*MyController->SetIgnoreLookInput(true);
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ReleaseCamera"));
-		MyController->bEnableClickEvents = true;
-		MyController->bEnableMouseOverEvents = true;
-		bCameraIsLocked = false;*/
-		MyController->ReleaseCamera();
-		bCameraIsLocked = false;
-	}
-	else if (Controller){
-		MyController = (AHBPlayerController*)GetWorld()->GetFirstPlayerController();
-	}
-}
 
 void AHerobattleCharacter::CameraZoom(float Value)
 {

@@ -7,6 +7,14 @@
 class AHeroBattleHero;
 class AHBPlayerController;
 
+
+UENUM(BlueprintType)
+enum class SelectedFlag : uint8
+{
+	FLAGALL, FLAGG_ONE, FLAGG_TWO, FLAGG_THREE, NONE
+};
+
+
 UCLASS(config=Game)
 class AHerobattleCharacter : public ABaseCharacter
 {

@@ -7,9 +7,9 @@
 #include "HeroBattleHero.generated.h"
 
 UENUM(BlueprintType)
-enum class HeroNumber : uint8
+enum class HeroState : uint8
 {
-	HERO1, HERO2, HERO3
+	FLAGALL, FLAGGSINGEL, NONE
 };
 
 class AHerobattleGameMode;
@@ -25,7 +25,7 @@ public:
 	AHeroBattleHero();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CharacterProperties)
-	HeroNumber heroNum;
+	HeroState currentState;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -36,15 +36,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
-	UFUNCTION(BlueprintCallable, Category = OnStart)
-	void registerHeroToGameMode();
 
 private:
-
-	void setRedHero(AHerobattleGameMode* hbGamemode);
-
-	void setBlueHero(AHerobattleGameMode* hbGamemode);
-
-
 
 };

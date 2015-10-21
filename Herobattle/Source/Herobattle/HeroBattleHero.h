@@ -9,7 +9,7 @@
 UENUM(BlueprintType)
 enum class HeroState : uint8
 {
-	FLAGALL, FLAGGSINGEL, NONE
+	FLAGALL, FLAGSINGEL, NONE
 };
 
 class AHerobattleGameMode;
@@ -24,8 +24,14 @@ public:
 	// Sets default values for this character's properties
 	AHeroBattleHero();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CharacterProperties)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Flag)
 	HeroState currentState;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Flag)
+	FVector singleFlagVectorLocation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Flag)
+	FVector allFlagVectorLocation;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

@@ -110,6 +110,7 @@ private:
 
 	AHBPlayerController* MyController;
 
+	UPROPERTY(Replicated)
 	AHeroBattleHero* heroList[3];
 
 

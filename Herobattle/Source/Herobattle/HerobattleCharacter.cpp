@@ -4,12 +4,15 @@
 #include "HerobattleCharacter.h"
 #include "Engine.h"
 #include "HBPlayerController.h"
+#include "UnrealNetwork.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AHerobattleCharacter
 
 AHerobattleCharacter::AHerobattleCharacter() :AHerobattleCharacter::ABaseCharacter()
 {
+	bReplicates = true;
+
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
@@ -227,4 +230,11 @@ void AHerobattleCharacter::setController(AHBPlayerController* MyController)
 void AHerobattleCharacter::setCameraLock(bool isLocked)
 {
 	bCameraIsLocked = isLocked;
+}
+
+
+void AHerobattleCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AHerobattleCharacter, heroList);
 }

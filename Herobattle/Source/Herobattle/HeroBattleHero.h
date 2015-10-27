@@ -33,6 +33,9 @@ public:
 	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = Flag)
 	FVector allFlagVectorLocation;
 
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = General)
+	ABaseCharacter* owningPlayer;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	

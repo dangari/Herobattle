@@ -24,13 +24,13 @@ public:
 	// Sets default values for this character's properties
 	AHeroBattleHero();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Flag)
+	UPROPERTY(Replicated,EditAnywhere, BlueprintReadWrite, Category = Flag)
 	HeroState currentState;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Flag)
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = Flag)
 	FVector singleFlagVectorLocation;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Flag)
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = Flag)
 	FVector allFlagVectorLocation;
 
 	// Called when the game starts or when spawned

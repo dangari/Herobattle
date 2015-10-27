@@ -3,6 +3,7 @@
 #include "Herobattle.h"
 #include "HeroBattleHero.h"
 #include "HerobattleGameMode.h"
+#include "UnrealNetwork.h"
 
 
 // Sets default values
@@ -34,3 +35,11 @@ void AHeroBattleHero::SetupPlayerInputComponent(class UInputComponent* InputComp
 
 }
 
+
+void AHeroBattleHero::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AHeroBattleHero, currentState);
+	DOREPLIFETIME(AHeroBattleHero, singleFlagVectorLocation);
+	DOREPLIFETIME(AHeroBattleHero, allFlagVectorLocation);
+}

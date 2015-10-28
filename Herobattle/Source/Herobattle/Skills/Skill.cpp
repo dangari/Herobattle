@@ -3,10 +3,10 @@
 #include "Herobattle.h"
 #include "Skill.h"
 
-Skill::Skill()
+USkill::USkill()
 {
 }
 
-Skill::~Skill()
+USkill::~USkill()
 {
 }

@@ -2,6 +2,8 @@
 
 #include "Herobattle.h"
 #include "BaseCharacter.h"
+#include "../Skills/Buff/BaseBuff.h"
+
 
 ABaseCharacter::ABaseCharacter()
 {
@@ -88,4 +90,34 @@ void ABaseCharacter::ChangeMana(float value)
 	{
 		m_Mana = 0;
 	}
+}
+
+void ABaseCharacter::heal(float value)
+{
+
+}
+
+void ABaseCharacter::damage(float value, HBDamageType damageType)
+{
+
+}
+
+void ABaseCharacter::applyBuff(UBaseBuff* buff)
+{
+
+}
+
+void ABaseCharacter::applyDebuff(UBaseBuff* buff)
+{
+
+}
+
+void ABaseCharacter::apllyUniQueBuff(UBaseBuff* buff)
+{
+
+}
+
+uint8 ABaseCharacter::getAttributeValue(Attributes attributeName)
+{
+	return 0;
 }

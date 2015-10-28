@@ -3,13 +3,21 @@
 #pragma once
 
 #include "Base/Profession.h"
+#include "../Skills/Components/BaseSkillComponent.h"
 #include "BaseCharacter.generated.h"
+
 /**
  * 
  */
+
+class UBaseBuff;
+
 UENUM(BlueprintType)
 enum class TeamColor : uint8
 	{ RED, BLUE };
+UENUM(BlueprintType)
+enum class HBDamageType : uint8
+	{FIRE, PHYSICAL, WATER, LIGHTNING};
 UCLASS()
 class HEROBATTLE_API ABaseCharacter: public ACharacter
 {
@@ -53,6 +61,19 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = Meachnics)
 	void ChangeMana(float value);
+
+// this Functions get called by Skills
+	void heal(float value);
+
+	void damage(float value, HBDamageType damageType);
+
+	void applyBuff(UBaseBuff* buff);
+
+	void applyDebuff(UBaseBuff* buff);
+
+	void apllyUniQueBuff(UBaseBuff* buff);
+
+	uint8 getAttributeValue(Attributes attributeName);
 
 private:
 

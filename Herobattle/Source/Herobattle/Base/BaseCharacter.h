@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Base/Profession.h"
+#include "../Enum/SkillEnums.h"
 #include "../Skills/Components/BaseSkillComponent.h"
 #include "BaseCharacter.generated.h"
 
@@ -11,6 +12,7 @@
  */
 
 class UBaseBuff;
+class UBaseCondition;
 
 UENUM(BlueprintType)
 enum class TeamColor : uint8
@@ -75,8 +77,9 @@ public:
 
 	uint8 getAttributeValue(Attributes attributeName);
 
-private:
+	void applyCondition(UBaseCondition* condtion);
 
+private:
 
 	Profession primaryProfession;
 	Profession secondaryProfession;

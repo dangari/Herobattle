@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../Enum/SkillEnums.h"
-#include "BaseSkillComponent.generated.h"
+#include "ScDurationTypes.generated.h"
 
 
 class ABaseCharacter;
@@ -9,18 +9,20 @@ class ABaseCharacter;
 
 
 UCLASS()
-class  HEROBATTLE_API UBaseSkillComponent : public UObject
+class  HEROBATTLE_API UScCondition : public UObject
 {
 	GENERATED_BODY()
 //Parameters
 public:
 	int scaleTable[20];
 	Attributes scaleAttribute;
+
+	Condition conditionType;
 private:
 // Functions
 public:
-	UBaseSkillComponent();
-	~UBaseSkillComponent();
+	UScCondition();
+	~UScCondition();
 
 	virtual void run(ABaseCharacter* target, ABaseCharacter* self);
 	virtual float getScore();

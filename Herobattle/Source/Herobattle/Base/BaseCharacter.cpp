@@ -3,6 +3,7 @@
 #include "Herobattle.h"
 #include "BaseCharacter.h"
 #include "../Skills/Buff/BaseBuff.h"
+#include "../Skills/Condition/BaseCondition.h"
 
 
 ABaseCharacter::ABaseCharacter()
@@ -120,4 +121,9 @@ void ABaseCharacter::apllyUniQueBuff(UBaseBuff* buff)
 uint8 ABaseCharacter::getAttributeValue(Attributes attributeName)
 {
 	return 0;
+}
+
+void ABaseCharacter::applyCondition(UBaseCondition* condtion)
+{
+
 }

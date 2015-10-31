@@ -24,7 +24,7 @@ public:
 	// Sets default values for this character's properties
 	AHeroBattleHero();
 
-	UPROPERTY(Replicated,EditAnywhere, BlueprintReadWrite, Category = Flag)
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = Flag)
 	HeroState currentState;
 
 	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = Flag)
@@ -46,6 +46,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
 
-private:
 
+
+private:
+	
 };

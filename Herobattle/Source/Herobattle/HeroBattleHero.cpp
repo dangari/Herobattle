@@ -4,15 +4,16 @@
 #include "HeroBattleHero.h"
 #include "HerobattleGameMode.h"
 #include "UnrealNetwork.h"
-
+#include "Engine.h"
 
 // Sets default values
 AHeroBattleHero::AHeroBattleHero() : AHeroBattleHero::ABaseCharacter()
 {
+	bReplicates = true;
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	currentState = HeroState::NONE;
 	owningPlayer = nullptr;
+	currentState = HeroState::NONE;
 }
 
 // Called when the game starts or when spawned

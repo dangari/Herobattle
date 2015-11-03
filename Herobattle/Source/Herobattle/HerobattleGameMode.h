@@ -36,6 +36,8 @@ public:
 
 	void PostLogin(APlayerController * NewPlayer) override;
 
+	virtual void BeginPlay() override;
+
 };
 
 

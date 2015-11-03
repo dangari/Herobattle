@@ -5,6 +5,7 @@
 #include "HerobattleCharacter.h"
 #include "HeroBattleHero.h"
 #include "HBPlayerController.h"
+#include "Skills/XMLSkillReader.h"
 
 AHerobattleGameMode::AHerobattleGameMode()
 {
@@ -27,9 +28,14 @@ void AHerobattleGameMode::PostLogin(APlayerController * NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
 
-	AHerobattleCharacter* currentPlayer = (AHerobattleCharacter*)(NewPlayer)->GetPawn();
+	/*AHerobattleCharacter* currentPlayer = (AHerobattleCharacter*)(NewPlayer)->GetPawn();
 	if (currentPlayer)
 	{
 		currentPlayer->setController((AHBPlayerController*)NewPlayer);
-	}
+	}*/
+}
+
+void AHerobattleGameMode::BeginPlay()
+{
+	XMLSkillReader* test = new XMLSkillReader();
 }

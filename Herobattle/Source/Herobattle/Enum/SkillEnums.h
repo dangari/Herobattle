@@ -22,6 +22,7 @@ UENUM(BlueprintType)
 enum class Condition : uint8{ BLEEDING, FIRE, DEEPWOUND, POISON };
 
 
+
 class HEROBATTLE_API SkillEnums
 {
 public:

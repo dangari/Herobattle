@@ -28,5 +28,8 @@ private:
 	TArray<BoolObject*> boolObjects;
 
 	bool testConditions(ABaseCharacter* target, ABaseCharacter* self);
-	
+
+	virtual void init(FXmlNode* node) override;
+
+
 };

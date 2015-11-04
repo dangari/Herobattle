@@ -5,7 +5,7 @@
 
 
 class ABaseCharacter;
-
+class FXmlNode;
 
 
 UCLASS()
@@ -24,6 +24,7 @@ public:
 
 	virtual void run(ABaseCharacter* target, ABaseCharacter* self);
 	virtual float getScore();
+	virtual void init(FXmlNode* node);
 
 private:
 	//asdjas

@@ -1,5 +1,5 @@
 #include "Herobattle.h"
-#include "ScDurationTypes.h"
+#include "ScCondition.h"
 #include "../Condition/BaseCondition.h"
 #include "../../Base/BaseCharacter.h"
 
@@ -26,4 +26,9 @@ void UScCondition::run(ABaseCharacter* target, ABaseCharacter* self)
 float UScCondition::getScore()
 {
 	return 0.f;
+}
+
+void UScCondition::init(FXmlNode* node)
+{
+//	throw std::logic_error("The method or operation is not implemented.");
 }

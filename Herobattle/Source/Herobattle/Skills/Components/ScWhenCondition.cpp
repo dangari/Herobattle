@@ -43,3 +43,8 @@ bool UScWhenCondition::testConditions(ABaseCharacter* target, ABaseCharacter* se
 	}
 	return true;
 }
+
+void UScWhenCondition::init(FXmlNode* node)
+{
+//	throw std::logic_error("The method or operation is not implemented.");
+}

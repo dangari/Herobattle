@@ -27,3 +27,8 @@ float UScDamage::getScore()
 	return 1.f;
 }
 
+void UScDamage::init(FXmlNode* node)
+{
+//	throw std::logic_error("The method or operation is not implemented.");
+}
+

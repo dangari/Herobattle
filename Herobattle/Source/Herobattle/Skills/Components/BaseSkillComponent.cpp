@@ -1,5 +1,6 @@
 #include "Herobattle.h"
 #include "BaseSkillComponent.h"
+#include "XmlParser.h"
 #include "../../Base/BaseCharacter.h"
 
 
@@ -20,4 +21,9 @@ void UBaseSkillComponent::run(ABaseCharacter* target, ABaseCharacter* self)
 float UBaseSkillComponent::getScore()
 {
 	return 0.f;
+}
+
+void UBaseSkillComponent::init(FXmlNode* node)
+{
+
 }

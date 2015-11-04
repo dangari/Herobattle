@@ -22,3 +22,8 @@ float UScHeal::getScore()
 {
 	return 1.f;
 }
+
+void UScHeal::init(FXmlNode* node)
+{
+//	throw std::logic_error("The method or operation is not implemented.");
+}

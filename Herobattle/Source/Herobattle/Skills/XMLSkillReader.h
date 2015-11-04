@@ -2,12 +2,18 @@
 
 #pragma once
 #include "../Enum/SkillEnums.h"
+#include "Components/BaseSkillComponent.h"
 
 /**
  * 
  */
 class USkill;
 class FXmlNode;
+
+//template<typename T> UBaseSkillComponent * createInstance() 
+//{ 
+//	return NewObject<T>();
+//}
 
 class HEROBATTLE_API XMLSkillReader
 {
@@ -24,4 +30,5 @@ private:
 
 	TargetType getTargetTypeFromString(FString name);
 	UBaseSkillComponent* createImpact(FXmlNode* impactNode);
+	TMap<FString, UBaseSkillComponent*(*)> scObjectNameList;
 };

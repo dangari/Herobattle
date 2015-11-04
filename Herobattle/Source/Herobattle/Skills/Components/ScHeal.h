@@ -11,5 +11,8 @@ public:
 	~UScHeal();
 	virtual void run(ABaseCharacter* target, ABaseCharacter* self) override;
 	virtual float getScore() override;
+
+	virtual void init(FXmlNode* node) override;
+
 };
 

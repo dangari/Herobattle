@@ -23,4 +23,5 @@ public:
 private:
 
 	TargetType getTargetTypeFromString(FString name);
+	UBaseSkillComponent* createImpact(FXmlNode* impactNode);
 };

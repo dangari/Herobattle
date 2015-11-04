@@ -11,7 +11,6 @@
 					<damage value="20" scaling="FIRE_MAGIC">
 						<step key="1" value="24"/>
 						<step key="2" value="27"/>
-						...
 					</damage>
 					<type value="FIRE"/>
 					<conditions>

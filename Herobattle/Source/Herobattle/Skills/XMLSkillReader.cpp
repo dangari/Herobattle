@@ -5,6 +5,7 @@
 #include "XmlParser.h"
 #include "Engine.h"
 #include "Skill.h"
+#include "Components/BaseSkillComponent.h"
 
 XMLSkillReader::XMLSkillReader()
 {
@@ -12,6 +13,10 @@ XMLSkillReader::XMLSkillReader()
 	file->LoadFile(L"F://Herobattle/Herobattle/Source/Herobattle/Definitions/skill.xml", EConstructMethod::ConstructFromFile);
 	printf("s",file->GetLastError());
 	auto pRoot = file->GetRootNode();
+	TArray<FXmlNode*> propertyList = pRoot->GetChildrenNodes();
+	FXmlNode* temp = propertyList[0];
+	FXmlNode* temp2 = temp->GetChildrenNodes()[0];
+	ReadSkill(temp2);
 	FString pChild = pRoot->GetTag();
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, pChild);
 }
@@ -45,6 +50,17 @@ TargetType XMLSkillReader::getTargetTypeFromString(FString name)
 		return TargetType::SELFFREND;
 	}
 	return TargetType::ENEMY;
+}
+
+UBaseSkillComponent* XMLSkillReader::createImpact(FXmlNode* impactNode)
+{
+
+	TArray<FXmlNode*> objList = impactNode->GetChildrenNodes();
+	for (auto& obj : objList)
+	{
+
+	}
+	return nullptr;
 }
 
 USkill* XMLSkillReader::ReadSkill(FXmlNode* skillRootNode)
@@ -90,6 +106,12 @@ USkill* XMLSkillReader::ReadSkill(FXmlNode* skillRootNode)
 		if (tagName.Equals(TEXT("targettype")))
 		{
 			targetType = getTargetTypeFromString(prop->GetAttribute(value));
+		}
+
+		if (tagName.Equals(TEXT("effects")))
+		{
+			FXmlNode* impactNode = prop->GetChildrenNodes()[0];
+			createImpact(impactNode);
 		}
 	}
 	

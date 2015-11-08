@@ -17,7 +17,7 @@ XMLSkillReader::XMLSkillReader()
 	//scObjectNameList.Add(TEXT("damage"), &createInstance<UScDamage>);
 	//scObjectNameList.Add(TEXT("heal"), &createInstance<UScHeal>);
 
-	FXmlFile* file = new FXmlFile();
+	/*FXmlFile* file = new FXmlFile();
 	file->LoadFile(L"F://Herobattle/Herobattle/Source/Herobattle/Definitions/skill.xml", EConstructMethod::ConstructFromFile);
 	printf("s",file->GetLastError());
 	auto pRoot = file->GetRootNode();
@@ -26,7 +26,7 @@ XMLSkillReader::XMLSkillReader()
 	FXmlNode* temp2 = temp->GetChildrenNodes()[0];
 	ReadSkill(temp2);
 	FString pChild = pRoot->GetTag();
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, pChild);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, pChild);*/
 }
 
 XMLSkillReader::~XMLSkillReader()

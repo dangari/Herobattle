@@ -1,11 +1,13 @@
 #include "Herobattle.h"
 #include "BaseSkillComponent.h"
 #include "XmlParser.h"
+#include "Engine.h"
 #include "../../Base/BaseCharacter.h"
 
 
 UBaseSkillComponent::UBaseSkillComponent()
 {
+	
 }
 
 
@@ -27,3 +29,5 @@ void UBaseSkillComponent::init(FXmlNode* node)
 {
 
 }
+
+

@@ -25,9 +25,14 @@ float UBaseSkillComponent::getScore()
 	return 0.f;
 }
 
+
 void UBaseSkillComponent::init(FXmlNode* node)
 {
 
 }
 
-
+UBaseSkillComponent* UBaseSkillComponent::MAKE()
+{
+	UBaseSkillComponent* w = NewObject<UBaseSkillComponent>();
+	return w;
+}

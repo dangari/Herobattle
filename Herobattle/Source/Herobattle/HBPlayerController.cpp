@@ -40,7 +40,6 @@ void AHBPlayerController::LockCamera()
 {
 	SetIgnoreLookInput(false);
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("LockCamera"));
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, BaseFactory::GetObjPath(NewObject<UBaseSkillComponent>()).ToString());
 
 	bEnableClickEvents = false;
 	bEnableMouseOverEvents = false;

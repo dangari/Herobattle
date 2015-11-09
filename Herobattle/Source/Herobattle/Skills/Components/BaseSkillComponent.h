@@ -10,43 +10,37 @@ class ABaseCharacter;
 class FXmlNode;
 class UBaseSkillComponent;
 
-typedef UBaseSkillComponent* (*pfnCreateClass)();
-template<class T> UBaseSkillComponent* createT() { return new T; }
+template<typename T> UBaseSkillComponent* createT() { return nullptr; }
+typedef UBaseSkillComponent* (*classFuncPtr)();
 
+template<typename T>
 struct RegisterComponent
 {
 public:
-	typedef std::map<std::string, UBaseSkillComponent*(*)()> map_type;
-
-	static UBaseSkillComponent* createInstance(std::string const& s)
-	{
-		map_type::iterator it = getMap()->find(s);
-		if (it == getMap()->end())
-			return 0;
-		return it->second();
-	}
-
-protected:
-	static map_type * getMap()
-	{
-		if (!map)
-		{
-			map = new map_type;
-		}
-		return map;
-	}
-
 private:
-	static map_type * map;
-
-};
-
-template<class T>
-struct DerivedRegister : RegisterComponent {
-	DerivedRegister(std::string const& s) {
-		getMap()->insert(std::make_pair(s, &createT<T>));
+	static TMap<FString, classFuncPtr> * map;
+public:
+	static TMap<FString, classFuncPtr> createList()
+	{
+		TMap<FString, classFuncPtr> TempMap;
+		TempMap.Add(TEXT("default"), &createT<UBaseSkillComponent>);
+		return TempMap;
 	}
+
+	static UBaseSkillComponent* getClass(FString s)
+	{
+		UBaseSkillComponent* test = map->Find(s);
+		return test;
+	}
+
+	RegisterComponent(FString const& s)
+	{
+		map->Add(s, &createT<T>);
+	}
+
 };
+
+
 
 
 UCLASS()
@@ -66,9 +60,10 @@ public:
 	virtual void run(ABaseCharacter* target, ABaseCharacter* self);
 	virtual float getScore();
 	virtual void init(FXmlNode* node);
+	static UBaseSkillComponent* UBaseSkillComponent::MAKE();
 
 private:
 	FString tagName;
-	static DerivedRegister<UBaseSkillComponent> reg;
+	static RegisterComponent<UBaseSkillComponent> reg;
 };
 

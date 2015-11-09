@@ -35,6 +35,7 @@ public:
 
 	RegisterComponent(FString const& s)
 	{
+		map->Add(TEXT("test"), createT<UBaseSkillComponent>());
 		map->Add(s, &createT<T>);
 	}
 

@@ -36,5 +36,8 @@ UBaseSkillComponent* UBaseSkillComponent::MAKE()
 	UBaseSkillComponent* w = NewObject<UBaseSkillComponent>();
 	return w;
 }
+
 RegisterComponent<UBaseSkillComponent> UBaseSkillComponent::reg(TEXT("test"));
+
+TMap<FString, classFuncPtr>  RegisterComponent<UBaseSkillComponent>::map;
 

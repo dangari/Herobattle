@@ -10,7 +10,7 @@ class ABaseCharacter;
 class FXmlNode;
 class UBaseSkillComponent;
 
-template<typename T> UBaseSkillComponent* createT() { return nullptr; }
+template<typename T> UBaseSkillComponent* createT() { return NewObject<T>(); }
 typedef UBaseSkillComponent* (*classFuncPtr)();
 
 template<typename T>
@@ -18,8 +18,9 @@ struct RegisterComponent
 {
 public:
 private:
-	static TMap<FString, classFuncPtr> * map;
+	static TMap<FString, classFuncPtr> map;
 public:
+
 	static TMap<FString, classFuncPtr> createList()
 	{
 		TMap<FString, classFuncPtr> TempMap;
@@ -29,14 +30,13 @@ public:
 
 	static UBaseSkillComponent* getClass(FString s)
 	{
-		UBaseSkillComponent* test = map->Find(s);
+		UBaseSkillComponent* test = map.Find(s);
 		return test;
 	}
 
 	RegisterComponent(FString const& s)
 	{
-		map->Add(TEXT("test"), createT<UBaseSkillComponent>());
-		map->Add(s, &createT<T>);
+		map.Add(s, &createT<T>);
 	}
 
 };

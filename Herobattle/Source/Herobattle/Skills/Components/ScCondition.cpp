@@ -32,10 +32,18 @@ float UScCondition::getScore()
 
 void UScCondition::init(FXmlNode* node)
 {
-	Condition conditionType;
 	FString cType = node->GetAttribute(TEXT("type"));
 	this->conditionType = SkillEnums::stringToCondition(cType);
-	
+	TArray<FXmlNode*> propertyList = node->GetChildrenNodes();
+	for (auto& prop : propertyList)
+	{
+		FString tagName = prop->GetTag();
+		if (tagName.Equals(TEXT("duration")))
+		{
+			fillScaleTable(prop);
+		}
+	}
+
 
 }
 

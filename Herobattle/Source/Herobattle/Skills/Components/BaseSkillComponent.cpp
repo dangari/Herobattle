@@ -49,7 +49,7 @@ void UBaseSkillComponent::fillScaleTable(FXmlNode* node)
 		}
 	}
 	// fills the empty spaces off the scaletable array
-	for (int Index = 0; Index > 19; ++Index)
+	for (int Index = 0; Index < 19; ++Index)
 	{
 		int value1 = scaleTable[Index];
 		int value2 = scaleTable[Index + 1];

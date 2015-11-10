@@ -7,10 +7,10 @@
  */
 
 UENUM(BlueprintType)
-enum class Attributes : uint8{ FIRE_MAGIC, HEALING_PRAYERS, PROTECTION_PRAYERS };
+enum class Attributes : uint8{NONE, FIRE_MAGIC, HEALING_PRAYERS, PROTECTION_PRAYERS, STRENGTH };
 
 UENUM(BlueprintType)
-enum class ProfessionName : uint8{ ASSASINE, ELEMENTALIST, MONK, DERWISH, NEKROMANT, PARAGON, WARRIOR, MESMER, RITUALIST };
+enum class ProfessionName : uint8{NONE, ASSASINE, ELEMENTALIST, MONK, DERWISH, NEKROMANT, PARAGON, WARRIOR, MESMER, RITUALIST };
 
 UENUM(BlueprintType)
 enum class SkillType : uint8{ ENTCHANTMENT, ATTACK, HEX, SPELL, HEAL };
@@ -29,5 +29,11 @@ public:
 	SkillEnums();
 	~SkillEnums();
 
+	
+	static Attributes stringToAttribute(FString sAttribute);
+	static ProfessionName stringToProfessionName(FString sProfessionName);
+	static SkillType stringToSkillType(FString sSkillType);
+	static TargetType stringToTargetType(FString sTargetType);
 	static Condition stringToCondition(FString sCondition);
+
 };

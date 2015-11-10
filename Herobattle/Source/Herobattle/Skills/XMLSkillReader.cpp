@@ -8,6 +8,7 @@
 #include "Components/BaseSkillComponent.h"
 #include "Components/ScHeal.h"
 #include "Components/ScDamage.h"
+#include "Components/ScCondition.h"
 
 
 
@@ -17,6 +18,7 @@ XMLSkillReader::XMLSkillReader()
 	//Fill scObjectNameList
 	scObjectNameList.Add(TEXT("damage"), &createInstance<UScDamage>);
 	scObjectNameList.Add(TEXT("heal"), &createInstance<UScHeal>);
+	scObjectNameList.Add(TEXT("condition"), &createInstance<UScCondition>);
 
 	FXmlFile* file = new FXmlFile();
 	file->LoadFile(L"F://Herobattle/Herobattle/Source/Herobattle/Definitions/skill.xml", EConstructMethod::ConstructFromFile);

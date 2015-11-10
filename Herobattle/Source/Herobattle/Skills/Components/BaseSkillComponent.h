@@ -65,8 +65,9 @@ public:
 	virtual void init(FXmlNode* node);
 	static UBaseSkillComponent* UBaseSkillComponent::MAKE();
 
+protected:
+	void fillScaleTable(FXmlNode* node);
 private:
 	FString tagName;
-	static RegisterComponent<UBaseSkillComponent> reg;
 };
 

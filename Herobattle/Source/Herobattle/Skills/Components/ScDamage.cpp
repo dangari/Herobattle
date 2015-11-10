@@ -3,7 +3,7 @@
 #include "Herobattle.h"
 #include "ScDamage.h"
 #include "../../Base/BaseCharacter.h"
-
+#include "../RegisterSkillComponents.h"
 UScDamage::UScDamage()
 {
 	//damageType = HBDamageType::FIRE;
@@ -32,3 +32,4 @@ void UScDamage::init(FXmlNode* node)
 //	throw std::logic_error("The method or operation is not implemented.");
 }
 
+RegisterComponent<UScDamage> UScDamage::reg1(TEXT("damage"));

@@ -19,7 +19,7 @@ UENUM(BlueprintType)
 enum class TargetType : uint8{ SELF, ENEMY, FRIEND, SELFFREND };
 
 UENUM(BlueprintType)
-enum class Condition : uint8{ BLEEDING, FIRE, DEEPWOUND, POISON };
+enum class Condition : uint8{ BLEEDING, BURNING, DEEPWOUND, POISON };
 
 
 
@@ -28,4 +28,6 @@ class HEROBATTLE_API SkillEnums
 public:
 	SkillEnums();
 	~SkillEnums();
+
+	static Condition stringToCondition(FString sCondition);
 };

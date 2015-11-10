@@ -6,7 +6,7 @@
 
 UBaseCondition::UBaseCondition()
 {
-	init(Condition::FIRE, 0.f);
+	init(Condition::BURNING, 0.f);
 }
 void UBaseCondition::init(Condition condition, float duration)
 {
@@ -20,7 +20,7 @@ void UBaseCondition::init(Condition condition, float duration)
 	case Condition::POISON :
 		regeneration = -4;
 		break;
-	case Condition::FIRE:
+	case Condition::BURNING:
 		regeneration = -7;
 		break;
 	default:

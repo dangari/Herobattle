@@ -9,15 +9,16 @@
 #include "Components/ScHeal.h"
 #include "Components/ScDamage.h"
 
+
+
 XMLSkillReader::XMLSkillReader()
 {
 
-	////Fill scObjectNameList
-	//scObjectNameList.Add(TEXT("heal"), &createInstance<UScHeal>);
-	//scObjectNameList.Add(TEXT("damage"), &createInstance<UScDamage>);
-	//scObjectNameList.Add(TEXT("heal"), &createInstance<UScHeal>);
+	//Fill scObjectNameList
+	scObjectNameList.Add(TEXT("damage"), &createInstance<UScDamage>);
+	scObjectNameList.Add(TEXT("heal"), &createInstance<UScHeal>);
 
-	/*FXmlFile* file = new FXmlFile();
+	FXmlFile* file = new FXmlFile();
 	file->LoadFile(L"F://Herobattle/Herobattle/Source/Herobattle/Definitions/skill.xml", EConstructMethod::ConstructFromFile);
 	printf("s",file->GetLastError());
 	auto pRoot = file->GetRootNode();
@@ -26,7 +27,7 @@ XMLSkillReader::XMLSkillReader()
 	FXmlNode* temp2 = temp->GetChildrenNodes()[0];
 	ReadSkill(temp2);
 	FString pChild = pRoot->GetTag();
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, pChild);*/
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, pChild);
 }
 
 XMLSkillReader::~XMLSkillReader()
@@ -66,7 +67,15 @@ UBaseSkillComponent* XMLSkillReader::createImpact(FXmlNode* impactNode)
 	TArray<FXmlNode*> objList = impactNode->GetChildrenNodes();
 	for (auto& obj : objList)
 	{
-
+		FString tagName = obj->GetTag();
+		if (tagName.Equals(TEXT("damage")))
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, tagName);
+		if (scObjectNameList.Contains(tagName))
+		{
+			classFuncPtr createFunc = *(scObjectNameList.Find(tagName));
+			UBaseSkillComponent* sc = createFunc();
+			sc->init(obj);
+		}
 	}
 	return nullptr;
 }

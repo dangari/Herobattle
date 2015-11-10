@@ -10,10 +10,8 @@
 class USkill;
 class FXmlNode;
 
-//template<typename T> UBaseSkillComponent * createInstance() 
-//{ 
-//	return NewObject<T>();
-//}
+template<typename T> UBaseSkillComponent * createInstance() { return NewObject<T>(); }
+typedef UBaseSkillComponent* (*classFuncPtr)();
 
 class HEROBATTLE_API XMLSkillReader
 {
@@ -30,5 +28,5 @@ private:
 
 	TargetType getTargetTypeFromString(FString name);
 	UBaseSkillComponent* createImpact(FXmlNode* impactNode);
-	TMap<FString, UBaseSkillComponent*(*)> scObjectNameList;
+	TMap<FString, classFuncPtr> scObjectNameList;
 };

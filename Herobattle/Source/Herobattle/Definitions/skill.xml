@@ -13,14 +13,12 @@
 						<step key="2" value="27"/>
 					</damage>
 					<type value="FIRE"/>
-					<conditions>
-						<condition type="BURNING">
-							<duration value="1" scaling="FIRE_MAGIC">
-								<step key="4" value="2"/>
-								<step key="12" value="3"/>
-							</duration>
-						</condition>
-					</conditions>
+					<condition type="BURNING">
+						<duration value="1" scaling="FIRE_MAGIC">
+							<step key="4" value="2"/>
+							<step key="12" value="3"/>
+						</duration>
+					</condition>
 				</impact>
 			</effects>
 		</spell>

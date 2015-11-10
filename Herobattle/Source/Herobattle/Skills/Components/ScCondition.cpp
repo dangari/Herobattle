@@ -3,11 +3,12 @@
 #include "../Condition/BaseCondition.h"
 #include "../../Base/BaseCharacter.h"
 #include "../RegisterSkillComponents.h"
-
+#include "../../Enum/SkillEnums.h"
+#include "XmlParser.h"
 
 UScCondition::UScCondition()
 {
-	conditionType = Condition::FIRE;
+	conditionType = Condition::BURNING;
 }
 
 
@@ -31,10 +32,11 @@ float UScCondition::getScore()
 
 void UScCondition::init(FXmlNode* node)
 {
-//	throw std::logic_error("The method or operation is not implemented.");
+	Condition conditionType;
+	FString cType = node->GetAttribute(TEXT("type"));
+	this->conditionType = SkillEnums::stringToCondition(cType);
+	
+
 }
 
-RegisterComponent<UScCondition> UScCondition::reg1(TEXT("test1"));
-//template<typename T>
-//TMap<FString, classFuncPtr>  RegisterComponent<T>::map;
 

@@ -24,8 +24,13 @@ public:
 
 	static UBaseSkillComponent* getClass(FString s)
 	{
-		UBaseSkillComponent* test = map.Find(s);
-		return test;
+		classFuncPtr test = *(map.Find(s));
+		if (test)
+		{
+			UBaseSkillComponent* sc = test();
+			return sc;
+		}
+		return nullptr;
 	}
 
 	RegisterComponent(FString const& s)
@@ -34,5 +39,7 @@ public:
 	}
 
 };
+
+
 template<typename T>
-TMap<FString, classFuncPtr>  RegisterComponent<T>::map;
+TMap<FString, classFuncPtr>  RegisterComponent<T>::map = RegisterComponent::createList();

@@ -21,6 +21,7 @@ public:
 	virtual void init(FXmlNode* node) override;
 
 	
-public:
-	//HBDamageType damageType;
+private:
+	static RegisterComponent<UScDamage> reg1;
+
 };

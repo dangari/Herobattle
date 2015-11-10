@@ -30,5 +30,6 @@ public:
 
 private:
 	//asdjas
+	static RegisterComponent<UScCondition> reg1;
 };
 

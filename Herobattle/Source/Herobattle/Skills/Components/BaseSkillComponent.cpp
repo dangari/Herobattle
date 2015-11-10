@@ -2,6 +2,7 @@
 #include "BaseSkillComponent.h"
 #include "XmlParser.h"
 #include "Engine.h"
+#include "../RegisterSkillComponents.h"
 #include "../../Base/BaseCharacter.h"
 
 
@@ -38,6 +39,6 @@ UBaseSkillComponent* UBaseSkillComponent::MAKE()
 }
 
 RegisterComponent<UBaseSkillComponent> UBaseSkillComponent::reg(TEXT("test"));
-
-TMap<FString, classFuncPtr>  RegisterComponent<UBaseSkillComponent>::map;
+//template<typename T>
+//TMap<FString, classFuncPtr>  RegisterComponent<T>::map;
 

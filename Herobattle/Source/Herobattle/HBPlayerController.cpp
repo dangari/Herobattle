@@ -4,6 +4,7 @@
 #include "HBPlayerController.h"
 #include "HerobattleCharacter.h"
 #include "Engine.h"
+#include "UnrealNetwork.h"
 
 AHBPlayerController::AHBPlayerController(const FObjectInitializer& ObjectInitializer)
 : Super(ObjectInitializer)
@@ -71,5 +72,9 @@ void AHBPlayerController::SetupInputComponent()
 }
 
 
-
+void AHBPlayerController::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AHBPlayerController, ETeam);
+}
 

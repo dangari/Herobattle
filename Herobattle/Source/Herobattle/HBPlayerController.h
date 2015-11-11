@@ -8,12 +8,24 @@
 /**
  * 
  */
+
+UENUM(BlueprintType)
+enum class TeamColor : uint8
+{
+	RED, BLUE
+};
+
+
 UCLASS()
 class HEROBATTLE_API AHBPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 	
 public:
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = CharacterProperties)
+	TeamColor ETeam;
+
+
 	AHBPlayerController(const FObjectInitializer& ObjectInitializer);
 	virtual void BeginPlay() override;
 

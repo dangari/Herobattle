@@ -14,9 +14,7 @@
 class UBaseBuff;
 class UBaseCondition;
 
-UENUM(BlueprintType)
-enum class TeamColor : uint8
-	{ RED, BLUE };
+
 
 
 UCLASS()
@@ -27,23 +25,21 @@ public:
 	ABaseCharacter();
 	~ABaseCharacter();
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CharacterProperties)
-	TeamColor ETeam;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
 	float m_MaxHealth;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
 	float m_MaxMana;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
 	float m_Health;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
 	float m_Mana;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
 	int32 m_ManaRegeneration;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
 	int32 m_HealthRegeneration;
 
 	virtual void BeginPlay() override;

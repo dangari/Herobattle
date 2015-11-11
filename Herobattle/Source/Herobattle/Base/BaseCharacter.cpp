@@ -4,11 +4,12 @@
 #include "BaseCharacter.h"
 #include "../Skills/Buff/BaseBuff.h"
 #include "../Skills/Condition/BaseCondition.h"
+#include "UnrealNetwork.h"
 
 
 ABaseCharacter::ABaseCharacter()
 {
-	ETeam = TeamColor::BLUE;
+
 	m_MaxHealth = 480;
 	m_MaxMana = 25;
 	m_Health = 240;
@@ -126,4 +127,15 @@ uint8 ABaseCharacter::getAttributeValue(Attributes attributeName)
 void ABaseCharacter::applyCondition(UBaseCondition* condtion)
 {
 
+}
+
+void ABaseCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(ABaseCharacter, m_MaxHealth);
+	DOREPLIFETIME(ABaseCharacter, m_MaxMana);
+	DOREPLIFETIME(ABaseCharacter, m_Health);
+	DOREPLIFETIME(ABaseCharacter, m_Mana);
+	DOREPLIFETIME(ABaseCharacter, m_ManaRegeneration);
+	DOREPLIFETIME(ABaseCharacter, m_HealthRegeneration);
 }

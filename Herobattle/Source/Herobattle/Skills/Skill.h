@@ -5,7 +5,7 @@
 
 
 
-
+class UBaseSkillComponent;
 /**
  * 
  */
@@ -19,12 +19,14 @@ public:
 	USkill();
 	~USkill();
 
-private:
-	//string name;
+	FString name;
 	ProfessionName profession;
+	TargetType targetType;
 	float castTime;
 	float recharge;
 	float currentRecharge;
 	int manaCost;
+
+	TArray<UBaseSkillComponent*> componentList;
 
 };

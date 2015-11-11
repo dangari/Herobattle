@@ -9,6 +9,7 @@
  */
 class USkill;
 class FXmlNode;
+class USkill;
 
 template<typename T> UBaseSkillComponent * createInstance() { return NewObject<T>(); }
 typedef UBaseSkillComponent* (*classFuncPtr)();
@@ -30,6 +31,6 @@ public:
 private:
 
 	TargetType getTargetTypeFromString(FString name);
-	UBaseSkillComponent* createImpact(FXmlNode* impactNode);
-	
+	TArray<UBaseSkillComponent*> createImpact(FXmlNode* impactNode);
+	void readeSkillsFromXml(FXmlNode* node);	
 };

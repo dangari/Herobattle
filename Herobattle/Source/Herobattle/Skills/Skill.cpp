@@ -2,6 +2,7 @@
 
 #include "Herobattle.h"
 #include "Skill.h"
+#include "Components/BaseSkillComponent.h"
 
 USkill::USkill()
 {

@@ -24,12 +24,16 @@ XMLSkillReader::XMLSkillReader()
 	scObjectNameList.Add(TEXT("condition"), &createInstance<UScCondition>);
 	scObjectNameList.Add(TEXT("whencondition"), &createInstance<UScWhenCondition>);
 
+	// loading file
 	FString projectDir = FPaths::GameDir();
 	FXmlFile* file = new FXmlFile();
 	projectDir += "Source/Herobattle/Definitions/skill.xml";
 	file->LoadFile(projectDir, EConstructMethod::ConstructFromFile);
-	printf("s",file->GetLastError());
+
+	// get Root node
 	auto pRoot = file->GetRootNode();
+
+	readeSkillsFromXml(pRoot);
 	TArray<FXmlNode*> propertyList = pRoot->GetChildrenNodes();
 	FXmlNode* temp = propertyList[0];
 	FXmlNode* temp2 = temp->GetChildrenNodes()[0];
@@ -69,9 +73,9 @@ TargetType XMLSkillReader::getTargetTypeFromString(FString name)
 	return TargetType::ENEMY;
 }
 
-UBaseSkillComponent* XMLSkillReader::createImpact(FXmlNode* impactNode)
+TArray<UBaseSkillComponent*> XMLSkillReader::createImpact(FXmlNode* impactNode)
 {
-
+	TArray<UBaseSkillComponent*> skillComponentList;
 	TArray<FXmlNode*> objList = impactNode->GetChildrenNodes();
 	for (auto& obj : objList)
 	{
@@ -83,10 +87,30 @@ UBaseSkillComponent* XMLSkillReader::createImpact(FXmlNode* impactNode)
 			classFuncPtr createFunc = *(scObjectNameList.Find(tagName));
 			UBaseSkillComponent* sc = createFunc();
 			sc->init(obj);
+			skillComponentList.Add(sc);
 		}
 	}
-	return nullptr;
+	return skillComponentList;
 }
+
+void XMLSkillReader::readeSkillsFromXml(FXmlNode* node)
+{
+	ProfessionName profession;
+	TArray<USkill*> SkillObjList;
+	TArray<FXmlNode*> propertyList = node->GetChildrenNodes();
+	for (auto& prop : propertyList)
+	{
+		profession = SkillEnums::stringToProfessionName(prop->GetAttribute(TEXT("value")));
+		TArray<FXmlNode*> skillList = prop->GetChildrenNodes();
+		for (auto& skillNode : skillList)
+		{
+			SkillObjList.Add(ReadSkill(skillNode));
+		}
+
+	}
+}
+
+
 
 USkill* XMLSkillReader::ReadSkill(FXmlNode* skillRootNode)
 {
@@ -103,6 +127,7 @@ USkill* XMLSkillReader::ReadSkill(FXmlNode* skillRootNode)
 	float castTime;
 	TargetType targetType;
 
+	TArray<UBaseSkillComponent*> componentList;
 
 	TArray<FXmlNode*> propertyList = skillRootNode->GetChildrenNodes();
 	for (auto& prop : propertyList)
@@ -136,17 +161,18 @@ USkill* XMLSkillReader::ReadSkill(FXmlNode* skillRootNode)
 		if (tagName.Equals(TEXT("effects")))
 		{
 			FXmlNode* impactNode = prop->GetChildrenNodes()[0];
-			createImpact(impactNode);
+			componentList = createImpact(impactNode);
 		}
-	}
-	
-	// skill type
-	// name
-	// costs
-	// cast time
-	// cool down
-	// Target typ
-	// impact
 
-	return nullptr;
+		
+	}
+	USkill* skill = NewObject<USkill>();
+	skill->name = name;
+	skill->castTime = castTime;
+	skill->recharge = cooldown;
+	skill->manaCost = costs;
+	skill->targetType = targetType;
+	skill->componentList = componentList;
+
+	return skill;
 }

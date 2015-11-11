@@ -32,8 +32,9 @@ private:
 
 	virtual void init(FXmlNode* node) override;
 
-	void createBoolObjects(FXmlNode* prop);
+	void createBoolObjects(FXmlNode* node);
 	
+	void createSkillComponents(FXmlNode* node);
 
 	TargetType targetType;
 

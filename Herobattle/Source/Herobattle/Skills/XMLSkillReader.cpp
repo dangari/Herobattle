@@ -80,8 +80,7 @@ TArray<UBaseSkillComponent*> XMLSkillReader::createImpact(FXmlNode* impactNode)
 	for (auto& obj : objList)
 	{
 		FString tagName = obj->GetTag();
-		if (tagName.Equals(TEXT("damage")))
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, tagName);
+
 		if (scObjectNameList.Contains(tagName))
 		{
 			classFuncPtr createFunc = *(scObjectNameList.Find(tagName));

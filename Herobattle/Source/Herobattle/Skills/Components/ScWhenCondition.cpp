@@ -4,6 +4,7 @@
 #include "ScWhenCondition.h"
 #include "BoolObjects/BoolObject.h"
 #include "BoolObjects/BoolHealth.h"
+#include "../XMLSkillReader.h"
 
 
 UScWhenCondition::UScWhenCondition()
@@ -56,14 +57,17 @@ void UScWhenCondition::init(FXmlNode* node)
 		if (tagName.Equals(TEXT("whencondition")))
 		{
 			createBoolObjects(prop);
-
+		}
+		if (tagName.Equals(TEXT("then")))
+		{
+			createSkillComponents(prop);
 		}
 	}
 }
 
-void UScWhenCondition::createBoolObjects(FXmlNode* prop)
+void UScWhenCondition::createBoolObjects(FXmlNode* node)
 {
-	TArray<FXmlNode*> boolObjectList = prop->GetChildrenNodes();
+	TArray<FXmlNode*> boolObjectList = node->GetChildrenNodes();
 	for (auto& prop : boolObjectList)
 	{
 		FString tagName = prop->GetTag();
@@ -72,6 +76,22 @@ void UScWhenCondition::createBoolObjects(FXmlNode* prop)
 			BoolHealth* hpBool = NewObject<BoolHealth>();
 			hpBool->init(prop, targetType);
 			boolObjects.Add(hpBool);
+		}
+	}
+}
+
+void UScWhenCondition::createSkillComponents(FXmlNode* node)
+{
+	TArray<FXmlNode*> boolObjectList = node->GetChildrenNodes();
+	for (auto& prop : boolObjectList)
+	{
+		FString tagName = prop->GetTag();
+		if (XMLSkillReader::scObjectNameList.Contains(tagName))
+		{
+			classFuncPtr createFunc = *(XMLSkillReader::scObjectNameList.Find(tagName));
+			UBaseSkillComponent* sc = createFunc();
+			sc->init(prop);
+			scTable.Add(sc);
 		}
 	}
 }

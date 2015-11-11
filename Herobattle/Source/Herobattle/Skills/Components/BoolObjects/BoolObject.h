@@ -2,10 +2,12 @@
 
 #pragma once
 
+#include "XmlParser.h"
+#include "../../Enum/SkillEnums.h"
+
 class ABaseCharacter;
-/**
- * 
- */
+
+
 class HEROBATTLE_API BoolObject
 {
 public:
@@ -13,18 +15,6 @@ public:
 	~BoolObject();
 
 	virtual bool test(ABaseCharacter* target, ABaseCharacter* self);
-};
 
-
-class HEROBATTLE_API BoolHealth : BoolObject
-{
-public:
-	BoolHealth();
-	~BoolHealth();
-
-	const char c = '-';
-
-	int treshold;
-
-	virtual bool test(ABaseCharacter* target, ABaseCharacter* self) override;
+	virtual void init(FXmlNode* node, TargetType target);
 };

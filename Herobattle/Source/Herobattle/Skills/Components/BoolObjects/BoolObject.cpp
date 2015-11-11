@@ -4,6 +4,7 @@
 #include "BoolObject.h"
 #include "../../../Base/BaseCharacter.h"
 
+
 BoolObject::BoolObject()
 {
 }
@@ -17,26 +18,7 @@ bool BoolObject::test(ABaseCharacter* target, ABaseCharacter* self)
 	return true;
 }
 
-
-BoolHealth::BoolHealth()
+void BoolObject::init(FXmlNode* node)
 {
-}
 
-BoolHealth::~BoolHealth()
-{
-}
-
-bool BoolHealth::test(ABaseCharacter* target, ABaseCharacter* self)
-{
-	bool test;
-	float healthPrec = (target->m_MaxHealth / target->m_MaxHealth) * 100;
-	if (c == '-')
-	{
-		test = healthPrec < treshold;
-	}
-	else
-	{
-		test = healthPrec > treshold;
-	}
-	return test;
 }

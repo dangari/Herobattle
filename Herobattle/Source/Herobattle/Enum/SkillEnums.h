@@ -21,7 +21,8 @@ enum class TargetType : uint8{ SELF, ENEMY, FRIEND, SELFFREND };
 UENUM(BlueprintType)
 enum class Condition : uint8{ BLEEDING, BURNING, DEEPWOUND, POISON };
 
-
+UENUM(BlueprintType)
+enum class HBDamageType : uint8{ FIRE, PHYSICAL, WATER, LIGHTNING };
 
 class HEROBATTLE_API SkillEnums
 {

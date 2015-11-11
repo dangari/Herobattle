@@ -89,3 +89,16 @@ Condition SkillEnums::stringToCondition(FString sCondition)
 		return Condition::DEEPWOUND;
 	return Condition::BLEEDING;
 }
+
+HBDamageType SkillEnums::stringToHBDamageType(FString sHBDamageType)
+{
+	if (sHBDamageType.Equals(TEXT("FIRE")))
+		return HBDamageType::FIRE;
+	if (sHBDamageType.Equals(TEXT("PHYSICAL")))
+		return HBDamageType::PHYSICAL;
+	if (sHBDamageType.Equals(TEXT("WATER")))
+		return HBDamageType::WATER;
+	if (sHBDamageType.Equals(TEXT("LIGHTNING")))
+		return HBDamageType::LIGHTNING;
+	return HBDamageType::PHYSICAL;
+}

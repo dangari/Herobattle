@@ -17,9 +17,8 @@ class UBaseCondition;
 UENUM(BlueprintType)
 enum class TeamColor : uint8
 	{ RED, BLUE };
-UENUM(BlueprintType)
-enum class HBDamageType : uint8
-	{FIRE, PHYSICAL, WATER, LIGHTNING};
+
+
 UCLASS()
 class HEROBATTLE_API ABaseCharacter: public ACharacter
 {

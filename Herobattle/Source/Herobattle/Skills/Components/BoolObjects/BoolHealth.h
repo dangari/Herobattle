@@ -9,11 +9,12 @@ public:
 	BoolHealth();
 	~BoolHealth();
 
-	const char c = '-';
-
-	int treshold;
-
 	virtual bool test(ABaseCharacter* target, ABaseCharacter* self) override;
 
-	virtual void init(FXmlNode* node) override;
+	virtual void init(FXmlNode* node, TargetType target) override;
+
+	FString c;
+	int treshold;
+
+	TargetType targetType;
 };

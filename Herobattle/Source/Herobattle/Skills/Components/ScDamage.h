@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Skills/Components/BaseSkillComponent.h"
+#include "../../Enum/SkillEnums.h"
 #include "ScDamage.generated.h"
 
 /**
@@ -21,7 +22,8 @@ public:
 	virtual void init(FXmlNode* node) override;
 
 	
+	HBDamageType damageType;
+
 private:
-	static RegisterComponent<UScDamage> reg1;
 
 };

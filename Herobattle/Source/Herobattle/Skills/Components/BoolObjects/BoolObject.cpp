@@ -18,7 +18,7 @@ bool BoolObject::test(ABaseCharacter* target, ABaseCharacter* self)
 	return true;
 }
 
-void BoolObject::init(FXmlNode* node)
+void BoolObject::init(FXmlNode* node, TargetType target)
 {
 
 }

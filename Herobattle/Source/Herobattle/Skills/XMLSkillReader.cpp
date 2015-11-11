@@ -9,7 +9,10 @@
 #include "Components/ScHeal.h"
 #include "Components/ScDamage.h"
 #include "Components/ScCondition.h"
+#include "Components/ScWhenCondition.h"
 
+
+TMap<FString, classFuncPtr> XMLSkillReader::scObjectNameList;
 
 
 XMLSkillReader::XMLSkillReader()
@@ -19,9 +22,12 @@ XMLSkillReader::XMLSkillReader()
 	scObjectNameList.Add(TEXT("damage"), &createInstance<UScDamage>);
 	scObjectNameList.Add(TEXT("heal"), &createInstance<UScHeal>);
 	scObjectNameList.Add(TEXT("condition"), &createInstance<UScCondition>);
+	scObjectNameList.Add(TEXT("whencondition"), &createInstance<UScWhenCondition>);
 
+	FString projectDir = FPaths::GameDir();
 	FXmlFile* file = new FXmlFile();
-	file->LoadFile(L"F://Herobattle/Herobattle/Source/Herobattle/Definitions/skill.xml", EConstructMethod::ConstructFromFile);
+	projectDir += "Source/Herobattle/Definitions/skill.xml";
+	file->LoadFile(projectDir, EConstructMethod::ConstructFromFile);
 	printf("s",file->GetLastError());
 	auto pRoot = file->GetRootNode();
 	TArray<FXmlNode*> propertyList = pRoot->GetChildrenNodes();

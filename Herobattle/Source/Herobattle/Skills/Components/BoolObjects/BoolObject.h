@@ -3,12 +3,12 @@
 #pragma once
 
 #include "XmlParser.h"
-#include "../../Enum/SkillEnums.h"
+#include "../../../Enum/SkillEnums.h"
 
 class ABaseCharacter;
 
 
-class HEROBATTLE_API BoolObject
+class HEROBATTLE_API BoolObject : public UObject
 {
 public:
 	BoolObject();

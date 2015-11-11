@@ -25,5 +25,13 @@ float UScHeal::getScore()
 
 void UScHeal::init(FXmlNode* node)
 {
-//	throw std::logic_error("The method or operation is not implemented.");
+	TArray<FXmlNode*> propertyList = node->GetChildrenNodes();
+	for (auto& prop : propertyList)
+	{
+		FString tagName = prop->GetTag();
+		if (tagName.Equals(TEXT("heal")))
+		{
+			fillScaleTable(prop);
+		}
+	}
 }

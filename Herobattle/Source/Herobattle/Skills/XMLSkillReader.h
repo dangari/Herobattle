@@ -24,9 +24,12 @@ public:
 	// read from <spell> node
 	USkill* ReadSkill(FXmlNode* skillRootNode);
 
+
+	static TMap<FString, classFuncPtr> scObjectNameList;
+
 private:
 
 	TargetType getTargetTypeFromString(FString name);
 	UBaseSkillComponent* createImpact(FXmlNode* impactNode);
-	TMap<FString, classFuncPtr> scObjectNameList;
+	
 };

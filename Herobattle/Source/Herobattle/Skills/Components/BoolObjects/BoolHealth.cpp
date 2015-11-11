@@ -16,7 +16,13 @@ BoolHealth::~BoolHealth()
 bool BoolHealth::test(ABaseCharacter* target, ABaseCharacter* self)
 {
 	bool test;
-	float healthPrec = (target->m_MaxHealth / target->m_MaxHealth) * 100;
+	ABaseCharacter* testTarget;
+	if (targetType == TargetType::SELF)
+		testTarget = self;
+	else
+		testTarget = target;
+
+	float healthPrec = (testTarget->m_MaxHealth / testTarget->m_MaxHealth) * 100;
 	if (c.Equals(TEXT("-")))
 	{
 		test = healthPrec < treshold;
@@ -30,15 +36,14 @@ bool BoolHealth::test(ABaseCharacter* target, ABaseCharacter* self)
 
 void BoolHealth::init(FXmlNode* node, TargetType target)
 {
-	this->target = target;
+	this->targetType = target;
 	TArray<FXmlNode*> propertyList = node->GetChildrenNodes();
-	for (auto& prop : propertyList)
+	
+	FString tagName = node->GetTag();
+	if (tagName.Equals(TEXT("whencondition")))
 	{
-		FString tagName = prop->GetTag();
-		if (tagName.Equals(TEXT("whencondition")))
-		{
-			treshold = FCString::Atoi(*(prop->GetAttribute(TEXT("value"))));
-			c = prop->GetAttribute(TEXT("type"));
-		}
+		treshold = FCString::Atoi(*(node->GetAttribute(TEXT("value"))));
+		c = node->GetAttribute(TEXT("type"));
 	}
+
 }

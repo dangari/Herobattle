@@ -4,6 +4,7 @@
 
 #include "Skills/Components/BaseSkillComponent.h"
 #include "Containers/Array.h"
+#include "../../Enum/SkillEnums.h"
 #include "ScWhenCondition.generated.h"
 
 
@@ -31,5 +32,9 @@ private:
 
 	virtual void init(FXmlNode* node) override;
 
+	void createBoolObjects(FXmlNode* prop);
+	
+
+	TargetType targetType;
 
 };

@@ -3,6 +3,7 @@
 #include "Herobattle.h"
 #include "ScWhenCondition.h"
 #include "BoolObjects/BoolObject.h"
+#include "BoolObjects/BoolHealth.h"
 
 
 UScWhenCondition::UScWhenCondition()
@@ -46,5 +47,31 @@ bool UScWhenCondition::testConditions(ABaseCharacter* target, ABaseCharacter* se
 
 void UScWhenCondition::init(FXmlNode* node)
 {
-//	throw std::logic_error("The method or operation is not implemented.");
+	FString cType = node->GetAttribute(TEXT("type"));
+	this->targetType = SkillEnums::stringToTargetType(cType);
+	TArray<FXmlNode*> propertyList = node->GetChildrenNodes();
+	for (auto& prop : propertyList)
+	{
+		FString tagName = prop->GetTag();
+		if (tagName.Equals(TEXT("whencondition")))
+		{
+			createBoolObjects(prop);
+
+		}
+	}
+}
+
+void UScWhenCondition::createBoolObjects(FXmlNode* prop)
+{
+	TArray<FXmlNode*> boolObjectList = prop->GetChildrenNodes();
+	for (auto& prop : boolObjectList)
+	{
+		FString tagName = prop->GetTag();
+		if (tagName.Equals(TEXT("hp")))
+		{
+			BoolHealth* hpBool = NewObject<BoolHealth>();
+			hpBool->init(prop, targetType);
+			boolObjects.Add(hpBool);
+		}
+	}
 }

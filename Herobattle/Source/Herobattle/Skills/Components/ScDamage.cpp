@@ -3,7 +3,6 @@
 #include "Herobattle.h"
 #include "ScDamage.h"
 #include "../../Base/BaseCharacter.h"
-#include "../RegisterSkillComponents.h"
 UScDamage::UScDamage()
 {
 	//damageType = HBDamageType::FIRE;
@@ -29,7 +28,16 @@ float UScDamage::getScore()
 
 void UScDamage::init(FXmlNode* node)
 {
-//	throw std::logic_error("The method or operation is not implemented.");
+	FString cType = node->GetAttribute(TEXT("type"));
+	this->damageType = SkillEnums::stringToHBDamageType(cType);
+	TArray<FXmlNode*> propertyList = node->GetChildrenNodes();
+	for (auto& prop : propertyList)
+	{
+		FString tagName = prop->GetTag();
+		if (tagName.Equals(TEXT("damage")))
+		{
+			fillScaleTable(prop);
+		}
+	}
 }
 
-RegisterComponent<UScDamage> UScDamage::reg1(TEXT("damage"));

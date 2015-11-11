@@ -36,5 +36,6 @@ public:
 	static SkillType stringToSkillType(FString sSkillType);
 	static TargetType stringToTargetType(FString sTargetType);
 	static Condition stringToCondition(FString sCondition);
+	static HBDamageType stringToHBDamageType(FString sHBDamageType);
 
 };

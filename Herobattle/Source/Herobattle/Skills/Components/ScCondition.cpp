@@ -4,7 +4,6 @@
 #include "../../Base/BaseCharacter.h"
 #include "../RegisterSkillComponents.h"
 #include "../../Enum/SkillEnums.h"
-#include "XmlParser.h"
 
 UScCondition::UScCondition()
 {

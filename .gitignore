@@ -55,7 +55,7 @@ Herobattle/Saved/*
 
 # Compiled source files for the engine to use
 Herobattle/Intermediate/*
-!Herobattle.vcxproj.filters
+!Herobattle/Intermediate/ProjectFiles/Herobattle.vcxproj.filters
 
 # Cache files for the editor to use
 Herobattle/DerivedDataCache/*

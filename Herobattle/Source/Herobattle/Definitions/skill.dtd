@@ -1,0 +1,124 @@
+<!ELEMENT skills (profession)*>
+
+<!ELEMENT profession (spell)*>
+<!ATTLIST  profession
+	value CDATA #REQUIRED
+>
+
+<!ELEMENT spell (name, costs, casttime, cooldown, targettype,weapon?,effects)>
+<!ATTLIST spell
+  type CDATA #REQUIRED
+  >
+<!-- spell nodes  -->
+<!ELEMENT name EMPTY>
+<!ATTLIST name
+  value CDATA #REQUIRED
+  >
+<!ELEMENT costs EMPTY>
+<!ATTLIST costs
+  value CDATA #REQUIRED
+  >
+<!ELEMENT casttime EMPTY>
+<!ATTLIST casttime
+  value CDATA #REQUIRED
+  >
+<!ELEMENT cooldown EMPTY>
+<!ATTLIST cooldown
+  value CDATA #REQUIRED
+  >
+<!ELEMENT targettype EMPTY>
+<!ATTLIST targettype
+  value CDATA #REQUIRED
+  >
+<!ELEMENT weapon EMPTY>
+<!ATTLIST weapon 
+  value CDATA #REQUIRED
+  >
+
+
+<!ELEMENT effects (impact)>
+<!-- impact nodes  -->
+<!ELEMENT impact (heal|damage|buff|condition|foreach|when|remove)*>
+<!ELEMENT heal (step?)*>
+<!ATTLIST heal 
+  value CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  >
+<!ELEMENT damage (step?)*>
+<!ATTLIST damage 
+  value CDATA #REQUIRED
+  type CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  >
+<!ELEMENT buff (step?|heal|damage|buff|regeneration|foreach|when|block|knockdown|skillcooldown)*>
+<!ATTLIST buff 
+  value CDATA #REQUIRED
+  type CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  >
+<!ELEMENT condition (step)*>
+<!ATTLIST condition 
+  value CDATA #REQUIRED
+  type CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  >
+<!ELEMENT regeneration (step?)*>
+<!ATTLIST regeneration 
+  value CDATA #REQUIRED
+  type CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  >
+<!ELEMENT foreach (heal|damage|buff|condition|regeneration|when)*>
+<!ATTLIST foreach
+  type CDATA #REQUIRED
+  >
+<!ELEMENT when (whencondition, then)>
+<!ATTLIST when
+  value CDATA #REQUIRED
+  >
+<!ELEMENT whencondition (attack|hp)>
+
+<!ELEMENT remove (step?)*>
+<!ATTLIST remove 
+  value CDATA #REQUIRED
+  type CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  >
+
+<!ELEMENT knockdown (step?)>
+<!ATTLIST knockdwon 
+  value CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  >
+<!ELEMENT skillcooldown (step?)>
+<!ATTLIST skillcooldown 
+  value CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  >
+
+<!-- sub nodes -->
+<!ELEMENT then (heal|damage|buff|condition|regeneration|knockdown|skillcooldown)>
+
+<!ELEMENT attack EMPTY>
+<!ATTLIST attack
+  type CDATA #REQUIRED
+  >
+<!ELEMENT hp EMPTY>
+<!ATTLIST hp
+  value CDATA #REQUIRED
+  type CDATA #REQUIRED
+  >
+
+<!ELEMENT step EMPTY>
+<!ATTLIST step
+  key CDATA #REQUIRED
+  value CDATA #REQUIRED
+  >
+
+<!ELEMENT block (step?)*>
+<!ATTLIST block
+  value CDATA #REQUIRED
+  type CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  usage CDATA #REQUIRED
+  >

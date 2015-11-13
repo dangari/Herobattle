@@ -25,13 +25,9 @@ float UScHeal::getScore()
 
 void UScHeal::init(FXmlNode* node)
 {
-	TArray<FXmlNode*> propertyList = node->GetChildrenNodes();
-	for (auto& prop : propertyList)
+	FString tagName = node->GetTag();
+	if (tagName.Equals(TEXT("heal")))
 	{
-		FString tagName = prop->GetTag();
-		if (tagName.Equals(TEXT("heal")))
-		{
-			fillScaleTable(prop);
-		}
+		fillScaleTable(node);
 	}
 }

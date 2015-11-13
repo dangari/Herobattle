@@ -33,17 +33,11 @@ void UScCondition::init(FXmlNode* node)
 {
 	FString cType = node->GetAttribute(TEXT("type"));
 	this->conditionType = SkillEnums::stringToCondition(cType);
-	TArray<FXmlNode*> propertyList = node->GetChildrenNodes();
-	for (auto& prop : propertyList)
+	FString tagName = node->GetTag();
+	if (tagName.Equals(TEXT("duration")))
 	{
-		FString tagName = prop->GetTag();
-		if (tagName.Equals(TEXT("duration")))
-		{
-			fillScaleTable(prop);
-		}
+		fillScaleTable(node);
 	}
-
-
 }
 
 

@@ -31,10 +31,10 @@ void UScDamage::init(FXmlNode* node)
 	FString cType = node->GetAttribute(TEXT("type"));
 	this->damageType = SkillEnums::stringToHBDamageType(cType);
 	TArray<FXmlNode*> propertyList = node->GetChildrenNodes();
-	FString tagName = prop->GetTag();
+	FString tagName = node->GetTag();
 	if (tagName.Equals(TEXT("damage")))
 	{
-		fillScaleTable(prop);
+		fillScaleTable(node);
 	}
 
 }

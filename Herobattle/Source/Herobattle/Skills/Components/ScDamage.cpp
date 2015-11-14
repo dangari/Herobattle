@@ -14,11 +14,12 @@ UScDamage::~UScDamage()
 }
 
 
-void UScDamage::run(ABaseCharacter* target, ABaseCharacter* self)
+bool UScDamage::run(ABaseCharacter* target, ABaseCharacter* self)
 {
 	Super::run(target, self);
 	float damage = scaleTable[self->getAttributeValue(scaleAttribute)];
 	//target->damage(damage, damageType);
+	return true;
 }
 
 float UScDamage::getScore()

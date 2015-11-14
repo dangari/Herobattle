@@ -17,9 +17,9 @@ UBaseSkillComponent::~UBaseSkillComponent()
 }
 
 
-void UBaseSkillComponent::run(ABaseCharacter* target, ABaseCharacter* self)
+bool UBaseSkillComponent::run(ABaseCharacter* target, ABaseCharacter* self)
 {
-
+	return true;
 }
 float UBaseSkillComponent::getScore()
 {
@@ -29,7 +29,6 @@ float UBaseSkillComponent::getScore()
 
 void UBaseSkillComponent::init(FXmlNode* node)
 {
-
 }
 
 void UBaseSkillComponent::fillScaleTable(FXmlNode* node)
@@ -43,9 +42,13 @@ void UBaseSkillComponent::fillScaleTable(FXmlNode* node)
 		//reads the scale table values
 		for (auto& prop : propertyList)
 		{
-			int index = FCString::Atoi(*(prop->GetAttribute(TEXT("key"))));
-			int value = FCString::Atoi(*(prop->GetAttribute(TEXT("value"))));
-			scaleTable[index] = value;
+			FString tagName = prop->GetTag();
+			if (tagName.Equals(TEXT("step")))
+			{
+				int index = FCString::Atoi(*(prop->GetAttribute(TEXT("key"))));
+				int value = FCString::Atoi(*(prop->GetAttribute(TEXT("value"))));
+				scaleTable[index] = value;
+			}
 		}
 	}
 	// fills the empty spaces off the scaletable array

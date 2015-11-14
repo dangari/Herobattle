@@ -6,6 +6,8 @@
 #include "../../Enum/SkillEnums.h"
 #include "ScBuff.generated.h"
 
+
+class UBaseBuff;
 /**
  * 
  */
@@ -16,14 +18,14 @@ class HEROBATTLE_API UScBuff : public UBaseSkillComponent
 public:
 	UScBuff();
 	~UScBuff();
-	virtual void run(ABaseCharacter* target, ABaseCharacter* self) override;
+	virtual bool run(ABaseCharacter* target, ABaseCharacter* self) override;
 	virtual float getScore() override;
 
 	virtual void init(FXmlNode* node) override;
 
 	
-	HBDamageType damageType;
+	SkillType skillType;
 
 private:
-
+	TArray<UBaseSkillComponent*> sCBuffList;
 };

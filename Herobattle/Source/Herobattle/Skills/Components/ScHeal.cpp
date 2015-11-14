@@ -12,11 +12,12 @@ UScHeal::~UScHeal()
 }
 
 
-void UScHeal::run(ABaseCharacter* target, ABaseCharacter* self)
+bool UScHeal::run(ABaseCharacter* target, ABaseCharacter* self)
 {
 	Super::run(target, self);
 	float heal = scaleTable[self->getAttributeValue(scaleAttribute)];
 	target->heal(heal);
+	return true;
 }
 float UScHeal::getScore()
 {

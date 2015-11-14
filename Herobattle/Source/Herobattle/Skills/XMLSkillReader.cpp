@@ -52,26 +52,6 @@ USkill* XMLSkillReader::ReadXmlSkillFile(FString path)
 	return nullptr;
 }
 
-TargetType XMLSkillReader::getTargetTypeFromString(FString name)
-{
-	if (name.Equals(TEXT("ENEMY")))
-	{
-		return TargetType::ENEMY;
-	}
-	if (name.Equals(TEXT("SELF")))
-	{
-		return TargetType::SELF;
-	}
-	if (name.Equals(TEXT("FRIEND")))
-	{
-		return TargetType::FRIEND;
-	}
-	if (name.Equals(TEXT("SELFFREND")))
-	{
-		return TargetType::SELFFREND;
-	}
-	return TargetType::ENEMY;
-}
 
 TArray<UBaseSkillComponent*> XMLSkillReader::createImpact(FXmlNode* impactNode)
 {
@@ -120,11 +100,7 @@ USkill* XMLSkillReader::ReadSkill(FXmlNode* skillRootNode)
 	FString key = FString(TEXT("key"));
 
 	//values needed for Skill creation
-	FString name;
-	int costs;
-	int cooldown;
-	float castTime;
-	TargetType targetType;
+	USkill* skill = NewObject<USkill>();
 
 	TArray<UBaseSkillComponent*> componentList;
 
@@ -134,44 +110,37 @@ USkill* XMLSkillReader::ReadSkill(FXmlNode* skillRootNode)
 		FString tagName = prop->GetTag();
 		if (tagName.Equals(TEXT("name")))
 		{
-			name = prop->GetAttribute(value);
+			skill->name = prop->GetAttribute(value);
 		}
 
 		if (tagName.Equals(TEXT("costs")))
 		{
-			costs = FCString::Atoi(*(prop->GetAttribute(value)));
+			skill->manaCost = FCString::Atoi(*(prop->GetAttribute(value)));
 		}
 
 		if (tagName.Equals(TEXT("casttime")))
 		{
-			castTime = FCString::Atof(*(prop->GetAttribute(value)));
+			skill->castTime = FCString::Atof(*(prop->GetAttribute(value)));
 		}
 
 		if (tagName.Equals(TEXT("cooldown")))
 		{
-			cooldown = FCString::Atoi(*(prop->GetAttribute(value)));
+			skill->recharge = FCString::Atoi(*(prop->GetAttribute(value)));
 		}
 
 		if (tagName.Equals(TEXT("targettype")))
 		{
-			targetType = getTargetTypeFromString(prop->GetAttribute(value));
+			skill->targetType = SkillEnums::stringToTargetType(prop->GetAttribute(value));
 		}
 
 		if (tagName.Equals(TEXT("effects")))
 		{
 			FXmlNode* impactNode = prop->GetChildrenNodes()[0];
-			componentList = createImpact(impactNode);
+			skill->componentList = createImpact(impactNode);
 		}
 
 		
 	}
-	USkill* skill = NewObject<USkill>();
-	skill->name = name;
-	skill->castTime = castTime;
-	skill->recharge = cooldown;
-	skill->manaCost = costs;
-	skill->targetType = targetType;
-	skill->componentList = componentList;
 
 	return skill;
 }

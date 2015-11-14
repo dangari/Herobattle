@@ -20,7 +20,7 @@ class HEROBATTLE_API UScWhenCondition : public UBaseSkillComponent
 public:
 	UScWhenCondition();
 	~UScWhenCondition();
-	virtual void run(ABaseCharacter* target, ABaseCharacter* self) override;
+	virtual bool run(ABaseCharacter* target, ABaseCharacter* self) override;
 	virtual float getScore() override;
 
 

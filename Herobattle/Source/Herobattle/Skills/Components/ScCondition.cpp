@@ -16,11 +16,12 @@ UScCondition::~UScCondition()
 }
 
 
-void UScCondition::run(ABaseCharacter* target, ABaseCharacter* self)
+bool UScCondition::run(ABaseCharacter* target, ABaseCharacter* self)
 {
 	float duration = scaleTable[self->getAttributeValue(scaleAttribute)];
 	UBaseCondition* condition = UBaseCondition::MAKE(conditionType, duration);
 	target->applyCondition(condition);
+	return true;
 	
 	
 }

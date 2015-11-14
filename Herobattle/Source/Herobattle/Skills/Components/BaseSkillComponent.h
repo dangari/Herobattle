@@ -25,7 +25,7 @@ public:
 	UBaseSkillComponent();
 	~UBaseSkillComponent();
 
-	virtual void run(ABaseCharacter* target, ABaseCharacter* self);
+	virtual bool run(ABaseCharacter* target, ABaseCharacter* self);
 	virtual float getScore();
 	virtual void init(FXmlNode* node);
 	static UBaseSkillComponent* UBaseSkillComponent::MAKE();

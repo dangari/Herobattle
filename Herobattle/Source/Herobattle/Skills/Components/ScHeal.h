@@ -9,7 +9,7 @@ class  HEROBATTLE_API UScHeal : public UBaseSkillComponent
 public:
 	UScHeal();
 	~UScHeal();
-	virtual void run(ABaseCharacter* target, ABaseCharacter* self) override;
+	virtual bool run(ABaseCharacter* target, ABaseCharacter* self) override;
 	virtual float getScore() override;
 
 	virtual void init(FXmlNode* node) override;

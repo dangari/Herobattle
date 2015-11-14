@@ -18,7 +18,7 @@ UScWhenCondition::~UScWhenCondition()
 }
 
 
-void UScWhenCondition::run(ABaseCharacter* target, ABaseCharacter* self)
+bool UScWhenCondition::run(ABaseCharacter* target, ABaseCharacter* self)
 {
 	if (testConditions(target, self))
 	{
@@ -27,6 +27,7 @@ void UScWhenCondition::run(ABaseCharacter* target, ABaseCharacter* self)
 			sc->run(target, self);
 		}
 	}
+	return true;
 }
 
 float UScWhenCondition::getScore()

@@ -30,7 +30,6 @@ public:
 
 private:
 
-	TargetType getTargetTypeFromString(FString name);
 	TArray<UBaseSkillComponent*> createImpact(FXmlNode* impactNode);
 	void readeSkillsFromXml(FXmlNode* node);	
 };

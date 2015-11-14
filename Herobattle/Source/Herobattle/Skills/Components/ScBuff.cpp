@@ -17,10 +17,13 @@ UScBuff::~UScBuff()
 
 bool UScBuff::run(ABaseCharacter* target, ABaseCharacter* self)
 {
-	Super::run(target, self);
-	float damage = scaleTable[self->getAttributeValue(scaleAttribute)];
-	//target->damage(damage, damageType);
-	return true;
+	bool b = true;
+
+	for (auto& sc : sCBuffList)
+	{
+		b = sc->run(target, self);
+	}
+	return b;
 }
 
 float UScBuff::getScore()
@@ -50,3 +53,9 @@ void UScBuff::init(FXmlNode* node)
 	}
 }
 
+FString UScBuff::ToString()
+{
+	//FString sCText = Super::ToString();
+	//sCText.Append(TEXT(" \n ");
+	return TEXT("");
+}

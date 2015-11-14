@@ -20,14 +20,15 @@ UScWhenCondition::~UScWhenCondition()
 
 bool UScWhenCondition::run(ABaseCharacter* target, ABaseCharacter* self)
 {
+	bool b = true;
 	if (testConditions(target, self))
 	{
 		for (auto& sc : scTable)
 		{
-			sc->run(target, self);
+			b = sc->run(target, self);
 		}
 	}
-	return true;
+	return b;
 }
 
 float UScWhenCondition::getScore()

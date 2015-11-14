@@ -104,3 +104,23 @@ HBDamageType SkillEnums::stringToHBDamageType(FString sHBDamageType)
 		return HBDamageType::LIGHTNING;
 	return HBDamageType::PHYSICAL;
 }
+
+FString SkillEnums::AttributesToString(Attributes attribute)
+{
+	switch (attribute)
+	{
+	case Attributes::NONE:
+		return TEXT("NONE");
+	case Attributes::FIRE_MAGIC:
+		return TEXT("FIRE_MAGIC");
+	case Attributes::HEALING_PRAYERS:
+		return TEXT("HEALING_PRAYERS");
+	case Attributes::PROTECTION_PRAYERS:
+		return TEXT("PROTECTION_PRAYERS");
+	case Attributes::STRENGTH:
+		return TEXT("STRENGTH");
+	default:
+		return TEXT("NONE");
+
+	}
+}

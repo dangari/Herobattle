@@ -38,4 +38,6 @@ public:
 	static Condition stringToCondition(FString sCondition);
 	static HBDamageType stringToHBDamageType(FString sHBDamageType);
 
+	static FString AttributesToString(Attributes attribute);
+
 };

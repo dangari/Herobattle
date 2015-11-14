@@ -31,6 +31,18 @@ void UBaseSkillComponent::init(FXmlNode* node)
 {
 }
 
+FString UBaseSkillComponent::ToString()
+{
+	FString sCText = SkillEnums::AttributesToString(scaleAttribute).Append(TEXT(": "));
+	for (int i = 0; i<20; i++)
+	{
+		sCText.Append(TEXT("["));
+		sCText.Append(FString::FromInt(scaleTable[i]));
+		sCText.Append(TEXT("]"));
+	}
+	return sCText;
+}
+
 void UBaseSkillComponent::fillScaleTable(FXmlNode* node)
 {
 	int standartValue = FCString::Atoi(*(node->GetAttribute(TEXT("value"))));

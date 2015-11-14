@@ -20,8 +20,8 @@ public:
 	~UScBuff();
 	virtual bool run(ABaseCharacter* target, ABaseCharacter* self) override;
 	virtual float getScore() override;
-
 	virtual void init(FXmlNode* node) override;
+	virtual FString ToString() override;
 
 	
 	SkillType skillType;

@@ -86,7 +86,7 @@
   >
 
 <!ELEMENT knockdown (step?)>
-<!ATTLIST knockdwon 
+<!ATTLIST knockdown 
   value CDATA #REQUIRED
   scaling CDATA #REQUIRED
   >
@@ -97,7 +97,7 @@
   >
 
 <!-- sub nodes -->
-<!ELEMENT then (heal|damage|buff|condition|regeneration|knockdown|skillcooldown)>
+<!ELEMENT then (heal|damage|buff|condition|regeneration|knockdown|skillcooldown)*>
 
 <!ELEMENT attack EMPTY>
 <!ATTLIST attack

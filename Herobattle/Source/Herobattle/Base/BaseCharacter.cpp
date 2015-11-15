@@ -135,6 +135,11 @@ uint8 ABaseCharacter::getCondtionCount()
 	return m_conditionCount;
 }
 
+void ABaseCharacter::knockDownCharacter(float duration)
+{
+
+}
+
 void ABaseCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);

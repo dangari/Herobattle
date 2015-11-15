@@ -76,6 +76,8 @@ public:
 
 	uint8 getCondtionCount();
 
+	void knockDownCharacter(float duration);
+
 private:
 
 

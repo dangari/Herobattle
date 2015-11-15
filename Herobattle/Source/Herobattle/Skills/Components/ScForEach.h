@@ -12,8 +12,16 @@ UCLASS()
 class HEROBATTLE_API UScForEach : public UBaseSkillComponent
 {
 	GENERATED_BODY()
+public:
+
+	UScForEach();
+	~UScForEach();
+
+	virtual bool run(ABaseCharacter* target, ABaseCharacter* self) override;
+	virtual void init(FXmlNode* node) override;
+	virtual float getScore() override;
 	
-	
-	
-	
+private:
+	FString skillType;
+	TArray<UBaseSkillComponent*> scList;
 };

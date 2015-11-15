@@ -43,6 +43,7 @@ void UScBuff::init(FXmlNode* node)
 	TArray<FXmlNode*> buffList = node->GetChildrenNodes();
 	for (auto& buffs : buffList)
 	{
+		tagName = buffs->GetTag();
 		if (XMLSkillReader::scObjectNameList.Contains(tagName))
 		{
 			classFuncPtr createFunc = *(XMLSkillReader::scObjectNameList.Find(tagName));

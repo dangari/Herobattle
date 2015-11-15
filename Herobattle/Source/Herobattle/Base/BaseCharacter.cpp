@@ -16,6 +16,7 @@ ABaseCharacter::ABaseCharacter()
 	m_Mana = 10.0f;
 	m_HealthRegeneration = 0;
 	m_ManaRegeneration = 2;
+	m_conditionCount = 0;
 
 }
 
@@ -126,7 +127,12 @@ uint8 ABaseCharacter::getAttributeValue(Attributes attributeName)
 
 void ABaseCharacter::applyCondition(UBaseCondition* condtion)
 {
+	m_conditionCount++;
+}
 
+uint8 ABaseCharacter::getCondtionCount()
+{
+	return m_conditionCount;
 }
 
 void ABaseCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const

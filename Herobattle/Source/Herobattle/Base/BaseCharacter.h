@@ -74,11 +74,16 @@ public:
 
 	void applyCondition(UBaseCondition* condtion);
 
+	uint8 getCondtionCount();
+
 private:
 
-	Profession primaryProfession;
-	Profession secondaryProfession;
 
 	void UpdateResources(float DeltaSeconds);
 
+
+	Profession primaryProfession;
+	Profession secondaryProfession;
+	TMap<Condition, UBaseCondition*> condtionList;
+	int m_conditionCount;
 };

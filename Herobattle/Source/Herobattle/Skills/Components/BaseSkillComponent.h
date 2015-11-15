@@ -33,7 +33,6 @@ public:
 
 protected:
 	void fillScaleTable(FXmlNode* node);
-private:
-	FString tagName;
+
 };
 

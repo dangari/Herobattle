@@ -78,6 +78,8 @@ public:
 
 	void knockDownCharacter(float duration);
 
+	void updateHealthRegen(float regen);
+
 private:
 
 

@@ -140,6 +140,11 @@ void ABaseCharacter::knockDownCharacter(float duration)
 
 }
 
+void ABaseCharacter::updateHealthRegen(float regen)
+{
+	m_HealthRegeneration += regen;
+}
+
 void ABaseCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);

@@ -5,7 +5,7 @@
 #include "../../Base/BaseCharacter.h"
 UScDamage::UScDamage()
 {
-	//damageType = HBDamageType::FIRE;
+	FString name = TEXT("Damage");
 }
 
 
@@ -18,7 +18,7 @@ bool UScDamage::run(ABaseCharacter* target, ABaseCharacter* self)
 {
 	Super::run(target, self);
 	float damage = scaleTable[self->getAttributeValue(scaleAttribute)];
-	//target->damage(damage, damageType);
+	target->damage(damage, damageType);
 	return true;
 }
 

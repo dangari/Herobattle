@@ -31,6 +31,8 @@ public:
 	virtual FString ToString();
 	static UBaseSkillComponent* UBaseSkillComponent::MAKE();
 
+	FString name = TEXT("Default");
+
 protected:
 	void fillScaleTable(FXmlNode* node);
 

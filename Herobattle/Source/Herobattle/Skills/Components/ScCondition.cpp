@@ -35,7 +35,7 @@ void UScCondition::init(FXmlNode* node)
 	FString cType = node->GetAttribute(TEXT("type"));
 	this->conditionType = SkillEnums::stringToCondition(cType);
 	FString tagName = node->GetTag();
-	if (tagName.Equals(TEXT("duration")))
+	if (tagName.Equals(TEXT("condition")))
 	{
 		fillScaleTable(node);
 	}

@@ -6,6 +6,7 @@
 #include "HeroBattleHero.h"
 #include "HBPlayerController.h"
 #include "Skills/XMLSkillReader.h"
+#include "UnrealNetwork.h"
 
 AHerobattleGameMode::AHerobattleGameMode()
 {
@@ -38,5 +39,15 @@ void AHerobattleGameMode::PostLogin(APlayerController * NewPlayer)
 
 void AHerobattleGameMode::BeginPlay()
 {
-	XMLSkillReader* test = new XMLSkillReader();
+	if (HasAuthority())
+	{
+		XMLSkillReader* test = new XMLSkillReader();
+		skillList = test->ReadXmlSkillFile(TEXT("Source/Herobattle/Definitions/skill.xml"));
+	}
+}
+
+void AHerobattleGameMode::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AHerobattleGameMode, skillList);
 }

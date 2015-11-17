@@ -5,7 +5,9 @@
 #include "Base/Profession.h"
 #include "../Enum/SkillEnums.h"
 #include "../Skills/Components/BaseSkillComponent.h"
+#include "Skills/Skill.h"
 #include "BaseCharacter.generated.h"
+
 
 /**
  * 
@@ -50,8 +52,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
-	UFUNCTION(BluePrintNativeEvent, BlueprintCallable, Category = Mechanics)
-	void UseSkill(ABaseCharacter* Target, int32 SkillSlot);
+	UFUNCTION(BlueprintCallable, Category = Mechanics)
+	bool UseSkill(ABaseCharacter* Target, int32 SkillSlot);
 
 	UFUNCTION(BlueprintCallable, Category = Meachnics)
 	void ChangeHealth(float value);
@@ -59,14 +61,16 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Meachnics)
 	void ChangeMana(float value);
 
+
+
 // this Functions get called by Skills
 	void heal(float value);
 
 	void damage(float value, HBDamageType damageType);
 
-	void applyBuff(UBaseBuff* buff);
+	void applyBuff(UBaseSkillComponent* buff);
 
-	void applyDebuff(UBaseBuff* buff);
+	void applyDebuff(UBaseSkillComponent* buff);
 
 	void apllyUniQueBuff(UBaseBuff* buff);
 
@@ -89,5 +93,15 @@ private:
 	Profession primaryProfession;
 	Profession secondaryProfession;
 	TMap<Condition, UBaseCondition*> condtionList;
+	TMap<FString, TArray<UBaseSkillComponent>> buffList;
+	
+	UPROPERTY(Replicated)
+	USkill* skillList[8];
 	int m_conditionCount;
+
+	//removes condition from list if duration is expired
+	void updateCondtion(float DeltaTime);
+
+	//updates Regeneration based on De-buffs and conditions
+	void updateRegeneration();
 };

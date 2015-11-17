@@ -19,7 +19,7 @@ class HEROBATTLE_API XMLSkillReader
 public:
 	XMLSkillReader();
 	~XMLSkillReader();
-	USkill* ReadXmlSkillFile(FString path);
+	TArray<USkill*> ReadXmlSkillFile(FString path);
 
 	
 	// read from <spell> node
@@ -31,5 +31,5 @@ public:
 private:
 
 	TArray<UBaseSkillComponent*> createImpact(FXmlNode* impactNode);
-	void readeSkillsFromXml(FXmlNode* node);	
+	TArray<USkill*> readeSkillsFromXml(FXmlNode* node);
 };

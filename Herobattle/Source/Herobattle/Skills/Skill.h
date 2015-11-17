@@ -6,6 +6,7 @@
 
 
 class UBaseSkillComponent;
+class ABaseCharacter;
 /**
  * 
  */
@@ -27,6 +28,9 @@ public:
 	float currentRecharge;
 	int manaCost;
 
+	UPROPERTY(Replicated)
 	TArray<UBaseSkillComponent*> componentList;
+
+	bool run(ABaseCharacter* target, ABaseCharacter* self);
 
 };

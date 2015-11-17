@@ -5,6 +5,7 @@
 #include "../Skills/Buff/BaseBuff.h"
 #include "../Skills/Condition/BaseCondition.h"
 #include "UnrealNetwork.h"
+#include "HerobattleGameMode.h"
 
 
 ABaseCharacter::ABaseCharacter()
@@ -28,6 +29,18 @@ ABaseCharacter::~ABaseCharacter()
 void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	if (HasAuthority())
+	{
+		AHerobattleGameMode* gm = (AHerobattleGameMode*)(GetWorld()->GetAuthGameMode());
+		skillList[0] = gm->skillList[0];
+		FString temp = skillList[0]->name;
+		FString test = skillList[0]->componentList[0]->name;
+		UE_LOG(LogTemp, Warning, TEXT("Skill name: %s"), *test);
+	}
+	else
+	{
+
+	}
 
 }
 
@@ -35,6 +48,8 @@ void ABaseCharacter::BeginPlay()
 void ABaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	updateCondtion(DeltaTime);
+	updateRegeneration();
 	UpdateResources(DeltaTime);
 
 }
@@ -65,8 +80,29 @@ void ABaseCharacter::UpdateResources(float DeltaSeconds){
 
 }
 
-void ABaseCharacter::UseSkill_Implementation(ABaseCharacter* Target, int32 SkillSlot)
+
+void ABaseCharacter::updateCondtion(float DeltaTime)
 {
+	for (auto& condi : condtionList)
+	{
+		condi.Value->duration -= DeltaTime;
+		if (condi.Value->duration <= 0)
+		{
+			condtionList.Remove(condi.Key);
+		}
+			
+	}
+}
+
+void ABaseCharacter::updateRegeneration()
+{
+	m_HealthRegeneration = 0;
+	for (auto& condi : condtionList)
+	{
+		m_HealthRegeneration +=  condi.Value->regeneration;
+	}
+	//add buff
+	// add gate at +10 regeneration
 }
 
 void ABaseCharacter::ChangeHealth(float value)
@@ -95,22 +131,40 @@ void ABaseCharacter::ChangeMana(float value)
 	}
 }
 
+
+bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
+{
+	if (HasAuthority())
+	{
+		USkill* skill = skillList[slot];
+		FString temp = skill->name;
+		UE_LOG(LogTemp, Warning, TEXT("Skill name: %s"), *temp);
+		bool b = skill->run(target, this);
+		return b;
+	}
+	return true;
+}
+
+
 void ABaseCharacter::heal(float value)
 {
 
 }
 
-void ABaseCharacter::damage(float value, HBDamageType damageType)
+
+void ABaseCharacter::damage (float value, HBDamageType damageType)
+{
+	m_Health -= value;
+	if (m_Health < 0)
+		m_Health = m_MaxHealth;
+}
+
+void ABaseCharacter::applyBuff(UBaseSkillComponent* buff)
 {
 
 }
 
-void ABaseCharacter::applyBuff(UBaseBuff* buff)
-{
-
-}
-
-void ABaseCharacter::applyDebuff(UBaseBuff* buff)
+void ABaseCharacter::applyDebuff(UBaseSkillComponent* buff)
 {
 
 }
@@ -125,9 +179,12 @@ uint8 ABaseCharacter::getAttributeValue(Attributes attributeName)
 	return 0;
 }
 
-void ABaseCharacter::applyCondition(UBaseCondition* condtion)
+void ABaseCharacter::applyCondition(UBaseCondition* condition)
 {
-	m_conditionCount++;
+	if (!(condtionList.Contains(condition->condition)))
+		m_conditionCount++;
+	condtionList.Add(condition->condition, condition);
+	
 }
 
 uint8 ABaseCharacter::getCondtionCount()
@@ -154,4 +211,5 @@ void ABaseCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & Ou
 	DOREPLIFETIME(ABaseCharacter, m_Mana);
 	DOREPLIFETIME(ABaseCharacter, m_ManaRegeneration);
 	DOREPLIFETIME(ABaseCharacter, m_HealthRegeneration);
+	DOREPLIFETIME(ABaseCharacter, skillList);
 }

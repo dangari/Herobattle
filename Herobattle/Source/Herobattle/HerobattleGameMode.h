@@ -2,7 +2,9 @@
 #pragma once
 #include "GameFramework/GameMode.h"
 //#include "HeroBattleHero.h"
+#include "Skills/Skill.h"
 #include "HerobattleGameMode.generated.h"
+
 
 class AHeroBattleHero;
 
@@ -33,6 +35,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = TeamRed)
 	AHeroBattleHero* redHero_3;
+
+	UPROPERTY(Replicated)
+	TArray<USkill*> skillList;
 
 	void PostLogin(APlayerController * NewPlayer) override;
 

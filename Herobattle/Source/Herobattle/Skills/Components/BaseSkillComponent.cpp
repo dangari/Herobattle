@@ -8,7 +8,6 @@
 
 UBaseSkillComponent::UBaseSkillComponent()
 {
-	
 }
 
 
@@ -42,6 +41,7 @@ FString UBaseSkillComponent::ToString()
 	}
 	return sCText;
 }
+
 
 void UBaseSkillComponent::fillScaleTable(FXmlNode* node)
 {

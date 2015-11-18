@@ -5,6 +5,7 @@
 #include "BoolObjects/BoolObject.h"
 #include "BoolObjects/BoolHealth.h"
 #include "../XMLSkillReader.h"
+#include "UnrealNetwork.h"
 
 
 UScWhenCondition::UScWhenCondition()
@@ -75,7 +76,7 @@ void UScWhenCondition::createBoolObjects(FXmlNode* node)
 		FString tagName = prop->GetTag();
 		if (tagName.Equals(TEXT("hp")))
 		{
-			BoolHealth* hpBool = NewObject<BoolHealth>();
+			UBoolHealth* hpBool = NewObject<UBoolHealth>();
 			hpBool->init(prop, targetType);
 			boolObjects.Add(hpBool);
 		}
@@ -96,4 +97,11 @@ void UScWhenCondition::createSkillComponents(FXmlNode* node)
 			scTable.Add(sc);
 		}
 	}
+}
+
+void UScWhenCondition::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(UScWhenCondition, boolObjects);
+	DOREPLIFETIME(UScWhenCondition, scTable);
 }

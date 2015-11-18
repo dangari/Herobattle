@@ -4,15 +4,19 @@
 
 #include "XmlParser.h"
 #include "../../../Enum/SkillEnums.h"
+#include "BoolObject.generated.h"
 
 class ABaseCharacter;
 
-
-class HEROBATTLE_API BoolObject : public UObject
+UCLASS()
+class HEROBATTLE_API UBoolObject : public UObject
 {
+	GENERATED_BODY()
 public:
-	BoolObject();
-	~BoolObject();
+
+
+	UBoolObject();
+	~UBoolObject();
 
 	virtual bool test(ABaseCharacter* target, ABaseCharacter* self);
 

@@ -8,7 +8,7 @@
 #include "ScWhenCondition.generated.h"
 
 
-class BoolObject;
+class UBoolObject;
 
 /**
  * 
@@ -25,8 +25,11 @@ public:
 
 
 private:
+
+	UPROPERTY(Replicated)
 	TArray<UBaseSkillComponent*> scTable; // components that gets executed when condition is true
-	TArray<BoolObject*> boolObjects;
+	UPROPERTY(Replicated)
+	TArray<UBoolObject*> boolObjects;
 
 	bool testConditions(ABaseCharacter* target, ABaseCharacter* self);
 

@@ -22,7 +22,7 @@ XMLSkillReader::XMLSkillReader()
 	scObjectNameList.Add(TEXT("damage"), &createInstance<UScDamage>);
 	scObjectNameList.Add(TEXT("heal"), &createInstance<UScHeal>);
 	scObjectNameList.Add(TEXT("condition"), &createInstance<UScCondition>);
-	scObjectNameList.Add(TEXT("whencondition"), &createInstance<UScWhenCondition>);
+	scObjectNameList.Add(TEXT("when"), &createInstance<UScWhenCondition>);
 
 	// loading file
 	//FString projectDir = FPaths::GameDir();

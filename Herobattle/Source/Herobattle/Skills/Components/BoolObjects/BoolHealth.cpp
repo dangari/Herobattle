@@ -5,15 +5,15 @@
 #include "../../../Base/BaseCharacter.h"
 
 
-BoolHealth::BoolHealth()
+UBoolHealth::UBoolHealth()
 {
 }
 
-BoolHealth::~BoolHealth()
+UBoolHealth::~UBoolHealth()
 {
 }
 
-bool BoolHealth::test(ABaseCharacter* target, ABaseCharacter* self)
+bool UBoolHealth::test(ABaseCharacter* target, ABaseCharacter* self)
 {
 	bool test;
 	ABaseCharacter* testTarget;
@@ -22,7 +22,7 @@ bool BoolHealth::test(ABaseCharacter* target, ABaseCharacter* self)
 	else
 		testTarget = target;
 
-	float healthPrec = (testTarget->m_MaxHealth / testTarget->m_MaxHealth) * 100;
+	float healthPrec = (testTarget->m_Health / testTarget->m_MaxHealth) * 100;
 	if (c.Equals(TEXT("-")))
 	{
 		test = healthPrec < treshold;
@@ -34,13 +34,13 @@ bool BoolHealth::test(ABaseCharacter* target, ABaseCharacter* self)
 	return test;
 }
 
-void BoolHealth::init(FXmlNode* node, TargetType target)
+void UBoolHealth::init(FXmlNode* node, TargetType target)
 {
 	this->targetType = target;
 	TArray<FXmlNode*> propertyList = node->GetChildrenNodes();
 	
 	FString tagName = node->GetTag();
-	if (tagName.Equals(TEXT("whencondition")))
+	if (tagName.Equals(TEXT("hp")))
 	{
 		treshold = FCString::Atoi(*(node->GetAttribute(TEXT("value"))));
 		c = node->GetAttribute(TEXT("type"));

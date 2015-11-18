@@ -2,12 +2,18 @@
 
 #pragma once
 #include "BoolObject.h"
+#include "BoolHealth.generated.h"
 
-class HEROBATTLE_API BoolHealth : public BoolObject
+
+UCLASS()
+class HEROBATTLE_API UBoolHealth : public UBoolObject
 {
+	GENERATED_BODY()
 public:
-	BoolHealth();
-	~BoolHealth();
+
+	
+	UBoolHealth();
+	~UBoolHealth();
 
 	virtual bool test(ABaseCharacter* target, ABaseCharacter* self) override;
 

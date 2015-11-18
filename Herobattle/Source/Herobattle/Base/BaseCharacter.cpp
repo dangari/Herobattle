@@ -33,9 +33,7 @@ void ABaseCharacter::BeginPlay()
 	{
 		AHerobattleGameMode* gm = (AHerobattleGameMode*)(GetWorld()->GetAuthGameMode());
 		skillList[0] = gm->skillList[0];
-		FString temp = skillList[0]->name;
-		FString test = skillList[0]->componentList[0]->name;
-		UE_LOG(LogTemp, Warning, TEXT("Skill name: %s"), *test);
+		skillList[1] = gm->skillList[1];
 	}
 	else
 	{
@@ -148,13 +146,16 @@ bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
 
 void ABaseCharacter::heal(float value)
 {
-
+	m_Health += value;
+	if (m_Health > m_MaxHealth)
+		m_Health = m_MaxHealth;
 }
 
 
 void ABaseCharacter::damage (float value, HBDamageType damageType)
 {
 	m_Health -= value;
+	// test if target is dead
 	if (m_Health < 0)
 		m_Health = m_MaxHealth;
 }

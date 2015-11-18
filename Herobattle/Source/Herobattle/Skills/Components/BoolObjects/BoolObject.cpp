@@ -5,20 +5,20 @@
 #include "../../../Base/BaseCharacter.h"
 
 
-BoolObject::BoolObject()
+UBoolObject::UBoolObject()
 {
 }
 
-BoolObject::~BoolObject()
+UBoolObject::~UBoolObject()
 {
 }
 
-bool BoolObject::test(ABaseCharacter* target, ABaseCharacter* self)
+bool UBoolObject::test(ABaseCharacter* target, ABaseCharacter* self)
 {
 	return true;
 }
 
-void BoolObject::init(FXmlNode* node, TargetType target)
+void UBoolObject::init(FXmlNode* node, TargetType target)
 {
 
 }

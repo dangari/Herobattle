@@ -4,6 +4,7 @@
 #include "ScBuff.h"
 #include "../../Base/BaseCharacter.h"
 #include "../XMLSkillReader.h"
+#include "../Buff/BaseBuff.h"
 UScBuff::UScBuff()
 {
 	//damageType = HBDamageType::FIRE;
@@ -19,10 +20,8 @@ bool UScBuff::run(ABaseCharacter* target, ABaseCharacter* self)
 {
 	bool b = true;
 
-	for (auto& sc : sCBuffList)
-	{
-		b = sc->run(target, self);
-	}
+	UBaseBuff* buff = createBuff(self->getAttributeValue(scaleAttribute));
+	target->applyBuff(buff);
 	return b;
 }
 
@@ -34,6 +33,7 @@ float UScBuff::getScore()
 void UScBuff::init(FXmlNode* node)
 {
 	FString cType = node->GetAttribute(TEXT("type"));
+	m_Usage = node->GetAttribute((TEXT("usage")));
 	this->skillType = SkillEnums::stringToSkillType(cType);
 	FString tagName = node->GetTag();
 	if (tagName.Equals(TEXT("buff")))
@@ -47,9 +47,7 @@ void UScBuff::init(FXmlNode* node)
 		if (XMLSkillReader::scObjectNameList.Contains(tagName))
 		{
 			classFuncPtr createFunc = *(XMLSkillReader::scObjectNameList.Find(tagName));
-			UBaseSkillComponent* sc = createFunc();
-			sc->init(buffs);
-			sCBuffList.Add(sc);
+			sCBuffList.Add(createFunc);
 		}
 	}
 }
@@ -59,4 +57,18 @@ FString UScBuff::ToString()
 	//FString sCText = Super::ToString();
 	//sCText.Append(TEXT(" \n ");
 	return TEXT("");
+}
+
+UBaseBuff* UScBuff::createBuff(float duration)
+{
+	TArray<UBaseSkillComponent*> scList;
+	for (auto& createFunc : sCBuffList)
+	{
+		UBaseSkillComponent* sc = createFunc();
+		scList.Add(sc);
+	}
+
+	UBaseBuff* buff = NewObject<UBaseBuff>();
+	buff->init(scList, duration, SkillName, m_Usage);
+	return buff;
 }

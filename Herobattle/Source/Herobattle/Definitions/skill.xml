@@ -52,7 +52,29 @@
 			</effects>
 		</spell>
 
-		<spell type="SPELL">
+    <spell type="SPELL">
+      <name value="Revert Damage"/>
+      <costs value="5"/>
+      <casttime value="1"/>
+      <cooldown value="15"/>
+      <targettype value="SELF_ALLY"/>
+      <effects>
+        <impact>
+          <buff value="5" type="ENCHANTMENT" scaling="PROTECTION_PRAYERS" usage="1">
+            <step key="4" value="8"/>
+            <step key="8" value="16"/>
+            <step key="12" value="20"/>
+            <heal value="20" scaling="HEALING_PRAYERS">
+              <step key="1" value="25"/>
+              <step key="2" value="45"/>
+              <step key="3" value="100"/>
+            </heal>
+          </buff>
+        </impact>
+      </effects>
+    </spell>
+
+    <spell type="SPELL">
 			<name value="Guardian"/>
 			<costs value="5"/>
 			<casttime value="1"/>
@@ -60,7 +82,7 @@
 			<targettype value="SELF_ALLY"/>
 			<effects>
 				<impact>
-					<buff value="2" type="ENCHANTMENT" scaling="PROTECTION_PRAYERS">
+					<buff value="2" type="ENCHANTMENT" scaling="PROTECTION_PRAYERS" usage="INF">
 						<step key="2" value="3"/>
 						<step key="5" value="4"/>
 						<step key="11" value="6"/>
@@ -69,6 +91,8 @@
 				</impact>
 			</effects>
 		</spell>
+
+
 
 		<spell type="SPELL">
 			<name value="Mend Ailment"/>
@@ -102,7 +126,7 @@
 			<weapon value="SHIELD"/>
       <effects>
         <impact>
-			    <buff value="5" type="STANCE" scaling="STRENGHT">
+			    <buff value="5" type="STANCE" scaling="STRENGHT" usage="INF">
 				    <block type="ATTACKSKILLS" value="100" scaling="NONE" usage="1"/>
 				    <step key="2" value="6"/>
 				    <step key="4" value="7"/>
@@ -131,7 +155,7 @@
 			<targettype value="SELF"/>
       <effects>
         <impact>
-			    <buff value="5" type="ENCHANTMENT" scaling="EARTH_PRAYERS">
+			    <buff value="5" type="ENCHANTMENT" scaling="EARTH_PRAYERS" usage="INF">
 				    <step key="1" value="6"/>
 				    <step key="2" value="7"/>
 				    <step key="3" value="8"/>

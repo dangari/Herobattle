@@ -17,7 +17,8 @@ ABaseCharacter::ABaseCharacter()
 	m_Mana = 10.0f;
 	m_HealthRegeneration = 0;
 	m_ManaRegeneration = 2;
-	m_conditionCount = 0;
+	m_ConditionCount = 0;
+	m_BuffCount = 0;
 
 }
 
@@ -81,12 +82,12 @@ void ABaseCharacter::UpdateResources(float DeltaSeconds){
 
 void ABaseCharacter::updateCondtion(float DeltaTime)
 {
-	for (auto& condi : condtionList)
+	for (auto& condi : m_condtionList)
 	{
 		condi.Value->duration -= DeltaTime;
 		if (condi.Value->duration <= 0)
 		{
-			condtionList.Remove(condi.Key);
+			m_condtionList.Remove(condi.Key);
 		}
 			
 	}
@@ -95,7 +96,7 @@ void ABaseCharacter::updateCondtion(float DeltaTime)
 void ABaseCharacter::updateRegeneration()
 {
 	m_HealthRegeneration = 0;
-	for (auto& condi : condtionList)
+	for (auto& condi : m_condtionList)
 	{
 		m_HealthRegeneration +=  condi.Value->regeneration;
 	}
@@ -160,9 +161,11 @@ void ABaseCharacter::damage (float value, HBDamageType damageType)
 		m_Health = m_MaxHealth;
 }
 
-void ABaseCharacter::applyBuff(UBaseSkillComponent* buff)
+void ABaseCharacter::applyBuff(UBaseBuff* buff)
 {
-
+	if (!(m_BuffList.Contains(buff->getName())))
+		m_BuffCount++;
+	m_BuffList.Add(buff->getName(), buff);
 }
 
 void ABaseCharacter::applyDebuff(UBaseSkillComponent* buff)
@@ -182,15 +185,15 @@ uint8 ABaseCharacter::getAttributeValue(Attributes attributeName)
 
 void ABaseCharacter::applyCondition(UBaseCondition* condition)
 {
-	if (!(condtionList.Contains(condition->condition)))
-		m_conditionCount++;
-	condtionList.Add(condition->condition, condition);
+	if (!(m_condtionList.Contains(condition->condition)))
+		m_ConditionCount++;
+	m_condtionList.Add(condition->condition, condition);
 	
 }
 
 uint8 ABaseCharacter::getCondtionCount()
 {
-	return m_conditionCount;
+	return m_ConditionCount;
 }
 
 void ABaseCharacter::knockDownCharacter(float duration)

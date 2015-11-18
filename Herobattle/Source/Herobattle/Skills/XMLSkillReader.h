@@ -32,4 +32,7 @@ private:
 
 	TArray<UBaseSkillComponent*> createImpact(FXmlNode* impactNode);
 	TArray<USkill*> readeSkillsFromXml(FXmlNode* node);
+
+
+	FString currentSkillName;
 };

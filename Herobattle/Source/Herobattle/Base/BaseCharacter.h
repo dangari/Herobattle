@@ -68,7 +68,7 @@ public:
 
 	void damage(float value, HBDamageType damageType);
 
-	void applyBuff(UBaseSkillComponent* buff);
+	void applyBuff(UBaseBuff* buff);
 
 	void applyDebuff(UBaseSkillComponent* buff);
 
@@ -92,13 +92,13 @@ private:
 
 	Profession primaryProfession;
 	Profession secondaryProfession;
-	TMap<Condition, UBaseCondition*> condtionList;
-	TMap<FString, TArray<UBaseSkillComponent>> buffList;
+	TMap<Condition, UBaseCondition*> m_condtionList;
+	TMap<FString, UBaseBuff*> m_BuffList;
 	
 	UPROPERTY(Replicated)
 	USkill* skillList[8];
-	int m_conditionCount;
-
+	int m_ConditionCount;
+	int m_BuffCount;
 	//removes condition from list if duration is expired
 	void updateCondtion(float DeltaTime);
 

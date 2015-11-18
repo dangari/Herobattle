@@ -17,10 +17,8 @@ class  HEROBATTLE_API UBaseSkillComponent : public UObject
 	GENERATED_BODY()
 //Parameters
 public:
-	int scaleTable[20];
-	Attributes scaleAttribute;
-private:
-// Functions
+
+
 public:
 	UBaseSkillComponent();
 	~UBaseSkillComponent();
@@ -29,12 +27,16 @@ public:
 	virtual float getScore();
 	virtual void init(FXmlNode* node);
 	virtual FString ToString();
+
+	bool isExpired();
 	static UBaseSkillComponent* UBaseSkillComponent::MAKE();
 
-	FString name = TEXT("Default");
+	FString SkillName;
+	int scaleTable[20];
+	Attributes scaleAttribute;
 
 protected:
 	void fillScaleTable(FXmlNode* node);
-
+	bool m_Expired;
 };
 

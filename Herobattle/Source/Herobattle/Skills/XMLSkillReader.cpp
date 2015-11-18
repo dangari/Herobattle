@@ -10,6 +10,7 @@
 #include "Components/ScDamage.h"
 #include "Components/ScCondition.h"
 #include "Components/ScWhenCondition.h"
+#include "Components/ScBuff.h"
 
 
 TMap<FString, classFuncPtr> XMLSkillReader::scObjectNameList;
@@ -23,23 +24,8 @@ XMLSkillReader::XMLSkillReader()
 	scObjectNameList.Add(TEXT("heal"), &createInstance<UScHeal>);
 	scObjectNameList.Add(TEXT("condition"), &createInstance<UScCondition>);
 	scObjectNameList.Add(TEXT("when"), &createInstance<UScWhenCondition>);
+	scObjectNameList.Add(TEXT("buff"), &createInstance<UScBuff>);
 
-	// loading file
-	//FString projectDir = FPaths::GameDir();
-	//FXmlFile* file = new FXmlFile();
-	//projectDir += "Source/Herobattle/Definitions/skill.xml";
-	//file->LoadFile(projectDir, EConstructMethod::ConstructFromFile);
-
-	//// get Root node
-	//auto pRoot = file->GetRootNode();
-
-	//readeSkillsFromXml(pRoot);
-	//TArray<FXmlNode*> propertyList = pRoot->GetChildrenNodes();
-	//FXmlNode* temp = propertyList[0];
-	//FXmlNode* temp2 = temp->GetChildrenNodes()[0];
-	//ReadSkill(temp2);
-	//FString pChild = pRoot->GetTag();
-	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, pChild);
 }
 
 XMLSkillReader::~XMLSkillReader()
@@ -74,6 +60,7 @@ TArray<UBaseSkillComponent*> XMLSkillReader::createImpact(FXmlNode* impactNode)
 			classFuncPtr createFunc = *(scObjectNameList.Find(tagName));
 			UBaseSkillComponent* sc = createFunc();
 			sc->init(obj);
+			sc->SkillName = currentSkillName;
 			skillComponentList.Add(sc);
 		}
 	}
@@ -120,7 +107,7 @@ USkill* XMLSkillReader::ReadSkill(FXmlNode* skillRootNode)
 		if (tagName.Equals(TEXT("name")))
 		{
 			skill->name = prop->GetAttribute(value);
-			
+			currentSkillName = prop->GetAttribute(value);
 		}
 
 		else if (tagName.Equals(TEXT("costs")))

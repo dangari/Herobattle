@@ -8,6 +8,7 @@
 
 UBaseSkillComponent::UBaseSkillComponent()
 {
+	m_Expired = false;
 }
 
 
@@ -42,6 +43,11 @@ FString UBaseSkillComponent::ToString()
 	return sCText;
 }
 
+
+bool UBaseSkillComponent::isExpired()
+{
+	return m_Expired;
+}
 
 void UBaseSkillComponent::fillScaleTable(FXmlNode* node)
 {

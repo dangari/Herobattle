@@ -8,6 +8,8 @@
 
 
 class UBaseBuff;
+
+typedef UBaseSkillComponent* (*classFuncPtr)();
 /**
  * 
  */
@@ -27,5 +29,10 @@ public:
 	SkillType skillType;
 
 private:
-	TArray<UBaseSkillComponent*> sCBuffList;
+
+	UBaseBuff* createBuff(float duration);
+
+	TArray<classFuncPtr> sCBuffList;
+	bool m_isInfinityUsage;
+	FString m_Usage;
 };

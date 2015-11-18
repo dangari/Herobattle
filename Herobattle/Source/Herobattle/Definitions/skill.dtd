@@ -55,6 +55,7 @@
   value CDATA #REQUIRED
   type CDATA #REQUIRED
   scaling CDATA #REQUIRED
+  usage CDATA #REQUIRED
   >
 <!ELEMENT condition (step)*>
 <!ATTLIST condition 

@@ -13,7 +13,7 @@
  * 
  */
 
-class UBaseBuff;
+class UBuff;
 class UBaseCondition;
 
 
@@ -68,11 +68,11 @@ public:
 
 	void damage(ABaseCharacter* caster, float value, HBDamageType damageType);
 
-	void applyBuff(UBaseBuff* buff);
+	void applyBuff(UBuff* buff);
 
 	void applyDebuff(UBaseSkillComponent* buff);
 
-	void apllyUniQueBuff(UBaseBuff* buff);
+	void apllyUniQueBuff(UBuff* buff);
 
 	uint8 getAttributeValue(Attributes attributeName);
 
@@ -93,7 +93,7 @@ private:
 	Profession primaryProfession;
 	Profession secondaryProfession;
 	TMap<Condition, UBaseCondition*> m_condtionList;
-	TMap<FString, UBaseBuff*> m_BuffList;
+	TMap<FString, UBuff*> m_BuffList;
 	
 	UPROPERTY(Replicated)
 	USkill* skillList[8];

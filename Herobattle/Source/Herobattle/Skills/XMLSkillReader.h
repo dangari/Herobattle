@@ -2,7 +2,6 @@
 
 #pragma once
 #include "../Enum/SkillEnums.h"
-#include "Components/BaseSkillComponent.h"
 
 /**
  * 
@@ -10,9 +9,14 @@
 class USkill;
 class FXmlNode;
 class USkill;
+class UBaseSkillComponent;
+class UBaseBuffCompenent;
 
-template<typename T> UBaseSkillComponent * createInstance() { return NewObject<T>(); }
+template<typename T> UBaseSkillComponent * createScInstance() { return NewObject<T>(); }
+template<typename T> UBaseBuffCompenent * createBcInstance() { return NewObject<T>(); }
+
 typedef UBaseSkillComponent* (*classFuncPtr)();
+typedef UBaseBuffCompenent* (*bCclassFuncPtr)();
 
 class HEROBATTLE_API XMLSkillReader
 {
@@ -27,6 +31,7 @@ public:
 
 
 	static TMap<FString, classFuncPtr> scObjectNameList;
+	static TMap<FString, bCclassFuncPtr> bcObjectNameList;
 
 private:
 

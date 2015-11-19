@@ -7,9 +7,9 @@
 #include "ScBuff.generated.h"
 
 
-class UBaseBuff;
+class UBuff;
+struct FBuffContainer;
 
-typedef UBaseSkillComponent* (*classFuncPtr)();
 /**
  * 
  */
@@ -30,9 +30,9 @@ public:
 
 private:
 
-	UBaseBuff* createBuff(float duration);
+	UBuff* createBuff(float duration);
 
-	TArray<classFuncPtr> sCBuffList;
+	TArray<FBuffContainer> bCBuffList;
 	bool m_isInfinityUsage;
 	FString m_Usage;
 };

@@ -4,7 +4,8 @@
 #include "ScBuff.h"
 #include "../../Base/BaseCharacter.h"
 #include "../XMLSkillReader.h"
-#include "../Buff/BaseBuff.h"
+#include "../Buff/Buff.h"
+#include "../Buff/BuffContainer.h"
 UScBuff::UScBuff()
 {
 	//damageType = HBDamageType::FIRE;
@@ -20,8 +21,8 @@ bool UScBuff::run(ABaseCharacter* target, ABaseCharacter* self)
 {
 	bool b = true;
 
-	UBaseBuff* buff = createBuff(self->getAttributeValue(scaleAttribute));
-	target->applyBuff(buff);
+	//UBuff* buff = createBuff(self->getAttributeValue(scaleAttribute));
+	//target->applyBuff(buff);
 	return b;
 }
 
@@ -39,15 +40,18 @@ void UScBuff::init(FXmlNode* node)
 	if (tagName.Equals(TEXT("buff")))
 	{
 		fillScaleTable(node);
-	}
-	TArray<FXmlNode*> buffList = node->GetChildrenNodes();
-	for (auto& buffs : buffList)
-	{
-		tagName = buffs->GetTag();
-		if (XMLSkillReader::scObjectNameList.Contains(tagName))
+
+		TArray<FXmlNode*> buffList = node->GetChildrenNodes();
+		for (auto& buffs : buffList)
 		{
-			classFuncPtr createFunc = *(XMLSkillReader::scObjectNameList.Find(tagName));
-			sCBuffList.Add(createFunc);
+			tagName = buffs->GetTag();
+			if (XMLSkillReader::bcObjectNameList.Contains(tagName))
+			{
+				FBuffContainer buff;
+				buff.buffName = tagName;
+				buff.fillScaleTable(buffs);
+				bCBuffList.Add(buff);
+			}
 		}
 	}
 }
@@ -59,16 +63,17 @@ FString UScBuff::ToString()
 	return TEXT("");
 }
 
-UBaseBuff* UScBuff::createBuff(float duration)
+UBuff* UScBuff::createBuff(float duration)
 {
-	TArray<UBaseSkillComponent*> scList;
+	/*TArray<UBaseSkillComponent*> scList;
 	for (auto& createFunc : sCBuffList)
 	{
-		UBaseSkillComponent* sc = createFunc();
-		scList.Add(sc);
+	UBaseSkillComponent* sc = createFunc();
+	scList.Add(sc);
 	}
 
-	UBaseBuff* buff = NewObject<UBaseBuff>();
+	UBuff* buff = NewObject<UBuff>();
 	buff->init(scList, duration, SkillName, m_Usage);
-	return buff;
+	return buff;*/
+	return nullptr;
 }

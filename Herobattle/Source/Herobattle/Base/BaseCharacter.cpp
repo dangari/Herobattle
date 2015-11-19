@@ -2,7 +2,7 @@
 
 #include "Herobattle.h"
 #include "BaseCharacter.h"
-#include "../Skills/Buff/BaseBuff.h"
+#include "../Skills/Buff/Buff.h"
 #include "../Skills/Condition/BaseCondition.h"
 #include "UnrealNetwork.h"
 #include "HerobattleGameMode.h"
@@ -170,7 +170,7 @@ void ABaseCharacter::damage (ABaseCharacter* caster, float value, HBDamageType d
 		m_Health = m_MaxHealth;
 }
 
-void ABaseCharacter::applyBuff(UBaseBuff* buff)
+void ABaseCharacter::applyBuff(UBuff* buff)
 {
 	if (!(m_BuffList.Contains(buff->getName())))
 		m_BuffCount++;
@@ -182,7 +182,7 @@ void ABaseCharacter::applyDebuff(UBaseSkillComponent* buff)
 
 }
 
-void ABaseCharacter::apllyUniQueBuff(UBaseBuff* buff)
+void ABaseCharacter::apllyUniQueBuff(UBuff* buff)
 {
 
 }

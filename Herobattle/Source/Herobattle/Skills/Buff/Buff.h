@@ -1,17 +1,17 @@
 #pragma once
 
-#include "BaseBuff.generated.h"
+#include "Buff.generated.h"
 
 class UBaseSkillComponent;
 class ABaseCharacter;
 
 UCLASS()
-class  HEROBATTLE_API UBaseBuff : public UObject
+class  HEROBATTLE_API UBuff : public UObject
 {
 	GENERATED_BODY()
 public:
-	UBaseBuff();
-	~UBaseBuff();
+	UBuff();
+	~UBuff();
 
 	void init(TArray<UBaseSkillComponent*> scList, float duration, FString name, FString usage);
 	bool run(ABaseCharacter* target, ABaseCharacter* self);

@@ -5,6 +5,8 @@
 #include "XmlParser.h"
 #include "Engine.h"
 #include "Skill.h"
+
+//Skill Components
 #include "Components/BaseSkillComponent.h"
 #include "Components/ScHeal.h"
 #include "Components/ScDamage.h"
@@ -12,20 +14,29 @@
 #include "Components/ScWhenCondition.h"
 #include "Components/ScBuff.h"
 
+//Buff Components
+#include "Buff/BaseBuffCompenent.h"
+#include "Buff/BcHeal.h"
+
+
 
 TMap<FString, classFuncPtr> XMLSkillReader::scObjectNameList;
+TMap<FString, bCclassFuncPtr> XMLSkillReader::bcObjectNameList;
 
 
 XMLSkillReader::XMLSkillReader()
 {
 
 	//Fill scObjectNameList
-	scObjectNameList.Add(TEXT("damage"), &createInstance<UScDamage>);
-	scObjectNameList.Add(TEXT("heal"), &createInstance<UScHeal>);
-	scObjectNameList.Add(TEXT("condition"), &createInstance<UScCondition>);
-	scObjectNameList.Add(TEXT("when"), &createInstance<UScWhenCondition>);
-	scObjectNameList.Add(TEXT("buff"), &createInstance<UScBuff>);
+	scObjectNameList.Add(TEXT("damage"), &createScInstance<UScDamage>);
+	scObjectNameList.Add(TEXT("heal"), &createScInstance<UScHeal>);
+	scObjectNameList.Add(TEXT("condition"), &createScInstance<UScCondition>);
+	scObjectNameList.Add(TEXT("when"), &createScInstance<UScWhenCondition>);
+	scObjectNameList.Add(TEXT("buff"), &createScInstance<UScBuff>);
 
+	//Flill bcObjectList
+	bcObjectNameList.Add(TEXT("heal"), &createBcInstance<UBcHeal>);
+	//scObjectNameList.Add(TEXT("heal"), &createScInstance<UScHeal>);
 }
 
 XMLSkillReader::~XMLSkillReader()

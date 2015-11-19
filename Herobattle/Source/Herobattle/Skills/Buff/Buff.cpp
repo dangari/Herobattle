@@ -1,19 +1,19 @@
 #include "Herobattle.h"
-#include "BaseBuff.h"
+#include "Buff.h"
 #include "../Components/BaseSkillComponent.h"
 #include "Base/BaseCharacter.h"
 
 
-UBaseBuff::UBaseBuff()
+UBuff::UBuff()
 {
 }
 
 
-UBaseBuff::~UBaseBuff()
+UBuff::~UBuff()
 {
 }
 
-void UBaseBuff::init(TArray<UBaseSkillComponent*> scList, float duration, FString name, FString usage)
+void UBuff::init(TArray<UBaseSkillComponent*> scList, float duration, FString name, FString usage)
 {
 	m_ScList = scList;
 	m_Duration = duration;
@@ -30,7 +30,7 @@ void UBaseBuff::init(TArray<UBaseSkillComponent*> scList, float duration, FStrin
 }
 
 
-bool UBaseBuff::run(ABaseCharacter* target, ABaseCharacter* self)
+bool UBuff::run(ABaseCharacter* target, ABaseCharacter* self)
 {
 	bool b = true;
 	for (auto& sc : m_ScList)
@@ -42,12 +42,12 @@ bool UBaseBuff::run(ABaseCharacter* target, ABaseCharacter* self)
 	return b;
 }
 
-void UBaseBuff::updateDuration(float deltaTime)
+void UBuff::updateDuration(float deltaTime)
 {
 	m_Duration -= deltaTime;
 }
 
-bool UBaseBuff::isExpired()
+bool UBuff::isExpired()
 {
 	if (m_Duration <= 0 || m_Usage <= 0)
 		return true;
@@ -59,7 +59,7 @@ bool UBaseBuff::isExpired()
 	return b;
 }
 
-FString UBaseBuff::getName()
+FString UBuff::getName()
 {
 	return m_Name;
 }

@@ -18,7 +18,7 @@ bool UScDamage::run(ABaseCharacter* target, ABaseCharacter* self)
 {
 	Super::run(target, self);
 	float damage = scaleTable[self->getAttributeValue(scaleAttribute)];
-	target->damage(damage, damageType);
+	target->damage(self, damage, damageType);
 	return true;
 }
 

@@ -16,7 +16,7 @@ bool UScHeal::run(ABaseCharacter* target, ABaseCharacter* self)
 {
 	Super::run(target, self);
 	float heal = scaleTable[self->getAttributeValue(scaleAttribute)];
-	target->heal(heal);
+	target->heal(self, heal);
 	return true;
 }
 float UScHeal::getScore()

@@ -17,6 +17,7 @@ class  HEROBATTLE_API UScCondition : public UBaseSkillComponent
 public:
 
 	Condition conditionType;
+	TargetType targetType;
 private:
 // Functions
 public:

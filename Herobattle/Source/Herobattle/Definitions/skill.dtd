@@ -43,12 +43,14 @@
 <!ATTLIST heal 
   value CDATA #REQUIRED
   scaling CDATA #REQUIRED
+  target (TARGET|SELF) #REQUIRED
   >
 <!ELEMENT damage (step?)*>
 <!ATTLIST damage 
   value CDATA #REQUIRED
   type CDATA #REQUIRED
   scaling CDATA #REQUIRED
+  target (TARGET|SELF) #REQUIRED
   >
 <!ELEMENT buff (step?|heal|damage|buff|regeneration|foreach|when|block|knockdown|skillcooldown)*>
 <!ATTLIST buff 
@@ -62,12 +64,14 @@
   value CDATA #REQUIRED
   type CDATA #REQUIRED
   scaling CDATA #REQUIRED
+  target (TARGET|SELF) #REQUIRED
   >
 <!ELEMENT regeneration (step?)*>
 <!ATTLIST regeneration 
   value CDATA #REQUIRED
   type CDATA #REQUIRED
   scaling CDATA #REQUIRED
+  target (TARGET|SELF) #REQUIRED
   >
 <!ELEMENT foreach (heal|damage|buff|condition|regeneration|when)*>
 <!ATTLIST foreach
@@ -84,17 +88,20 @@
   value CDATA #REQUIRED
   type CDATA #REQUIRED
   scaling CDATA #REQUIRED
+  target (TARGET|SELF) #REQUIRED
   >
 
 <!ELEMENT knockdown (step?)>
 <!ATTLIST knockdown 
   value CDATA #REQUIRED
   scaling CDATA #REQUIRED
+  target (TARGET|SELF) #REQUIRED
   >
 <!ELEMENT skillcooldown (step?)>
 <!ATTLIST skillcooldown 
   value CDATA #REQUIRED
   scaling CDATA #REQUIRED
+  target (TARGET|SELF) #REQUIRED
   >
 
 <!-- sub nodes -->

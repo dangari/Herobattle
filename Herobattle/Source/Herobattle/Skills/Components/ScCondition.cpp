@@ -18,9 +18,14 @@ UScCondition::~UScCondition()
 
 bool UScCondition::run(ABaseCharacter* target, ABaseCharacter* self)
 {
+	ABaseCharacter* testTarget;
+	if (targetType == TargetType::SELF)
+		testTarget = self;
+	else
+		testTarget = target;
 	float duration = scaleTable[self->getAttributeValue(scaleAttribute)];
 	UBaseCondition* condition = UBaseCondition::MAKE(conditionType, duration);
-	target->applyCondition(condition);
+	testTarget->applyCondition(condition);
 	return true;
 	
 	
@@ -32,6 +37,8 @@ float UScCondition::getScore()
 
 void UScCondition::init(FXmlNode* node)
 {
+
+	targetType = SkillEnums::stringToTargetType(node->GetAttribute("target"));
 	FString cType = node->GetAttribute(TEXT("type"));
 	this->conditionType = SkillEnums::stringToCondition(cType);
 	FString tagName = node->GetTag();

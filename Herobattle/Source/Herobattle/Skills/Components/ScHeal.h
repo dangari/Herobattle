@@ -7,6 +7,7 @@ class  HEROBATTLE_API UScHeal : public UBaseSkillComponent
 {
 	GENERATED_BODY()
 public:
+	TargetType targetType;
 	UScHeal();
 	~UScHeal();
 	virtual bool run(ABaseCharacter* target, ABaseCharacter* self) override;

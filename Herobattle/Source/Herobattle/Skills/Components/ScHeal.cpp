@@ -14,9 +14,14 @@ UScHeal::~UScHeal()
 
 bool UScHeal::run(ABaseCharacter* target, ABaseCharacter* self)
 {
-	Super::run(target, self);
+	ABaseCharacter* testTarget;
+	if (targetType == TargetType::SELF)
+		testTarget = self;
+	else
+		testTarget = target;
+
 	float heal = scaleTable[self->getAttributeValue(scaleAttribute)];
-	target->heal(self, heal);
+	testTarget->heal(self, heal);
 	return true;
 }
 float UScHeal::getScore()
@@ -26,6 +31,7 @@ float UScHeal::getScore()
 
 void UScHeal::init(FXmlNode* node)
 {
+	targetType = SkillEnums::stringToTargetType(node->GetAttribute("target"));
 	FString tagName = node->GetTag();
 	if (tagName.Equals(TEXT("heal")))
 	{

@@ -19,12 +19,19 @@ UScKnockDown::~UScKnockDown()
 
 bool UScKnockDown::run(ABaseCharacter* target, ABaseCharacter* self)
 {
-	target->knockDownCharacter(scaleTable[target->getAttributeValue(scaleAttribute)]);
+	ABaseCharacter* testTarget;
+	if (targetType == TargetType::SELF)
+		testTarget = self;
+	else
+		testTarget = target;
+
+	testTarget->knockDownCharacter(scaleTable[target->getAttributeValue(scaleAttribute)]);
 	return true;
 }
 
 void UScKnockDown::init(FXmlNode* node)
 {
+	targetType = SkillEnums::stringToTargetType(node->GetAttribute("target"));
 	TArray<FXmlNode*> propertyList = node->GetChildrenNodes();
 	FString tagName = node->GetTag();
 	if (tagName.Equals(TEXT("knockdown")))

@@ -9,7 +9,7 @@
 			<targettype value="ENEMY"/>
 			<effects>
 				<impact>
-					<damage value="20" scaling="FIRE_MAGIC" type="FIRE">
+					<damage value="20" scaling="FIRE_MAGIC" type="FIRE" target="TARGET">
 						<step key="1" value="24"/>
 						<step key="2" value="27"/>
 					</damage>

@@ -16,6 +16,11 @@ UScDamage::~UScDamage()
 
 bool UScDamage::run(ABaseCharacter* target, ABaseCharacter* self)
 {
+	ABaseCharacter* testTarget;
+	if (targetType == TargetType::SELF)
+		testTarget = self;
+	else
+		testTarget = target;
 	Super::run(target, self);
 	float damage = scaleTable[self->getAttributeValue(scaleAttribute)];
 	target->damage(self, damage, damageType);
@@ -29,6 +34,7 @@ float UScDamage::getScore()
 
 void UScDamage::init(FXmlNode* node)
 {
+	targetType = SkillEnums::stringToTargetType(node->GetAttribute("target"));
 	FString cType = node->GetAttribute(TEXT("type"));
 	this->damageType = SkillEnums::stringToHBDamageType(cType);
 	TArray<FXmlNode*> propertyList = node->GetChildrenNodes();

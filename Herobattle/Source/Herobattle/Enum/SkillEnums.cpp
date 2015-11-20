@@ -52,8 +52,10 @@ SkillType SkillEnums::stringToSkillType(FString sSkillType)
 {
 	if (sSkillType.Equals(TEXT("ENTCHANTMENT")))
 		return SkillType::ENTCHANTMENT;
-	if (sSkillType.Equals(TEXT("ATTACK")))
-		return SkillType::ATTACK;
+	if (sSkillType.Equals(TEXT("RANGEATTACK")))
+		return SkillType::RANGEATTACK;
+	if (sSkillType.Equals(TEXT("MELEEATTACK")))
+		return SkillType::MELEEATTACK;
 	if (sSkillType.Equals(TEXT("HEX")))
 		return SkillType::HEX;
 	if (sSkillType.Equals(TEXT("SPELL")))
@@ -103,6 +105,15 @@ HBDamageType SkillEnums::stringToHBDamageType(FString sHBDamageType)
 	if (sHBDamageType.Equals(TEXT("LIGHTNING")))
 		return HBDamageType::LIGHTNING;
 	return HBDamageType::PHYSICAL;
+}
+
+Trigger SkillEnums::stringToTrigger(FString sTrigger)
+{
+	if (sTrigger.Equals(TEXT("DAMAGE")))
+		return Trigger::DAMAGE;
+	if (sTrigger.Equals(TEXT("HEAL")))
+		return Trigger::HEAL;
+	return Trigger::HEAL;
 }
 
 FString SkillEnums::AttributesToString(Attributes attribute)

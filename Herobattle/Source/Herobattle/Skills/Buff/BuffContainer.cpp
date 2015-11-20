@@ -2,11 +2,3 @@
 
 #include "Herobattle.h"
 #include "BuffContainer.h"
-
-BuffContainer::BuffContainer()
-{
-}
-
-BuffContainer::~BuffContainer()
-{
-}

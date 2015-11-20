@@ -10,7 +10,17 @@
 
 
 
-void UBaseBuffCompenent::init(FXmlNode* node, ABaseCharacter* owner)
+UBaseBuffCompenent::UBaseBuffCompenent()
+{
+
+}
+
+UBaseBuffCompenent::~UBaseBuffCompenent()
+{
+
+}
+
+void UBaseBuffCompenent::init(FBuffContainer bContainer, ABaseCharacter* owner)
 {
 
 }
@@ -18,6 +28,11 @@ void UBaseBuffCompenent::init(FXmlNode* node, ABaseCharacter* owner)
 bool UBaseBuffCompenent::isExpired()
 {
 	return false;
+}
+
+void UBaseBuffCompenent::update(float deltaTime)
+{
+
 }
 
 bool UBaseBuffCompenent::run(ABaseCharacter* caster, ABaseCharacter* self, int value)

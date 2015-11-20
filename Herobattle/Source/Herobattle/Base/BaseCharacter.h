@@ -64,9 +64,9 @@ public:
 
 
 // this Functions get called by Skills
-	void heal(ABaseCharacter* caster, float value);
+	void heal(ABaseCharacter* caster, float value, bool withBuff = true);
 
-	void damage(ABaseCharacter* caster, float value, HBDamageType damageType);
+	void damage(ABaseCharacter* caster, float value, HBDamageType damageType, bool withBuff = true);
 
 	void applyBuff(UBuff* buff);
 

@@ -44,6 +44,7 @@
   value CDATA #REQUIRED
   scaling CDATA #REQUIRED
   target (TARGET|SELF) #REQUIRED
+  trigger (HEAL|DAMAGE) #IMPLIED
   >
 <!ELEMENT damage (step?)*>
 <!ATTLIST damage 

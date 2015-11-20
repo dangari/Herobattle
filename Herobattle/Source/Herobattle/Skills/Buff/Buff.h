@@ -1,9 +1,14 @@
 #pragma once
 
+#include "BaseBuffCompenent.h"
 #include "Buff.generated.h"
 
-class UBaseSkillComponent;
+
 class ABaseCharacter;
+
+
+typedef UBaseBuffCompenent* (*bCclassFuncPtr)();
+
 
 UCLASS()
 class  HEROBATTLE_API UBuff : public UObject
@@ -13,9 +18,13 @@ public:
 	UBuff();
 	~UBuff();
 
-	void init(TArray<UBaseSkillComponent*> scList, float duration, FString name, FString usage);
-	bool run(ABaseCharacter* target, ABaseCharacter* self);
-	void updateDuration(float deltaTime);
+	void init(ABaseCharacter* owner, TArray<FBuffContainer> bCBuffList, float duration, FString name, FString usage);
+
+	//value is incoming damage or heal
+	// heal is positive and and damage is negative
+	bool run(ABaseCharacter* target, ABaseCharacter* self, int value);
+
+	void updateBuff(float deltaTime);
 	// test if the buff is still active
 	bool isExpired();
 
@@ -23,7 +32,7 @@ public:
 	FString getName();
 
 private:
-	TArray<UBaseSkillComponent*> m_ScList;
+	TArray<UBaseBuffCompenent*> m_BcList;
 
 	float m_Duration;
 	FString m_Name;

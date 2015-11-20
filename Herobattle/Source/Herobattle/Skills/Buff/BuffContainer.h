@@ -3,6 +3,7 @@
 
 #pragma once
 #include "Enum/SkillEnums.h"
+#include "XmlParser.h"
 #include "BuffContainer.generated.h"
 
 /**
@@ -16,8 +17,12 @@ struct FBuffContainer
 
 	int scaleTable[20];
 	Attributes scaleAttribute;
+
+	TargetType targetType;
+
 	FString buffName;
 
+	FXmlNode* node;
 
 	void fillScaleTable(FXmlNode* node)
 	{

@@ -21,8 +21,10 @@ bool UScBuff::run(ABaseCharacter* target, ABaseCharacter* self)
 {
 	bool b = true;
 
-	//UBuff* buff = createBuff(self->getAttributeValue(scaleAttribute));
-	//target->applyBuff(buff);
+	UBuff* buff = NewObject<UBuff>();
+	float duration = scaleTable[self->getAttributeValue(scaleAttribute)];
+	buff->init(self, bCBuffList, duration, TEXT("name"), m_Usage);
+	target->applyBuff(buff);
 	return b;
 }
 
@@ -33,9 +35,13 @@ float UScBuff::getScore()
 
 void UScBuff::init(FXmlNode* node)
 {
+	// the skill type of the buff like stance, enchantment ...
 	FString cType = node->GetAttribute(TEXT("type"));
-	m_Usage = node->GetAttribute((TEXT("usage")));
 	this->skillType = SkillEnums::stringToSkillType(cType);
+
+	// reads the usage of the buff
+	m_Usage = node->GetAttribute((TEXT("usage")));
+	
 	FString tagName = node->GetTag();
 	if (tagName.Equals(TEXT("buff")))
 	{
@@ -49,6 +55,8 @@ void UScBuff::init(FXmlNode* node)
 			{
 				FBuffContainer buff;
 				buff.buffName = tagName;
+				buff.targetType = SkillEnums::stringToTargetType(buffs->GetAttribute(TEXT("target")));
+				buff.node = buffs;
 				buff.fillScaleTable(buffs);
 				bCBuffList.Add(buff);
 			}

@@ -3,6 +3,8 @@
 #pragma once
 
 #include "Object.h"
+#include "Enum/SkillEnums.h"
+#include "BuffContainer.h"
 #include "BaseBuffCompenent.generated.h"
 
 /**
@@ -19,12 +21,21 @@ class HEROBATTLE_API UBaseBuffCompenent : public UObject
 	
 public:
 
-	virtual void init(FXmlNode* node, ABaseCharacter* owner);
-	// runs the buff
+	UBaseBuffCompenent();
+	~UBaseBuffCompenent();
+
+	virtual void init(FBuffContainer bContainer, ABaseCharacter* owner);
+
+	// value ist the incoming heal or damage
+	// damage is always negative and heal always Positve
 	virtual bool run(ABaseCharacter* caster, ABaseCharacter* self, int value);
+
 	virtual bool isExpired();
+
+	virtual void update(float deltaTime);
 	
 protected:
 	ABaseCharacter* owner;
 	int usage;
+	TargetType targetType;
 };

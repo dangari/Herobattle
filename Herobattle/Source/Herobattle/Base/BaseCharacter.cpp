@@ -146,14 +146,14 @@ bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
 }
 
 
-void ABaseCharacter::heal(ABaseCharacter* caster, float value)
+void ABaseCharacter::heal(ABaseCharacter* caster, float value, bool withBuff)
 {
 
-	if (caster != this)
+	if (withBuff)
 	{
 		for (auto& buff : m_BuffList)
 		{
-			buff.Value->run(this, this);
+			buff.Value->run(caster, this, value);
 		}
 	}
 	m_Health += value;
@@ -162,8 +162,15 @@ void ABaseCharacter::heal(ABaseCharacter* caster, float value)
 }
 
 
-void ABaseCharacter::damage (ABaseCharacter* caster, float value, HBDamageType damageType)
+void ABaseCharacter::damage(ABaseCharacter* caster, float value, HBDamageType damageType,bool withBuff)
 {
+	if (withBuff)
+	{
+		for (auto& buff : m_BuffList)
+		{
+			buff.Value->run(caster, this, -1*value);
+		}
+	}
 	m_Health -= value;
 	// test if target is dead
 	if (m_Health < 0)

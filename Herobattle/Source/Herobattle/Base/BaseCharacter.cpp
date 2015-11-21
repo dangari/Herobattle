@@ -6,20 +6,19 @@
 #include "../Skills/Condition/BaseCondition.h"
 #include "UnrealNetwork.h"
 #include "HerobattleGameMode.h"
+#include "SkillMessages.h"
 
 
 ABaseCharacter::ABaseCharacter()
+:m_MaxHealth(480),
+m_MaxMana(25),
+m_Health(240),
+m_Mana(10.0f),
+m_HealthRegeneration(0),
+m_ManaRegeneration(2),
+m_ConditionCount(0),
+m_BuffCount(0)
 {
-
-	m_MaxHealth = 480;
-	m_MaxMana = 25;
-	m_Health = 240;
-	m_Mana = 10.0f;
-	m_HealthRegeneration = 0;
-	m_ManaRegeneration = 2;
-	m_ConditionCount = 0;
-	m_BuffCount = 0;
-
 }
 
 ABaseCharacter::~ABaseCharacter()
@@ -36,6 +35,7 @@ void ABaseCharacter::BeginPlay()
 		skillList[0] = gm->skillList[0];
 		skillList[1] = gm->skillList[1];
 		skillList[2] = gm->skillList[2];
+		messages = NewObject<USkillMessages>();
 	}
 	else
 	{
@@ -51,6 +51,7 @@ void ABaseCharacter::Tick(float DeltaTime)
 	updateCondtion(DeltaTime);
 	updateRegeneration();
 	UpdateResources(DeltaTime);
+	updateSkillCooldown(DeltaTime);
 
 }
 
@@ -105,6 +106,41 @@ void ABaseCharacter::updateRegeneration()
 	// add gate at +10 regeneration
 }
 
+bool ABaseCharacter::skillManaCost(float value)
+{
+	if ((m_Mana - value) < 0)
+	{
+		messages->registerMessage(TEXT("Not enough mana"), MessageType::SKILLERROR);
+		return false;
+	}
+	else
+	{
+		m_Mana -= value;
+		return true;
+	}
+}
+
+bool ABaseCharacter::skillIsOnCooldown(int slot)
+{
+	if (skillcooldowns[slot] <= 0.001f)
+		return false;
+	else
+	{
+		messages->registerMessage(TEXT("skill is on cooldown"), MessageType::SKILLERROR);
+		return true;
+	}
+}
+
+void ABaseCharacter::updateSkillCooldown(float deltaTime)
+{
+	for (auto& cooldown : skillcooldowns)
+	{
+		cooldown -= deltaTime;
+		if (cooldown <= 0)
+			cooldown = 0.0f;
+	}
+}
+
 void ABaseCharacter::ChangeHealth(float value)
 {
 	m_Health += value;
@@ -137,12 +173,17 @@ bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
 	if (HasAuthority())
 	{
 		USkill* skill = skillList[slot];
-		FString temp = skill->name;
-		UE_LOG(LogTemp, Warning, TEXT("Skill name: %s"), *temp);
-		bool b = skill->run(target, this);
-		return b;
+		int newMana = m_Mana - skill->manaCost;
+		if (!skillIsOnCooldown(slot) && skillManaCost(skill->manaCost))
+		{
+			skillcooldowns[slot] = skill->recharge;
+			currentSkill.registerSkill(skill);
+			UE_LOG(LogTemp, Warning, TEXT("Skill name: %s"), *(currentSkill.skillName));
+			bool b = skill->run(target, this);
+			return true;
+		}
 	}
-	return true;
+	return false;
 }
 
 
@@ -231,5 +272,7 @@ void ABaseCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & Ou
 	DOREPLIFETIME(ABaseCharacter, m_Mana);
 	DOREPLIFETIME(ABaseCharacter, m_ManaRegeneration);
 	DOREPLIFETIME(ABaseCharacter, m_HealthRegeneration);
-	DOREPLIFETIME(ABaseCharacter, skillList);
+	DOREPLIFETIME(ABaseCharacter, currentSkill);
+	DOREPLIFETIME(ABaseCharacter, messages);
+	DOREPLIFETIME(ABaseCharacter, skillcooldowns);
 }

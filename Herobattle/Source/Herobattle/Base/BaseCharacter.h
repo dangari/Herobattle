@@ -15,8 +15,28 @@
 
 class UBuff;
 class UBaseCondition;
+class USkillMessages;
 
 
+USTRUCT()
+struct FSkillStatus
+{
+	GENERATED_USTRUCT_BODY()
+
+	void registerSkill(USkill* skill)
+	{
+		castingSkill = true;
+		this->skill = skill;
+		leftCastTime = skill->castTime;
+		skillName = skill->name;
+	}
+
+	FString skillName;
+	float leftCastTime;
+	USkill* skill;
+
+	bool castingSkill;
+};
 
 
 UCLASS()
@@ -27,23 +47,6 @@ public:
 	ABaseCharacter();
 	~ABaseCharacter();
 	
-
-	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
-	float m_MaxHealth;
-	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
-	float m_MaxMana;
-
-	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
-	float m_Health;
-	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
-	float m_Mana;
-
-	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
-	int32 m_ManaRegeneration;
-
-	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
-	int32 m_HealthRegeneration;
-
 	virtual void BeginPlay() override;
 
 	// Called every frame
@@ -84,10 +87,49 @@ public:
 
 	void updateHealthRegen(float regen);
 
+
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
+	float m_MaxHealth;
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
+	float m_MaxMana;
+
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
+	float m_Health;
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
+	float m_Mana;
+
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
+	int32 m_ManaRegeneration;
+
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
+	int32 m_HealthRegeneration;
+
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = Info)
+	FSkillStatus currentSkill;
+
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = Info)
+	USkillMessages* messages;
+
+
 private:
 
 
 	void UpdateResources(float DeltaSeconds);
+
+	//removes condition from list if duration is expired
+	void updateCondtion(float DeltaTime);
+
+	//updates Regeneration based on De-buffs and conditions
+	void updateRegeneration();
+
+	//checks if enough mana is remaining for the skill
+	//if enough mana is remaining the mana costs get abstracted from the mana of the character
+	bool skillManaCost(float value);
+
+	//test if the skill is on cooldown
+	bool skillIsOnCooldown(int slot);
+
+	void updateSkillCooldown(float deltaTime);
 
 
 	Profession primaryProfession;
@@ -95,13 +137,14 @@ private:
 	TMap<Condition, UBaseCondition*> m_condtionList;
 	TMap<FString, UBuff*> m_BuffList;
 	
+
 	UPROPERTY(Replicated)
 	USkill* skillList[8];
+	UPROPERTY(Replicated)
+	float skillcooldowns[8];
+	
 	int m_ConditionCount;
 	int m_BuffCount;
-	//removes condition from list if duration is expired
-	void updateCondtion(float DeltaTime);
 
-	//updates Regeneration based on De-buffs and conditions
-	void updateRegeneration();
+
 };

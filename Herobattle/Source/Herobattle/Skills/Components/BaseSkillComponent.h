@@ -28,7 +28,6 @@ public:
 	virtual void init(FXmlNode* node);
 	virtual FString ToString();
 
-	bool isExpired();
 	static UBaseSkillComponent* UBaseSkillComponent::MAKE();
 
 	FString SkillName;
@@ -37,6 +36,5 @@ public:
 
 protected:
 	void fillScaleTable(FXmlNode* node);
-	bool m_Expired;
 };
 

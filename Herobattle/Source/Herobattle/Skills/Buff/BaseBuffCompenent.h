@@ -38,4 +38,5 @@ protected:
 	ABaseCharacter* owner;
 	int usage;
 	TargetType targetType;
+
 };

@@ -43,7 +43,7 @@
 <!ATTLIST heal 
   value CDATA #REQUIRED
   scaling CDATA #REQUIRED
-  target (TARGET|SELF) #REQUIRED
+  target (TARGET|SELF|OWNER) #REQUIRED
   trigger (HEAL|DAMAGE) #IMPLIED
   >
 <!ELEMENT damage (step?)*>
@@ -51,7 +51,8 @@
   value CDATA #REQUIRED
   type CDATA #REQUIRED
   scaling CDATA #REQUIRED
-  target (TARGET|SELF) #REQUIRED
+  target (TARGET|SELF|OWNER) #REQUIRED
+  trigger (HEAL|DAMAGE) #IMPLIED
   >
 <!ELEMENT buff (step?|heal|damage|buff|regeneration|foreach|when|block|knockdown|skillcooldown)*>
 <!ATTLIST buff 
@@ -65,14 +66,14 @@
   value CDATA #REQUIRED
   type CDATA #REQUIRED
   scaling CDATA #REQUIRED
-  target (TARGET|SELF) #REQUIRED
+  target (TARGET|SELF|OWNER) #REQUIRED
   >
 <!ELEMENT regeneration (step?)*>
 <!ATTLIST regeneration 
   value CDATA #REQUIRED
   type CDATA #REQUIRED
   scaling CDATA #REQUIRED
-  target (TARGET|SELF) #REQUIRED
+  target (TARGET|SELF|OWNER) #REQUIRED
   >
 <!ELEMENT foreach (heal|damage|buff|condition|regeneration|when)*>
 <!ATTLIST foreach

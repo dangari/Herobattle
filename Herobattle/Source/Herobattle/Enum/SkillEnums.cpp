@@ -77,6 +77,8 @@ TargetType SkillEnums::stringToTargetType(FString sTargetType)
 		return TargetType::FRIEND;
 	if (sTargetType.Equals(TEXT("SELFFREND")))
 		return TargetType::SELFFREND;
+	if (sTargetType.Equals(TEXT("OWNER")))
+		return TargetType::OWNER;
 	return
 		TargetType::ENEMY;
 }

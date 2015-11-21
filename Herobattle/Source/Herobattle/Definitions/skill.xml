@@ -64,7 +64,7 @@
             <step key="4" value="8"/>
             <step key="8" value="16"/>
             <step key="12" value="20"/>
-            <heal value="20" scaling="HEALING_PRAYERS" target="TARGET" trigger="DAMAGE">
+            <heal value="20" scaling="HEALING_PRAYERS" target="OWNER" trigger="DAMAGE">
               <step key="1" value="25"/>
               <step key="2" value="45"/>
               <step key="3" value="100"/>

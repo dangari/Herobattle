@@ -16,7 +16,7 @@ UENUM(BlueprintType)
 enum class SkillType : uint8{ ENTCHANTMENT, RANGEATTACK,MELEEATTACK , HEX, SPELL, HEAL, UNIQUE_BUFF };
 
 UENUM(BlueprintType)
-enum class TargetType : uint8{ SELF, ENEMY, FRIEND, SELFFREND };
+enum class TargetType : uint8{ SELF, ENEMY, FRIEND, SELFFREND, OWNER };
 
 UENUM(BlueprintType)
 enum class Condition : uint8{ BLEEDING, BURNING, DEEPWOUND, POISON };

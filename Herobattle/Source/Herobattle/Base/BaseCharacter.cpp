@@ -15,7 +15,7 @@ m_MaxMana(25),
 m_Health(240),
 m_Mana(10.0f),
 m_HealthRegeneration(0),
-m_ManaRegeneration(2),
+m_ManaRegeneration(4),
 m_ConditionCount(0),
 m_BuffCount(0)
 {
@@ -103,7 +103,7 @@ void ABaseCharacter::updateRegeneration()
 		m_HealthRegeneration +=  condi.Value->regeneration;
 	}
 	//add buff
-	// add gate at +10 regeneration
+	// add gate at -/+10 regeneration
 }
 
 bool ABaseCharacter::skillManaCost(float value)
@@ -122,7 +122,7 @@ bool ABaseCharacter::skillManaCost(float value)
 
 bool ABaseCharacter::skillIsOnCooldown(int slot)
 {
-	if (skillcooldowns[slot] <= 0.001f)
+	if (skillcooldowns[slot].currentCooldown <= 0.001f)
 		return false;
 	else
 	{
@@ -135,9 +135,9 @@ void ABaseCharacter::updateSkillCooldown(float deltaTime)
 {
 	for (auto& cooldown : skillcooldowns)
 	{
-		cooldown -= deltaTime;
-		if (cooldown <= 0)
-			cooldown = 0.0f;
+		cooldown.currentCooldown -= deltaTime;
+		if (cooldown.currentCooldown <= 0)
+			cooldown.currentCooldown = 0.0f;
 	}
 }
 
@@ -168,6 +168,19 @@ void ABaseCharacter::ChangeMana(float value)
 }
 
 
+struct FSkillCooldown ABaseCharacter::getCooldown(uint8 slot)
+{
+	if (slot >= 0 && slot <= 7)
+	{
+		return skillcooldowns[slot];
+	}
+	FSkillCooldown temp;
+	return temp;
+
+}
+
+
+
 bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
 {
 	if (HasAuthority())
@@ -176,7 +189,8 @@ bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
 		int newMana = m_Mana - skill->manaCost;
 		if (!skillIsOnCooldown(slot) && skillManaCost(skill->manaCost))
 		{
-			skillcooldowns[slot] = skill->recharge;
+			skillcooldowns[slot].currentCooldown = skill->recharge;
+			skillcooldowns[slot].maxCooldown = skill->recharge;
 			currentSkill.registerSkill(skill);
 			UE_LOG(LogTemp, Warning, TEXT("Skill name: %s"), *(currentSkill.skillName));
 			bool b = skill->run(target, this);

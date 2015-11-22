@@ -38,6 +38,18 @@ struct FSkillStatus
 	bool castingSkill;
 };
 
+USTRUCT(BlueprintType)
+struct FSkillCooldown
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skills)
+	float currentCooldown = 0.f;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skills)
+	float maxCooldown = 0.f;
+};
+
 
 UCLASS()
 class HEROBATTLE_API ABaseCharacter: public ACharacter
@@ -63,6 +75,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = Meachnics)
 	void ChangeMana(float value);
+
+	UFUNCTION(BlueprintCallable, Category = Skills)
+	struct FSkillCooldown getCooldown(uint8 slot);
 
 
 
@@ -141,7 +156,7 @@ private:
 	UPROPERTY(Replicated)
 	USkill* skillList[8];
 	UPROPERTY(Replicated)
-	float skillcooldowns[8];
+	FSkillCooldown skillcooldowns[8];
 	
 	int m_ConditionCount;
 	int m_BuffCount;

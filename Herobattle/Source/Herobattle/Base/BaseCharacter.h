@@ -128,14 +128,20 @@ public:
 
 private:
 
-
+	// updates health and mana
 	void UpdateResources(float DeltaSeconds);
 
 	//removes condition from list if duration is expired
-	void updateCondtion(float DeltaTime);
+	void UpdateCondtion(float DeltaTime);
 
 	//updates Regeneration based on De-buffs and conditions
-	void updateRegeneration();
+	void UpdateRegeneration();
+	
+	//updates skill cooldown
+	void UpdateSkillCooldown(float deltaTime);
+
+	//checks if buffs still active if not remove buff expired buffs
+	void UpdateBuffs(float deltaTime);
 
 	//checks if enough mana is remaining for the skill
 	//if enough mana is remaining the mana costs get abstracted from the mana of the character
@@ -144,7 +150,6 @@ private:
 	//test if the skill is on cooldown
 	bool skillIsOnCooldown(int slot);
 
-	void updateSkillCooldown(float deltaTime);
 
 
 	Profession primaryProfession;

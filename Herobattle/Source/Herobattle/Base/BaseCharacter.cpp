@@ -48,10 +48,11 @@ void ABaseCharacter::BeginPlay()
 void ABaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	updateCondtion(DeltaTime);
-	updateRegeneration();
+	UpdateCondtion(DeltaTime);
+	UpdateRegeneration();
 	UpdateResources(DeltaTime);
-	updateSkillCooldown(DeltaTime);
+	UpdateSkillCooldown(DeltaTime);
+	UpdateBuffs(DeltaTime);
 
 }
 
@@ -82,7 +83,7 @@ void ABaseCharacter::UpdateResources(float DeltaSeconds){
 }
 
 
-void ABaseCharacter::updateCondtion(float DeltaTime)
+void ABaseCharacter::UpdateCondtion(float DeltaTime)
 {
 	for (auto& condi : m_condtionList)
 	{
@@ -95,7 +96,7 @@ void ABaseCharacter::updateCondtion(float DeltaTime)
 	}
 }
 
-void ABaseCharacter::updateRegeneration()
+void ABaseCharacter::UpdateRegeneration()
 {
 	m_HealthRegeneration = 0;
 	for (auto& condi : m_condtionList)
@@ -131,13 +132,26 @@ bool ABaseCharacter::skillIsOnCooldown(int slot)
 	}
 }
 
-void ABaseCharacter::updateSkillCooldown(float deltaTime)
+void ABaseCharacter::UpdateSkillCooldown(float deltaTime)
 {
 	for (auto& cooldown : skillcooldowns)
 	{
 		cooldown.currentCooldown -= deltaTime;
 		if (cooldown.currentCooldown <= 0)
 			cooldown.currentCooldown = 0.0f;
+	}
+}
+
+void ABaseCharacter::UpdateBuffs(float deltaTime)
+{
+	for (auto& buff : m_BuffList)
+	{
+		buff.Value->updateBuff(deltaTime);
+		if (buff.Value->isExpired())
+		{
+			m_BuffList.Remove(buff.Key);
+			m_BuffCount--;
+		}
 	}
 }
 

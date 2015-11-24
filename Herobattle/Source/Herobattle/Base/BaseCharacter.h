@@ -19,22 +19,50 @@ class USkillMessages;
 
 
 USTRUCT()
+struct FSkillHUD
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skills)
+	FString skillName;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skills)
+	float leftCastTime;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skills)
+	float castTime;
+};
+
+USTRUCT()
 struct FSkillStatus
 {
 	GENERATED_USTRUCT_BODY()
 
-	void registerSkill(USkill* skill)
+	void registerSkill(USkill* skill,ABaseCharacter* target, int32 slot)
 	{
 		castingSkill = true;
 		this->skill = skill;
 		leftCastTime = skill->castTime;
 		skillName = skill->name;
+		this->target = target;
+		this->slot = slot;
+		castTime = skill->castTime;
 	}
 
+	UPROPERTY()
 	FString skillName;
+	UPROPERTY()
 	float leftCastTime;
+	UPROPERTY()
+	float castTime;
+	UPROPERTY()
 	USkill* skill;
+	UPROPERTY()
+	ABaseCharacter* target;
+	UPROPERTY()
+	int32 slot;
 
+	UPROPERTY()
 	bool castingSkill;
 };
 
@@ -79,6 +107,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Skills)
 	struct FSkillCooldown getCooldown(uint8 slot);
 
+	UFUNCTION(BlueprintCallable, Category = Skills)
+	struct FSkillHUD getCurrentCast();
+
+	UFUNCTION(BlueprintCallable, Category = Skills)
+	bool isCastingSkill();
 
 
 // this Functions get called by Skills
@@ -142,6 +175,9 @@ private:
 
 	//checks if buffs still active if not remove buff expired buffs
 	void UpdateBuffs(float deltaTime);
+
+	//updates the skill and runs the skill if cast time < 0
+	void UpdateCurrentSkill(float deltaTime);
 
 	//checks if enough mana is remaining for the skill
 	//if enough mana is remaining the mana costs get abstracted from the mana of the character

@@ -19,6 +19,7 @@ m_ManaRegeneration(4),
 m_ConditionCount(0),
 m_BuffCount(0)
 {
+	bReplicates = true;
 }
 
 ABaseCharacter::~ABaseCharacter()
@@ -48,11 +49,18 @@ void ABaseCharacter::BeginPlay()
 void ABaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	UpdateCondtion(DeltaTime);
-	UpdateRegeneration();
-	UpdateResources(DeltaTime);
-	UpdateSkillCooldown(DeltaTime);
-	UpdateBuffs(DeltaTime);
+	if (HasAuthority())
+	{
+		UpdateCondtion(DeltaTime);
+		UpdateRegeneration();
+		UpdateResources(DeltaTime);
+		UpdateSkillCooldown(DeltaTime);
+		UpdateBuffs(DeltaTime);
+		if (currentSkill.castingSkill)
+		{
+			UpdateCurrentSkill(DeltaTime);
+		}
+	}
 
 }
 
@@ -155,6 +163,18 @@ void ABaseCharacter::UpdateBuffs(float deltaTime)
 	}
 }
 
+void ABaseCharacter::UpdateCurrentSkill(float deltaTime)
+{
+	currentSkill.leftCastTime -= deltaTime;
+	if (currentSkill.leftCastTime <= 0)
+	{
+		currentSkill.skill->run(currentSkill.target, this);
+		currentSkill.castingSkill = false;
+		skillcooldowns[currentSkill.slot].currentCooldown = currentSkill.skill->recharge;
+		skillcooldowns[currentSkill.slot].maxCooldown = currentSkill.skill->recharge;
+	}
+}
+
 void ABaseCharacter::ChangeHealth(float value)
 {
 	m_Health += value;
@@ -195,25 +215,37 @@ struct FSkillCooldown ABaseCharacter::getCooldown(uint8 slot)
 
 
 
+struct FSkillHUD ABaseCharacter::getCurrentCast()
+{
+	FSkillHUD data;
+	data.castTime = currentSkill.castTime;
+	data.leftCastTime = currentSkill.leftCastTime;
+	data.skillName = currentSkill.skillName;
+	return data;
+}
+
 bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
 {
 	if (HasAuthority())
 	{
 		USkill* skill = skillList[slot];
-		int newMana = m_Mana - skill->manaCost;
-		if (!skillIsOnCooldown(slot) && skillManaCost(skill->manaCost))
+		
+		if (!skillIsOnCooldown(slot) && !isCastingSkill() && skillManaCost(skill->manaCost))
 		{
-			skillcooldowns[slot].currentCooldown = skill->recharge;
-			skillcooldowns[slot].maxCooldown = skill->recharge;
-			currentSkill.registerSkill(skill);
+			currentSkill.registerSkill(skill, target, slot);
 			UE_LOG(LogTemp, Warning, TEXT("Skill name: %s"), *(currentSkill.skillName));
-			bool b = skill->run(target, this);
+			//bool b = skill->run(target, this);
 			return true;
 		}
 	}
 	return false;
 }
 
+
+bool ABaseCharacter::isCastingSkill()
+{
+	return currentSkill.castingSkill;
+}
 
 void ABaseCharacter::heal(ABaseCharacter* caster, float value, bool withBuff)
 {
@@ -304,3 +336,4 @@ void ABaseCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & Ou
 	DOREPLIFETIME(ABaseCharacter, messages);
 	DOREPLIFETIME(ABaseCharacter, skillcooldowns);
 }
+

@@ -5,11 +5,14 @@
 #include "HerobattleCharacter.h"
 #include "HeroBattleHero.h"
 #include "HBPlayerController.h"
+#include "Skills/XMLSkillReader.h"
+#include "UnrealNetwork.h"
 
 AHerobattleGameMode::AHerobattleGameMode()
 {
 	// set default pawn class to our Blueprinted character
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/ThirdPerson/Blueprints/ThirdPersonCharacter"));
+	//ConstructorHelpers::FClassFinder<UBaseSkillComponent> blub(TEXT("'class'Herobattle/Skills/Components/BaseSkillComponent.UBaseSkillComponent"));
 	if (PlayerPawnBPClass.Class != NULL)
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
@@ -27,9 +30,24 @@ void AHerobattleGameMode::PostLogin(APlayerController * NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
 
-	AHerobattleCharacter* currentPlayer = (AHerobattleCharacter*)(NewPlayer)->GetPawn();
+	/*AHerobattleCharacter* currentPlayer = (AHerobattleCharacter*)(NewPlayer)->GetPawn();
 	if (currentPlayer)
 	{
 		currentPlayer->setController((AHBPlayerController*)NewPlayer);
+	}*/
+}
+
+void AHerobattleGameMode::BeginPlay()
+{
+	if (HasAuthority())
+	{
+		XMLSkillReader* test = new XMLSkillReader();
+		skillList = test->ReadXmlSkillFile(TEXT("Source/Herobattle/Definitions/skill.xml"));
 	}
+}
+
+void AHerobattleGameMode::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AHerobattleGameMode, skillList);
 }

@@ -4,6 +4,7 @@
 #include "HBPlayerController.h"
 #include "HerobattleCharacter.h"
 #include "Engine.h"
+#include "UnrealNetwork.h"
 
 AHBPlayerController::AHBPlayerController(const FObjectInitializer& ObjectInitializer)
 : Super(ObjectInitializer)
@@ -40,6 +41,7 @@ void AHBPlayerController::LockCamera()
 {
 	SetIgnoreLookInput(false);
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("LockCamera"));
+
 	bEnableClickEvents = false;
 	bEnableMouseOverEvents = false;
 	AHerobattleCharacter* currentPlayer = (AHerobattleCharacter*)GetPawn();
@@ -70,5 +72,9 @@ void AHBPlayerController::SetupInputComponent()
 }
 
 
-
+void AHBPlayerController::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AHBPlayerController, ETeam);
+}
 

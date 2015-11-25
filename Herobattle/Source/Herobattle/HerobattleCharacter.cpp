@@ -35,7 +35,6 @@ AHerobattleCharacter::AHerobattleCharacter() :AHerobattleCharacter::ABaseCharact
 	// Configure character movement
 	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...	
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f); // ...at this rotation rate
-	GetCharacterMovement()->JumpZVelocity = 600.f;
 	GetCharacterMovement()->AirControl = 0.2f;
 
 	// Create a camera boom (pulls in towards the player if there is a collision)
@@ -63,9 +62,6 @@ void AHerobattleCharacter::SetupPlayerInputComponent(class UInputComponent* Inpu
 
 	// Set up gameplay key bindings
 	check(InputComponent);
-	InputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-	InputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
-
 	
 	InputComponent->BindAction("TestButton", IE_Released, this, &AHerobattleCharacter::initializeMouse);
 	
@@ -80,9 +76,7 @@ void AHerobattleCharacter::SetupPlayerInputComponent(class UInputComponent* Inpu
 	InputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	InputComponent->BindAxis("LookUpRate", this, &AHerobattleCharacter::LookUpAtRate);
 
-	// handle touch devices
-	InputComponent->BindTouch(IE_Pressed, this, &AHerobattleCharacter::TouchStarted);
-	InputComponent->BindTouch(IE_Released, this, &AHerobattleCharacter::TouchStopped);
+
 
 	// Handle Camera Zoom
 	InputComponent->BindAxis("MWheeel", this, &AHerobattleCharacter::CameraZoom);
@@ -99,23 +93,7 @@ void AHerobattleCharacter::BeginPlay()
 }
 
 
-void AHerobattleCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
-{
-	// jump, but only on the first touch
-	if (FingerIndex == ETouchIndex::Touch1)
-	{
-		Jump();
-	}
-}
 
-
-void AHerobattleCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVector Location)
-{
-	if (FingerIndex == ETouchIndex::Touch1)
-	{
-		StopJumping();
-	}
-}
 
 void AHerobattleCharacter::TurnAtRate(float Rate)
 {

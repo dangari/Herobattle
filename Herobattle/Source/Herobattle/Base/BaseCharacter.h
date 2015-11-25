@@ -6,7 +6,11 @@
 #include "../Enum/SkillEnums.h"
 #include "../Skills/Components/BaseSkillComponent.h"
 #include "Skills/Skill.h"
+#include "Weapon.h"
+#include "Enum/CharacterEnums.h"
 #include "BaseCharacter.generated.h"
+
+
 
 
 /**
@@ -16,6 +20,7 @@
 class UBuff;
 class UBaseCondition;
 class USkillMessages;
+
 
 
 USTRUCT()
@@ -158,6 +163,19 @@ public:
 	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = Info)
 	USkillMessages* messages;
 
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = Info)
+	ABaseCharacter* selectedTarget;
+
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = Info)
+	TeamColor ETeam;
+
+protected:
+	// starts or stop AutoAttack
+	UFUNCTION(Server, WithValidation, reliable)
+	void setAttack(bool b);
+
+	UFUNCTION(Server, WithValidation, reliable)
+	void stopCurrenSkill();
 
 private:
 
@@ -179,6 +197,13 @@ private:
 	//updates the skill and runs the skill if cast time < 0
 	void UpdateCurrentSkill(float deltaTime);
 
+	void UpdateAtack(float deltaTime);
+
+
+
+	//check if Character is using autotack
+	bool isAttacking();
+
 	//checks if enough mana is remaining for the skill
 	//if enough mana is remaining the mana costs get abstracted from the mana of the character
 	bool skillManaCost(float value);
@@ -186,7 +211,9 @@ private:
 	//test if the skill is on cooldown
 	bool skillIsOnCooldown(int slot);
 
+	bool isEnemy(TeamColor team);
 
+	
 
 	Profession primaryProfession;
 	Profession secondaryProfession;
@@ -202,5 +229,8 @@ private:
 	int m_ConditionCount;
 	int m_BuffCount;
 
+	UPROPERTY(Replicated)
+	FWeapon weapon;
 
+	bool useAutoAttack;
 };

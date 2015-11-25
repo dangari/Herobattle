@@ -20,6 +20,7 @@ m_ConditionCount(0),
 m_BuffCount(0)
 {
 	bReplicates = true;
+
 }
 
 ABaseCharacter::~ABaseCharacter()
@@ -37,6 +38,7 @@ void ABaseCharacter::BeginPlay()
 		skillList[1] = gm->skillList[1];
 		skillList[2] = gm->skillList[2];
 		messages = NewObject<USkillMessages>();
+		weapon = FWeapon(Weapons::STAFF);
 	}
 	else
 	{
@@ -60,6 +62,11 @@ void ABaseCharacter::Tick(float DeltaTime)
 		{
 			UpdateCurrentSkill(DeltaTime);
 		}
+
+		if (isAttacking())
+		{
+			UpdateAtack(DeltaTime);
+		}
 	}
 
 }
@@ -69,6 +76,18 @@ void ABaseCharacter::SetupPlayerInputComponent(class UInputComponent* InputCompo
 {
 	Super::SetupPlayerInputComponent(InputComponent);
 
+}
+
+void ABaseCharacter::stopCurrenSkill_Implementation()
+{
+	if (isCastingSkill())
+	{
+		currentSkill.castingSkill = false;
+	}
+}
+bool ABaseCharacter::stopCurrenSkill_Validate()
+{
+	return true;
 }
 
 void ABaseCharacter::UpdateResources(float DeltaSeconds){
@@ -140,6 +159,11 @@ bool ABaseCharacter::skillIsOnCooldown(int slot)
 	}
 }
 
+bool ABaseCharacter::isEnemy(TeamColor team)
+{
+	return !(team == ETeam);
+}
+
 void ABaseCharacter::UpdateSkillCooldown(float deltaTime)
 {
 	for (auto& cooldown : skillcooldowns)
@@ -173,6 +197,46 @@ void ABaseCharacter::UpdateCurrentSkill(float deltaTime)
 		skillcooldowns[currentSkill.slot].currentCooldown = currentSkill.skill->recharge;
 		skillcooldowns[currentSkill.slot].maxCooldown = currentSkill.skill->recharge;
 	}
+}
+
+void ABaseCharacter::UpdateAtack(float deltaTime)
+{
+	weapon.currentTime -= deltaTime;
+	if (weapon.currentTime <= 0)
+	{
+		int damage = FPlatformMath::RoundToInt(FMath::FRandRange(weapon.lowDamage, weapon.maxDamage));
+		selectedTarget->damage(this,damage,HBDamageType::FIRE);
+		weapon.currentTime = weapon.attackSpeed;
+	}
+}
+
+bool ABaseCharacter::setAttack_Validate(bool b)
+{
+	return true;
+}
+
+void ABaseCharacter::setAttack_Implementation(bool b)
+{
+	useAutoAttack = b;
+}
+
+bool ABaseCharacter::isAttacking()
+{
+	if (useAutoAttack && selectedTarget /*&& selectedTarget->isEnemy(ETeam)*/)
+	{
+		FVector targetLocation = selectedTarget->GetActorLocation();
+		FVector myLocation = GetActorLocation();
+		float distance = (targetLocation - myLocation).Size();
+		UE_LOG(LogTemp, Warning, TEXT("Skill name: %f"), distance);
+		if (distance <= weapon.range)
+		{
+			return true;
+		}
+		useAutoAttack = false;
+		return false;
+	}
+	useAutoAttack = false;
+	return false;
 }
 
 void ABaseCharacter::ChangeHealth(float value)
@@ -334,6 +398,8 @@ void ABaseCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & Ou
 	DOREPLIFETIME(ABaseCharacter, m_HealthRegeneration);
 	DOREPLIFETIME(ABaseCharacter, currentSkill);
 	DOREPLIFETIME(ABaseCharacter, messages);
+	DOREPLIFETIME(ABaseCharacter, selectedTarget);
+	DOREPLIFETIME(ABaseCharacter, weapon);
 	DOREPLIFETIME(ABaseCharacter, skillcooldowns);
 }
 

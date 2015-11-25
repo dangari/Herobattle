@@ -3,17 +3,15 @@
 #pragma once
 
 #include "GameFramework/PlayerController.h"
+#include "Enum/CharacterEnums.h"
 #include "HBPlayerController.generated.h"
+
 
 /**
  * 
  */
 
-UENUM(BlueprintType)
-enum class TeamColor : uint8
-{
-	RED, BLUE
-};
+
 
 
 UCLASS()

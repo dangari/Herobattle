@@ -64,7 +64,10 @@ void AHerobattleCharacter::SetupPlayerInputComponent(class UInputComponent* Inpu
 	check(InputComponent);
 	
 	InputComponent->BindAction("TestButton", IE_Released, this, &AHerobattleCharacter::initializeMouse);
-	
+	InputComponent->BindAction("Attack", IE_Released, this, &AHerobattleCharacter::startAttack);
+	InputComponent->BindAction("Stop", IE_Released, this, &AHerobattleCharacter::stopAllActions);
+
+
 	InputComponent->BindAxis("MoveForward", this, &AHerobattleCharacter::MoveForward);
 	InputComponent->BindAxis("MoveRight", this, &AHerobattleCharacter::MoveRight);
 
@@ -212,6 +215,17 @@ void AHerobattleCharacter::setCameraLock(bool isLocked)
 	bCameraIsLocked = isLocked;
 }
 
+
+void AHerobattleCharacter::startAttack()
+{
+	setAttack(true);
+}
+
+void AHerobattleCharacter::stopAllActions()
+{
+	setAttack(false);
+	stopCurrenSkill();
+}
 
 void AHerobattleCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
 {

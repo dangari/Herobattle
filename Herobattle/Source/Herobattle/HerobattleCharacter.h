@@ -108,6 +108,9 @@ private:
 	UPROPERTY(Replicated)
 	AHeroBattleHero* heroList[3];
 
+	void startAttack();
 
+	//interrupt skill and Stop autoattack
+	void stopAllActions();
 };
 

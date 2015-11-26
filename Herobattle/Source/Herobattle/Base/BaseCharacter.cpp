@@ -222,7 +222,7 @@ void ABaseCharacter::setAttack_Implementation(bool b)
 
 bool ABaseCharacter::isAttacking()
 {
-	if (useAutoAttack && selectedTarget /*&& selectedTarget->isEnemy(ETeam)*/)
+	if (useAutoAttack && selectedTarget /* &&selectedTarget->isEnemy(ETeam)*/)
 	{
 		FVector targetLocation = selectedTarget->GetActorLocation();
 		FVector myLocation = GetActorLocation();

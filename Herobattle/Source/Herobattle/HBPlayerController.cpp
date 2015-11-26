@@ -15,6 +15,7 @@ AHBPlayerController::AHBPlayerController(const FObjectInitializer& ObjectInitial
 	bShowMouseCursor = true;
 	bEnableClickEvents = true;
 	bEnableMouseOverEvents = true;
+	bReplicates = true;
 }
 
 void AHBPlayerController::BeginPlay()

@@ -24,6 +24,8 @@ public:
 	TeamColor ETeam;
 
 
+
+
 	AHBPlayerController(const FObjectInitializer& ObjectInitializer);
 	virtual void BeginPlay() override;
 

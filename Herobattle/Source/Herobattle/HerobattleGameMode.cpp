@@ -30,11 +30,23 @@ void AHerobattleGameMode::PostLogin(APlayerController * NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
 
-	/*AHerobattleCharacter* currentPlayer = (AHerobattleCharacter*)(NewPlayer)->GetPawn();
-	if (currentPlayer)
+	if (HasAuthority())
 	{
-		currentPlayer->setController((AHBPlayerController*)NewPlayer);
-	}*/
+		AHBPlayerController* controller = (AHBPlayerController*) NewPlayer;
+		if (m_PlayerCount == 0)
+		{
+			controller->ETeam = TeamColor::RED;
+		}
+		else
+		{
+			controller->ETeam = TeamColor::BLUE;
+		}
+		ABaseCharacter* character = (ABaseCharacter*)controller->GetControlledPawn();
+		if (character)
+		{
+			character->ETeam = controller->ETeam;
+		}
+	}
 }
 
 void AHerobattleGameMode::BeginPlay()
@@ -50,4 +62,5 @@ void AHerobattleGameMode::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AHerobattleGameMode, skillList);
+	DOREPLIFETIME(AHerobattleGameMode, m_PlayerCount);
 }

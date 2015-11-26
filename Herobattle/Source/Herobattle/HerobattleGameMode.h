@@ -39,6 +39,9 @@ public:
 	UPROPERTY(Replicated)
 	TArray<USkill*> skillList;
 
+	UPROPERTY(Replicated)
+	int32 m_PlayerCount;
+
 	void PostLogin(APlayerController * NewPlayer) override;
 
 	virtual void BeginPlay() override;

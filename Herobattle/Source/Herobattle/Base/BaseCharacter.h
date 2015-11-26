@@ -166,7 +166,7 @@ public:
 	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = Info)
 	ABaseCharacter* selectedTarget;
 
-	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = Info)
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = Info)
 	TeamColor ETeam;
 
 protected:

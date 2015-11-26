@@ -231,4 +231,5 @@ void AHerobattleCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty 
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AHerobattleCharacter, heroList);
+	DOREPLIFETIME(AHerobattleCharacter, ETeam);
 }

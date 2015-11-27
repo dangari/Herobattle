@@ -5,6 +5,7 @@
 #include "Engine.h"
 #include "HBPlayerController.h"
 #include "UnrealNetwork.h"
+#include "HeroBattleHero.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AHerobattleCharacter
@@ -203,6 +204,14 @@ AHeroBattleHero* AHerobattleCharacter::getHero(uint8 index)
 		return heroList[index];
 	}
 	return nullptr;
+}
+
+void AHerobattleCharacter::updateTeamColor()
+{
+	for (auto& hero : heroList)
+	{
+		hero->ETeam = ETeam;
+	}
 }
 
 void AHerobattleCharacter::setController(AHBPlayerController* MyController)

@@ -161,7 +161,8 @@ bool ABaseCharacter::skillIsOnCooldown(int slot)
 
 bool ABaseCharacter::isEnemy(TeamColor team)
 {
-	return !(team == ETeam);
+	bool b = team == ETeam;
+	return !b;
 }
 
 void ABaseCharacter::UpdateSkillCooldown(float deltaTime)
@@ -222,7 +223,7 @@ void ABaseCharacter::setAttack_Implementation(bool b)
 
 bool ABaseCharacter::isAttacking()
 {
-	if (useAutoAttack && selectedTarget /* &&selectedTarget->isEnemy(ETeam)*/)
+	if (useAutoAttack && selectedTarget && selectedTarget->isEnemy(ETeam))
 	{
 		FVector targetLocation = selectedTarget->GetActorLocation();
 		FVector myLocation = GetActorLocation();

@@ -55,7 +55,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = OnStart)
 	AHeroBattleHero* getHero(uint8 index);
-	
+
+	UFUNCTION(BlueprintCallable, Category = OnStart)
+	void updateTeamColor();
+
+
 protected:
 
 	/** Called for forwards/backward input */
@@ -102,6 +106,7 @@ private:
 	bool bCameraIsLocked;
 
 	float fCurrentCameraRange;
+
 
 	AHBPlayerController* MyController;
 

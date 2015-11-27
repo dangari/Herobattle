@@ -7,6 +7,7 @@
 #include "HBPlayerController.h"
 #include "Skills/XMLSkillReader.h"
 #include "UnrealNetwork.h"
+#include "Engine.h"
 
 AHerobattleGameMode::AHerobattleGameMode()
 {
@@ -41,11 +42,15 @@ void AHerobattleGameMode::PostLogin(APlayerController * NewPlayer)
 		{
 			controller->ETeam = TeamColor::BLUE;
 		}
-		ABaseCharacter* character = (ABaseCharacter*)controller->GetControlledPawn();
+		AHerobattleCharacter* character = (AHerobattleCharacter*)controller->GetPawn();
 		if (character)
 		{
 			character->ETeam = controller->ETeam;
+			character->updateTeamColor();
 		}
+		m_PlayerCount++;
+		FString name = TEXT("Gamemode: c++");
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, name);
 	}
 }
 

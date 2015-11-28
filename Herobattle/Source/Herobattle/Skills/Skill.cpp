@@ -6,6 +6,7 @@
 #include "Components/BaseSkillComponent.h"
 #include "Base/BaseCharacter.h"
 #include "UnrealNetwork.h"
+#include "SkillMessages.h"
 
 
 
@@ -29,6 +30,31 @@ bool USkill::run(ABaseCharacter* target, ABaseCharacter* self)
 	}
 
 	return b;
+}
+
+bool USkill::isValidTarget(ABaseCharacter* target, ABaseCharacter* self)
+{
+	if (target->isEnemy(self->ETeam) && targetType == TargetType::ENEMY)
+	{
+		return true;
+	}
+	else if (!(target->isEnemy(self->ETeam)) && targetType == TargetType::SELFFREND)
+	{
+		return true;
+	}
+	else if (!(target->isEnemy(self->ETeam)) && targetType == TargetType::FRIEND && target != self)
+	{
+		return true;
+	}
+	else if (target == self && targetType == TargetType::SELF)
+	{
+		return true;
+	}
+	else
+	{
+		self->messages->registerMessage(TEXT("Invalide Target"), MessageType::SKILLERROR);
+		return false;
+	}
 }
 
 void USkill::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const

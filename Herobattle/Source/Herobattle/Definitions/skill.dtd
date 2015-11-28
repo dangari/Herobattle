@@ -5,7 +5,7 @@
 	value CDATA #REQUIRED
 >
 
-<!ELEMENT spell (name, costs, casttime, cooldown, targettype,weapon?,effects)>
+<!ELEMENT spell (name, costs, casttime, cooldown, targettype, range, weapon?, effects)>
 <!ATTLIST spell
   type CDATA #REQUIRED
   >
@@ -28,8 +28,13 @@
   >
 <!ELEMENT targettype EMPTY>
 <!ATTLIST targettype
+  value (SELF|SELFFREND|FRIEND|ENEMY) #REQUIRED
+  >
+<!ELEMENT range EMPTY>
+<!ATTLIST range
   value CDATA #REQUIRED
   >
+
 <!ELEMENT weapon EMPTY>
 <!ATTLIST weapon 
   value CDATA #REQUIRED

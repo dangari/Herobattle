@@ -138,7 +138,9 @@ public:
 
 	void knockDownCharacter(float duration);
 
-	void updateHealthRegen(float regen);
+	
+
+	bool isEnemy(TeamColor team);
 
 
 	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
@@ -199,7 +201,7 @@ private:
 
 	void UpdateAtack(float deltaTime);
 
-
+	void updateHealthRegen(float regen);
 
 	//check if Character is using autotack
 	bool isAttacking();
@@ -211,7 +213,6 @@ private:
 	//test if the skill is on cooldown
 	bool skillIsOnCooldown(int slot);
 
-	bool isEnemy(TeamColor team);
 
 	
 

@@ -294,14 +294,23 @@ bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
 	if (HasAuthority())
 	{
 		USkill* skill = skillList[slot];
-		
-		if (!skillIsOnCooldown(slot) && !isCastingSkill() && skillManaCost(skill->manaCost))
+		ABaseCharacter* newTarget = target;
+
+		//automatically sets target to self if the skill can be used on self and the target is enemy
+		//also sets target to self if targettype is self
+		if (skill->targetType == TargetType::SELF || (target->isEnemy(ETeam) && skill->targetType == TargetType::SELFFREND))
 		{
-			currentSkill.registerSkill(skill, target, slot);
+			newTarget = this;
+		}
+		if (!skillIsOnCooldown(slot) && !isCastingSkill() && skill->isValidTarget(newTarget, this) && skillManaCost(skill->manaCost))
+		{
+			currentSkill.registerSkill(skill, newTarget, slot);
 			UE_LOG(LogTemp, Warning, TEXT("Skill name: %s"), *(currentSkill.skillName));
+			useAutoAttack = false;
 			//bool b = skill->run(target, this);
 			return true;
 		}
+		
 	}
 	return false;
 }

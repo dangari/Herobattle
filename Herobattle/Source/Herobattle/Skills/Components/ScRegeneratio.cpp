@@ -19,7 +19,7 @@ UScRegeneratio::~UScRegeneratio()
 
 bool UScRegeneratio::run(ABaseCharacter* target, ABaseCharacter* self)
 {
-	target->updateHealthRegen(scaleTable[self->getAttributeValue(scaleAttribute)]);
+	//target->updateHealthRegen(scaleTable[self->getAttributeValue(scaleAttribute)]);
 	return true;
 }
 

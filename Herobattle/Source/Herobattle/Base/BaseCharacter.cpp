@@ -8,7 +8,6 @@
 #include "HerobattleGameMode.h"
 #include "SkillMessages.h"
 
-
 ABaseCharacter::ABaseCharacter()
 :m_MaxHealth(480),
 m_MaxMana(25),

@@ -158,10 +158,54 @@ bool ABaseCharacter::skillIsOnCooldown(int slot)
 	}
 }
 
+TArray<Condition> ABaseCharacter::getConditions()
+{
+	TArray<Condition> conditions;
+	for (auto& condi : m_condtionList)
+	{
+		conditions.Add(condi.Key);
+	}
+	return conditions;
+}
+
+float ABaseCharacter::getAirDistance(APawn* pawn)
+{
+	FVector pawnV = pawn->GetActorLocation();
+	FVector characterV = this->GetActorLocation();
+	float distance = (pawnV - characterV).Size();
+	return distance;
+}
+
+float ABaseCharacter::getWalkDistance(APawn* pawn)
+{
+	return 1.0f;
+}
+
 bool ABaseCharacter::isEnemy(TeamColor team)
 {
 	bool b = team == ETeam;
 	return !b;
+}
+
+FCharacterState ABaseCharacter::AiExtractor(ABaseCharacter* character)
+{
+	FCharacterState characterState;
+	characterState.ETeam = ETeam;
+	characterState.weapon = weapon;
+	characterState.location = this->GetActorLocation();
+	characterState.airDistance = characterState.location.Size();
+	characterState.isCasting = currentSkill.castingSkill;
+	characterState.isAutoAttacking = useAutoAttack;
+	if (m_BuffCount > 0)
+		characterState.isBuffed = true;
+	if (m_DebuffCount > 0)
+		characterState.isHexed = true;
+	characterState.conditions = getConditions();
+	characterState.health = m_Health;
+	characterState.skillState = currentSkill.copy();
+	characterState.selectedTarget = selectedTarget;
+
+	return characterState;
 }
 
 void ABaseCharacter::UpdateSkillCooldown(float deltaTime)

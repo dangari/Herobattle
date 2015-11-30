@@ -9,6 +9,7 @@
 #include "Weapon.h"
 #include "Enum/CharacterEnums.h"
 #include "SkillContainer.h"
+#include "AI/CharacterState.h"
 #include "BaseCharacter.generated.h"
 
 
@@ -93,9 +94,10 @@ public:
 
 	void knockDownCharacter(float duration);
 
-	
-
 	bool isEnemy(TeamColor team);
+
+	//Creates a state of the character
+	FCharacterState AiExtractor(ABaseCharacter* character);
 
 
 	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
@@ -168,7 +170,11 @@ private:
 	//test if the skill is on cooldown
 	bool skillIsOnCooldown(int slot);
 
+	TArray<Condition> getConditions();
 
+	float getAirDistance(APawn* pawn);
+
+	float getWalkDistance(APawn* pawn);
 	
 
 	Profession primaryProfession;
@@ -184,6 +190,7 @@ private:
 	
 	int m_ConditionCount;
 	int m_BuffCount;
+	int m_DebuffCount;
 
 	UPROPERTY(Replicated)
 	FWeapon weapon;

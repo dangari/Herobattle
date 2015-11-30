@@ -50,4 +50,16 @@ struct FSkillStatus
 
 	UPROPERTY()
 		bool castingSkill;
+
+	FSkillStatus copy()
+	{
+		FSkillStatus newSkillStatus;
+		newSkillStatus.skillName = this->skillName;
+		newSkillStatus.leftCastTime = this->leftCastTime;
+		newSkillStatus.castTime = this->castTime;
+		newSkillStatus.skill = this->skill;
+		newSkillStatus.target = this->target;
+		newSkillStatus.slot = this->slot;
+		newSkillStatus.castingSkill = this->castingSkill;
+	}
 };

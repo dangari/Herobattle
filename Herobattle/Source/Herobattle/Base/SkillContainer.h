@@ -1,6 +1,8 @@
 #pragma once
 
+#include "Skills/Skill.h"
 #include "SkillContainer.generated.h"
+
 
 
 
@@ -61,5 +63,6 @@ struct FSkillStatus
 		newSkillStatus.target = this->target;
 		newSkillStatus.slot = this->slot;
 		newSkillStatus.castingSkill = this->castingSkill;
+		return newSkillStatus;
 	}
 };

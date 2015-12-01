@@ -193,7 +193,7 @@ FCharacterState ABaseCharacter::AiExtractor(ABaseCharacter* character)
 	characterState.ETeam = ETeam;
 	characterState.weapon = weapon;
 	characterState.location = this->GetActorLocation();
-	characterState.airDistance = characterState.location.Size();
+	characterState.airDistance = (characterState.location - character->GetActorLocation()).Size();
 	characterState.isCasting = currentSkill.castingSkill;
 	characterState.isAutoAttacking = useAutoAttack;
 	if (m_BuffCount > 0)

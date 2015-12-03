@@ -27,7 +27,7 @@ bool UScDamage::run(ABaseCharacter* target, ABaseCharacter* self)
 	return true;
 }
 
-float UScDamage::getScore()
+float UScDamage::getScore(FCharacterState characterState)
 {
 	return 1.f;
 }

@@ -21,7 +21,7 @@ bool UBaseSkillComponent::run(ABaseCharacter* target, ABaseCharacter* self)
 {
 	return true;
 }
-float UBaseSkillComponent::getScore()
+float UBaseSkillComponent::getScore(FCharacterState characterState)
 {
 	return 0.f;
 }

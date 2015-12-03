@@ -18,7 +18,7 @@ class HEROBATTLE_API UScBlock : public UBaseSkillComponent
 
 	virtual bool run(ABaseCharacter* target, ABaseCharacter* self) override;
 	virtual void init(FXmlNode* node) override;
-	virtual float getScore() override;
+	virtual float getScore(FCharacterState characterState) override;
 	
 	int m_usage;
 	int m_currentUsage;

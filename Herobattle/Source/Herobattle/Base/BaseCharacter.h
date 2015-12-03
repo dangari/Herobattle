@@ -6,7 +6,13 @@
 #include "../Enum/SkillEnums.h"
 #include "../Skills/Components/BaseSkillComponent.h"
 #include "Skills/Skill.h"
+#include "Weapon.h"
+#include "Enum/CharacterEnums.h"
+#include "SkillContainer.h"
+#include "AI/CharacterState.h"
 #include "BaseCharacter.generated.h"
+
+
 
 
 /**
@@ -18,53 +24,8 @@ class UBaseCondition;
 class USkillMessages;
 
 
-USTRUCT()
-struct FSkillHUD
-{
-	GENERATED_USTRUCT_BODY()
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skills)
-	FString skillName;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skills)
-	float leftCastTime;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skills)
-	float castTime;
-};
-
-USTRUCT()
-struct FSkillStatus
-{
-	GENERATED_USTRUCT_BODY()
-
-	void registerSkill(USkill* skill,ABaseCharacter* target, int32 slot)
-	{
-		castingSkill = true;
-		this->skill = skill;
-		leftCastTime = skill->castTime;
-		skillName = skill->name;
-		this->target = target;
-		this->slot = slot;
-		castTime = skill->castTime;
-	}
-
-	UPROPERTY()
-	FString skillName;
-	UPROPERTY()
-	float leftCastTime;
-	UPROPERTY()
-	float castTime;
-	UPROPERTY()
-	USkill* skill;
-	UPROPERTY()
-	ABaseCharacter* target;
-	UPROPERTY()
-	int32 slot;
-
-	UPROPERTY()
-	bool castingSkill;
-};
 
 USTRUCT(BlueprintType)
 struct FSkillCooldown
@@ -111,7 +72,7 @@ public:
 	struct FSkillHUD getCurrentCast();
 
 	UFUNCTION(BlueprintCallable, Category = Skills)
-	bool isCastingSkill();
+	bool isCastingSkill(FString message = TEXT("NOTHING"));
 
 
 // this Functions get called by Skills
@@ -133,7 +94,13 @@ public:
 
 	void knockDownCharacter(float duration);
 
-	void updateHealthRegen(float regen);
+	bool isEnemy(TeamColor team);
+
+	//Creates a state of the character
+	FCharacterState AiExtractor(ABaseCharacter* character);
+
+	//test if the skill is on cooldown
+	bool skillIsOnCooldown(int slot);
 
 
 	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
@@ -158,6 +125,24 @@ public:
 	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = Info)
 	USkillMessages* messages;
 
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = Info)
+	ABaseCharacter* selectedTarget;
+
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = Info)
+	TeamColor ETeam;
+
+	UPROPERTY(Replicated)
+	USkill* skillList[8];
+
+	
+
+protected:
+	// starts or stop AutoAttack
+	UFUNCTION(Server, WithValidation, reliable)
+	void setAttack(bool b);
+
+	UFUNCTION(Server, WithValidation, reliable)
+	void stopCurrenSkill();
 
 private:
 
@@ -179,14 +164,25 @@ private:
 	//updates the skill and runs the skill if cast time < 0
 	void UpdateCurrentSkill(float deltaTime);
 
+	void UpdateAtack(float deltaTime);
+
+	void updateHealthRegen(float regen);
+
+	//check if Character is using autotack
+	bool isAttacking();
+
 	//checks if enough mana is remaining for the skill
 	//if enough mana is remaining the mana costs get abstracted from the mana of the character
 	bool skillManaCost(float value);
 
-	//test if the skill is on cooldown
-	bool skillIsOnCooldown(int slot);
 
 
+	TArray<Condition> getConditions();
+
+	float getAirDistance(APawn* pawn);
+
+	float getWalkDistance(APawn* pawn);
+	
 
 	Profession primaryProfession;
 	Profession secondaryProfession;
@@ -195,12 +191,15 @@ private:
 	
 
 	UPROPERTY(Replicated)
-	USkill* skillList[8];
-	UPROPERTY(Replicated)
 	FSkillCooldown skillcooldowns[8];
+	
 	
 	int m_ConditionCount;
 	int m_BuffCount;
+	int m_DebuffCount;
 
+	UPROPERTY(Replicated)
+	FWeapon weapon;
 
+	bool useAutoAttack;
 };

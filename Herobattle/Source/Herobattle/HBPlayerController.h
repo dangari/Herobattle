@@ -3,17 +3,15 @@
 #pragma once
 
 #include "GameFramework/PlayerController.h"
+#include "Enum/CharacterEnums.h"
 #include "HBPlayerController.generated.h"
+
 
 /**
  * 
  */
 
-UENUM(BlueprintType)
-enum class TeamColor : uint8
-{
-	RED, BLUE
-};
+
 
 
 UCLASS()
@@ -24,6 +22,8 @@ class HEROBATTLE_API AHBPlayerController : public APlayerController
 public:
 	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = CharacterProperties)
 	TeamColor ETeam;
+
+
 
 
 	AHBPlayerController(const FObjectInitializer& ObjectInitializer);

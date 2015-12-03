@@ -42,7 +42,7 @@ void UScBlock::init(FXmlNode* node)
 	}
 }
 
-float UScBlock::getScore()
+float UScBlock::getScore(FCharacterState characterState)
 {
 	return 0.f;
 }

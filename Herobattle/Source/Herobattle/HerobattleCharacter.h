@@ -55,7 +55,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = OnStart)
 	AHeroBattleHero* getHero(uint8 index);
-	
+
+	UFUNCTION(BlueprintCallable, Category = OnStart)
+	void updateTeamColor();
+
+
 protected:
 
 	/** Called for forwards/backward input */
@@ -76,11 +80,6 @@ protected:
 	 */
 	void LookUpAtRate(float Rate);
 
-	/** Handler for when a touch input begins. */
-	void TouchStarted(ETouchIndex::Type FingerIndex, FVector Location);
-
-	/** Handler for when a touch input stops. */
-	void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
 
 
 	void CameraZoom(float Value);
@@ -108,11 +107,15 @@ private:
 
 	float fCurrentCameraRange;
 
+
 	AHBPlayerController* MyController;
 
 	UPROPERTY(Replicated)
 	AHeroBattleHero* heroList[3];
 
+	void startAttack();
 
+	//interrupt skill and Stop autoattack
+	void stopAllActions();
 };
 

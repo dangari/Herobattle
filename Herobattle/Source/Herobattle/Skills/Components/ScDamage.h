@@ -17,7 +17,7 @@ public:
 	UScDamage();
 	~UScDamage();
 	virtual bool run(ABaseCharacter* target, ABaseCharacter* self) override;
-	virtual float getScore() override;
+	virtual float getScore(FCharacterState characterState) override;
 
 	virtual void init(FXmlNode* node) override;
 

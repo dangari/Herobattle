@@ -19,7 +19,7 @@ UScRegeneratio::~UScRegeneratio()
 
 bool UScRegeneratio::run(ABaseCharacter* target, ABaseCharacter* self)
 {
-	target->updateHealthRegen(scaleTable[self->getAttributeValue(scaleAttribute)]);
+	//target->updateHealthRegen(scaleTable[self->getAttributeValue(scaleAttribute)]);
 	return true;
 }
 
@@ -33,7 +33,7 @@ void UScRegeneratio::init(FXmlNode* node)
 	}
 }
 
-float UScRegeneratio::getScore()
+float UScRegeneratio::getScore(FCharacterState characterState)
 {
 	return 0.f;
 }

@@ -7,7 +7,7 @@
 #include "UnrealNetwork.h"
 #include "HerobattleGameMode.h"
 #include "SkillMessages.h"
-
+#include "Engine.h"
 
 ABaseCharacter::ABaseCharacter()
 :m_MaxHealth(480),
@@ -20,10 +20,12 @@ m_ConditionCount(0),
 m_BuffCount(0)
 {
 	bReplicates = true;
+	currentSkill.castingSkill = false;
 }
 
 ABaseCharacter::~ABaseCharacter()
 {
+	
 }
 
 // Called when the game starts or when spawned
@@ -37,10 +39,12 @@ void ABaseCharacter::BeginPlay()
 		skillList[1] = gm->skillList[1];
 		skillList[2] = gm->skillList[2];
 		messages = NewObject<USkillMessages>();
+		weapon = FWeapon(Weapons::STAFF);
+		currentSkill.castingSkill = false;
 	}
 	else
 	{
-
+		currentSkill.castingSkill = false;
 	}
 
 }
@@ -60,6 +64,11 @@ void ABaseCharacter::Tick(float DeltaTime)
 		{
 			UpdateCurrentSkill(DeltaTime);
 		}
+
+		if (isAttacking())
+		{
+			UpdateAtack(DeltaTime);
+		}
 	}
 
 }
@@ -69,6 +78,18 @@ void ABaseCharacter::SetupPlayerInputComponent(class UInputComponent* InputCompo
 {
 	Super::SetupPlayerInputComponent(InputComponent);
 
+}
+
+void ABaseCharacter::stopCurrenSkill_Implementation()
+{
+	if (isCastingSkill())
+	{
+		currentSkill.castingSkill = false;
+	}
+}
+bool ABaseCharacter::stopCurrenSkill_Validate()
+{
+	return true;
 }
 
 void ABaseCharacter::UpdateResources(float DeltaSeconds){
@@ -140,6 +161,56 @@ bool ABaseCharacter::skillIsOnCooldown(int slot)
 	}
 }
 
+TArray<Condition> ABaseCharacter::getConditions()
+{
+	TArray<Condition> conditions;
+	for (auto& condi : m_condtionList)
+	{
+		conditions.Add(condi.Key);
+	}
+	return conditions;
+}
+
+float ABaseCharacter::getAirDistance(APawn* pawn)
+{
+	FVector pawnV = pawn->GetActorLocation();
+	FVector characterV = this->GetActorLocation();
+	float distance = (pawnV - characterV).Size();
+	return distance;
+}
+
+float ABaseCharacter::getWalkDistance(APawn* pawn)
+{
+	return 1.0f;
+}
+
+bool ABaseCharacter::isEnemy(TeamColor team)
+{
+	bool b = team == ETeam;
+	return !b;
+}
+
+FCharacterState ABaseCharacter::AiExtractor(ABaseCharacter* character)
+{
+	FCharacterState characterState;
+	characterState.ETeam = ETeam;
+	characterState.weapon = weapon;
+	characterState.location = this->GetActorLocation();
+	characterState.airDistance = (characterState.location - character->GetActorLocation()).Size();
+	characterState.isCasting = currentSkill.castingSkill;
+	characterState.isAutoAttacking = useAutoAttack;
+	if (m_BuffCount > 0)
+		characterState.isBuffed = true;
+	if (m_DebuffCount > 0)
+		characterState.isHexed = true;
+	characterState.conditions = getConditions();
+	characterState.health = m_Health;
+	characterState.skillState = currentSkill.copy();
+	characterState.selectedTarget = selectedTarget;
+
+	return characterState;
+}
+
 void ABaseCharacter::UpdateSkillCooldown(float deltaTime)
 {
 	for (auto& cooldown : skillcooldowns)
@@ -173,6 +244,46 @@ void ABaseCharacter::UpdateCurrentSkill(float deltaTime)
 		skillcooldowns[currentSkill.slot].currentCooldown = currentSkill.skill->recharge;
 		skillcooldowns[currentSkill.slot].maxCooldown = currentSkill.skill->recharge;
 	}
+}
+
+void ABaseCharacter::UpdateAtack(float deltaTime)
+{
+	weapon.currentTime -= deltaTime;
+	if (weapon.currentTime <= 0)
+	{
+		int damage = FPlatformMath::RoundToInt(FMath::FRandRange(weapon.lowDamage, weapon.maxDamage));
+		selectedTarget->damage(this,damage,HBDamageType::FIRE);
+		weapon.currentTime = weapon.attackSpeed;
+	}
+}
+
+bool ABaseCharacter::setAttack_Validate(bool b)
+{
+	return true;
+}
+
+void ABaseCharacter::setAttack_Implementation(bool b)
+{
+	useAutoAttack = b;
+}
+
+bool ABaseCharacter::isAttacking()
+{
+	if (useAutoAttack && selectedTarget && selectedTarget->isEnemy(ETeam))
+	{
+		FVector targetLocation = selectedTarget->GetActorLocation();
+		FVector myLocation = GetActorLocation();
+		float distance = (targetLocation - myLocation).Size();
+		UE_LOG(LogTemp, Warning, TEXT("Skill name: %f"), distance);
+		if (distance <= weapon.range)
+		{
+			return true;
+		}
+		useAutoAttack = false;
+		return false;
+	}
+	useAutoAttack = false;
+	return false;
 }
 
 void ABaseCharacter::ChangeHealth(float value)
@@ -229,22 +340,49 @@ bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
 	if (HasAuthority())
 	{
 		USkill* skill = skillList[slot];
-		
-		if (!skillIsOnCooldown(slot) && !isCastingSkill() && skillManaCost(skill->manaCost))
+		ABaseCharacter* newTarget = target;
+
+		//automatically sets target to self if the skill can be used on self and the target is enemy
+		//also sets target to self if targettype is self
+		if (skill->targetType == TargetType::SELF || (target->isEnemy(ETeam) && skill->targetType == TargetType::SELFFREND))
 		{
-			currentSkill.registerSkill(skill, target, slot);
+			newTarget = this;
+		}
+		if (!skillIsOnCooldown(slot) && !isCastingSkill() && skill->isValidTarget(newTarget, this) && skillManaCost(skill->manaCost))
+		{
+			currentSkill.registerSkill(skill, newTarget, slot);
 			UE_LOG(LogTemp, Warning, TEXT("Skill name: %s"), *(currentSkill.skillName));
+			useAutoAttack = false;
 			//bool b = skill->run(target, this);
 			return true;
 		}
+		
 	}
 	return false;
 }
 
 
-bool ABaseCharacter::isCastingSkill()
+bool ABaseCharacter::isCastingSkill(FString message)
 {
-	return currentSkill.castingSkill;
+	FString out = TEXT(" ");
+	bool b = false;
+	if (HasAuthority())
+	{
+		out = out.Append(message).Append(TEXT(" Server"));
+		b = currentSkill.castingSkill;
+	}
+		
+	else
+	{
+		out = out.Append(message).Append(TEXT(" Client"));
+		
+		b = currentSkill.castingSkill;
+	}
+	if (!(message.Equals(TEXT("NOTHING"))))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, out);
+	}
+	return b;
 }
 
 void ABaseCharacter::heal(ABaseCharacter* caster, float value, bool withBuff)
@@ -334,6 +472,8 @@ void ABaseCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & Ou
 	DOREPLIFETIME(ABaseCharacter, m_HealthRegeneration);
 	DOREPLIFETIME(ABaseCharacter, currentSkill);
 	DOREPLIFETIME(ABaseCharacter, messages);
+	DOREPLIFETIME(ABaseCharacter, selectedTarget);
+	DOREPLIFETIME(ABaseCharacter, weapon);
 	DOREPLIFETIME(ABaseCharacter, skillcooldowns);
 }
 

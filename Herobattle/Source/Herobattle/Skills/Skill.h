@@ -1,7 +1,9 @@
 #pragma once
 
 #include "../Enum/SkillEnums.h"
+#include "AI/CharacterState.h"
 #include "Skill.generated.h"
+
 
 
 
@@ -30,7 +32,10 @@ public:
 
 	UPROPERTY(Replicated)
 	TArray<UBaseSkillComponent*> componentList;
-
+	int32 range;
 	bool run(ABaseCharacter* target, ABaseCharacter* self);
+	bool isValidTarget(ABaseCharacter* target, ABaseCharacter* self);
+
+	float getScore(FCharacterState charcterState);
 
 };

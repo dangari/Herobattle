@@ -56,7 +56,7 @@ void UScForEach::init(FXmlNode* node)
 	}
 }
 
-float UScForEach::getScore()
+float UScForEach::getScore(FCharacterState characterState)
 {
 	return 0.f;
 }

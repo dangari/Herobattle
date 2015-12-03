@@ -7,6 +7,7 @@
 			<casttime value="1"/>
 			<cooldown value="5"/>
 			<targettype value="ENEMY"/>
+      <range value="800"/>
 			<effects>
 				<impact>
 					<damage value="20" scaling="FIRE_MAGIC" type="FIRE" target="TARGET">
@@ -28,7 +29,8 @@
 			<costs value="5"/>
 			<casttime value="0.75"/>
 			<cooldown value="3"/>
-			<targettype value="SELF_ALLY"/>
+			<targettype value="SELFFREND"/>
+      <range value="800"/>
 			<effects>
 				<impact>
 					<heal value="5" scaling="HEALING_PRAYERS" target="TARGET">
@@ -57,7 +59,8 @@
       <costs value="5"/>
       <casttime value="1"/>
       <cooldown value="15"/>
-      <targettype value="SELF_ALLY"/>
+      <targettype value="SELFFREND"/>
+      <range value="800"/>
       <effects>
         <impact>
           <buff value="5" type="ENCHANTMENT" scaling="PROTECTION_PRAYERS" usage="1">
@@ -79,7 +82,8 @@
 			<costs value="5"/>
 			<casttime value="1"/>
 			<cooldown value="4"/>
-			<targettype value="SELF_ALLY"/>
+			<targettype value="SELFFREND"/>
+      <range value="800"/>
 			<effects>
 				<impact>
 					<buff value="2" type="ENCHANTMENT" scaling="PROTECTION_PRAYERS" usage="INF">
@@ -99,7 +103,8 @@
 			<costs value="5"/>
 			<casttime value="0.75"/>
 			<cooldown value="5"/>
-			<targettype value="SELF_ALLY"/>
+			<targettype value="SELFFREND"/>
+      <range value="800"/>
 			<effects>
 				<impact>
 					<remove value="1" type="CONDITION" scaling="NONE" target="TARGET"/>
@@ -123,6 +128,7 @@
 			<casttime value="0"/>
 			<cooldown value="20"/>
 			<targettype value="SELF"/>
+      <range value="0"/>
 			<weapon value="SHIELD"/>
       <effects>
         <impact>
@@ -153,6 +159,7 @@
 			<casttime value="0.25"/>
 			<cooldown value="12"/>
 			<targettype value="SELF"/>
+      <range value="0"/>
       <effects>
         <impact>
 			    <buff value="5" type="ENCHANTMENT" scaling="EARTH_PRAYERS" usage="INF">

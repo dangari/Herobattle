@@ -30,7 +30,7 @@ bool UScCondition::run(ABaseCharacter* target, ABaseCharacter* self)
 	
 	
 }
-float UScCondition::getScore()
+float UScCondition::getScore(FCharacterState characterState)
 {
 	return 0.f;
 }

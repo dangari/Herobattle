@@ -140,6 +140,10 @@ USkill* XMLSkillReader::ReadSkill(FXmlNode* skillRootNode)
 		{
 			skill->targetType = SkillEnums::stringToTargetType(prop->GetAttribute(value));
 		}
+		else if (tagName.Equals(TEXT("range")))
+		{
+			skill->range = FCString::Atoi(*(prop->GetAttribute(value)));
+		}
 
 		else if(tagName.Equals(TEXT("effects")))
 		{

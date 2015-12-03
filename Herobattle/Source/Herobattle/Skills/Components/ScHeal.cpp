@@ -24,7 +24,7 @@ bool UScHeal::run(ABaseCharacter* target, ABaseCharacter* self)
 	testTarget->heal(self, heal);
 	return true;
 }
-float UScHeal::getScore()
+float UScHeal::getScore(FCharacterState characterState)
 {
 	return 1.f;
 }

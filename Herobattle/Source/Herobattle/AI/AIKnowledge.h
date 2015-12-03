@@ -31,5 +31,7 @@ public:
 private:
 	UNavigationSystem* m_NavSys;
 	ABaseCharacter* owner;
+
+	AAIController* AIOwnerController;
 	
 };

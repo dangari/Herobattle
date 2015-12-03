@@ -8,6 +8,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "AIGameState.h"
 #include "BehaviorTree/Blackboard/BlackboardKeyType_Object.h"
+#include "AIController.h"
 
 
 
@@ -40,8 +41,9 @@ void UAIKnowledge::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory
 	}
 
 	aiGameState->addDeltaTime(DeltaSeconds);
-
-	if (!(owner->isCastingSkill()))
+	if (!owner)
+		owner = (ABaseCharacter*)AIOwnerController->GetPawn();
+	if (owner && !(owner->isCastingSkill()))
 	{
 		aiGameState->newState(owner);
 
@@ -50,15 +52,18 @@ void UAIKnowledge::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory
 
 		for (TActorIterator<ABaseCharacter> ActorItr(GetWorld()); ActorItr; ++ActorItr)
 		{
-			FCharacterState characterState = ActorItr->AiExtractor(owner);
-			if (fRange < characterState.airDistance)
+			if (owner != *ActorItr)
 			{
-				float distance;
-				FVector startVec = owner->GetActorLocation();
-				m_NavSys->GetPathLength(startVec, characterState.location, distance);
+				FCharacterState characterState = ActorItr->AiExtractor(owner);
+				if (fRange < characterState.airDistance)
+				{
+					float distance;
+					FVector startVec = owner->GetActorLocation();
+					m_NavSys->GetPathLength(startVec, characterState.location, distance);
 
-				characterState.walkDistance = distance;
-				aiGameState->addCharacterState(characterState);
+					characterState.walkDistance = distance;
+					aiGameState->addCharacterState(characterState);
+				}
 			}
 		}
 	}
@@ -66,6 +71,5 @@ void UAIKnowledge::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory
 
 void UAIKnowledge::SetOwner(AActor* ActorOwner)
 {
-	ActorOwner->GetActorLocation();
-	owner = (ABaseCharacter*)ActorOwner;
+	AIOwnerController = Cast<AAIController>(ActorOwner);
 }

@@ -38,6 +38,8 @@ public:
 
 	void addDeltaTime(float DeltaTime);
 
+	ABaseCharacter* getOwner();
+
 private:
 	TArray<FCharacterState> AlliesCurrentAIState;
 	TArray<FCharacterState> AlliesOldAIState;

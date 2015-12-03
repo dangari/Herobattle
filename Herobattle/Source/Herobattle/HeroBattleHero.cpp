@@ -13,6 +13,7 @@ AHeroBattleHero::AHeroBattleHero() : AHeroBattleHero::ABaseCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 	currentState = HeroState::NONE;
 	owningPlayer = nullptr;
+	bReplicates = true;
 }
 
 // Called when the game starts or when spawned

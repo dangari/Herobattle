@@ -26,16 +26,8 @@ struct FSkillStatus
 {
 	GENERATED_USTRUCT_BODY()
 
-	void registerSkill(USkill* skill, ABaseCharacter* target, int32 slot)
-	{
-		castingSkill = true;
-		this->skill = skill;
-		leftCastTime = skill->castTime;
-		skillName = skill->name;
-		this->target = target;
-		this->slot = slot;
-		castTime = skill->castTime;
-	}
+	
+
 
 	UPROPERTY()
 		FString skillName;
@@ -51,7 +43,12 @@ struct FSkillStatus
 		int32 slot;
 
 	UPROPERTY()
-		bool castingSkill;
+		bool castingSkill = false;
+	
+	FSkillStatus()
+	{
+		castingSkill = false;
+	}
 
 	FSkillStatus copy()
 	{
@@ -64,5 +61,16 @@ struct FSkillStatus
 		newSkillStatus.slot = this->slot;
 		newSkillStatus.castingSkill = this->castingSkill;
 		return newSkillStatus;
+	}
+
+	void registerSkill(USkill* skill, ABaseCharacter* target, int32 slot)
+	{
+		castingSkill = true;
+		this->skill = skill;
+		leftCastTime = skill->castTime;
+		skillName = skill->name;
+		this->target = target;
+		this->slot = slot;
+		castTime = skill->castTime;
 	}
 };

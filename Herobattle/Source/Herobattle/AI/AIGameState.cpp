@@ -68,3 +68,8 @@ void UAIGameState::addDeltaTime(float DeltaTime)
 {
 	m_deltaTime += DeltaTime;
 }
+
+ABaseCharacter* UAIGameState::getOwner()
+{
+	return m_owner;
+}

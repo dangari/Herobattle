@@ -7,6 +7,7 @@
 #include "UnrealNetwork.h"
 #include "HerobattleGameMode.h"
 #include "SkillMessages.h"
+#include "Engine.h"
 
 ABaseCharacter::ABaseCharacter()
 :m_MaxHealth(480),
@@ -19,11 +20,12 @@ m_ConditionCount(0),
 m_BuffCount(0)
 {
 	bReplicates = true;
-
+	currentSkill.castingSkill = false;
 }
 
 ABaseCharacter::~ABaseCharacter()
 {
+	
 }
 
 // Called when the game starts or when spawned
@@ -38,10 +40,11 @@ void ABaseCharacter::BeginPlay()
 		skillList[2] = gm->skillList[2];
 		messages = NewObject<USkillMessages>();
 		weapon = FWeapon(Weapons::STAFF);
+		currentSkill.castingSkill = false;
 	}
 	else
 	{
-
+		currentSkill.castingSkill = false;
 	}
 
 }
@@ -359,9 +362,27 @@ bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
 }
 
 
-bool ABaseCharacter::isCastingSkill()
+bool ABaseCharacter::isCastingSkill(FString message)
 {
-	return currentSkill.castingSkill;
+	FString out = TEXT(" ");
+	bool b = false;
+	if (HasAuthority())
+	{
+		out = out.Append(message).Append(TEXT(" Server"));
+		b = currentSkill.castingSkill;
+	}
+		
+	else
+	{
+		out = out.Append(message).Append(TEXT(" Client"));
+		
+		b = currentSkill.castingSkill;
+	}
+	if (!(message.Equals(TEXT("NOTHING"))))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, out);
+	}
+	return b;
 }
 
 void ABaseCharacter::heal(ABaseCharacter* caster, float value, bool withBuff)

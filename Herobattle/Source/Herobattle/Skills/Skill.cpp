@@ -7,6 +7,7 @@
 #include "Base/BaseCharacter.h"
 #include "UnrealNetwork.h"
 #include "SkillMessages.h"
+#include "AI/AIGameState.h"
 
 
 
@@ -55,6 +56,11 @@ bool USkill::isValidTarget(ABaseCharacter* target, ABaseCharacter* self)
 		self->messages->registerMessage(TEXT("Invalide Target"), MessageType::SKILLERROR);
 		return false;
 	}
+}
+
+float USkill::getScore(UAIGameState* aiGameState)
+{
+	return 1.0f;
 }
 
 void USkill::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const

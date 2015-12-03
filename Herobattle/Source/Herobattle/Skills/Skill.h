@@ -7,6 +7,7 @@
 
 class UBaseSkillComponent;
 class ABaseCharacter;
+class UAIGameState;
 /**
  * 
  */
@@ -33,5 +34,7 @@ public:
 	int32 range;
 	bool run(ABaseCharacter* target, ABaseCharacter* self);
 	bool isValidTarget(ABaseCharacter* target, ABaseCharacter* self);
+
+	float getScore(UAIGameState* aiGameState);
 
 };

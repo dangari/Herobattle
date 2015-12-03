@@ -72,7 +72,7 @@ public:
 	struct FSkillHUD getCurrentCast();
 
 	UFUNCTION(BlueprintCallable, Category = Skills)
-	bool isCastingSkill();
+	bool isCastingSkill(FString message = TEXT("NOTHING"));
 
 
 // this Functions get called by Skills
@@ -98,6 +98,9 @@ public:
 
 	//Creates a state of the character
 	FCharacterState AiExtractor(ABaseCharacter* character);
+
+	//test if the skill is on cooldown
+	bool skillIsOnCooldown(int slot);
 
 
 	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
@@ -127,6 +130,11 @@ public:
 
 	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = Info)
 	TeamColor ETeam;
+
+	UPROPERTY(Replicated)
+	USkill* skillList[8];
+
+	
 
 protected:
 	// starts or stop AutoAttack
@@ -167,8 +175,7 @@ private:
 	//if enough mana is remaining the mana costs get abstracted from the mana of the character
 	bool skillManaCost(float value);
 
-	//test if the skill is on cooldown
-	bool skillIsOnCooldown(int slot);
+
 
 	TArray<Condition> getConditions();
 
@@ -184,9 +191,8 @@ private:
 	
 
 	UPROPERTY(Replicated)
-	USkill* skillList[8];
-	UPROPERTY(Replicated)
 	FSkillCooldown skillcooldowns[8];
+	
 	
 	int m_ConditionCount;
 	int m_BuffCount;

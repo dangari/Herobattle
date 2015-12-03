@@ -1,10 +1,13 @@
 #pragma once
 
-#include "Skills/Skill.h"
+
+
 #include "SkillContainer.generated.h"
 
 
 
+class ABaseCharacter;
+class USkill;
 
 USTRUCT()
 struct FSkillHUD
@@ -27,8 +30,6 @@ struct FSkillStatus
 	GENERATED_USTRUCT_BODY()
 
 	
-
-
 	UPROPERTY()
 		FString skillName;
 	UPROPERTY()
@@ -45,32 +46,8 @@ struct FSkillStatus
 	UPROPERTY()
 		bool castingSkill = false;
 	
-	FSkillStatus()
-	{
-		castingSkill = false;
-	}
 
-	FSkillStatus copy()
-	{
-		FSkillStatus newSkillStatus;
-		newSkillStatus.skillName = this->skillName;
-		newSkillStatus.leftCastTime = this->leftCastTime;
-		newSkillStatus.castTime = this->castTime;
-		newSkillStatus.skill = this->skill;
-		newSkillStatus.target = this->target;
-		newSkillStatus.slot = this->slot;
-		newSkillStatus.castingSkill = this->castingSkill;
-		return newSkillStatus;
-	}
+	FSkillStatus copy();
 
-	void registerSkill(USkill* skill, ABaseCharacter* target, int32 slot)
-	{
-		castingSkill = true;
-		this->skill = skill;
-		leftCastTime = skill->castTime;
-		skillName = skill->name;
-		this->target = target;
-		this->slot = slot;
-		castTime = skill->castTime;
-	}
+	void registerSkill(USkill* skill, ABaseCharacter* target, int32 slot);
 };

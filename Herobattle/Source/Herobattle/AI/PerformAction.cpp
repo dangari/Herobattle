@@ -27,7 +27,7 @@ AIAction UPerformAction::getNextAction(UBehaviorTreeComponent& OwnerComp)
 	return AIAction::IDLE;
 }
 
-void UPerformAction::calcSkillScore(UAIGameState* aiGameState)
+void UPerformAction::fillScoreList(UAIGameState* aiGameState)
 {
 	ABaseCharacter* owner = aiGameState->getOwner();
 	for (int i = 0; i < 8; i++)
@@ -35,15 +35,27 @@ void UPerformAction::calcSkillScore(UAIGameState* aiGameState)
 		USkill* skill = owner->skillList[i];
 		if (skill && !(owner->skillIsOnCooldown(i)))
 		{
-			FActionScore actionScore;
-			if (skill->targetType == TargetType::ENEMY)
+			switch (skill->targetType)
 			{
-
+			case TargetType::ENEMY:
+				break;
+			case  TargetType::FRIEND:
+				break;
+			case TargetType::SELFFREND:
+				break;
+			case  TargetType::SELF:
+				break;
+			default:
+				break;
 			}
-			else if (skill->targetType == TargetType::FRIEND)
-			actionScore.score = skill->getScore(aiGameState);
-
-			m_ActionList.Add(actionScore);
 		}
+	}
+}
+
+void UPerformAction::calcSkillScore(TArray<FCharacterState> chracterState, USkill* skill)
+{
+	for (auto& character : chracterState)
+	{
+		
 	}
 }

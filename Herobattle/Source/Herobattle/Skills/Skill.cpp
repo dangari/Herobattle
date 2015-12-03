@@ -7,7 +7,6 @@
 #include "Base/BaseCharacter.h"
 #include "UnrealNetwork.h"
 #include "SkillMessages.h"
-#include "AI/AIGameState.h"
 
 
 
@@ -58,7 +57,7 @@ bool USkill::isValidTarget(ABaseCharacter* target, ABaseCharacter* self)
 	}
 }
 
-float USkill::getScore(UAIGameState* aiGameState)
+float USkill::getScore(FCharacterState characterState)
 {
 	return 1.0f;
 }

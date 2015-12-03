@@ -1,13 +1,14 @@
 #pragma once
 
 #include "../Enum/SkillEnums.h"
+#include "AI/CharacterState.h"
 #include "Skill.generated.h"
+
 
 
 
 class UBaseSkillComponent;
 class ABaseCharacter;
-class UAIGameState;
 /**
  * 
  */
@@ -35,6 +36,6 @@ public:
 	bool run(ABaseCharacter* target, ABaseCharacter* self);
 	bool isValidTarget(ABaseCharacter* target, ABaseCharacter* self);
 
-	float getScore(UAIGameState* aiGameState);
+	float getScore(FCharacterState charcterState);
 
 };

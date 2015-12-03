@@ -4,7 +4,9 @@
 
 #include "BehaviorTree/BTTaskNode.h"
 #include "Enum/AIEnums.h"
+#include "CharacterState.h"
 #include "PerformAction.generated.h"
+
 
 
 USTRUCT()
@@ -39,7 +41,7 @@ public:
 
 private:
 	AIAction getNextAction(UBehaviorTreeComponent& OwnerComp);
-	void calcSkillScore(UAIGameState* aiGameState);
-
+	void fillScoreList(UAIGameState* aiGameState);
+	void calcSkillScore(TArray<FCharacterState> chracterState, USkill* skill);
 	TArray<FActionScore> m_ActionList;
 };

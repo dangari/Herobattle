@@ -33,7 +33,7 @@ void UScRegeneratio::init(FXmlNode* node)
 	}
 }
 
-float UScRegeneratio::getScore()
+float UScRegeneratio::getScore(FCharacterState characterState)
 {
 	return 0.f;
 }

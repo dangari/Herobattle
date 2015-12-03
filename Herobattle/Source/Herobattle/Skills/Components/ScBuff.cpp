@@ -28,7 +28,7 @@ bool UScBuff::run(ABaseCharacter* target, ABaseCharacter* self)
 	return b;
 }
 
-float UScBuff::getScore()
+float UScBuff::getScore(FCharacterState characterState)
 {
 	return 1.f;
 }

@@ -1,8 +1,8 @@
 #pragma once
 
 #include "../../Enum/SkillEnums.h"
-#include <map>
 #include "XmlParser.h"
+#include "AI/CharacterState.h"
 #include "BaseSkillComponent.generated.h"
 
 
@@ -24,7 +24,7 @@ public:
 	~UBaseSkillComponent();
 
 	virtual bool run(ABaseCharacter* target, ABaseCharacter* self);
-	virtual float getScore();
+	virtual float getScore(FCharacterState characterState);
 	virtual void init(FXmlNode* node);
 	virtual FString ToString();
 

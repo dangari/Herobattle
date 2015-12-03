@@ -52,10 +52,10 @@ void UPerformAction::fillScoreList(UAIGameState* aiGameState)
 	}
 }
 
-void UPerformAction::calcSkillScore(TArray<FCharacterState> chracterState, USkill* skill)
+void UPerformAction::calcSkillScore(TArray<FCharacterState> characterState, USkill* skill)
 {
-	for (auto& character : chracterState)
+	for (FCharacterState& character : characterState)
 	{
-		
+		skill->getScore(character);
 	}
 }

@@ -19,7 +19,7 @@ public:
 
 	virtual bool run(ABaseCharacter* target, ABaseCharacter* self) override;
 	virtual void init(FXmlNode* node) override;
-	virtual float getScore() override;
+	virtual float getScore(FCharacterState characterState) override;
 	
 private:
 	FString skillType;

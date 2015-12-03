@@ -18,7 +18,7 @@ class HEROBATTLE_API UScKnockDown : public UBaseSkillComponent
 public:
 	virtual bool run(ABaseCharacter* target, ABaseCharacter* self) override;
 	virtual void init(FXmlNode* node) override;
-	virtual float getScore() override;
+	virtual float getScore(FCharacterState characterState) override;
 	TargetType targetType;
 	
 	

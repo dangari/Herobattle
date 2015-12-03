@@ -40,7 +40,7 @@ void UScKnockDown::init(FXmlNode* node)
 	}
 }
 
-float UScKnockDown::getScore()
+float UScKnockDown::getScore(FCharacterState characterState)
 {
 	return 0.f;
 }

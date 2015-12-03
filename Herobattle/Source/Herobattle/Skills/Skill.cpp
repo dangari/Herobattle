@@ -59,6 +59,10 @@ bool USkill::isValidTarget(ABaseCharacter* target, ABaseCharacter* self)
 
 float USkill::getScore(FCharacterState characterState)
 {
+	for (auto& component : componentList)
+	{
+		component->getScore(characterState);
+	}
 	return 1.0f;
 }
 

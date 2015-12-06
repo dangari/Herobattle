@@ -5,7 +5,7 @@
 #include "XmlParser.h"
 #include "../XMLSkillReader.h"
 #include "Base/BaseCharacter.h"
-
+#include "AI/SkillScore.h"
 
 
 
@@ -56,7 +56,7 @@ void UScForEach::init(FXmlNode* node)
 	}
 }
 
-float UScForEach::getScore(FCharacterState characterState)
+float UScForEach::getScore(FCharacterState characterState, USkillScore* skillScore)
 {
 	return 0.f;
 }

@@ -3,6 +3,8 @@
 #include "Herobattle.h"
 #include "ScDamage.h"
 #include "../../Base/BaseCharacter.h"
+#include "AI/SkillScore.h"
+
 UScDamage::UScDamage()
 {
 	FString name = TEXT("Damage");
@@ -27,7 +29,7 @@ bool UScDamage::run(ABaseCharacter* target, ABaseCharacter* self)
 	return true;
 }
 
-float UScDamage::getScore(FCharacterState characterState)
+float UScDamage::getScore(FCharacterState characterState, USkillScore* skillScore)
 {
 	return 1.f;
 }

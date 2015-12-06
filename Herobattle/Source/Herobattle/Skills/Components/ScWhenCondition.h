@@ -21,7 +21,7 @@ public:
 	UScWhenCondition();
 	~UScWhenCondition();
 	virtual bool run(ABaseCharacter* target, ABaseCharacter* self) override;
-	virtual float getScore(FCharacterState characterState) override;
+	virtual float getScore(FCharacterState characterState, USkillScore* skillScore) override;
 
 
 private:

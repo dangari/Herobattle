@@ -3,7 +3,7 @@
 #include "Herobattle.h"
 #include "ScKnockDown.h"
 #include "Base/BaseCharacter.h"
-
+#include "AI/SkillScore.h"
 
 
 
@@ -40,7 +40,7 @@ void UScKnockDown::init(FXmlNode* node)
 	}
 }
 
-float UScKnockDown::getScore(FCharacterState characterState)
+float UScKnockDown::getScore(FCharacterState characterState, USkillScore* skillScore)
 {
 	return 0.f;
 }

@@ -207,7 +207,7 @@ FCharacterState ABaseCharacter::AiExtractor(ABaseCharacter* character)
 	characterState.health = m_Health;
 	characterState.skillState = currentSkill.copy();
 	characterState.selectedTarget = selectedTarget;
-
+	characterState.self = this;
 	return characterState;
 }
 

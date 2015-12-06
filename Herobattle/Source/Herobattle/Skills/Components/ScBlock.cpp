@@ -2,6 +2,7 @@
 
 #include "Herobattle.h"
 #include "ScBlock.h"
+#include "AI/SkillScore.h"
 
 
 
@@ -42,7 +43,7 @@ void UScBlock::init(FXmlNode* node)
 	}
 }
 
-float UScBlock::getScore(FCharacterState characterState)
+float UScBlock::getScore(FCharacterState characterState, USkillScore* skillScore)
 {
 	return 0.f;
 }

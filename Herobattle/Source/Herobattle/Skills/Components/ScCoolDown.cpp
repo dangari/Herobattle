@@ -2,6 +2,7 @@
 
 #include "Herobattle.h"
 #include "ScCoolDown.h"
+#include "AI/SkillScore.h"
 
 
 

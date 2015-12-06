@@ -6,6 +6,9 @@
 #include "../XMLSkillReader.h"
 #include "../Buff/Buff.h"
 #include "../Buff/BuffContainer.h"
+#include "AI/SkillScore.h"
+#include "AI/CharacterState.h"
+
 UScBuff::UScBuff()
 {
 	//damageType = HBDamageType::FIRE;
@@ -28,7 +31,7 @@ bool UScBuff::run(ABaseCharacter* target, ABaseCharacter* self)
 	return b;
 }
 
-float UScBuff::getScore(FCharacterState characterState)
+float UScBuff::getScore(FCharacterState characterState, USkillScore* skillScore)
 {
 	return 1.f;
 }

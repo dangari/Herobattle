@@ -1,6 +1,7 @@
 #include "Herobattle.h"
 #include "ScHeal.h"
 #include "../../Base/BaseCharacter.h"
+#include "AI/SkillScore.h"
 
 UScHeal::UScHeal()
 {
@@ -24,7 +25,7 @@ bool UScHeal::run(ABaseCharacter* target, ABaseCharacter* self)
 	testTarget->heal(self, heal);
 	return true;
 }
-float UScHeal::getScore(FCharacterState characterState)
+float UScHeal::getScore(FCharacterState characterState, USkillScore* skillScore)
 {
 	return 1.f;
 }

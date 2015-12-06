@@ -3,7 +3,7 @@
 #pragma once
 
 #include "Object.h"
-#include "Enum\SkillEnums.h"
+#include "Enum/SkillEnums.h"
 #include "SkillScore.generated.h"
 
 

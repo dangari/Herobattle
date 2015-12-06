@@ -4,6 +4,7 @@
 #include "../../Base/BaseCharacter.h"
 #include "../RegisterSkillComponents.h"
 #include "../../Enum/SkillEnums.h"
+#include "AI/SkillScore.h"
 
 UScCondition::UScCondition()
 {
@@ -30,7 +31,7 @@ bool UScCondition::run(ABaseCharacter* target, ABaseCharacter* self)
 	
 	
 }
-float UScCondition::getScore(FCharacterState characterState)
+float UScCondition::getScore(FCharacterState characterState, USkillScore* skillScore)
 {
 	return 0.f;
 }

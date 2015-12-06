@@ -34,5 +34,6 @@ struct FCharacterState
 	FSkillStatus skillState;
 
 	ABaseCharacter* selectedTarget;
+	ABaseCharacter* self;
 
 };

@@ -7,6 +7,7 @@
 #include "Base/BaseCharacter.h"
 #include "UnrealNetwork.h"
 #include "SkillMessages.h"
+#include "AI/SkillScore.h"
 
 
 
@@ -61,7 +62,8 @@ float USkill::getScore(FCharacterState characterState)
 {
 	for (auto& component : componentList)
 	{
-		component->getScore(characterState);
+		USkillScore* skillScore = NewObject<USkillScore>();
+		component->getScore(characterState, skillScore);
 	}
 	return 1.0f;
 }

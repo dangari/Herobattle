@@ -4,6 +4,7 @@
 #include "Engine.h"
 #include "../RegisterSkillComponents.h"
 #include "../../Base/BaseCharacter.h"
+#include "AI/SkillScore.h"
 
 
 UBaseSkillComponent::UBaseSkillComponent()
@@ -21,7 +22,7 @@ bool UBaseSkillComponent::run(ABaseCharacter* target, ABaseCharacter* self)
 {
 	return true;
 }
-float UBaseSkillComponent::getScore(FCharacterState characterState)
+float UBaseSkillComponent::getScore(FCharacterState characterState, USkillScore* skillScore)
 {
 	return 0.f;
 }

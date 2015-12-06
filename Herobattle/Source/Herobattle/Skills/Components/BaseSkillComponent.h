@@ -6,7 +6,7 @@
 #include "BaseSkillComponent.generated.h"
 
 
-
+class USkillScore;
 class ABaseCharacter;
 
 
@@ -24,7 +24,7 @@ public:
 	~UBaseSkillComponent();
 
 	virtual bool run(ABaseCharacter* target, ABaseCharacter* self);
-	virtual float getScore(FCharacterState characterState);
+	virtual float getScore(FCharacterState characterState, USkillScore* skillScore);
 	virtual void init(FXmlNode* node);
 	virtual FString ToString();
 

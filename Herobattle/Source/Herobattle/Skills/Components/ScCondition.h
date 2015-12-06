@@ -25,7 +25,7 @@ public:
 	~UScCondition();
 
 	virtual bool run(ABaseCharacter* target, ABaseCharacter* self) override;
-	virtual float getScore(FCharacterState characterState) override;
+	virtual float getScore(FCharacterState characterState, USkillScore* skillScore) override;
 
 	virtual void init(FXmlNode* node) override;
 

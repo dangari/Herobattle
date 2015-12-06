@@ -3,7 +3,7 @@
 #include "Herobattle.h"
 #include "ScRegeneratio.h"
 #include "Base/BaseCharacter.h"
-
+#include "AI/SkillScore.h"
 
 
 
@@ -33,7 +33,7 @@ void UScRegeneratio::init(FXmlNode* node)
 	}
 }
 
-float UScRegeneratio::getScore(FCharacterState characterState)
+float UScRegeneratio::getScore(FCharacterState characterState, USkillScore* skillScore)
 {
 	return 0.f;
 }

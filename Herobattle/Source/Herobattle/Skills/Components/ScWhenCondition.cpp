@@ -6,7 +6,7 @@
 #include "BoolObjects/BoolHealth.h"
 #include "../XMLSkillReader.h"
 #include "UnrealNetwork.h"
-
+#include "AI/SkillScore.h"
 
 UScWhenCondition::UScWhenCondition()
 {
@@ -32,7 +32,7 @@ bool UScWhenCondition::run(ABaseCharacter* target, ABaseCharacter* self)
 	return b;
 }
 
-float UScWhenCondition::getScore(FCharacterState characterState)
+float UScWhenCondition::getScore(FCharacterState characterState, USkillScore* skillScore)
 {
 	return 1.f;
 }

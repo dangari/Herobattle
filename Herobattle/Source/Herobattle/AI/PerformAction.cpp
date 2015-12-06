@@ -27,9 +27,9 @@ AIAction UPerformAction::getNextAction(UBehaviorTreeComponent& OwnerComp)
 	return AIAction::IDLE;
 }
 
-void UPerformAction::fillScoreList(UAIGameState* aiGameState)
+void UPerformAction::fillScoreList(UAIGameState& aiGameState)
 {
-	ABaseCharacter* owner = aiGameState->getOwner();
+	ABaseCharacter* owner = aiGameState.getOwner();
 	for (int i = 0; i < 8; i++)
 	{
 		USkill* skill = owner->skillList[i];
@@ -38,12 +38,17 @@ void UPerformAction::fillScoreList(UAIGameState* aiGameState)
 			switch (skill->targetType)
 			{
 			case TargetType::ENEMY:
+				calcSkillScore(aiGameState.getEnemyCurrentAIState(), skill, i);
 				break;
 			case  TargetType::FRIEND:
+				calcSkillScore(aiGameState.getAlliesCurrentAIState(), skill, i);
 				break;
 			case TargetType::SELFFREND:
+				calcSkillScore(aiGameState.getAlliesCurrentAIState(), skill, i);
+				calcSkillScore(owner, skill, i);
 				break;
 			case  TargetType::SELF:
+				calcSkillScore(owner, skill, i);
 				break;
 			default:
 				break;
@@ -52,10 +57,32 @@ void UPerformAction::fillScoreList(UAIGameState* aiGameState)
 	}
 }
 
-void UPerformAction::calcSkillScore(TArray<FCharacterState> characterState, USkill* skill)
+void UPerformAction::calcSkillScore(TArray<FCharacterState> characterState, USkill* skill, int slot)
 {
 	for (FCharacterState& character : characterState)
 	{
-		skill->getScore(character);
+		float score = skill->getScore(character);
+		if (score > 0)
+		{
+			FActionScore aScore;
+			aScore.action = AIAction::SKILL;
+			aScore.slot = slot;
+			aScore.target = character.self;
+			aScore.score = score;
+		}
+	}
+}
+
+void UPerformAction::calcSkillScore(ABaseCharacter* character, USkill* skill, int slot)
+{
+	FCharacterState characterState = character->AiExtractor(character);
+	float score = skill->getScore(characterState);
+	if (score > 0)
+	{
+		FActionScore aScore;
+		aScore.action = AIAction::SKILL;
+		aScore.slot = slot;
+		aScore.target = characterState.self;
+		aScore.score = score;
 	}
 }

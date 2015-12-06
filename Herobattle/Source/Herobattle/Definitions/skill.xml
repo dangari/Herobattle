@@ -4,7 +4,7 @@
 		<spell type="SPELL">
 			<name value="Immolate"/>
 			<costs value="10"/>
-			<casttime value="1"/>
+			<casttime value="3"/>
 			<cooldown value="5"/>
 			<targettype value="ENEMY"/>
       <range value="800"/>

@@ -36,6 +36,6 @@ public:
 	bool run(ABaseCharacter* target, ABaseCharacter* self);
 	bool isValidTarget(ABaseCharacter* target, ABaseCharacter* self);
 
-	float getScore(FCharacterState charcterState);
+	float getScore(ABaseCharacter* caster, FCharacterState charcterState);
 
 };

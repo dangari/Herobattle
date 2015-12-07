@@ -30,12 +30,21 @@ public:
 	void addHeal(float Heal, TargetType target);
 	void addScore(float score, FString componentName);
 
+	void calcDamageScore(float cHealthSelf, float maxHealthSelf, float cHealthTarget, float maxHealthTarget);
+	void calcHealScore(float cHealthSelf, float maxHealthSelf, float cHealthTarget, float maxHealthTarget);
+
+	float calcCompleteScore();
 private:
 
 	TArray<FComponentScore> m_DamageList;
 	TArray<FComponentScore> m_HealList;
 	TMap<FString, float> m_ScoreList;
 	
-	
+	float uFunctionHeal(float missingHealth, float heal);
+	float uFunctionDamage(float missingHealth, float damage);
+
+
+	float m_healOffset = 30.f;
+	float m_damageOffset = 0.f;
 	
 };

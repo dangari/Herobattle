@@ -9,7 +9,7 @@
 
 UScRegeneratio::UScRegeneratio()
 {
-
+	componentName = TEXT("Regeneration");
 }
 
 UScRegeneratio::~UScRegeneratio()
@@ -33,7 +33,7 @@ void UScRegeneratio::init(FXmlNode* node)
 	}
 }
 
-float UScRegeneratio::getScore(FCharacterState characterState, USkillScore* skillScore)
+float UScRegeneratio::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
 	return 0.f;
 }

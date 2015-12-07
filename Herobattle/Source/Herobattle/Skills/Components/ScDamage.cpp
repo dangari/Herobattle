@@ -7,7 +7,7 @@
 
 UScDamage::UScDamage()
 {
-	FString name = TEXT("Damage");
+	componentName = TEXT("Damage");
 }
 
 
@@ -29,8 +29,10 @@ bool UScDamage::run(ABaseCharacter* target, ABaseCharacter* self)
 	return true;
 }
 
-float UScDamage::getScore(FCharacterState characterState, USkillScore* skillScore)
+float UScDamage::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
+	float damage = scaleTable[caster->getAttributeValue(scaleAttribute)];
+	skillScore->addDamage(damage, targetType);
 	return 1.f;
 }
 

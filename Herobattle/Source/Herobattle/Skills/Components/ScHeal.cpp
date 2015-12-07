@@ -5,6 +5,7 @@
 
 UScHeal::UScHeal()
 {
+	componentName = TEXT("Heal");
 }
 
 
@@ -25,9 +26,12 @@ bool UScHeal::run(ABaseCharacter* target, ABaseCharacter* self)
 	testTarget->heal(self, heal);
 	return true;
 }
-float UScHeal::getScore(FCharacterState characterState, USkillScore* skillScore)
+float UScHeal::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
-	return 1.f;
+	
+	float heal = scaleTable[caster->getAttributeValue(scaleAttribute)];
+	skillScore->addHeal(heal, targetType);
+	return 0.0f;
 }
 
 void UScHeal::init(FXmlNode* node)

@@ -11,7 +11,7 @@
 
 UScForEach::UScForEach()
 {
-
+	componentName = TEXT("ForEach");
 }
 
 UScForEach::~UScForEach()
@@ -56,7 +56,7 @@ void UScForEach::init(FXmlNode* node)
 	}
 }
 
-float UScForEach::getScore(FCharacterState characterState, USkillScore* skillScore)
+float UScForEach::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
 	return 0.f;
 }

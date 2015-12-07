@@ -58,14 +58,18 @@ bool USkill::isValidTarget(ABaseCharacter* target, ABaseCharacter* self)
 	}
 }
 
-float USkill::getScore(FCharacterState characterState)
+float USkill::getScore(ABaseCharacter* caster, FCharacterState charcterState)
 {
+	USkillScore* skillScore = NewObject<USkillScore>();
 	for (auto& component : componentList)
 	{
-		USkillScore* skillScore = NewObject<USkillScore>();
-		component->getScore(characterState, skillScore);
+		component->getScore(caster, charcterState, skillScore);
 	}
-	return 1.0f;
+	ABaseCharacter* target = charcterState.self;
+	skillScore->calcDamageScore(caster->m_Health, caster->m_MaxHealth, target->m_Health, target->m_MaxHealth);
+	skillScore->calcHealScore(caster->m_Health, caster->m_MaxHealth, target->m_Health, target->m_MaxHealth);
+	float score = skillScore->calcCompleteScore();
+	return score;
 }
 
 void USkill::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const

@@ -22,7 +22,7 @@ bool UBaseSkillComponent::run(ABaseCharacter* target, ABaseCharacter* self)
 {
 	return true;
 }
-float UBaseSkillComponent::getScore(FCharacterState characterState, USkillScore* skillScore)
+float UBaseSkillComponent::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
 	return 0.f;
 }

@@ -11,7 +11,7 @@
 
 UScBuff::UScBuff()
 {
-	//damageType = HBDamageType::FIRE;
+	componentName = TEXT("Buff");
 }
 
 
@@ -31,7 +31,7 @@ bool UScBuff::run(ABaseCharacter* target, ABaseCharacter* self)
 	return b;
 }
 
-float UScBuff::getScore(FCharacterState characterState, USkillScore* skillScore)
+float UScBuff::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
 	return 1.f;
 }

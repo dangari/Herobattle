@@ -42,10 +42,13 @@ public:
 
 private:
 	AIAction getNextAction(UBehaviorTreeComponent& OwnerComp);
-	void fillScoreList(UAIGameState& aiGameState);
+	void fillScoreList(UAIGameState* aiGameState);
 	//calculates score for characterstate
 	void calcSkillScore(TArray<FCharacterState> chracterState, USkill* skill, int slot);
 	// calculates score for character most time this function is used for the owner
 	void calcSkillScore(ABaseCharacter* character, USkill* skill, int slot);
+
+	FActionScore getBestScore();
 	TArray<FActionScore> m_ActionList;
+	AHeroBattleHero* m_owner;
 };

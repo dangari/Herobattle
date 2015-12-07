@@ -3,6 +3,7 @@
 #include "Herobattle.h"
 #include "AIGameState.h"
 #include "Base/BaseCharacter.h"
+#include "HeroBattleHero.h"
 
 
 
@@ -19,8 +20,8 @@ UAIGameState::~UAIGameState()
 
 void UAIGameState::newState(ABaseCharacter* owner)
 {
-	if (owner != m_owner)
-		m_owner = owner;
+	if (!m_owner)
+		m_owner = Cast<AHeroBattleHero>(owner);
 	EnemyOldAIState = EnemyCurrentAIState;
 	TArray<FCharacterState> newEnemyState;
 	EnemyCurrentAIState = newEnemyState;
@@ -69,7 +70,7 @@ void UAIGameState::addDeltaTime(float DeltaTime)
 	m_deltaTime += DeltaTime;
 }
 
-ABaseCharacter* UAIGameState::getOwner()
+AHeroBattleHero* UAIGameState::getOwner()
 {
 	return m_owner;
 }

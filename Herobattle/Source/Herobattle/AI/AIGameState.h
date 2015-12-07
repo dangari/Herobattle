@@ -8,6 +8,7 @@
 
 
 class ABaseCharacter;
+class AHeroBattleHero;
 
 /**
  * 
@@ -38,7 +39,7 @@ public:
 
 	void addDeltaTime(float DeltaTime);
 
-	ABaseCharacter* getOwner();
+	AHeroBattleHero* getOwner();
 
 private:
 	TArray<FCharacterState> AlliesCurrentAIState;
@@ -50,5 +51,5 @@ private:
 	//Time since last newStateCall
 	float m_deltaTime;
 	
-	ABaseCharacter* m_owner;
+	AHeroBattleHero* m_owner;
 };

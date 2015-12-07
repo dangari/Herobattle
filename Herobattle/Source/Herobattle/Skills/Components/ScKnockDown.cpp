@@ -9,7 +9,7 @@
 
 UScKnockDown::UScKnockDown()
 {
-
+	componentName = TEXT("KnockDown");
 }
 
 UScKnockDown::~UScKnockDown()
@@ -40,7 +40,7 @@ void UScKnockDown::init(FXmlNode* node)
 	}
 }
 
-float UScKnockDown::getScore(FCharacterState characterState, USkillScore* skillScore)
+float UScKnockDown::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
 	return 0.f;
 }

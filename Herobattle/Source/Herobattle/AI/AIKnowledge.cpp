@@ -55,7 +55,7 @@ void UAIKnowledge::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory
 			if (owner != *ActorItr)
 			{
 				FCharacterState characterState = ActorItr->AiExtractor(owner);
-				if (fRange < characterState.airDistance)
+				if (fRange > characterState.airDistance)
 				{
 					float distance;
 					FVector startVec = owner->GetActorLocation();

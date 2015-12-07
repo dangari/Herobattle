@@ -24,7 +24,7 @@ public:
 	~UBaseSkillComponent();
 
 	virtual bool run(ABaseCharacter* target, ABaseCharacter* self);
-	virtual float getScore(FCharacterState characterState, USkillScore* skillScore);
+	virtual float getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore);
 	virtual void init(FXmlNode* node);
 	virtual FString ToString();
 
@@ -36,5 +36,7 @@ public:
 
 protected:
 	void fillScaleTable(FXmlNode* node);
+
+	FString componentName;
 };
 

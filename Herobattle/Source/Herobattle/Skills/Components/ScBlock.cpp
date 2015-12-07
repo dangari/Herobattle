@@ -9,7 +9,7 @@
 
 UScBlock::UScBlock()
 {
-
+	componentName = TEXT("Block");
 }
 
 UScBlock::~UScBlock()
@@ -43,7 +43,7 @@ void UScBlock::init(FXmlNode* node)
 	}
 }
 
-float UScBlock::getScore(FCharacterState characterState, USkillScore* skillScore)
+float UScBlock::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
 	return 0.f;
 }

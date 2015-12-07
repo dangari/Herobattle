@@ -8,7 +8,7 @@
 
 UScCondition::UScCondition()
 {
-	conditionType = Condition::BURNING;
+	componentName = TEXT("Condition");
 }
 
 
@@ -31,8 +31,9 @@ bool UScCondition::run(ABaseCharacter* target, ABaseCharacter* self)
 	
 	
 }
-float UScCondition::getScore(FCharacterState characterState, USkillScore* skillScore)
+float UScCondition::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
+	skillScore->addScore(1.f, componentName);
 	return 0.f;
 }
 

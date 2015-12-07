@@ -23,7 +23,7 @@ public:
 	UScBuff();
 	~UScBuff();
 	virtual bool run(ABaseCharacter* target, ABaseCharacter* self) override;
-	virtual float getScore(FCharacterState characterState, USkillScore* skillScore) override;
+	virtual float getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore) override;
 	virtual void init(FXmlNode* node) override;
 	virtual FString ToString() override;
 

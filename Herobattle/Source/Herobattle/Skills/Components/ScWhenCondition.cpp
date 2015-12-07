@@ -10,7 +10,7 @@
 
 UScWhenCondition::UScWhenCondition()
 {
-	//damageType = HBDamageType::FIRE;
+	componentName = TEXT("WhenCondition");
 }
 
 
@@ -32,7 +32,7 @@ bool UScWhenCondition::run(ABaseCharacter* target, ABaseCharacter* self)
 	return b;
 }
 
-float UScWhenCondition::getScore(FCharacterState characterState, USkillScore* skillScore)
+float UScWhenCondition::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
 	return 1.f;
 }

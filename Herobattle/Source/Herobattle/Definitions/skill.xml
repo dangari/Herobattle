@@ -13,6 +13,8 @@
 					<damage value="20" scaling="FIRE_MAGIC" type="FIRE" target="TARGET">
 						<step key="1" value="24"/>
 						<step key="2" value="27"/>
+            <step key="12" value="68"/>
+            <step key="14" value="71"/>
 					</damage>
           <condition type="BURNING"  value="1" scaling="FIRE_MAGIC" target="TARGET">
             <step key="4" value="2"/>
@@ -37,6 +39,7 @@
 						<step key="1" value="11"/>
 						<step key="2" value="18"/>
 						<step key="3" value="24"/>
+            <step key="14" value="94"/>
 					</heal>
 					<when value="TARGERT">
 						<whencondition>
@@ -47,6 +50,7 @@
 								<step key="1" value="36"/>
 								<step key="2" value="41"/>
 								<step key="3" value="47"/>
+                <step key="14" value="109"/>
 							</heal>
 						</then>
 					</when>

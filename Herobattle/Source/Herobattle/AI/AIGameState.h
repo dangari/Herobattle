@@ -41,6 +41,8 @@ public:
 
 	AHeroBattleHero* getOwner();
 
+	float m_deltaTime;
+
 private:
 	TArray<FCharacterState> AlliesCurrentAIState;
 	TArray<FCharacterState> AlliesOldAIState;
@@ -49,7 +51,7 @@ private:
 	TArray<FCharacterState> EnemyOldAIState;
 	
 	//Time since last newStateCall
-	float m_deltaTime;
+
 	
 	AHeroBattleHero* m_owner;
 };

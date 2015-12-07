@@ -188,7 +188,7 @@ private:
 	Profession secondaryProfession;
 	TMap<Condition, UBaseCondition*> m_condtionList;
 	TMap<FString, UBuff*> m_BuffList;
-	
+	TMap<Attributes, uint8> attrList;
 
 	UPROPERTY(Replicated)
 	FSkillCooldown skillcooldowns[8];

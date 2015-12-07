@@ -10,9 +10,25 @@
 
 
 
+UPerformAction::UPerformAction()
+{
+	bCreateNodeInstance = true;
+}
+
+UPerformAction::~UPerformAction()
+{
+
+}
+
 EBTNodeResult::Type UPerformAction::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	getNextAction(OwnerComp);
+	switch (getNextAction(OwnerComp))
+	{
+	case AIAction::SKILL:
+		m_owner->UseSkill(nextSkill.target, nextSkill.slot);
+	default:
+		break;
+	}
 	return EBTNodeResult::Succeeded;
 }
 
@@ -25,10 +41,19 @@ AIAction UPerformAction::getNextAction(UBehaviorTreeComponent& OwnerComp)
 	{
 		fillScoreList(aiGameState);
 	}
+	FActionScore score;
 	if (m_ActionList.Num() > 0)
-		FActionScore score = getBestScore();
+	{
+		score = getBestScore();
+		m_ActionList.Empty();
+	}
 	else
 		return AIAction::IDLE;
+	if (score.score > 0.1)
+	{
+		nextSkill = score;
+		return AIAction::SKILL;
+	}
 	return AIAction::IDLE;
 }
 

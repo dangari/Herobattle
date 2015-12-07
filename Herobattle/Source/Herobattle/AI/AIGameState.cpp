@@ -20,8 +20,7 @@ UAIGameState::~UAIGameState()
 
 void UAIGameState::newState(ABaseCharacter* owner)
 {
-	if (!m_owner)
-		m_owner = Cast<AHeroBattleHero>(owner);
+	m_owner = Cast<AHeroBattleHero>(owner);
 	EnemyOldAIState = EnemyCurrentAIState;
 	TArray<FCharacterState> newEnemyState;
 	EnemyCurrentAIState = newEnemyState;

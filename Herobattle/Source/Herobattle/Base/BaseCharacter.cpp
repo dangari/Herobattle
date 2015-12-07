@@ -41,6 +41,9 @@ void ABaseCharacter::BeginPlay()
 		messages = NewObject<USkillMessages>();
 		weapon = FWeapon(Weapons::STAFF);
 		currentSkill.castingSkill = false;
+
+		attrList.Add(Attributes::FIRE_MAGIC, 14);
+		attrList.Add(Attributes::HEALING_PRAYERS, 14);
 	}
 	else
 	{
@@ -435,7 +438,10 @@ void ABaseCharacter::apllyUniQueBuff(UBuff* buff)
 
 uint8 ABaseCharacter::getAttributeValue(Attributes attributeName)
 {
-	return 0;
+	if (attrList.Contains(attributeName))
+		return *(attrList.Find(attributeName));
+	else
+		return 0;
 }
 
 void ABaseCharacter::applyCondition(UBaseCondition* condition)

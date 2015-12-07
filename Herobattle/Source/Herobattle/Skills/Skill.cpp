@@ -60,15 +60,31 @@ bool USkill::isValidTarget(ABaseCharacter* target, ABaseCharacter* self)
 
 float USkill::getScore(ABaseCharacter* caster, FCharacterState charcterState)
 {
-	USkillScore* skillScore = NewObject<USkillScore>();
-	for (auto& component : componentList)
+	if (caster->m_Mana - manaCost < 0)
+		return 0.0f;
+	else
 	{
-		component->getScore(caster, charcterState, skillScore);
+		USkillScore* skillScore = NewObject<USkillScore>();
+		for (auto& component : componentList)
+		{
+			component->getScore(caster, charcterState, skillScore);
+		}
+		ABaseCharacter* target = charcterState.self;
+		skillScore->calcDamageScore(caster->m_Health, caster->m_MaxHealth, target->m_Health, target->m_MaxHealth);
+		skillScore->calcHealScore(caster->m_Health, caster->m_MaxHealth, target->m_Health, target->m_MaxHealth);
+		float score = skillScore->calcCompleteScore() *  manaScore(caster, charcterState);
+		return score;
 	}
-	ABaseCharacter* target = charcterState.self;
-	skillScore->calcDamageScore(caster->m_Health, caster->m_MaxHealth, target->m_Health, target->m_MaxHealth);
-	skillScore->calcHealScore(caster->m_Health, caster->m_MaxHealth, target->m_Health, target->m_MaxHealth);
-	float score = skillScore->calcCompleteScore();
+}
+
+float USkill::manaScore(ABaseCharacter* caster, FCharacterState charcterState)
+{
+	float currentMana = caster->m_Mana;
+	float maxMana = caster->m_MaxMana;
+	int regen = caster->m_ManaRegeneration;
+
+	currentMana += (charcterState.DeltaTime * (regen / 3.0));
+	float score = currentMana / maxMana;
 	return score;
 }
 

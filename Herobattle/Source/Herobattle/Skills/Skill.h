@@ -38,4 +38,7 @@ public:
 
 	float getScore(ABaseCharacter* caster, FCharacterState charcterState);
 
+
+private: 
+	float manaScore(ABaseCharacter* caster, FCharacterState charcterState);
 };

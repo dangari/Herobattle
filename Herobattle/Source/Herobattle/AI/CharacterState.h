@@ -36,4 +36,6 @@ struct FCharacterState
 	ABaseCharacter* selectedTarget;
 	ABaseCharacter* self;
 
+	float DeltaTime;
+
 };

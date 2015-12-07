@@ -41,8 +41,8 @@ void UAIKnowledge::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory
 	}
 
 	aiGameState->addDeltaTime(DeltaSeconds);
-	if (!owner)
-		owner = (ABaseCharacter*)AIOwnerController->GetPawn();
+
+	owner = (ABaseCharacter*)AIOwnerController->GetPawn();
 	if (owner && !(owner->isCastingSkill()))
 	{
 		aiGameState->newState(owner);
@@ -62,6 +62,7 @@ void UAIKnowledge::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory
 					m_NavSys->GetPathLength(startVec, characterState.location, distance);
 
 					characterState.walkDistance = distance;
+					characterState.DeltaTime = aiGameState->m_deltaTime;
 					aiGameState->addCharacterState(characterState);
 				}
 			}

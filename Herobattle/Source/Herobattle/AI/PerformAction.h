@@ -34,6 +34,9 @@ class HEROBATTLE_API UPerformAction : public UBTTaskNode
 	GENERATED_BODY()
 	
 public:
+	UPerformAction();
+	~UPerformAction();
+
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 	
 	
@@ -51,4 +54,5 @@ private:
 	FActionScore getBestScore();
 	TArray<FActionScore> m_ActionList;
 	AHeroBattleHero* m_owner;
+	FActionScore nextSkill;
 };

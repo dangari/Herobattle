@@ -26,6 +26,7 @@ EBTNodeResult::Type UPerformAction::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 	{
 	case AIAction::SKILL:
 		m_owner->UseSkill(nextSkill.target, nextSkill.slot);
+		m_owner->selectedTarget = nextSkill.target;
 	default:
 		break;
 	}
@@ -75,7 +76,7 @@ void UPerformAction::fillScoreList(UAIGameState* aiGameState)
 				case  TargetType::FRIEND:
 					calcSkillScore(aiGameState->getAlliesCurrentAIState(), skill, i);
 					break;
-				case TargetType::SELFFREND:
+				case TargetType::SELFFRIEND:
 					calcSkillScore(aiGameState->getAlliesCurrentAIState(), skill, i);
 					calcSkillScore(m_owner, skill, i);
 					break;

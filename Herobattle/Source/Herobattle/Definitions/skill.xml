@@ -31,7 +31,7 @@
 			<costs value="5"/>
 			<casttime value="0.75"/>
 			<cooldown value="3"/>
-			<targettype value="SELFFREND"/>
+			<targettype value="SELFFRIEND"/>
       <range value="800"/>
 			<effects>
 				<impact>

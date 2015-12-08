@@ -19,7 +19,7 @@ UScDamage::~UScDamage()
 bool UScDamage::run(ABaseCharacter* target, ABaseCharacter* self)
 {
 	ABaseCharacter* testTarget;
-	if (targetType == TargetType::SELF)
+	if (targetType == ComponentTarget::SELF)
 		testTarget = self;
 	else
 		testTarget = target;
@@ -38,7 +38,7 @@ float UScDamage::getScore(ABaseCharacter* caster, FCharacterState characterState
 
 void UScDamage::init(FXmlNode* node)
 {
-	targetType = SkillEnums::stringToTargetType(node->GetAttribute("target"));
+	targetType = SkillEnums::stringToComponentTarget(node->GetAttribute("target"));
 	FString cType = node->GetAttribute(TEXT("type"));
 	this->damageType = SkillEnums::stringToHBDamageType(cType);
 	TArray<FXmlNode*> propertyList = node->GetChildrenNodes();

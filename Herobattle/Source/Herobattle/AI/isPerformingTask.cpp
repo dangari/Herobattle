@@ -6,13 +6,14 @@
 #include "AIGameState.h"
 #include "BehaviorTree/Blackboard/BlackboardKeyType_Object.h"
 #include "Base/BaseCharacter.h"
+#include "AIController.h"
 
 
 
 
 UisPerformingTask::UisPerformingTask()
 {
-
+	bCreateNodeInstance = true;
 }
 
 UisPerformingTask::~UisPerformingTask()
@@ -23,15 +24,16 @@ UisPerformingTask::~UisPerformingTask()
 bool UisPerformingTask::CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const
 {
 	bool b = false;
-	if (m_owner)
+	if (AIOwnerController->GetPawn())
 	{
-		b = m_owner->isCastingSkill();
+		ABaseCharacter* owner = (ABaseCharacter*)AIOwnerController->GetPawn();
+		b = owner->isCastingSkill();
 	}
 	return b;
 }
 
 void UisPerformingTask::SetOwner(AActor* ActorOwner)
 {
-	ActorOwner->GetActorLocation();
-	m_owner = (ABaseCharacter*)ActorOwner;
+	AIOwnerController = Cast<AAIController>(ActorOwner);
+
 }

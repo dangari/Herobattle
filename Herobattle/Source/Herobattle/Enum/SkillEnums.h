@@ -16,7 +16,7 @@ UENUM(BlueprintType)
 enum class SkillType : uint8{ ENTCHANTMENT, RANGEATTACK,MELEEATTACK , HEX, SPELL, HEAL, UNIQUE_BUFF };
 
 UENUM(BlueprintType)
-enum class TargetType : uint8{ SELF, ENEMY, FRIEND, SELFFREND, OWNER };
+enum class TargetType : uint8{ SELF, ENEMY, FRIEND, SELFFRIEND, OWNER };
 
 UENUM(BlueprintType)
 enum class Condition : uint8{ BLEEDING, BURNING, DEEPWOUND, POISON };
@@ -26,6 +26,9 @@ enum class HBDamageType : uint8{ FIRE, PHYSICAL, WATER, LIGHTNING };
 
 UENUM(BlueprintType)
 enum class Trigger : uint8 { DAMAGE, HEAL };
+
+UENUM(BlueprintType)
+enum class ComponentTarget : uint8 { TARGET, SELF };
 
 class HEROBATTLE_API SkillEnums
 {
@@ -41,6 +44,7 @@ public:
 	static Condition stringToCondition(FString sCondition);
 	static HBDamageType stringToHBDamageType(FString sHBDamageType);
 	static Trigger stringToTrigger(FString sTrigger);
+	static ComponentTarget stringToComponentTarget(FString sComponentTarget);
 
 	static FString AttributesToString(Attributes attribute);
 

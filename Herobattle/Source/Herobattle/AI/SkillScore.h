@@ -14,7 +14,7 @@ struct FComponentScore
 	GENERATED_USTRUCT_BODY()
 
 	float value;
-	TargetType target;
+	ComponentTarget target;
 };
 
 /**
@@ -26,8 +26,8 @@ class HEROBATTLE_API USkillScore : public UObject
 	GENERATED_BODY()
 public:
 
-	void addDamage(float Damage, TargetType target);
-	void addHeal(float Heal, TargetType target);
+	void addDamage(float Damage, ComponentTarget target);
+	void addHeal(float Heal, ComponentTarget target);
 	void addScore(float score, FString componentName);
 
 	void calcDamageScore(float cHealthSelf, float maxHealthSelf, float cHealthTarget, float maxHealthTarget);
@@ -45,6 +45,6 @@ private:
 
 
 	float m_healOffset = 30.f;
-	float m_damageOffset = 0.f;
+	float m_damageOffset = 30.f;
 	
 };

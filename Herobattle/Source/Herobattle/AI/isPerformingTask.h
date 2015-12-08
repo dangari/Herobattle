@@ -6,6 +6,8 @@
 #include "isPerformingTask.generated.h"
 
 class ABaseCharacter;
+class AAIController;
+
 /**
  * 
  */
@@ -24,4 +26,5 @@ public:
 
 private:
 	ABaseCharacter* m_owner;
+	AAIController* AIOwnerController;
 };

@@ -111,6 +111,10 @@ void ABaseCharacter::UpdateResources(float DeltaSeconds){
 	{
 		m_Mana += DeltaSeconds * (m_ManaRegeneration / 3.0f);
 	}
+	if (m_Mana < 0)
+		m_Mana = 0;
+	if (m_Health < 0)
+		m_Health = m_MaxHealth;
 
 }
 
@@ -347,7 +351,7 @@ bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
 
 		//automatically sets target to self if the skill can be used on self and the target is enemy
 		//also sets target to self if targettype is self
-		if (skill->targetType == TargetType::SELF || (target->isEnemy(ETeam) && skill->targetType == TargetType::SELFFREND))
+		if (skill->targetType == TargetType::SELF || (target->isEnemy(ETeam) && skill->targetType == TargetType::SELFFRIEND))
 		{
 			newTarget = this;
 		}

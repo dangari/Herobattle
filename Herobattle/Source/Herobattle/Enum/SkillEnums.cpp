@@ -75,8 +75,8 @@ TargetType SkillEnums::stringToTargetType(FString sTargetType)
 		return TargetType::ENEMY;
 	if (sTargetType.Equals(TEXT("FRIEND")))
 		return TargetType::FRIEND;
-	if (sTargetType.Equals(TEXT("SELFFREND")))
-		return TargetType::SELFFREND;
+	if (sTargetType.Equals(TEXT("SELFFRIEND")))
+		return TargetType::SELFFRIEND;
 	if (sTargetType.Equals(TEXT("OWNER")))
 		return TargetType::OWNER;
 	return
@@ -116,6 +116,15 @@ Trigger SkillEnums::stringToTrigger(FString sTrigger)
 	if (sTrigger.Equals(TEXT("HEAL")))
 		return Trigger::HEAL;
 	return Trigger::HEAL;
+}
+
+ComponentTarget SkillEnums::stringToComponentTarget(FString sComponentTarget)
+{
+	if (sComponentTarget.Equals(TEXT("TARGET")))
+		return ComponentTarget::TARGET;
+	if (sComponentTarget.Equals(TEXT("SELF")))
+		return ComponentTarget::SELF;
+	return ComponentTarget::TARGET;
 }
 
 FString SkillEnums::AttributesToString(Attributes attribute)

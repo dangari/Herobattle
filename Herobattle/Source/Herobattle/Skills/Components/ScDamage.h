@@ -23,7 +23,7 @@ public:
 
 	
 	HBDamageType damageType;
-	TargetType targetType;
+	ComponentTarget targetType;
 private:
 
 };

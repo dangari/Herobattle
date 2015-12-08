@@ -39,7 +39,7 @@ bool USkill::isValidTarget(ABaseCharacter* target, ABaseCharacter* self)
 	{
 		return true;
 	}
-	else if (!(target->isEnemy(self->ETeam)) && targetType == TargetType::SELFFREND)
+	else if (!(target->isEnemy(self->ETeam)) && targetType == TargetType::SELFFRIEND)
 	{
 		return true;
 	}

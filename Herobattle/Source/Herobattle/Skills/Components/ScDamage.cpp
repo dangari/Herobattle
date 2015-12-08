@@ -50,3 +50,14 @@ void UScDamage::init(FXmlNode* node)
 
 }
 
+FString UScDamage::ToString()
+{
+
+	FString sCText = componentName;
+	sCText.Append(TEXT(" \n "));
+	sCText.Append(Super::ToString());
+	
+	return sCText;
+
+}
+

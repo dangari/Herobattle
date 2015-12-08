@@ -99,6 +99,20 @@ void UScWhenCondition::createSkillComponents(FXmlNode* node)
 	}
 }
 
+FString UScWhenCondition::ToString()
+{
+	FString sCText = componentName;
+	sCText.Append(TEXT(" \n "));
+	sCText.Append(Super::ToString());
+	for (auto& sC : scTable)
+	{
+		sCText.Append(TEXT(" \n "));
+		sCText.Append(TEXT("\t"));
+		sCText.Append(sC->ToString());
+	}
+	return sCText;
+}
+
 void UScWhenCondition::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);

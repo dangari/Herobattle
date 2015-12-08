@@ -22,6 +22,7 @@ public:
 	USkill();
 	~USkill();
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
 	FString name;
 	ProfessionName profession;
 	TargetType targetType;
@@ -37,6 +38,10 @@ public:
 	bool isValidTarget(ABaseCharacter* target, ABaseCharacter* self);
 
 	float getScore(ABaseCharacter* caster, FCharacterState charcterState);
+
+
+	UFUNCTION(BlueprintCallable, Category = Debug)
+	FString ToString();
 
 
 private: 

@@ -21,7 +21,8 @@ public:
 
 	virtual void init(FXmlNode* node) override;
 
-	
+	virtual FString ToString() override;
+
 	HBDamageType damageType;
 	ComponentTarget targetType;
 private:

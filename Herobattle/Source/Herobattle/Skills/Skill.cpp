@@ -77,6 +77,18 @@ float USkill::getScore(ABaseCharacter* caster, FCharacterState charcterState)
 	}
 }
 
+FString USkill::ToString()
+{
+	FString skillText = name;
+	for (auto& sc : componentList)
+	{
+		skillText.Append(TEXT("\n"));
+		skillText.Append(TEXT("\t"));
+		skillText.Append(sc->ToString());
+	}
+	return skillText;
+}
+
 float USkill::manaScore(ABaseCharacter* caster, FCharacterState charcterState)
 {
 	float currentMana = caster->m_Mana;

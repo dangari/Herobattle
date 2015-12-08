@@ -29,6 +29,8 @@ public:
 
 	virtual void init(FXmlNode* node) override;
 
+	virtual FString ToString() override;
+
 private:
 	//asdjas
 	

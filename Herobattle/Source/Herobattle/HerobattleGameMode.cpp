@@ -56,11 +56,13 @@ void AHerobattleGameMode::PostLogin(APlayerController * NewPlayer)
 
 void AHerobattleGameMode::BeginPlay()
 {
+	
 	if (HasAuthority())
 	{
 		XMLSkillReader* test = new XMLSkillReader();
 		skillList = test->ReadXmlSkillFile(TEXT("Source/Herobattle/Definitions/skill.xml"));
 	}
+	Super::BeginPlay();
 }
 
 void AHerobattleGameMode::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const

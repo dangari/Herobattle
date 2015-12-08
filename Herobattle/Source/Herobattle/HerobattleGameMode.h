@@ -36,7 +36,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = TeamRed)
 	AHeroBattleHero* redHero_3;
 
-	UPROPERTY(Replicated)
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = TeamRed)
 	TArray<USkill*> skillList;
 
 	UPROPERTY(Replicated)

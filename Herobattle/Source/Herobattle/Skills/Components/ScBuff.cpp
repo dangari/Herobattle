@@ -69,9 +69,16 @@ void UScBuff::init(FXmlNode* node)
 
 FString UScBuff::ToString()
 {
-	//FString sCText = Super::ToString();
-	//sCText.Append(TEXT(" \n ");
-	return TEXT("");
+	FString sCText = componentName;
+	sCText.Append(TEXT(" \n "));
+	sCText.Append(Super::ToString());
+	sCText.Append(TEXT(" \n"));
+	for (auto& bC : bCBuffList)
+	{
+		sCText.Append(TEXT("\t)"));
+		sCText.Append(bC.ToString());
+	}
+	return sCText;
 }
 
 UBuff* UScBuff::createBuff(float duration)

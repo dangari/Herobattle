@@ -41,4 +41,5 @@ private:
 
 	TargetType targetType;
 
+	FString ToString() override;
 };

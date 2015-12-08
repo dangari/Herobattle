@@ -43,3 +43,12 @@ void UScHeal::init(FXmlNode* node)
 		fillScaleTable(node);
 	}
 }
+
+FString UScHeal::ToString()
+{
+	FString sCText = componentName;
+	sCText.Append(TEXT(" \n "));
+	sCText.Append(Super::ToString());
+
+	return sCText;
+}

@@ -19,7 +19,6 @@ public:
 
 	virtual void init(FXmlNode* node, ComponentTarget target) override;
 
-	FString c;
-	int treshold;
+	Condition cType;
 
 };

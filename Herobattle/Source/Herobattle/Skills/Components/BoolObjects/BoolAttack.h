@@ -22,4 +22,6 @@ public:
 	FString c;
 	int treshold;
 
+	SkillType sType;
+
 };

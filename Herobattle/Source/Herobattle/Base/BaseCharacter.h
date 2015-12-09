@@ -97,11 +97,14 @@ public:
 
 	HBCharacterState getState();
 
+	SkillType getCurrentSkillType();
+
 	void knockDownCharacter(float duration);
 
 	void setCoolDown(float time, CoolDownType cdType);
 
 	bool isEnemy(TeamColor team);
+	bool hasCondition(Condition condition);
 
 	//Creates a state of the character
 	FCharacterState AiExtractor(ABaseCharacter* character);

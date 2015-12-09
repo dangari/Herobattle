@@ -17,12 +17,11 @@ UBoolAttack::~UBoolAttack()
 
 bool UBoolAttack::test(ABaseCharacter* target, ABaseCharacter* self)
 {
-	bool test = false;
 	ABaseCharacter* testTarget = getTarget(target, self);
 
-	if (target->selectedTarget == self && (target->getState() != HBCharacterState::IDLE) || target->getState() != HBCharacterState::MOVEING)
+	if ((testTarget->selectedTarget == self || targetType == ComponentTarget::SELF) && (target->getState() != HBCharacterState::IDLE) || target->getState() != HBCharacterState::MOVEING)
 	{
-		if (target->getState() == HBCharacterState::AUTOATTACK &&
+		if (testTarget->getState() == HBCharacterState::AUTOATTACK &&
 			sType == SkillType::ATTACK)
 		{
 			return true;
@@ -31,9 +30,9 @@ bool UBoolAttack::test(ABaseCharacter* target, ABaseCharacter* self)
 		{
 			return false;
 		}
-		if (target->getState() == HBCharacterState::CASTING)
+		if (testTarget->getState() == HBCharacterState::CASTING)
 		{
-			SkillType characterSkillType = target->getCurrentSkillType();
+			SkillType characterSkillType = testTarget->getCurrentSkillType();
 			if (sType == characterSkillType)
 				return true;
 			else
@@ -48,7 +47,7 @@ bool UBoolAttack::test(ABaseCharacter* target, ABaseCharacter* self)
 	{
 		return false;
 	}
-	return test;
+
 }
 
 void UBoolAttack::init(FXmlNode* node, ComponentTarget target)

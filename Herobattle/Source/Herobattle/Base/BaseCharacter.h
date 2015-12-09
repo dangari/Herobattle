@@ -95,6 +95,8 @@ public:
 
 	uint8 getCondtionCount();
 
+	HBCharacterState getState();
+
 	void knockDownCharacter(float duration);
 
 	void setCoolDown(float time, CoolDownType cdType);
@@ -148,6 +150,7 @@ protected:
 
 	UFUNCTION(Server, WithValidation, reliable)
 	void stopCurrenSkill();
+
 
 private:
 
@@ -210,4 +213,5 @@ private:
 	FWeapon weapon;
 
 	bool useAutoAttack;
+	HBCharacterState state = HBCharacterState::IDLE;
 };

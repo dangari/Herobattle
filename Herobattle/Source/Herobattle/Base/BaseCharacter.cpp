@@ -88,12 +88,15 @@ void ABaseCharacter::stopCurrenSkill_Implementation()
 	if (isCastingSkill())
 	{
 		currentSkill.castingSkill = false;
+		state = HBCharacterState::IDLE;
 	}
 }
 bool ABaseCharacter::stopCurrenSkill_Validate()
 {
 	return true;
 }
+
+
 
 void ABaseCharacter::UpdateResources(float DeltaSeconds){
 	if (m_Health >= m_MaxHealth){
@@ -273,6 +276,14 @@ void ABaseCharacter::UpdateCurrentSkill(float deltaTime)
 		currentSkill.castingSkill = false;
 		skillcooldowns[currentSkill.slot].currentCooldown = currentSkill.skill->recharge;
 		skillcooldowns[currentSkill.slot].maxCooldown = currentSkill.skill->recharge + skillcooldowns[currentSkill.slot].additionalCoolDown;
+		if (currentSkill.skill->skillType == SkillType::MELEEATTACK || currentSkill.skill->skillType == SkillType::MELEEATTACK)
+		{
+			state = HBCharacterState::AUTOATTACK;
+		}
+		else
+		{
+			state = HBCharacterState::IDLE;
+		}
 	}
 }
 
@@ -295,6 +306,10 @@ bool ABaseCharacter::setAttack_Validate(bool b)
 void ABaseCharacter::setAttack_Implementation(bool b)
 {
 	useAutoAttack = b;
+	if (b)
+		state = HBCharacterState::AUTOATTACK;
+	else
+		state = HBCharacterState::IDLE;
 }
 
 bool ABaseCharacter::isAttacking()
@@ -381,6 +396,7 @@ bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
 		if (!skillIsOnCooldown(slot) && !isCastingSkill() && skill->isValidTarget(newTarget, this) && skillManaCost(skill->manaCost))
 		{
 			currentSkill.registerSkill(skill, newTarget, slot);
+			state = HBCharacterState::CASTING;
 			UE_LOG(LogTemp, Warning, TEXT("Skill name: %s"), *(currentSkill.skillName));
 			useAutoAttack = false;
 			//bool b = skill->run(target, this);
@@ -482,6 +498,16 @@ void ABaseCharacter::applyCondition(UBaseCondition* condition)
 uint8 ABaseCharacter::getCondtionCount()
 {
 	return m_ConditionCount;
+}
+
+HBCharacterState ABaseCharacter::getState()
+{
+	return state;
+}
+
+SkillType ABaseCharacter::getCurrentSkillType()
+{
+	return currentSkill.skill->skillType;
 }
 
 void ABaseCharacter::knockDownCharacter(float duration)

@@ -19,11 +19,7 @@ UScKnockDown::~UScKnockDown()
 
 bool UScKnockDown::run(ABaseCharacter* target, ABaseCharacter* self)
 {
-	ABaseCharacter* testTarget;
-	if (targetType == TargetType::SELF)
-		testTarget = self;
-	else
-		testTarget = target;
+	ABaseCharacter* testTarget = getTarget(target, self);
 
 	testTarget->knockDownCharacter(scaleTable[target->getAttributeValue(scaleAttribute)]);
 	return true;
@@ -31,7 +27,7 @@ bool UScKnockDown::run(ABaseCharacter* target, ABaseCharacter* self)
 
 void UScKnockDown::init(FXmlNode* node)
 {
-	targetType = SkillEnums::stringToTargetType(node->GetAttribute("target"));
+	targetType = SkillEnums::stringToComponentTarget(node->GetAttribute("target"));
 	TArray<FXmlNode*> propertyList = node->GetChildrenNodes();
 	FString tagName = node->GetTag();
 	if (tagName.Equals(TEXT("knockdown")))
@@ -44,3 +40,13 @@ float UScKnockDown::getScore(ABaseCharacter* caster, FCharacterState characterSt
 {
 	return 0.f;
 }
+
+FString UScKnockDown::ToString()
+{
+	FString sCText = componentName;
+	sCText.Append(TEXT(" \n "));
+	sCText.Append(Super::ToString());
+
+	return sCText;
+}
+

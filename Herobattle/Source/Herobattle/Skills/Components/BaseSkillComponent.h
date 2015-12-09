@@ -37,6 +37,10 @@ public:
 protected:
 	void fillScaleTable(FXmlNode* node);
 
+	ABaseCharacter* getTarget(ABaseCharacter* target, ABaseCharacter* self);
+
 	FString componentName;
+
+	ComponentTarget targetType;
 };
 

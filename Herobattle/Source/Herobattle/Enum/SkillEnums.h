@@ -30,6 +30,9 @@ enum class Trigger : uint8 { DAMAGE, HEAL };
 UENUM(BlueprintType)
 enum class ComponentTarget : uint8 { TARGET, SELF };
 
+UENUM(BlueprintType)
+enum class CoolDownType : uint8 { CURRENTSKILL, ATTRIBUTE, INTERRUPT, ALL };
+
 class HEROBATTLE_API SkillEnums
 {
 public:
@@ -45,6 +48,7 @@ public:
 	static HBDamageType stringToHBDamageType(FString sHBDamageType);
 	static Trigger stringToTrigger(FString sTrigger);
 	static ComponentTarget stringToComponentTarget(FString sComponentTarget);
+	static CoolDownType stringToCoolDownType(FString sCoolDownType);
 
 	static FString AttributesToString(Attributes attribute);
 

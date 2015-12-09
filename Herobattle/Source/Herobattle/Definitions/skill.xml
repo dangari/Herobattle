@@ -61,7 +61,7 @@
     <spell type="SPELL">
       <name value="Revert Damage"/>
       <costs value="5"/>
-      <casttime value="1"/>
+      <casttime value="0.25"/>
       <cooldown value="15"/>
       <targettype value="SELFFREND"/>
       <range value="800"/>
@@ -111,14 +111,14 @@
       <range value="800"/>
 			<effects>
 				<impact>
-					<remove value="1" type="CONDITION" scaling="NONE" target="TARGET"/>
-					<foreach type="CONDITION">
-						<heal value="30" scaling="PROTECTION_PRAYERS" target="TARGET">
-							<step key="1" value="5"/>
-							<step key="2" value="9"/>
-							<step key="3" value="14"/>
-						</heal>
-					</foreach>
+          <foreach type="CONDITION">
+            <heal value="30" scaling="PROTECTION_PRAYERS" target="TARGET">
+              <step key="1" value="5"/>
+              <step key="2" value="9"/>
+              <step key="3" value="14"/>
+            </heal>
+          </foreach>
+					<remove value="1" type="CONDITION" scaling="NONE" target="TARGET"/>	
 				</impact>
 			</effects>
 		</spell>
@@ -147,7 +147,7 @@
 					    </whencondition>
 					    <then>
                 <knockdown value="2" scaling="NONE" target="TARGET"/>
-                <skillcooldown value="15" scaling="NONE" target="TARGET"/>
+                <skillcooldown value="15" type="CURRENTSKILL" scaling="NONE" target="TARGET"/>
 					    </then>	
 				    </when>
 			    </buff>

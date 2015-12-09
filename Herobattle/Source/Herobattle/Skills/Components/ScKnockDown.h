@@ -19,7 +19,6 @@ public:
 	virtual bool run(ABaseCharacter* target, ABaseCharacter* self) override;
 	virtual void init(FXmlNode* node) override;
 	virtual float getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore) override;
-	TargetType targetType;
 	
 	
 };

@@ -127,6 +127,20 @@ ComponentTarget SkillEnums::stringToComponentTarget(FString sComponentTarget)
 	return ComponentTarget::TARGET;
 }
 
+CoolDownType SkillEnums::stringToCoolDownType(FString sCoolDownType)
+{
+
+	if (sCoolDownType.Equals(TEXT("ALL")))
+		return CoolDownType::ALL;
+	if (sCoolDownType.Equals(TEXT("INTERRUPT")))
+		return CoolDownType::INTERRUPT;
+	if (sCoolDownType.Equals(TEXT("CURRENTSKILL")))
+		return CoolDownType::CURRENTSKILL;
+	if (sCoolDownType.Equals(TEXT("ATTRIBUTE")))
+		return CoolDownType::ATTRIBUTE;
+	return CoolDownType::CURRENTSKILL;
+}
+
 FString SkillEnums::AttributesToString(Attributes attribute)
 {
 	switch (attribute)

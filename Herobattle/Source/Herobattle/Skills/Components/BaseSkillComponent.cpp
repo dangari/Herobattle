@@ -78,6 +78,18 @@ void UBaseSkillComponent::fillScaleTable(FXmlNode* node)
 	}
 }
 
+ABaseCharacter* UBaseSkillComponent::getTarget(ABaseCharacter* target, ABaseCharacter* self)
+{
+	if (targetType == ComponentTarget::SELF)
+	{
+		return self;
+	}
+	else
+	{
+		return target;
+	}
+}
+
 UBaseSkillComponent* UBaseSkillComponent::MAKE()
 {
 	UBaseSkillComponent* w = NewObject<UBaseSkillComponent>();

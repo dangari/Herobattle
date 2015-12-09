@@ -37,6 +37,9 @@ struct FSkillCooldown
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skills)
 	float maxCooldown = 0.f;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skills)
+	float additionalCoolDown = 0.f;
 };
 
 
@@ -93,6 +96,8 @@ public:
 	uint8 getCondtionCount();
 
 	void knockDownCharacter(float duration);
+
+	void setCoolDown(float time, CoolDownType cdType);
 
 	bool isEnemy(TeamColor team);
 
@@ -175,7 +180,10 @@ private:
 	//if enough mana is remaining the mana costs get abstracted from the mana of the character
 	bool skillManaCost(float value);
 
-
+	void setCoolDownAll(float Time);
+	void setInterruptCoolDown(float Time);
+	void setCurrentSkillCoolDown(float Time);
+	void setAttributeCoolDown(float Time);
 
 	TArray<Condition> getConditions();
 

@@ -157,6 +157,29 @@ bool ABaseCharacter::skillManaCost(float value)
 	}
 }
 
+void ABaseCharacter::setCoolDownAll(float Time)
+{
+
+}
+
+void ABaseCharacter::setInterruptCoolDown(float Time)
+{
+	int slot = currentSkill.slot;
+	skillcooldowns[slot].currentCooldown = Time;
+	skillcooldowns[slot].maxCooldown = Time;
+}
+
+void ABaseCharacter::setCurrentSkillCoolDown(float Time)
+{
+	int slot = currentSkill.slot;
+	skillcooldowns[slot].additionalCoolDown = Time;
+}
+
+void ABaseCharacter::setAttributeCoolDown(float Time)
+{
+
+}
+
 bool ABaseCharacter::skillIsOnCooldown(int slot)
 {
 	if (skillcooldowns[slot].currentCooldown <= 0.001f)
@@ -249,7 +272,7 @@ void ABaseCharacter::UpdateCurrentSkill(float deltaTime)
 		currentSkill.skill->run(currentSkill.target, this);
 		currentSkill.castingSkill = false;
 		skillcooldowns[currentSkill.slot].currentCooldown = currentSkill.skill->recharge;
-		skillcooldowns[currentSkill.slot].maxCooldown = currentSkill.skill->recharge;
+		skillcooldowns[currentSkill.slot].maxCooldown = currentSkill.skill->recharge + skillcooldowns[currentSkill.slot].additionalCoolDown;
 	}
 }
 
@@ -464,6 +487,30 @@ uint8 ABaseCharacter::getCondtionCount()
 void ABaseCharacter::knockDownCharacter(float duration)
 {
 
+}
+
+void ABaseCharacter::setCoolDown(float time, CoolDownType cdType)
+{
+	if (HasAuthority())
+	{
+		switch (cdType)
+		{
+		case CoolDownType::ALL:
+			setCoolDownAll(time);
+			break;
+		case CoolDownType::ATTRIBUTE:
+			setAttributeCoolDown(time);
+			break;
+		case CoolDownType::CURRENTSKILL:
+			setCurrentSkillCoolDown(time);
+			break;
+		case CoolDownType::INTERRUPT:
+			setInterruptCoolDown(time);
+			break;
+		default:
+			break;
+		}
+	}
 }
 
 void ABaseCharacter::updateHealthRegen(float regen)

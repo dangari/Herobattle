@@ -16,11 +16,7 @@ UBoolHealth::~UBoolHealth()
 bool UBoolHealth::test(ABaseCharacter* target, ABaseCharacter* self)
 {
 	bool test;
-	ABaseCharacter* testTarget;
-	if (targetType == TargetType::SELF)
-		testTarget = self;
-	else
-		testTarget = target;
+	ABaseCharacter* testTarget = getTarget(target, self);
 
 	float healthPrec = (testTarget->m_Health / testTarget->m_MaxHealth) * 100;
 	if (c.Equals(TEXT("-")))
@@ -34,9 +30,9 @@ bool UBoolHealth::test(ABaseCharacter* target, ABaseCharacter* self)
 	return test;
 }
 
-void UBoolHealth::init(FXmlNode* node, TargetType target)
+void UBoolHealth::init(FXmlNode* node, ComponentTarget target)
 {
-	this->targetType = target;
+	targetType = target;
 	TArray<FXmlNode*> propertyList = node->GetChildrenNodes();
 	
 	FString tagName = node->GetTag();

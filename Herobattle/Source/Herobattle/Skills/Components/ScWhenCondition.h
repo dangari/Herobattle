@@ -23,6 +23,7 @@ public:
 	virtual bool run(ABaseCharacter* target, ABaseCharacter* self) override;
 	virtual float getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore) override;
 
+	FString ToString() override;
 
 private:
 
@@ -39,7 +40,5 @@ private:
 	
 	void createSkillComponents(FXmlNode* node);
 
-	TargetType targetType;
 
-	FString ToString() override;
 };

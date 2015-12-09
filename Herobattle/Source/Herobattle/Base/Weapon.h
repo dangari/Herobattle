@@ -14,21 +14,31 @@ enum class Weapons : uint8
 	SWORD,AXE,HAMMER,BOW,STAFF
 };
 
+UENUM()
+enum class WeaponType : uint8
+{
+	MELEE, RANGE
+};
+
 USTRUCT()
 struct FWeapon
 {
 	GENERATED_USTRUCT_BODY()
 
-	UPROPERTY();
+	UPROPERTY()
 	float range;
-	UPROPERTY();
+	UPROPERTY()
 	float attackSpeed;
-	UPROPERTY();
+	UPROPERTY()
 	float currentTime;
-	UPROPERTY();
+	UPROPERTY()
 	int lowDamage;
-	UPROPERTY();
+	UPROPERTY()
 	int maxDamage;
+
+	UPROPERTY()
+	WeaponType wType;
+
 	FWeapon()
 	{
 
@@ -44,6 +54,7 @@ struct FWeapon
 			lowDamage = 24.0f;
 			maxDamage = 30.0f;
 			currentTime = attackSpeed;
+			wType = WeaponType::MELEE;
 			break;
 		case Weapons::AXE:
 			range = 120.0f;
@@ -51,6 +62,7 @@ struct FWeapon
 			lowDamage = 24.0f;
 			maxDamage = 30.0f;
 			currentTime = attackSpeed;
+			wType = WeaponType::MELEE;
 			break;
 		case Weapons::HAMMER:
 			range = 150.0;
@@ -58,6 +70,7 @@ struct FWeapon
 			lowDamage = 24.0f;
 			maxDamage = 30.0f;
 			currentTime = attackSpeed;
+			wType = WeaponType::MELEE;
 			break;
 		case Weapons::BOW:
 			range = 1000.0f;
@@ -65,6 +78,7 @@ struct FWeapon
 			lowDamage = 24.0f;
 			maxDamage = 30.0f;
 			currentTime = attackSpeed;
+			wType = WeaponType::RANGE;
 			break;
 		case Weapons::STAFF:
 			range = 800.0f;
@@ -72,6 +86,7 @@ struct FWeapon
 			lowDamage = 24.0f;
 			maxDamage = 30.0f;
 			currentTime = attackSpeed;
+			wType = WeaponType::RANGE;
 			break;
 		default:
 			break;

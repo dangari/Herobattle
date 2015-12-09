@@ -26,6 +26,8 @@ public:
 	FString name;
 	ProfessionName profession;
 	TargetType targetType;
+	SkillType skillType;
+
 	float castTime;
 	float recharge;
 	float currentRecharge;

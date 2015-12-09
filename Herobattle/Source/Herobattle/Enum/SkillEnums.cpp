@@ -50,6 +50,8 @@ ProfessionName SkillEnums::stringToProfessionName(FString sProfessionName)
 
 SkillType SkillEnums::stringToSkillType(FString sSkillType)
 {
+	if (sSkillType.Equals(TEXT("ATTACK")))
+		return SkillType::ATTACK;
 	if (sSkillType.Equals(TEXT("ENTCHANTMENT")))
 		return SkillType::ENTCHANTMENT;
 	if (sSkillType.Equals(TEXT("RANGEATTACK")))

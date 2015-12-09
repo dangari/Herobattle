@@ -20,5 +20,6 @@ public:
 	virtual void init(FXmlNode* node) override;
 	virtual float getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore) override;
 	
+	virtual FString ToString();
 	
 };

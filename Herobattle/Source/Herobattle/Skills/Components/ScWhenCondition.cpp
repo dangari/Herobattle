@@ -52,7 +52,7 @@ bool UScWhenCondition::testConditions(ABaseCharacter* target, ABaseCharacter* se
 void UScWhenCondition::init(FXmlNode* node)
 {
 	FString cType = node->GetAttribute(TEXT("type"));
-	this->targetType = SkillEnums::stringToTargetType(cType);
+	targetType = SkillEnums::stringToComponentTarget(cType);
 	TArray<FXmlNode*> propertyList = node->GetChildrenNodes();
 	for (auto& prop : propertyList)
 	{

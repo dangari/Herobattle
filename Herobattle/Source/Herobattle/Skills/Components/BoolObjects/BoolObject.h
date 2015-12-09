@@ -20,5 +20,12 @@ public:
 
 	virtual bool test(ABaseCharacter* target, ABaseCharacter* self);
 
-	virtual void init(FXmlNode* node, TargetType target);
+	virtual void init(FXmlNode* node, ComponentTarget target);
+
+
+protected:
+
+	ABaseCharacter* getTarget(ABaseCharacter* target, ABaseCharacter* self);
+
+	ComponentTarget targetType;
 };

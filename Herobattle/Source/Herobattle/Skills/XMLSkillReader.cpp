@@ -108,7 +108,7 @@ USkill* XMLSkillReader::ReadSkill(FXmlNode* skillRootNode)
 
 	//values needed for Skill creation
 	USkill* skill = NewObject<USkill>();
-
+	skill->skillType = SkillEnums::stringToSkillType(skillRootNode->GetAttribute(type));
 	TArray<UBaseSkillComponent*> componentList;
 
 	TArray<FXmlNode*> propertyList = skillRootNode->GetChildrenNodes();

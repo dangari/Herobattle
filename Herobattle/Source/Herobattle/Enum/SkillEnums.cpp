@@ -95,7 +95,9 @@ Condition SkillEnums::stringToCondition(FString sCondition)
 		return Condition::POISON;
 	if (sCondition.Equals(TEXT("DEEPWOUND")))
 		return Condition::DEEPWOUND;
-	return Condition::BLEEDING;
+	if (sCondition.Equals(TEXT("CRIPPLED")))
+		return Condition::CRIPPLED;
+	return Condition::ALL;
 }
 
 HBDamageType SkillEnums::stringToHBDamageType(FString sHBDamageType)
@@ -162,3 +164,4 @@ FString SkillEnums::AttributesToString(Attributes attribute)
 
 	}
 }
+

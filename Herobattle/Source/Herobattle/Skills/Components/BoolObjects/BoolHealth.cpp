@@ -35,8 +35,8 @@ void UBoolHealth::init(FXmlNode* node, ComponentTarget target)
 	targetType = target;
 	TArray<FXmlNode*> propertyList = node->GetChildrenNodes();
 	
-	FString tagName = node->GetTag();
-	if (tagName.Equals(TEXT("hp")))
+	name = node->GetTag();
+	if (name.Equals(TEXT("hp")))
 	{
 		treshold = FCString::Atoi(*(node->GetAttribute(TEXT("value"))));
 		c = node->GetAttribute(TEXT("type"));

@@ -19,7 +19,7 @@ UENUM(BlueprintType)
 enum class TargetType : uint8{ SELF, ENEMY, FRIEND, SELFFRIEND, OWNER };
 
 UENUM(BlueprintType)
-enum class Condition : uint8{ BLEEDING, BURNING, DEEPWOUND, POISON };
+enum class Condition : uint8{ BLEEDING, BURNING, DEEPWOUND, POISON, CRIPPLED, ALL};
 
 UENUM(BlueprintType)
 enum class HBDamageType : uint8{ FIRE, PHYSICAL, WATER, LIGHTNING };

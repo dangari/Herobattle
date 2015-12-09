@@ -223,6 +223,11 @@ bool ABaseCharacter::isEnemy(TeamColor team)
 	return !b;
 }
 
+bool ABaseCharacter::hasCondition(Condition condition)
+{
+	return m_condtionList.Contains(condition);
+}
+
 FCharacterState ABaseCharacter::AiExtractor(ABaseCharacter* character)
 {
 	FCharacterState characterState;

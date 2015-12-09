@@ -28,4 +28,6 @@ protected:
 	ABaseCharacter* getTarget(ABaseCharacter* target, ABaseCharacter* self);
 
 	ComponentTarget targetType;
+
+	FString name;
 };

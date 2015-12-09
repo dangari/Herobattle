@@ -56,8 +56,8 @@ void UBoolAttack::init(FXmlNode* node, ComponentTarget target)
 	targetType = target;
 	TArray<FXmlNode*> propertyList = node->GetChildrenNodes();
 	
-	FString tagName = node->GetTag();
-	if (tagName.Equals(TEXT("attack")))
+	name = node->GetTag();
+	if (name.Equals(TEXT("attack")))
 	{
 		sType = SkillEnums::stringToSkillType(node->GetAttribute(TEXT("type")));
 	}

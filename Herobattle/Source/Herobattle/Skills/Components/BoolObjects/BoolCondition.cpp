@@ -15,19 +15,19 @@ UBoolCondition::~UBoolCondition()
 
 bool UBoolCondition::test(ABaseCharacter* target, ABaseCharacter* self)
 {
-	bool test;
 	ABaseCharacter* testTarget = getTarget(target, self);
 
-	float healthPrec = (testTarget->m_Health / testTarget->m_MaxHealth) * 100;
-	if (c.Equals(TEXT("-")))
+	int cCount = testTarget->getCondtionCount();
+	if (cCount > 0)
 	{
-		test = healthPrec < treshold;
+		if (cType == Condition::ALL)
+			return true;
+		if (testTarget->hasCondition(cType))
+			return true;
+		else
+			return false;
 	}
-	else
-	{
-		test = healthPrec > treshold;
-	}
-	return test;
+
 }
 
 void UBoolCondition::init(FXmlNode* node, ComponentTarget target)
@@ -35,11 +35,10 @@ void UBoolCondition::init(FXmlNode* node, ComponentTarget target)
 	targetType = target;
 	TArray<FXmlNode*> propertyList = node->GetChildrenNodes();
 	
-	FString tagName = node->GetTag();
-	if (tagName.Equals(TEXT("hp")))
+	name = node->GetTag();
+	if (name.Equals(TEXT("condition")))
 	{
-		treshold = FCString::Atoi(*(node->GetAttribute(TEXT("value"))));
-		c = node->GetAttribute(TEXT("type"));
+		cType = SkillEnums::stringToCondition(node->GetAttribute(TEXT("type")));
 	}
 
 }

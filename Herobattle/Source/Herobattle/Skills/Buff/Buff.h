@@ -18,20 +18,21 @@ public:
 	UBuff();
 	~UBuff();
 
-	void init(ABaseCharacter* owner, TArray<FBuffContainer> bCBuffList, float duration, FString name, FString usage);
+	virtual void init(ABaseCharacter* owner, TArray<FBuffContainer> bCBuffList, float duration, FString name, FString usage);
 
 	//value is incoming damage or heal
 	// heal is positive and and damage is negative
-	bool run(ABaseCharacter* target, ABaseCharacter* self, int value);
+	virtual bool run(ABaseCharacter* target, ABaseCharacter* self, int value);
 
-	void updateBuff(float deltaTime);
+	virtual void updateBuff(float deltaTime);
 	// test if the buff is still active
-	bool isExpired();
+	virtual bool isExpired();
 
 	//getter/setter
 	FString getName();
 
-private:
+	
+protected:
 	TArray<UBaseBuffCompenent*> m_BcList;
 
 	float m_Duration;

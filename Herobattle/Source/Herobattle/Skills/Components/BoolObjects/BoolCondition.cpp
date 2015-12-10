@@ -27,6 +27,7 @@ bool UBoolCondition::test(ABaseCharacter* target, ABaseCharacter* self)
 		else
 			return false;
 	}
+	return false;
 
 }
 

@@ -32,9 +32,9 @@ struct FWeapon
 	UPROPERTY()
 	float currentTime;
 	UPROPERTY()
-	int lowDamage;
+	int32 lowDamage;
 	UPROPERTY()
-	int maxDamage;
+	int32 maxDamage;
 
 	UPROPERTY()
 	WeaponType wType;

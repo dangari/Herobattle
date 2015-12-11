@@ -13,10 +13,13 @@
 #include "Components/ScCondition.h"
 #include "Components/ScWhenCondition.h"
 #include "Components/ScBuff.h"
+#include "Components/ScForEach.h"
 
 //Buff Components
 #include "Buff/BaseBuffCompenent.h"
 #include "Buff/BcHeal.h"
+#include "Buff/BcWhenCondition.h"
+#include "Buff/BcForEach.h"
 
 
 
@@ -33,9 +36,12 @@ XMLSkillReader::XMLSkillReader()
 	scObjectNameList.Add(TEXT("condition"), &createScInstance<UScCondition>);
 	scObjectNameList.Add(TEXT("when"), &createScInstance<UScWhenCondition>);
 	scObjectNameList.Add(TEXT("buff"), &createScInstance<UScBuff>);
+	scObjectNameList.Add(TEXT("foreach"), &createScInstance<UScForEach>);
 
 	//Flill bcObjectList
 	bcObjectNameList.Add(TEXT("heal"), &createBcInstance<UBcHeal>);
+	bcObjectNameList.Add(TEXT("when"), &createBcInstance<UBcWhenCondition>);
+	bcObjectNameList.Add(TEXT("foreach"), &createBcInstance<UBcForEach>);
 	//scObjectNameList.Add(TEXT("heal"), &createScInstance<UScHeal>);
 }
 

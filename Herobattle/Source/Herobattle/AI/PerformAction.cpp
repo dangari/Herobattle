@@ -127,5 +127,7 @@ void UPerformAction::calcSkillScore(ABaseCharacter* character, USkill* skill, in
 FActionScore UPerformAction::getBestScore()
 {
 	m_ActionList.Sort(FActionScore::ConstPredicate);
+	FActionScore first = m_ActionList[0];
+	FActionScore last = m_ActionList[m_ActionList.Num() - 1];
 	return m_ActionList[0];
 }

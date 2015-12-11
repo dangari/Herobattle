@@ -17,11 +17,19 @@ public:
 	UBcForEach();
 	~UBcForEach();
 
-	/*virtual bool run(ABaseCharacter* target, ABaseCharacter* self) override;
-	virtual void init(FXmlNode* node) override;
-	virtual float getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore) override;
+
+	virtual void init(FBuffContainer bContainer, ABaseCharacter* owner) override;
+
+
+	virtual bool run(ABaseCharacter* caster, ABaseCharacter* self, int value) override;
+
+	virtual bool isExpired() override;
+
+	virtual void update(float deltaTime) override;
 	
 private:
 	FString skillType;
-	TArray<UBaseSkillComponent*> scList;*/
+
+	UPROPERTY(Replicated)
+	TArray<UBaseSkillComponent*> scList;
 };

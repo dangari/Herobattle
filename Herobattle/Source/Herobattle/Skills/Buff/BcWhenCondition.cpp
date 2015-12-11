@@ -8,6 +8,8 @@
 #include "UnrealNetwork.h"
 #include "AI/SkillScore.h"
 #include "../Components/BaseSkillComponent.h"
+#include "../Components/BoolObjects/BoolAttack.h"
+#include "../Components/BoolObjects/BoolCondition.h"
 
 UBcWhenCondition::UBcWhenCondition()
 {
@@ -81,6 +83,19 @@ void UBcWhenCondition::createBoolObjects(FXmlNode* node)
 			hpBool->init(prop, targetType);
 			boolObjects.Add(hpBool);
 		}
+		else if (tagName.Equals(TEXT("attack")))
+		{
+			UBoolAttack* attackBool = NewObject<UBoolAttack>();
+			attackBool->init(prop, targetType);
+			boolObjects.Add(attackBool);
+		}
+		else if (tagName.Equals(TEXT("attack")))
+		{
+			UBoolCondition* attackCondition = NewObject<UBoolCondition>();
+			attackCondition->init(prop, targetType);
+			boolObjects.Add(attackCondition);
+		}
+
 	}
 }
 

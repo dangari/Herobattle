@@ -2,28 +2,20 @@
 
 #pragma once
 
-#include "Object.h"
-#include "Enum/SkillEnums.h"
-#include "BuffContainer.h"
-#include "XmlParser.h"
-#include "BaseBuffCompenent.generated.h"
+#include "Skills/Buff/BaseBuffCompenent.h"
+#include "BcBlock.generated.h"
 
 /**
  * 
  */
-
-class ABaseCharacter;
-class FXmlNode;
-
 UCLASS()
-class HEROBATTLE_API UBaseBuffCompenent : public UObject
+class HEROBATTLE_API UBcBlock : public UBaseBuffCompenent
 {
 	GENERATED_BODY()
-	
 public:
 
-	UBaseBuffCompenent();
-	~UBaseBuffCompenent();
+	UBcBlock();
+	~UBcBlock();
 
 	virtual void init(FBuffContainer bContainer, ABaseCharacter* owner);
 
@@ -34,10 +26,12 @@ public:
 	virtual bool isExpired();
 
 	virtual void update(float deltaTime);
-	
-protected:
-	ABaseCharacter* owner;
-	int usage;
-	TargetType targetType;
 
+private:
+	int usage;
+	bool haveUsages;
+
+	int blockChance;
+	
+	
 };

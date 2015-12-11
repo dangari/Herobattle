@@ -12,8 +12,8 @@
 ABaseCharacter::ABaseCharacter()
 :m_MaxHealth(480),
 m_MaxMana(25),
-m_Health(240),
-m_Mana(10.0f),
+m_Health(480),
+m_Mana(25),
 m_HealthRegeneration(0),
 m_ManaRegeneration(4),
 m_ConditionCount(0),

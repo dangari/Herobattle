@@ -7,6 +7,8 @@
 #include "../XMLSkillReader.h"
 #include "UnrealNetwork.h"
 #include "AI/SkillScore.h"
+#include "BoolObjects/BoolAttack.h"
+#include "BoolObjects/BoolCondition.h"
 
 UScWhenCondition::UScWhenCondition()
 {
@@ -34,7 +36,15 @@ bool UScWhenCondition::run(ABaseCharacter* target, ABaseCharacter* self)
 
 float UScWhenCondition::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
-	return 1.f;
+	float f = 0.f;
+	if (testConditions(characterState.self, caster))
+	{
+		for (auto& sc : scTable)
+		{
+			f = sc->getScore(caster, characterState, skillScore);
+		}
+	}
+	return f;
 }
 
 bool UScWhenCondition::testConditions(ABaseCharacter* target, ABaseCharacter* self)
@@ -79,6 +89,18 @@ void UScWhenCondition::createBoolObjects(FXmlNode* node)
 			UBoolHealth* hpBool = NewObject<UBoolHealth>();
 			hpBool->init(prop, targetType);
 			boolObjects.Add(hpBool);
+		}
+		else if (tagName.Equals(TEXT("attack")))
+		{
+			UBoolAttack* attackBool = NewObject<UBoolAttack>();
+			attackBool->init(prop, targetType);
+			boolObjects.Add(attackBool);
+		}
+		else if (tagName.Equals(TEXT("attack")))
+		{
+			UBoolCondition* attackCondition = NewObject<UBoolCondition>();
+			attackCondition->init(prop, targetType);
+			boolObjects.Add(attackCondition);
 		}
 	}
 }

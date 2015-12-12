@@ -43,13 +43,13 @@
 
 <!ELEMENT effects (impact)>
 <!-- impact nodes  -->
-<!ELEMENT impact (heal|damage|buff|condition|foreach|when|remove)*>
+<!ELEMENT impact (heal|damage|buff|condition|foreach|when|remove|givemana)*>
 <!ELEMENT heal (step?)*>
 <!ATTLIST heal 
   value CDATA #REQUIRED
   scaling CDATA #REQUIRED
   target (TARGET|SELF|OWNER) #REQUIRED
-  trigger (HEAL|DAMAGE) #IMPLIED
+  trigger (HEAL|DAMAGE|CAST|CASTMANA) #IMPLIED
   >
 <!ELEMENT damage (step?)*>
 <!ATTLIST damage 
@@ -57,7 +57,7 @@
   type CDATA #REQUIRED
   scaling CDATA #REQUIRED
   target (TARGET|SELF|OWNER) #REQUIRED
-  trigger (HEAL|DAMAGE) #IMPLIED
+  trigger (HEAL|DAMAGE|CAST) #IMPLIED
   >
 <!ELEMENT buff (step?|heal|damage|buff|regeneration|foreach|when|block|knockdown|skillcooldown)*>
 <!ATTLIST buff 
@@ -80,7 +80,7 @@
   scaling CDATA #REQUIRED
   target (TARGET|SELF|OWNER) #REQUIRED
   >
-<!ELEMENT foreach (heal|damage|buff|condition|regeneration|when)*>
+<!ELEMENT foreach (heal|damage|buff|condition|regeneration|when|givemana)*>
 <!ATTLIST foreach
   type CDATA #REQUIRED
   >
@@ -88,12 +88,19 @@
 <!ATTLIST when
   value CDATA #REQUIRED
   >
-<!ELEMENT whencondition (attack|hp)>
+<!ELEMENT whencondition (attack|hp|mana|condi|casting)>
 
 <!ELEMENT remove (step?)*>
 <!ATTLIST remove 
   value CDATA #REQUIRED
   type CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  target (TARGET|SELF) #REQUIRED
+  >
+
+<!ELEMENT givemana (step?)*>
+<!ATTLIST givemana 
+  value CDATA #REQUIRED
   scaling CDATA #REQUIRED
   target (TARGET|SELF) #REQUIRED
   >
@@ -113,7 +120,7 @@
   >
 
 <!-- sub nodes -->
-<!ELEMENT then (heal|damage|buff|condition|regeneration|knockdown|skillcooldown)*>
+<!ELEMENT then (heal|damage|buff|condition|regeneration|knockdown|skillcooldown|givemana)*>
 
 <!ELEMENT attack EMPTY>
 <!ATTLIST attack
@@ -124,6 +131,19 @@
   value CDATA #REQUIRED
   type CDATA #REQUIRED
   >
+
+<!ELEMENT mana EMPTY>
+<!ATTLIST mana
+  value CDATA #REQUIRED
+  type CDATA #REQUIRED
+  >
+
+<!ELEMENT condi EMPTY>
+<!ATTLIST condi
+  type CDATA #REQUIRED
+  >
+<!ELEMENT casting EMPTY>
+
 
 <!ELEMENT step EMPTY>
 <!ATTLIST step

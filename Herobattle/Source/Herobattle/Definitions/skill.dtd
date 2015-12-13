@@ -59,7 +59,7 @@
   target (TARGET|SELF|OWNER) #REQUIRED
   trigger (HEAL|DAMAGE|CAST) #IMPLIED
   >
-<!ELEMENT buff (step?|heal|damage|buff|regeneration|foreach|when|block|knockdown|skillcooldown|reducemanacost)*>
+<!ELEMENT buff (step?|heal|damage|buff|regeneration|foreach|when|block|knockdown|skillcooldown|reducemanacost|givemana|givemanavalue|damagereduction|immune)*>
 <!ATTLIST buff 
   value CDATA #REQUIRED
   type CDATA #REQUIRED
@@ -89,7 +89,7 @@
 <!ATTLIST when
   value CDATA #REQUIRED
   >
-<!ELEMENT whencondition (attack|hp|mana|condi|casting)>
+<!ELEMENT whencondition (attack|hp|mana|condi|casting|hex)>
 
 <!ELEMENT remove (step?)*>
 <!ATTLIST remove 
@@ -106,19 +106,38 @@
   target (TARGET|SELF) #REQUIRED
   >
 
-<!ELEMENT reducemanacost (step?)>
+<!ELEMENT givemanavalue (step?)*>
+<!ATTLIST givemanavalue 
+  value CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  target (TARGET|SELF) #REQUIRED
+  type (MANA|DAMAGe) #REQUIRED
+  >
+
+<!ELEMENT reducemanacost (step?)*>
 <!ATTLIST reducemanacost 
   value CDATA #REQUIRED
   scaling CDATA #REQUIRED
   >
 
-<!ELEMENT knockdown (step?)>
+<!ELEMENT damagereduction (step?)*>
+<!ATTLIST damagereduction
+  value CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  type CDATA #REQUIRED
+  >
+<!ELEMENT immune EMPTY>
+<!ATTLIST immune 
+  type (KNOCKDOWN|HEX|CONDTIONS|CRITS) #REQUIRED
+  >
+
+<!ELEMENT knockdown (step?)*>
 <!ATTLIST knockdown 
   value CDATA #REQUIRED
   scaling CDATA #REQUIRED
   target (TARGET|SELF) #REQUIRED
   >
-<!ELEMENT skillcooldown (step?)>
+<!ELEMENT skillcooldown (step?)*>
 <!ATTLIST skillcooldown 
   value CDATA #REQUIRED
   scaling CDATA #REQUIRED
@@ -151,6 +170,7 @@
   >
 <!ELEMENT casting EMPTY>
 
+<!ELEMENT hex EMPTY>
 
 <!ELEMENT step EMPTY>
 <!ATTLIST step

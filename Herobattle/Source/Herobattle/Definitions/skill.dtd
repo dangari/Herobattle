@@ -17,6 +17,7 @@
 <!ELEMENT costs EMPTY>
 <!ATTLIST costs
   value CDATA #REQUIRED
+  type (MANA|ADRENALINE|NONE) #REQUIRED
   >
 <!ELEMENT casttime EMPTY>
 <!ATTLIST casttime

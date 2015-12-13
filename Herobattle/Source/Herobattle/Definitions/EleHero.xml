@@ -3,7 +3,7 @@
   <profession value="ELEMENTARMAGE">
     <spell type="SPELL">
       <name value="Mind Blast"/>
-      <costs value="5"/>
+      <costs value="5" type="MANA"/>
       <casttime value="1"/>
       <cooldown value="2"/>
       <targettype value="ENEMY"/>
@@ -48,7 +48,7 @@
     
     <spell type="SPELL">
       <name value="Immolate"/>
-      <costs value="10"/>
+      <costs value="10" type="MANA"/>
       <casttime value="3"/>
       <cooldown value="5"/>
       <targettype value="ENEMY"/>
@@ -71,7 +71,7 @@
 
     <spell type="SPELL">
       <name value="Glowing Glaze"/>
-      <costs value="5"/>
+      <costs value="5" type="MANA"/>
       <casttime value="1"/>
       <cooldown value="8"/>
       <targettype value="ENEMY"/>
@@ -116,7 +116,7 @@
 
     <spell type="Spell">
       <name value="Aura of Resoration"/>
-      <costs value="5"/>
+      <costs value="5" type="MANA"/>
       <casttime value="0.25"/>
       <cooldown value="20"/>
       <targettype value="SELF"/>
@@ -157,7 +157,7 @@
   
   <spell type="UNIQUE_BUFF">
     <name value="Glyph of Lesser Energy"/>
-    <costs value="5"/>
+    <costs value="5" type="MANA"/>
     <casttime value="1"/>
     <cooldown value="30"/>
     <targettype value="SELF"/>
@@ -181,7 +181,7 @@
   
   <spell type="SPELL">
     <name value="Fire Attunement"/>
-    <costs value="10"/>
+    <costs value="10" type="MANA"/>
     <casttime value="1"/>
     <cooldown value="30"/>
     <targettype value="SELF"/>
@@ -200,7 +200,7 @@
   <profession value="DERWISH">
 		<spell type="SPELL">
 			<name value="Mystic Regeneration"/>
-			<costs value="10"/>
+			<costs value="10" type="MANA"/>
 			<casttime value="0.25"/>
 			<cooldown value="12"/>
 			<targettype value="SELF"/>
@@ -224,7 +224,7 @@
   
   <spell type="SPELL">
     <name value="Mirage Cloak"/>
-    <costs value="10"/>
+    <costs value="10" type="MANA"/>
     <casttime value="0"/>
     <cooldown value="10"/>
     <targettype value="SELF"/>

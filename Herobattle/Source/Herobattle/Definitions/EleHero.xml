@@ -69,7 +69,7 @@
       </effects>
     </spell>
 
-    <spell>
+    <spell type="SPELL">
       <name value="Glowing Glaze"/>
       <costs value="5"/>
       <casttime value="1"/>
@@ -114,7 +114,7 @@
       </effects>
     </spell>
 
-    <spell>
+    <spell type="Spell">
       <name value="Aura of Resoration"/>
       <costs value="5"/>
       <casttime value="0.25"/>
@@ -123,7 +123,7 @@
       <range value="0"/>
       <effects>
         <impact>
-          <buff value="60" scaling="NONE" usage="INF" type="ENCHANTMENT">
+          <buff value="60" scaling="NONE" usage="INF" type="ENCHANTMENT" trigger="AFTERCAST">
             <heal value="200" target="SELF" scaling="ENERGY_STORAGE" trigger="CASTMANA">
               <step key="1" value="213"/>
               <step key="2" value="227"/>
@@ -154,6 +154,104 @@
         </impact>
       </effects>
     </spell>
+  
+  <spell type="UNIQUE_BUFF">
+    <name value="Glyph of Lesser Energy"/>
+    <costs value="5"/>
+    <casttime value="1"/>
+    <cooldown value="30"/>
+    <targettype value="SELF"/>
+    <range value="0"/>
+  <effects>
+    <impact>
+      <buff value="15" scaling="NONE" usage="INF" type="GLYPHE" trigger="AFTERCAST">
+          <reducemanacost value="10" scaling="ENERGY_STORAGE">
+               <step key="1" value="11"/>
+                <step key="3" value="12"/>
+                <step key="5" value="13"/>
+                <step key="7" value="14"/>
+                <step key="9" value="15"/>
+                <step key="11" value="16"/>
+                <step key="13" value="17"/>
+          </reducemanacost>
+      </buff>
+    </impact>
+  </effects>
+  </spell>
+  
+  <spell type="SPELL">
+    <name value="Fire Attunement"/>
+    <costs value="10"/>
+    <casttime value="1"/>
+    <cooldown value="30"/>
+    <targettype value="SELF"/>
+    <range value="0"/>
+  <effects>
+    <impact>
+      <buff value="36" scaling="FIRE_MAGIC" type="ENCHANTMENT" usage="INF" trigger="AFTERCAST">
+        <givemana value="1" scaling="NONE"  target="SELF"/>
+        <givemanavalue value="30" scaling="NONE" target="SELF" type="MANA"/>
+      </buff>
+    </impact>
+  </effects>
+  </spell>
   </profession>
   
+  <profession value="DERWISH">
+		<spell type="SPELL">
+			<name value="Mystic Regeneration"/>
+			<costs value="10"/>
+			<casttime value="0.25"/>
+			<cooldown value="12"/>
+			<targettype value="SELF"/>
+      <range value="0"/>
+      <effects>
+        <impact>
+			    <buff value="5" type="ENCHANTMENT" scaling="EARTH_PRAYERS" usage="INF" trigger="NONE">
+				    <step key="1" value="6"/>
+				    <step key="2" value="7"/>
+				    <step key="3" value="8"/>
+				    <foreach type="ENCHANTMENT">
+              <regeneration value="1" scaling="EARTH_PRAYERS" type="HEALTH" target="TARGET">
+						    <step key="3" value="2"/>
+						    <step key="8" value="3"/>
+					    </regeneration>
+				    </foreach>
+			    </buff>
+        </impact>
+      </effects>
+		</spell>
+  
+  <spell type="SPELL">
+    <name value="Mirage Cloak"/>
+    <costs value="10"/>
+    <casttime value="0"/>
+    <cooldown value="10"/>
+    <targettype value="SELF"/>
+    <range value="0"/>
+    <effects>
+      <impact>
+        <buff value="1" scaling="EARTH_PRAYERS" type="ENCHANTMENT" usage="INF" trigger="DAMAGE">
+          <block value="40" scaling="EARTH_PRAYERS" type="ATTACKS" usage="INF">
+              <step key="1" value="43"/>
+              <step key="2" value="45"/>
+              <step key="3" value="48"/>
+              <step key="4" value="51"/>
+              <step key="5" value="53"/>
+              <step key="6" value="56"/>
+              <step key="7" value="59"/>
+              <step key="8" value="61"/>
+              <step key="9" value="64"/>
+              <step key="10" value="67"/>
+              <step key="11" value="69"/>
+              <step key="12" value="72"/>
+              <step key="13" value="75"/>
+              <step key="14" value="77"/>
+          </block>
+        </buff>
+      </impact>
+    </effects>
+  </spell>
+	</profession>
+
 </skills>

@@ -67,7 +67,7 @@
       <range value="800"/>
       <effects>
         <impact>
-          <buff value="5" type="ENCHANTMENT" scaling="PROTECTION_PRAYERS" usage="1">
+          <buff value="5" type="ENCHANTMENT" scaling="PROTECTION_PRAYERS" usage="1" trigger="DAMAGE">
             <step key="4" value="8"/>
             <step key="8" value="16"/>
             <step key="12" value="20"/>
@@ -90,7 +90,7 @@
       <range value="800"/>
 			<effects>
 				<impact>
-					<buff value="2" type="ENCHANTMENT" scaling="PROTECTION_PRAYERS" usage="INF">
+					<buff value="2" type="ENCHANTMENT" scaling="PROTECTION_PRAYERS" usage="INF" trigger="DAMAGE">
 						<step key="2" value="3"/>
 						<step key="5" value="4"/>
 						<step key="11" value="6"/>
@@ -136,7 +136,7 @@
 			<weapon value="SHIELD"/>
       <effects>
         <impact>
-			    <buff value="5" type="STANCE" scaling="STRENGHT" usage="INF">
+			    <buff value="5" type="STANCE" scaling="STRENGHT" usage="INF" trigger="DAMAGE">
 				    <step key="2" value="6"/>
 				    <step key="4" value="7"/>
 				    <step key="7" value="8"/>
@@ -166,7 +166,7 @@
       <range value="0"/>
       <effects>
         <impact>
-			    <buff value="5" type="ENCHANTMENT" scaling="EARTH_PRAYERS" usage="INF">
+			    <buff value="5" type="ENCHANTMENT" scaling="EARTH_PRAYERS" usage="INF" trigger="NONE">
 				    <step key="1" value="6"/>
 				    <step key="2" value="7"/>
 				    <step key="3" value="8"/>

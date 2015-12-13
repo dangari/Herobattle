@@ -59,12 +59,13 @@
   target (TARGET|SELF|OWNER) #REQUIRED
   trigger (HEAL|DAMAGE|CAST) #IMPLIED
   >
-<!ELEMENT buff (step?|heal|damage|buff|regeneration|foreach|when|block|knockdown|skillcooldown)*>
+<!ELEMENT buff (step?|heal|damage|buff|regeneration|foreach|when|block|knockdown|skillcooldown|reducemanacost)*>
 <!ATTLIST buff 
   value CDATA #REQUIRED
   type CDATA #REQUIRED
   scaling CDATA #REQUIRED
   usage CDATA #REQUIRED
+  trigger (AFTERCAST|AFTERATTACK|DAMAGE|HEAL|NONE) #REQUIRED
   >
 <!ELEMENT condition (step)*>
 <!ATTLIST condition 
@@ -103,6 +104,12 @@
   value CDATA #REQUIRED
   scaling CDATA #REQUIRED
   target (TARGET|SELF) #REQUIRED
+  >
+
+<!ELEMENT reducemanacost (step?)>
+<!ATTLIST reducemanacost 
+  value CDATA #REQUIRED
+  scaling CDATA #REQUIRED
   >
 
 <!ELEMENT knockdown (step?)>

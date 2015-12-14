@@ -24,7 +24,6 @@
 			</effects>
 		</spell>
 	</profession>
-
 	<profession value="MONK">
 		<spell type="SPELL">
 			<name value="Word of Healing"/>

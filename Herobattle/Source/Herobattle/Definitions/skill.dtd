@@ -44,7 +44,7 @@
 
 <!ELEMENT effects (impact)>
 <!-- impact nodes  -->
-<!ELEMENT impact (heal|damage|buff|condition|foreach|when|remove|givemana)*>
+<!ELEMENT impact (heal|damage|buff|condition|foreach|when|remove|givemana|giveadrenaline)*>
 <!ELEMENT heal (step?)*>
 <!ATTLIST heal 
   value CDATA #REQUIRED
@@ -60,7 +60,7 @@
   target (TARGET|SELF|OWNER) #REQUIRED
   trigger (HEAL|DAMAGE|CAST) #IMPLIED
   >
-<!ELEMENT buff (step?|heal|damage|buff|regeneration|foreach|when|block|knockdown|skillcooldown|reducemanacost|givemana|givemanavalue|damagereduction|immune)*>
+<!ELEMENT buff (step?|heal|damage|buff|regeneration|foreach|when|block|knockdown|skillcooldown|reducemanacost|givemana|givemanavalue|damagereduction|immune|attackspeed|movementspeed)*>
 <!ATTLIST buff 
   value CDATA #REQUIRED
   type CDATA #REQUIRED
@@ -82,7 +82,7 @@
   scaling CDATA #REQUIRED
   target (TARGET|SELF|OWNER) #REQUIRED
   >
-<!ELEMENT foreach (heal|damage|buff|condition|regeneration|when|givemana)*>
+<!ELEMENT foreach (heal|damage|buff|condition|regeneration|when|givemana|giveadrenaline)*>
 <!ATTLIST foreach
   type CDATA #REQUIRED
   >
@@ -115,6 +115,13 @@
   type (MANA|DAMAGe) #REQUIRED
   >
 
+<!ELEMENT giveadrenaline (step?)*>
+<!ATTLIST giveadrenaline
+  value CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  target (TARGET|SELF) #REQUIRED
+  >
+
 <!ELEMENT reducemanacost (step?)*>
 <!ATTLIST reducemanacost 
   value CDATA #REQUIRED
@@ -132,6 +139,20 @@
   type (KNOCKDOWN|HEX|CONDTIONS|CRITS) #REQUIRED
   >
 
+<!ELEMENT attackspeed (step?)*>
+<!ATTLIST attackspeed
+  value CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  target (TARGET|SELF) #REQUIRED
+  >
+
+<!ELEMENT movementspeed (step?)*>
+<!ATTLIST movementspeed 
+  value CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  target (TARGET|SELF) #REQUIRED
+  >
+
 <!ELEMENT knockdown (step?)*>
 <!ATTLIST knockdown 
   value CDATA #REQUIRED
@@ -147,7 +168,7 @@
   >
 
 <!-- sub nodes -->
-<!ELEMENT then (heal|damage|buff|condition|regeneration|knockdown|skillcooldown|givemana)*>
+<!ELEMENT then (heal|damage|buff|condition|regeneration|knockdown|skillcooldown|givemana|giveadrenaline)*>
 
 <!ELEMENT attack EMPTY>
 <!ATTLIST attack
@@ -178,6 +199,8 @@
   key CDATA #REQUIRED
   value CDATA #REQUIRED
   >
+
+
 
 <!ELEMENT block (step?)*>
 <!ATTLIST block

@@ -157,7 +157,7 @@
     <range value="0"/>
   <effects>
     <impact>
-      <buff value="15" scaling="NONE" usage="INF" type="GLYPHE" trigger="AFTERCAST">
+      <buff value="15" scaling="NONE" usage="2" type="GLYPHE" trigger="BEFORECAST">
           <reducemanacost value="10" scaling="ENERGY_STORAGE">
                <step key="1" value="11"/>
                 <step key="3" value="12"/>

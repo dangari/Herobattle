@@ -25,7 +25,7 @@ UENUM(BlueprintType)
 enum class HBDamageType : uint8{ FIRE, PHYSICAL, WATER, LIGHTNING };
 
 UENUM(BlueprintType)
-enum class Trigger : uint8 { DAMAGE, HEAL, HIT, AFTERCAST, CASTMANA};
+enum class Trigger : uint8 { DAMAGE, HEAL, HIT, AFTERCAST, CASTMANA, BEFORECAST};
 
 UENUM(BlueprintType)
 enum class ComponentTarget : uint8 { TARGET, SELF };

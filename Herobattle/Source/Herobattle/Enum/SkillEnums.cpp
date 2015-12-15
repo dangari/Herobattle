@@ -129,6 +129,8 @@ Trigger SkillEnums::stringToTrigger(FString sTrigger)
 		return Trigger::AFTERCAST;
 	if (sTrigger.Equals(TEXT("CASTMANA")))
 		return Trigger::CASTMANA;
+	if (sTrigger.Equals(TEXT("BEFORECAST")))
+		return Trigger::BEFORECAST;
 	return Trigger::HEAL;
 }
 

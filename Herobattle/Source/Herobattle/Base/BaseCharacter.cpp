@@ -150,7 +150,7 @@ void ABaseCharacter::UpdateRegeneration()
 
 bool ABaseCharacter::skillManaCost(float value)
 {
-	if ((m_Mana - value) < 0)
+	if (((m_Mana + m_ManaReduction) - value) < 0)
 	{
 		messages->registerMessage(TEXT("Not enough mana"), MessageType::SKILLERROR);
 		return false;
@@ -400,6 +400,9 @@ bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
 		{
 			newTarget = this;
 		}
+
+		RunBuffsBeforeSkill();
+
 		if (newTarget && !skillIsOnCooldown(slot) && !isCastingSkill() && skill->isValidTarget(newTarget, this) && skillManaCost(skill->manaCost))
 		{
 			currentSkill.registerSkill(skill, newTarget, slot);
@@ -506,6 +509,14 @@ void ABaseCharacter::applyCondition(UBaseCondition* condition)
 	
 }
 
+void ABaseCharacter::applyManaReduction(int value)
+{
+	if (HasAuthority())
+	{
+		m_ManaReduction = value;
+	}
+}
+
 uint8 ABaseCharacter::getCondtionCount()
 {
 	return m_ConditionCount;
@@ -561,6 +572,14 @@ void ABaseCharacter::updateHealthRegen(float regen)
 }
 
 void ABaseCharacter::RunBuffsAfterSkill()
+{
+	for (auto& buff : m_BuffList)
+	{
+		buff.Value->run(currentSkill.target, this);
+	}
+}
+
+void ABaseCharacter::RunBuffsBeforeSkill()
 {
 	for (auto& buff : m_BuffList)
 	{

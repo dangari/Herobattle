@@ -3,19 +3,18 @@
 #pragma once
 
 #include "Skills/Buff/BaseBuffCompenent.h"
-#include "BcBlock.generated.h"
+#include "BcReduceMana.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class HEROBATTLE_API UBcBlock : public UBaseBuffCompenent
+class HEROBATTLE_API UBcReduceMana : public UBaseBuffCompenent
 {
 	GENERATED_BODY()
 public:
-
-	UBcBlock();
-	~UBcBlock();
+	UBcReduceMana();
+	~UBcReduceMana();
 
 	virtual void init(FBuffContainer bContainer, ABaseCharacter* owner);
 
@@ -24,14 +23,10 @@ public:
 	virtual bool isExpired();
 
 	virtual void update(float deltaTime);
-
+	
 private:
 	int usage;
 	bool haveUsages;
-
-	int blockChance;
-
-	SkillType blockType;
 	
-	
+	int reduction;
 };

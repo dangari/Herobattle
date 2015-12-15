@@ -181,6 +181,7 @@ private:
 
 	void RunBuffsAfterSkill();
 
+	void RunBuffsBeforeSkill();
 	//check if Character is using autotack
 	bool isAttacking();
 
@@ -219,4 +220,6 @@ private:
 
 	bool useAutoAttack;
 	HBCharacterState state = HBCharacterState::IDLE;
+
+	int m_ManaReduction = 0;
 };

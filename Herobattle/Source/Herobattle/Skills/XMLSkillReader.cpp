@@ -23,6 +23,7 @@
 #include "Buff/BcForEach.h"
 #include "Buff/BcBlock.h"
 #include "Buff/BcGiveMana.h"
+#include "Buff/BcReduceMana.h"
 
 
 
@@ -49,6 +50,7 @@ XMLSkillReader::XMLSkillReader()
 	bcObjectNameList.Add(TEXT("foreach"), &createBcInstance<UBcForEach>);
 	bcObjectNameList.Add(TEXT("block"), &createBcInstance<UBcBlock>);
 	bcObjectNameList.Add(TEXT("givemana"), &createBcInstance<UBcGiveMana>);
+	bcObjectNameList.Add(TEXT("reducemanacost"), &createBcInstance<UBcReduceMana>);
 	//scObjectNameList.Add(TEXT("heal"), &createScInstance<UScHeal>);
 }
 

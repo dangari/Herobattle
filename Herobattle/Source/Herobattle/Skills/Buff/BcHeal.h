@@ -21,7 +21,7 @@ public:
 	virtual void init(FBuffContainer bContainer, ABaseCharacter* owner) override;
 
 	
-	virtual bool run(ABaseCharacter* caster, ABaseCharacter* self, int value) override;
+	virtual bool run(ABaseCharacter* caster, ABaseCharacter* self, int value = 0) override;
 
 	virtual bool isExpired() override;
 	

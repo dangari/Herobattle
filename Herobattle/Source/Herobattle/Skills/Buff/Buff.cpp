@@ -66,7 +66,7 @@ void UBuff::updateBuff(float deltaTime)
 
 bool UBuff::isExpired()
 {
-	if (m_Duration <= 0 || m_Usage <= 0)
+	if (m_Duration <= 0 || (m_Usage <= 0 && !m_IsInfinityUsage))
 		return true;
 	bool b = false;
 	for (auto& sc : m_BcList)

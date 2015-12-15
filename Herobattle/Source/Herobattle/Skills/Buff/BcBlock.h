@@ -21,7 +21,7 @@ public:
 
 	// value ist the incoming heal or damage
 	// damage is always negative and heal always Positve
-	virtual bool run(ABaseCharacter* caster, ABaseCharacter* self, int value);
+	virtual bool run(ABaseCharacter* caster, ABaseCharacter* self, int value = 0);
 
 	virtual bool isExpired();
 
@@ -32,6 +32,8 @@ private:
 	bool haveUsages;
 
 	int blockChance;
+
+	SkillType blockType;
 	
 	
 };

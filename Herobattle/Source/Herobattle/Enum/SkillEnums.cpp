@@ -22,6 +22,10 @@ Attributes SkillEnums::stringToAttribute(FString sAttribute)
 		return Attributes::PROTECTION_PRAYERS;
 	if (sAttribute.Equals(TEXT("STRENGTH")))
 		return Attributes::STRENGTH;
+	if (sAttribute.Equals(TEXT("ENERGY_STORAGE")))
+		return Attributes::ENERGY_STORAGE;
+	if (sAttribute.Equals(TEXT("EARTH_PRAYERS")))
+		return Attributes::EARTH_PRAYERS;
 	return Attributes::NONE;
 }
 
@@ -119,6 +123,12 @@ Trigger SkillEnums::stringToTrigger(FString sTrigger)
 		return Trigger::DAMAGE;
 	if (sTrigger.Equals(TEXT("HEAL")))
 		return Trigger::HEAL;
+	if (sTrigger.Equals(TEXT("HIT")))
+		return Trigger::HIT;
+	if (sTrigger.Equals(TEXT("AFTERCAST")))
+		return Trigger::AFTERCAST;
+	if (sTrigger.Equals(TEXT("CASTMANA")))
+		return Trigger::CASTMANA;
 	return Trigger::HEAL;
 }
 

@@ -31,14 +31,14 @@ bool UBcHeal::run(ABaseCharacter* caster, ABaseCharacter* self, int value)
 {
 	if ((value < 0 && trigger == Trigger::DAMAGE) || value > 0 && trigger == Trigger::HEAL)
 	{
-		ABaseCharacter* testTarget;
-		if (targetType == TargetType::SELF)
-			testTarget = self;
-		else if (targetType == TargetType::OWNER)
-			testTarget = owner;
-		else
-			testTarget = caster;
+		ABaseCharacter* testTarget = getTarget(caster, self);
 		testTarget->heal(testTarget, heal, false);
+	}
+	if (Trigger::CASTMANA == trigger)
+	{
+		float currentHeal = caster->currentSkill.skill->manaCost * (heal/100);
+		ABaseCharacter* testTarget = getTarget(caster, self);
+		testTarget->heal(testTarget, currentHeal, false);
 	}
 	return true;
 }

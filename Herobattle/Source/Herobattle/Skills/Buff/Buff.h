@@ -22,7 +22,7 @@ public:
 
 	//value is incoming damage or heal
 	// heal is positive and and damage is negative
-	virtual bool run(ABaseCharacter* target, ABaseCharacter* self, int value);
+	virtual bool run(ABaseCharacter* target, ABaseCharacter* self, int value = 0);
 
 	virtual void updateBuff(float deltaTime);
 	// test if the buff is still active

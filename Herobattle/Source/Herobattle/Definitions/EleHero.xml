@@ -26,7 +26,7 @@
             <step key="13" value="54"/>
             <step key="14" value="58"/>
           </damage>
-          <when value="TARGET">
+          <when value="SELF">
             <whencondition>
               <mana value="50" type="-"/>
             </whencondition>
@@ -49,7 +49,7 @@
     <spell type="SPELL">
       <name value="Immolate"/>
       <costs value="10" type="MANA"/>
-      <casttime value="3"/>
+      <casttime value="1"/>
       <cooldown value="5"/>
       <targettype value="ENEMY"/>
       <range value="800"/>
@@ -118,12 +118,12 @@
       <name value="Aura of Resoration"/>
       <costs value="5" type="MANA"/>
       <casttime value="0.25"/>
-      <cooldown value="20"/>
+      <cooldown value="30"/>
       <targettype value="SELF"/>
       <range value="0"/>
       <effects>
         <impact>
-          <buff value="60" scaling="NONE" usage="INF" type="ENCHANTMENT" trigger="AFTERCAST">
+          <buff value="30" scaling="NONE" usage="INF" type="ENCHANTMENT" trigger="AFTERCAST">
             <heal value="200" target="SELF" scaling="ENERGY_STORAGE" trigger="CASTMANA">
               <step key="1" value="213"/>
               <step key="2" value="227"/>

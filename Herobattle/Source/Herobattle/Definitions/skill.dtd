@@ -60,7 +60,7 @@
   target (TARGET|SELF|OWNER) #REQUIRED
   trigger (HEAL|DAMAGE|CAST) #IMPLIED
   >
-<!ELEMENT buff (step?|heal|damage|buff|regeneration|foreach|when|block|knockdown|skillcooldown|reducemanacost|givemana|givemanavalue|damagereduction|immune|attackspeed|movementspeed)*>
+<!ELEMENT buff (step?|heal|damage|buff|regeneration|foreach|when|block|knockdown|skillcooldown|reducemanacost|givemana|givemanavalue|giveadrenaline|damagereduction|immune|attackspeed|movementspeed)*>
 <!ATTLIST buff 
   value CDATA #REQUIRED
   type CDATA #REQUIRED

@@ -62,8 +62,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Mechanics)
 	bool UseSkill(ABaseCharacter* Target, int32 SkillSlot);
 
-	UFUNCTION(BlueprintCallable, Category = Meachnics)
-	void ChangeHealth(float value);
 
 	UFUNCTION(BlueprintCallable, Category = Meachnics)
 	void ChangeMana(float value);
@@ -96,6 +94,8 @@ public:
 	uint8 getCondtionCount();
 
 	HBCharacterState getState();
+
+	FWeapon getWeapon();
 
 	SkillType getCurrentSkillType();
 
@@ -178,6 +178,8 @@ private:
 	void UpdateAtack(float deltaTime);
 
 	void updateHealthRegen(float regen);
+
+	void RunBuffsAfterSkill();
 
 	//check if Character is using autotack
 	bool isAttacking();

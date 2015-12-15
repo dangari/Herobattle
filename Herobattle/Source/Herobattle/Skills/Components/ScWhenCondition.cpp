@@ -9,6 +9,7 @@
 #include "AI/SkillScore.h"
 #include "BoolObjects/BoolAttack.h"
 #include "BoolObjects/BoolCondition.h"
+#include "BoolObjects/BoolMana.h"
 
 UScWhenCondition::UScWhenCondition()
 {
@@ -90,13 +91,19 @@ void UScWhenCondition::createBoolObjects(FXmlNode* node)
 			hpBool->init(prop, targetType);
 			boolObjects.Add(hpBool);
 		}
+		if (tagName.Equals(TEXT("mana")))
+		{
+			UBoolMana* manaBool = NewObject<UBoolMana>();
+			manaBool->init(prop, targetType);
+			boolObjects.Add(manaBool);
+		}
 		else if (tagName.Equals(TEXT("attack")))
 		{
 			UBoolAttack* attackBool = NewObject<UBoolAttack>();
 			attackBool->init(prop, targetType);
 			boolObjects.Add(attackBool);
 		}
-		else if (tagName.Equals(TEXT("attack")))
+		else if (tagName.Equals(TEXT("condi")))
 		{
 			UBoolCondition* attackCondition = NewObject<UBoolCondition>();
 			attackCondition->init(prop, targetType);

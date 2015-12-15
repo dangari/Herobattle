@@ -195,19 +195,14 @@
 						<step key="12" value="13"/>
 						<step key="13" value="14"/>
 						<movementspeed value="25" scaling="NONE" target="SELF"/>
-						<when value="">
-							<whencondition>
-								<attack type="TARGET"/>
-							</whencondition>
-							<then>
-								<giveadrenaline value="0" scaling="STRNGTH" target="SELF">
-									<step key="3" value="1"/>
-									<step key="8" value="2"/>
-									<step key="13" value="3"/>
-								</giveadrenaline>
-							</then>
-						</when>
 					</buff>
+          <buff value="1" scaling="STRENGTH" usage="1" trigger="HIT" type="STANCE">
+              <giveadrenaline value="0" scaling="STRNGTH" target="SELF">
+                <step key="3" value="1"/>
+                <step key="8" value="2"/>
+                <step key="13" value="3"/>
+              </giveadrenaline>
+          </buff>
 				</impact>
 			</effects>
 		</spell>
@@ -236,7 +231,7 @@
 						<step key="13" value="102"/>
 						<step key="14" value="106"/>
 					</heal>
-					<giveadrenaline value="0" scaling="STRNGTH" target="SELF">
+					<giveadrenaline value="0" scaling="STRENGTH" target="SELF">
 						<step key="3" value="1"/>
 						<step key="8" value="2"/>
 						<step key="13" value="3"/>

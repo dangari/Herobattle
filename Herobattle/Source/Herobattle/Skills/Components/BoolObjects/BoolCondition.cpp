@@ -37,7 +37,7 @@ void UBoolCondition::init(FXmlNode* node, ComponentTarget target)
 	TArray<FXmlNode*> propertyList = node->GetChildrenNodes();
 	
 	name = node->GetTag();
-	if (name.Equals(TEXT("condition")))
+	if (name.Equals(TEXT("condi")))
 	{
 		cType = SkillEnums::stringToCondition(node->GetAttribute(TEXT("type")));
 	}

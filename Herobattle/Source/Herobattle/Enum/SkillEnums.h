@@ -7,7 +7,7 @@
  */
 
 UENUM(BlueprintType)
-enum class Attributes : uint8{NONE, FIRE_MAGIC, HEALING_PRAYERS, PROTECTION_PRAYERS, STRENGTH };
+enum class Attributes : uint8{ NONE, FIRE_MAGIC, HEALING_PRAYERS, PROTECTION_PRAYERS, STRENGTH, ENERGY_STORAGE, EARTH_PRAYERS };
 
 UENUM(BlueprintType)
 enum class ProfessionName : uint8{NONE, ASSASINE, ELEMENTALIST, MONK, DERWISH, NEKROMANT, PARAGON, WARRIOR, MESMER, RITUALIST };
@@ -25,7 +25,7 @@ UENUM(BlueprintType)
 enum class HBDamageType : uint8{ FIRE, PHYSICAL, WATER, LIGHTNING };
 
 UENUM(BlueprintType)
-enum class Trigger : uint8 { DAMAGE, HEAL };
+enum class Trigger : uint8 { DAMAGE, HEAL, HIT, AFTERCAST, CASTMANA};
 
 UENUM(BlueprintType)
 enum class ComponentTarget : uint8 { TARGET, SELF };

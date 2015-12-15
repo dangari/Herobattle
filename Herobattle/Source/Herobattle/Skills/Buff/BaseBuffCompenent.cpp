@@ -35,6 +35,16 @@ void UBaseBuffCompenent::update(float deltaTime)
 
 }
 
+ABaseCharacter* UBaseBuffCompenent::getTarget(ABaseCharacter* caster, ABaseCharacter* self)
+{
+	if (targetType == TargetType::SELF)
+		return self;
+	else if (targetType == TargetType::OWNER)
+		return owner;
+	else
+		return caster;
+}
+
 bool UBaseBuffCompenent::run(ABaseCharacter* caster, ABaseCharacter* self, int value)
 {
 	return true;

@@ -17,20 +17,20 @@ USkillMessages::~USkillMessages()
 
 void USkillMessages::registerMessage(FString message, MessageType mType)
 {
-	switch (mType)
-	{
-	case MessageType::SKILLERROR:
-		errorList.Add(message);
-		break;
-	case MessageType::DAMAGE:
-		damageList.Add(message);
-		break;
-	case MessageType::HEAL:
-		healList.Add(message);
-		break;
-	default:
-		break;
-	}
+	//switch (mType)
+	//{
+	//case MessageType::SKILLERROR:
+	//	errorList.Add(message);
+	//	break;
+	//case MessageType::DAMAGE:
+	//	damageList.Add(message);
+	//	break;
+	//case MessageType::HEAL:
+	//	healList.Add(message);
+	//	break;
+	//default:
+	//	break;
+	//}
 
 }
 

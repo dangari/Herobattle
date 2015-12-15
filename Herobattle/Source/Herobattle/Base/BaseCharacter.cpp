@@ -38,12 +38,14 @@ void ABaseCharacter::BeginPlay()
 		skillList[0] = gm->skillList[0];
 		skillList[1] = gm->skillList[1];
 		skillList[2] = gm->skillList[2];
+		skillList[3] = gm->skillList[3];
 		messages = NewObject<USkillMessages>();
 		weapon = FWeapon(Weapons::STAFF);
 		currentSkill.castingSkill = false;
 
 		attrList.Add(Attributes::FIRE_MAGIC, 14);
 		attrList.Add(Attributes::HEALING_PRAYERS, 14);
+		attrList.Add(Attributes::ENERGY_STORAGE, 10);
 	}
 	else
 	{
@@ -261,15 +263,22 @@ void ABaseCharacter::UpdateSkillCooldown(float deltaTime)
 
 void ABaseCharacter::UpdateBuffs(float deltaTime)
 {
+	TArray<FString> removeBuff;
+	int num = m_BuffList.Num();
 	for (auto& buff : m_BuffList)
 	{
 		buff.Value->updateBuff(deltaTime);
 		if (buff.Value->isExpired())
 		{
-			m_BuffList.Remove(buff.Key);
+			removeBuff.Add(buff.Key);
 			m_BuffCount--;
 		}
 	}
+	for (auto& rm : removeBuff)
+	{
+		m_BuffList.Remove(rm);
+	}
+
 }
 
 void ABaseCharacter::UpdateCurrentSkill(float deltaTime)
@@ -281,6 +290,7 @@ void ABaseCharacter::UpdateCurrentSkill(float deltaTime)
 		currentSkill.castingSkill = false;
 		skillcooldowns[currentSkill.slot].currentCooldown = currentSkill.skill->recharge;
 		skillcooldowns[currentSkill.slot].maxCooldown = currentSkill.skill->recharge + skillcooldowns[currentSkill.slot].additionalCoolDown;
+		RunBuffsAfterSkill();
 		if (currentSkill.skill->skillType == SkillType::MELEEATTACK || currentSkill.skill->skillType == SkillType::MELEEATTACK)
 		{
 			state = HBCharacterState::AUTOATTACK;
@@ -336,30 +346,22 @@ bool ABaseCharacter::isAttacking()
 	return false;
 }
 
-void ABaseCharacter::ChangeHealth(float value)
-{
-	m_Health += value;
-	if (m_Health > m_MaxHealth)
-	{
-		m_Health = m_MaxHealth;
-	}
-	if (m_Health < 0)
-	{
-		m_Health = 0;
-	}
-}
 
 void ABaseCharacter::ChangeMana(float value)
 {
-	m_Mana += value;
-	if (m_Mana > m_MaxMana)
+	if (HasAuthority())
 	{
-		m_Mana = m_MaxMana;
+		m_Mana += value;
+		if (m_Mana > m_MaxMana)
+		{
+			m_Mana = m_MaxMana;
+		}
+		if (m_Mana < 0)
+		{
+			m_Mana = 0;
+		}
 	}
-	if (m_Mana < 0)
-	{
-		m_Mana = 0;
-	}
+
 }
 
 
@@ -394,7 +396,7 @@ bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
 
 		//automatically sets target to self if the skill can be used on self and the target is enemy
 		//also sets target to self if targettype is self
-		if (skill->targetType == TargetType::SELF || (target->isEnemy(ETeam) && skill->targetType == TargetType::SELFFRIEND))
+		if (skill->targetType == TargetType::SELF || (target && target->isEnemy(ETeam) && skill->targetType == TargetType::SELFFRIEND))
 		{
 			newTarget = this;
 		}
@@ -452,16 +454,20 @@ void ABaseCharacter::heal(ABaseCharacter* caster, float value, bool withBuff)
 }
 
 
-void ABaseCharacter::damage(ABaseCharacter* caster, float value, HBDamageType damageType,bool withBuff)
+void ABaseCharacter::damage(ABaseCharacter* caster, float value, HBDamageType damageType, bool withBuff)
 {
+	bool b = true;
 	if (withBuff)
 	{
 		for (auto& buff : m_BuffList)
 		{
-			buff.Value->run(caster, this, -1*value);
+			b = buff.Value->run(caster, this, -1 * value);
 		}
 	}
-	m_Health -= value;
+	if (b)
+	{
+		m_Health -= value;
+	}
 	// test if target is dead
 	if (m_Health < 0)
 		m_Health = m_MaxHealth;
@@ -510,6 +516,11 @@ HBCharacterState ABaseCharacter::getState()
 	return state;
 }
 
+FWeapon ABaseCharacter::getWeapon()
+{
+	return weapon;
+}
+
 SkillType ABaseCharacter::getCurrentSkillType()
 {
 	return currentSkill.skill->skillType;
@@ -547,6 +558,14 @@ void ABaseCharacter::setCoolDown(float time, CoolDownType cdType)
 void ABaseCharacter::updateHealthRegen(float regen)
 {
 	m_HealthRegeneration += regen;
+}
+
+void ABaseCharacter::RunBuffsAfterSkill()
+{
+	for (auto& buff : m_BuffList)
+	{
+		buff.Value->run(currentSkill.target, this);
+	}
 }
 
 void ABaseCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const

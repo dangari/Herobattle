@@ -2,6 +2,8 @@
 
 #include "Herobattle.h"
 #include "BcBlock.h"
+#include "Enum/CharacterEnums.h"
+#include "Base/Weapon.h"
 
 
 
@@ -19,6 +21,7 @@ UBcBlock::~UBcBlock()
 void UBcBlock::init(FBuffContainer bContainer, ABaseCharacter* owner)
 {
 	FXmlNode* node = bContainer.node;
+	blockType = SkillEnums::stringToSkillType(node->GetAttribute(TEXT("type")));
 	FString sUsage = node->GetAttribute(TEXT("usage"));
 	if (sUsage.Equals(TEXT("INF")))
 	{
@@ -34,7 +37,52 @@ void UBcBlock::init(FBuffContainer bContainer, ABaseCharacter* owner)
 
 bool UBcBlock::run(ABaseCharacter* caster, ABaseCharacter* self, int value)
 {
-	return true;
+	bool b = false;
+	switch (blockType)
+	{
+	case SkillType::ATTACK:
+		if (caster->getState() == HBCharacterState::AUTOATTACK)
+			b = true;
+		else
+			b = false;
+		break;
+	case SkillType::SPELL:
+		if (caster->getState() == HBCharacterState::CASTING)
+			return true;
+		else
+			return false;
+		break;
+	case SkillType::MELEEATTACK:
+		if (caster->getState() == HBCharacterState::CASTING && caster->getCurrentSkillType() == SkillType::MELEEATTACK ||
+			caster->getState() == HBCharacterState::AUTOATTACK && caster->getWeapon().wType == WeaponType::MELEE)
+			b = true;
+		else
+			b = false;
+		break;
+	case SkillType::RANGEATTACK:
+		if (caster->getState() == HBCharacterState::CASTING && caster->getCurrentSkillType() == SkillType::RANGEATTACK ||
+			caster->getState() == HBCharacterState::AUTOATTACK && caster->getWeapon().wType == WeaponType::RANGE)
+			b = true;
+		else
+			b = false;
+		break;
+	default:
+		return false;
+		break;
+	}
+	if (b)
+	{
+		int blockRand = FPlatformMath::RoundToInt(FMath::FRandRange(0,100));
+		if (blockChance <= blockRand)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	return false;
 }
 
 bool UBcBlock::isExpired()

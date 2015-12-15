@@ -140,16 +140,9 @@
               <step key="13" value="373"/>
               <step key="14" value="387"/>
             </heal>
-            <when value="TARGET">
-              <whencondition>
-                <casting/>
-              </whencondition>
-              <then>
-                <givemana value="0" scaling="ENERGY_STORAGE" target="SELF">
-                  <step key="8" value="1"/>
-                </givemana>
-              </then>
-            </when>
+            <givemana value="0" scaling="ENERGY_STORAGE" target="SELF">
+              <step key="8" value="1"/>
+            </givemana>
           </buff>
         </impact>
       </effects>

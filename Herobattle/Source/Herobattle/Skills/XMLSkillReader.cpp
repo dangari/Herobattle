@@ -22,6 +22,7 @@
 #include "Buff/BcWhenCondition.h"
 #include "Buff/BcForEach.h"
 #include "Buff/BcBlock.h"
+#include "Buff/BcGiveMana.h"
 
 
 
@@ -47,6 +48,7 @@ XMLSkillReader::XMLSkillReader()
 	bcObjectNameList.Add(TEXT("when"), &createBcInstance<UBcWhenCondition>);
 	bcObjectNameList.Add(TEXT("foreach"), &createBcInstance<UBcForEach>);
 	bcObjectNameList.Add(TEXT("block"), &createBcInstance<UBcBlock>);
+	bcObjectNameList.Add(TEXT("givemana"), &createBcInstance<UBcGiveMana>);
 	//scObjectNameList.Add(TEXT("heal"), &createScInstance<UScHeal>);
 }
 

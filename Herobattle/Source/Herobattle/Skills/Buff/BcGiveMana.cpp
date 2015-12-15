@@ -1,31 +1,31 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Herobattle.h"
-#include "ScGiveMana.h"
+#include "BcGiveMana.h"
 
 
 
 
-UScGiveMana::UScGiveMana()
+UBcGiveMana::UBcGiveMana()
 {
 
 }
 
-UScGiveMana::~UScGiveMana()
+UBcGiveMana::~UBcGiveMana()
 {
 
 }
 
-bool UScGiveMana::run(ABaseCharacter* target, ABaseCharacter* self)
+bool UBcGiveMana::run(ABaseCharacter* caster, ABaseCharacter* self, int value)
 {
-	ABaseCharacter* newTarget = getTarget(target, self);
-	newTarget->ChangeMana(scaleTable[self->getAttributeValue(scaleAttribute)]);
+	ABaseCharacter* newTarget = getTarget(caster, self);
+	newTarget->ChangeMana(m_mana);
 	return true;
 }
 
-float UScGiveMana::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
+float UBcGiveMana::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
-	int mana = scaleTable[caster->getAttributeValue(scaleAttribute)];
+	int mana = m_mana;
 	ABaseCharacter* newTarget = getTarget(characterState.self, caster);
 	float score;
 	if (caster->ETeam == characterState.ETeam)
@@ -53,19 +53,21 @@ float UScGiveMana::getScore(ABaseCharacter* caster, FCharacterState characterSta
 	return 1.f;
 }
 
-void UScGiveMana::init(FXmlNode* node)
+void UBcGiveMana::init(FBuffContainer bContainer, ABaseCharacter* owner)
 {
-	FString tagName = node->GetTag();
-	targetType = SkillEnums::stringToComponentTarget(node->GetAttribute(TEXT("target")));
-	if (tagName.Equals(TEXT("givemana")))
-	{
-		fillScaleTable(node);
-	}
+	FString tagName = bContainer.node->GetTag();
+	targetType = SkillEnums::stringToTargetType(bContainer.node->GetAttribute(TEXT("target")));
+	m_mana = bContainer.scaleTable[owner->getAttributeValue(bContainer.scaleAttribute)];
 }
 
-FString UScGiveMana::ToString()
+bool UBcGiveMana::isExpired()
 {
-	FString sCText = componentName;
+	return false;
+}
+
+FString UBcGiveMana::ToString()
+{
+	FString sCText = TEXT("mana");
 	sCText.Append(TEXT(" \n "));
 	sCText.Append(Super::ToString());
 

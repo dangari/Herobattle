@@ -400,7 +400,7 @@ bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
 		{
 			newTarget = this;
 		}
-		if (!skillIsOnCooldown(slot) && !isCastingSkill() && skill->isValidTarget(newTarget, this) && skillManaCost(skill->manaCost))
+		if (newTarget && !skillIsOnCooldown(slot) && !isCastingSkill() && skill->isValidTarget(newTarget, this) && skillManaCost(skill->manaCost))
 		{
 			currentSkill.registerSkill(skill, newTarget, slot);
 			state = HBCharacterState::CASTING;

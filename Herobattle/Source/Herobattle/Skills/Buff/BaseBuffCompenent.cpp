@@ -4,6 +4,7 @@
 #include "BaseBuffCompenent.h"
 #include "XmlParser.h"
 #include "Base/BaseCharacter.h"
+#include "AI/CharacterState.h"
 
 
 
@@ -33,6 +34,16 @@ bool UBaseBuffCompenent::isExpired()
 void UBaseBuffCompenent::update(float deltaTime)
 {
 
+}
+
+float UBaseBuffCompenent::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
+{
+	return 1.f;
+}
+
+FString UBaseBuffCompenent::ToString()
+{
+	return TEXT("");
 }
 
 ABaseCharacter* UBaseBuffCompenent::getTarget(ABaseCharacter* caster, ABaseCharacter* self)

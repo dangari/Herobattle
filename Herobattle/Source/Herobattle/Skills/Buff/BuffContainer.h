@@ -15,7 +15,7 @@ struct FBuffContainer
 {
 	GENERATED_USTRUCT_BODY()
 
-	int scaleTable[20];
+	TArray<int32> scaleTable;
 	Attributes scaleAttribute;
 
 	TargetType targetType;

@@ -6,6 +6,7 @@
 #include "Enum/SkillEnums.h"
 #include "BuffContainer.h"
 #include "XmlParser.h"
+#include "AI/CharacterState.h"
 #include "BaseBuffCompenent.generated.h"
 
 /**
@@ -14,6 +15,7 @@
 
 class ABaseCharacter;
 class FXmlNode;
+class USkillScore;
 
 UCLASS()
 class HEROBATTLE_API UBaseBuffCompenent : public UObject
@@ -34,6 +36,10 @@ public:
 	virtual bool isExpired();
 
 	virtual void update(float deltaTime);
+
+	virtual float getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore);
+
+	virtual FString ToString();
 	
 protected:
 	ABaseCharacter* owner;

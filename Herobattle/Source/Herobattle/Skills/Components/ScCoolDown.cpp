@@ -17,7 +17,7 @@ UScCoolDown::~UScCoolDown()
 
 }
 
-bool UScCoolDown::run(ABaseCharacter* target, ABaseCharacter* self)
+bool UScCoolDown::run(ABaseCharacter* target, ABaseCharacter* self, FString SkillName /*= TEXT("Name")*/)
 {
 	ABaseCharacter* newTarget = getTarget(target, self);
 	float time = scaleTable[self->getAttributeValue(scaleAttribute)];

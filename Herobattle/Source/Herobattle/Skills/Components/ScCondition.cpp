@@ -17,7 +17,7 @@ UScCondition::~UScCondition()
 }
 
 
-bool UScCondition::run(ABaseCharacter* target, ABaseCharacter* self)
+bool UScCondition::run(ABaseCharacter* target, ABaseCharacter* self, FString SkillName /*= TEXT("Name")*/)
 {
 	ABaseCharacter* testTarget;
 	if (targetType == TargetType::SELF)

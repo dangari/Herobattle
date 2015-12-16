@@ -17,7 +17,7 @@ UScBlock::~UScBlock()
 
 }
 
-bool UScBlock::run(ABaseCharacter* target, ABaseCharacter* self)
+bool UScBlock::run(ABaseCharacter* target, ABaseCharacter* self, FString SkillName /*= TEXT("Name")*/)
 {
 	//if (m)
 	return true;

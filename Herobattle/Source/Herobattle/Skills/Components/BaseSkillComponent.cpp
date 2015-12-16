@@ -18,7 +18,7 @@ UBaseSkillComponent::~UBaseSkillComponent()
 }
 
 
-bool UBaseSkillComponent::run(ABaseCharacter* target, ABaseCharacter* self)
+bool UBaseSkillComponent::run(ABaseCharacter* target, ABaseCharacter* self, FString SkillName /*= TEXT("Name")*/)
 {
 	return true;
 }

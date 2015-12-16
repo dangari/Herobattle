@@ -16,7 +16,7 @@ class HEROBATTLE_API UScRegeneratio : public UBaseSkillComponent
 	UScRegeneratio();
 	~UScRegeneratio();
 	
-	virtual bool run(ABaseCharacter* target, ABaseCharacter* self) override;
+	virtual bool run(ABaseCharacter* target, ABaseCharacter* self, FString SkillName = TEXT("Name")) override;
 	virtual void init(FXmlNode* node) override;
 	virtual float getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore) override;
 	

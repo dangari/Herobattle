@@ -16,7 +16,7 @@ UScGiveMana::~UScGiveMana()
 
 }
 
-bool UScGiveMana::run(ABaseCharacter* target, ABaseCharacter* self)
+bool UScGiveMana::run(ABaseCharacter* target, ABaseCharacter* self, FString SkillName /*= TEXT("Name")*/)
 {
 	ABaseCharacter* newTarget = getTarget(target, self);
 	newTarget->ChangeMana(scaleTable[self->getAttributeValue(scaleAttribute)]);

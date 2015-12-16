@@ -14,7 +14,7 @@ UScHeal::~UScHeal()
 }
 
 
-bool UScHeal::run(ABaseCharacter* target, ABaseCharacter* self)
+bool UScHeal::run(ABaseCharacter* target, ABaseCharacter* self, FString SkillName /*= TEXT("Name")*/)
 {
 	ABaseCharacter* testTarget;
 	if (targetType == ComponentTarget::SELF)

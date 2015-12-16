@@ -22,7 +22,7 @@ class HEROBATTLE_API UScBuff : public UBaseSkillComponent
 public:
 	UScBuff();
 	~UScBuff();
-	virtual bool run(ABaseCharacter* target, ABaseCharacter* self) override;
+	virtual bool run(ABaseCharacter* target, ABaseCharacter* self, FString SkillName = TEXT("Name")) override;
 	virtual float getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore) override;
 	virtual void init(FXmlNode* node) override;
 	virtual FString ToString() override;

@@ -22,7 +22,7 @@ UScWhenCondition::~UScWhenCondition()
 }
 
 
-bool UScWhenCondition::run(ABaseCharacter* target, ABaseCharacter* self)
+bool UScWhenCondition::run(ABaseCharacter* target, ABaseCharacter* self, FString SkillName /*= TEXT("Name")*/)
 {
 	bool b = true;
 	if (testConditions(target, self))

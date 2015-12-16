@@ -23,7 +23,7 @@ public:
 	UBaseSkillComponent();
 	~UBaseSkillComponent();
 
-	virtual bool run(ABaseCharacter* target, ABaseCharacter* self);
+	virtual bool run(ABaseCharacter* target, ABaseCharacter* self, FString SkillName = TEXT("Name"));
 	virtual float getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore);
 	virtual void init(FXmlNode* node);
 	virtual FString ToString();

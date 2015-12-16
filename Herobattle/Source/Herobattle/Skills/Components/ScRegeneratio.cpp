@@ -17,7 +17,7 @@ UScRegeneratio::~UScRegeneratio()
 
 }
 
-bool UScRegeneratio::run(ABaseCharacter* target, ABaseCharacter* self)
+bool UScRegeneratio::run(ABaseCharacter* target, ABaseCharacter* self, FString SkillName /*= TEXT("Name")*/)
 {
 	//target->updateHealthRegen(scaleTable[self->getAttributeValue(scaleAttribute)]);
 	return true;

@@ -20,13 +20,13 @@ UScBuff::~UScBuff()
 }
 
 
-bool UScBuff::run(ABaseCharacter* target, ABaseCharacter* self)
+bool UScBuff::run(ABaseCharacter* target, ABaseCharacter* self, FString SkillName /*= TEXT("Name")*/)
 {
 	bool b = true;
 
 	UBuff* buff = NewObject<UBuff>();
 	float duration = scaleTable[self->getAttributeValue(scaleAttribute)];
-	buff->init(self, bCBuffList, duration, TEXT("name"), m_Usage);
+	buff->init(self, bCBuffList, duration, SkillName, m_Usage);
 	target->applyBuff(buff, m_Trigger);
 	return b;
 }

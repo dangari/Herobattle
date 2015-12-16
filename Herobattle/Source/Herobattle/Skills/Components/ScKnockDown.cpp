@@ -17,7 +17,7 @@ UScKnockDown::~UScKnockDown()
 
 }
 
-bool UScKnockDown::run(ABaseCharacter* target, ABaseCharacter* self)
+bool UScKnockDown::run(ABaseCharacter* target, ABaseCharacter* self, FString SkillName /*= TEXT("Name")*/)
 {
 	ABaseCharacter* testTarget = getTarget(target, self);
 

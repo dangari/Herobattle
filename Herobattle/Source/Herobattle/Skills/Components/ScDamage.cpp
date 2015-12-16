@@ -16,7 +16,7 @@ UScDamage::~UScDamage()
 }
 
 
-bool UScDamage::run(ABaseCharacter* target, ABaseCharacter* self)
+bool UScDamage::run(ABaseCharacter* target, ABaseCharacter* self, FString SkillName /*= TEXT("Name")*/)
 {
 	ABaseCharacter* testTarget;
 	if (targetType == ComponentTarget::SELF)

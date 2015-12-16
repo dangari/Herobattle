@@ -27,7 +27,7 @@ bool USkill::run(ABaseCharacter* target, ABaseCharacter* self)
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::FromInt(manaCost));
 	for (auto& sc : componentList)
 	{
-		b = sc->run(target, self);
+		b = sc->run(target, self, name);
 	}
 
 	return b;

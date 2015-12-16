@@ -19,7 +19,7 @@ UScForEach::~UScForEach()
 
 }
 
-bool UScForEach::run(ABaseCharacter* target, ABaseCharacter* self)
+bool UScForEach::run(ABaseCharacter* target, ABaseCharacter* self, FString SkillName /*= TEXT("Name")*/)
 {
 	bool b = true;
 	uint8 count = 0;

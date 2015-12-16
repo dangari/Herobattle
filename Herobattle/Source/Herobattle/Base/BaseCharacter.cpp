@@ -39,6 +39,8 @@ void ABaseCharacter::BeginPlay()
 		skillList[1] = gm->skillList[1];
 		skillList[2] = gm->skillList[2];
 		skillList[3] = gm->skillList[3];
+		skillList[4] = gm->skillList[4];
+		skillList[5] = gm->skillList[5];
 		messages = NewObject<USkillMessages>();
 		weapon = FWeapon(Weapons::STAFF);
 		currentSkill.castingSkill = false;
@@ -157,7 +159,10 @@ bool ABaseCharacter::skillManaCost(float value)
 	}
 	else
 	{
-		m_Mana -= value;
+		float manaCost = value - m_ManaReduction;
+		if (manaCost > 0)
+			manaCost = 0;
+		m_Mana -= manaCost;
 		return true;
 	}
 }
@@ -290,6 +295,7 @@ void ABaseCharacter::UpdateCurrentSkill(float deltaTime)
 		currentSkill.castingSkill = false;
 		skillcooldowns[currentSkill.slot].currentCooldown = currentSkill.skill->recharge;
 		skillcooldowns[currentSkill.slot].maxCooldown = currentSkill.skill->recharge + skillcooldowns[currentSkill.slot].additionalCoolDown;
+		m_ManaReduction = 0;
 		RunBuffsAfterSkill();
 		if (currentSkill.skill->skillType == SkillType::MELEEATTACK || currentSkill.skill->skillType == SkillType::MELEEATTACK)
 		{
@@ -476,7 +482,7 @@ void ABaseCharacter::damage(ABaseCharacter* caster, float value, HBDamageType da
 		m_Health = m_MaxHealth;
 }
 
-void ABaseCharacter::applyBuff(UBuff* buff)
+void ABaseCharacter::applyBuff(UBuff* buff, Trigger trigger)
 {
 	if (!(m_BuffList.Contains(buff->getName())))
 		m_BuffCount++;
@@ -513,7 +519,7 @@ void ABaseCharacter::applyManaReduction(int value)
 {
 	if (HasAuthority())
 	{
-		m_ManaReduction = value;
+		m_ManaReduction += value;
 	}
 }
 

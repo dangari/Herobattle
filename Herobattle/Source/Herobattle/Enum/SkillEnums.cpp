@@ -157,6 +157,15 @@ CoolDownType SkillEnums::stringToCoolDownType(FString sCoolDownType)
 	return CoolDownType::CURRENTSKILL;
 }
 
+CostType SkillEnums::stringToCostType(FString sCostType)
+{
+	if (sCostType.Equals(TEXT("MANA")))
+		return CostType::MANA;
+	if (sCostType.Equals(TEXT("MANA")))
+		return CostType::ADRENALINE;
+	return CostType::NONE;
+}
+
 FString SkillEnums::AttributesToString(Attributes attribute)
 {
 	switch (attribute)

@@ -33,6 +33,9 @@ enum class ComponentTarget : uint8 { TARGET, SELF };
 UENUM(BlueprintType)
 enum class CoolDownType : uint8 { CURRENTSKILL, ATTRIBUTE, INTERRUPT, ALL };
 
+UENUM(BlueprintType)
+enum class CostType : uint8 {MANA, ADRENALINE, NONE};
+
 class HEROBATTLE_API SkillEnums
 {
 public:
@@ -49,6 +52,7 @@ public:
 	static Trigger stringToTrigger(FString sTrigger);
 	static ComponentTarget stringToComponentTarget(FString sComponentTarget);
 	static CoolDownType stringToCoolDownType(FString sCoolDownType);
+	static CostType stringToCostType(FString sCostType);
 
 	static FString AttributesToString(Attributes attribute);
 

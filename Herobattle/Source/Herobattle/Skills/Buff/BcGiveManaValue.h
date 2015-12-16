@@ -3,20 +3,20 @@
 #pragma once
 
 #include "Skills/Components/BaseSkillComponent.h"
-#include "BcGiveMana.generated.h"
+#include "BcGiveManaValue.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class HEROBATTLE_API UBcGiveMana : public UBaseBuffCompenent
+class HEROBATTLE_API UBcGiveManaValue : public UBaseBuffCompenent
 {
 	GENERATED_BODY()
 
 public:
 
-	UBcGiveMana();
-	~UBcGiveMana();
+	UBcGiveManaValue();
+	~UBcGiveManaValue();
 	virtual bool run(ABaseCharacter* caster, ABaseCharacter* self, int value = 0) override;
 	virtual float getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore) override;
 
@@ -30,4 +30,5 @@ private:
 	int treshhold = -10;
 	int m_ManaFactor;
 	
+	CostType m_CostType;
 };

@@ -19,13 +19,13 @@ UBcGiveMana::~UBcGiveMana()
 bool UBcGiveMana::run(ABaseCharacter* caster, ABaseCharacter* self, int value)
 {
 	ABaseCharacter* newTarget = getTarget(caster, self);
-	newTarget->ChangeMana(m_mana);
+	newTarget->ChangeMana(m_ManaFactor);
 	return true;
 }
 
 float UBcGiveMana::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
-	int mana = m_mana;
+	int mana = m_ManaFactor;
 	ABaseCharacter* newTarget = getTarget(characterState.self, caster);
 	float score;
 	if (caster->ETeam == characterState.ETeam)
@@ -57,7 +57,7 @@ void UBcGiveMana::init(FBuffContainer bContainer, ABaseCharacter* owner)
 {
 	FString tagName = bContainer.node->GetTag();
 	targetType = SkillEnums::stringToTargetType(bContainer.node->GetAttribute(TEXT("target")));
-	m_mana = bContainer.scaleTable[owner->getAttributeValue(bContainer.scaleAttribute)];
+	m_ManaFactor = bContainer.scaleTable[owner->getAttributeValue(bContainer.scaleAttribute)];
 }
 
 bool UBcGiveMana::isExpired()

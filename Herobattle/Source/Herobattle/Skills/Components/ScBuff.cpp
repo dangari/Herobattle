@@ -27,7 +27,7 @@ bool UScBuff::run(ABaseCharacter* target, ABaseCharacter* self)
 	UBuff* buff = NewObject<UBuff>();
 	float duration = scaleTable[self->getAttributeValue(scaleAttribute)];
 	buff->init(self, bCBuffList, duration, TEXT("name"), m_Usage);
-	target->applyBuff(buff);
+	target->applyBuff(buff, m_Trigger);
 	return b;
 }
 
@@ -44,7 +44,7 @@ void UScBuff::init(FXmlNode* node)
 
 	// reads the usage of the buff
 	m_Usage = node->GetAttribute((TEXT("usage")));
-	
+	m_Trigger = SkillEnums::stringToTrigger(node->GetAttribute(TEXT("trigger")));
 	FString tagName = node->GetTag();
 	if (tagName.Equals(TEXT("buff")))
 	{

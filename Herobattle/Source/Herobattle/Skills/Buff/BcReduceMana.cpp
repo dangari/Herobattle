@@ -25,6 +25,7 @@ bool UBcReduceMana::run(ABaseCharacter* caster, ABaseCharacter* self, int value 
 {
 	ABaseCharacter* newTarget = getTarget(caster, self);
 	newTarget->applyManaReduction(reduction);
+	return true;
 }
 
 bool UBcReduceMana::isExpired()

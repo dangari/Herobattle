@@ -37,4 +37,5 @@ private:
 	TArray<FBuffContainer> bCBuffList;
 	bool m_isInfinityUsage;
 	FString m_Usage;
+	Trigger m_Trigger;
 };

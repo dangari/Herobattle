@@ -81,7 +81,7 @@ public:
 
 	void damage(ABaseCharacter* caster, float value, HBDamageType damageType, bool withBuff = true);
 
-	void applyBuff(UBuff* buff);
+	void applyBuff(UBuff* buff, Trigger trigger);
 
 	void applyDebuff(UBaseSkillComponent* buff);
 
@@ -90,6 +90,8 @@ public:
 	uint8 getAttributeValue(Attributes attributeName);
 
 	void applyCondition(UBaseCondition* condtion);
+
+	void applyManaReduction(int value);
 
 	uint8 getCondtionCount();
 
@@ -204,7 +206,8 @@ private:
 	Profession primaryProfession;
 	Profession secondaryProfession;
 	TMap<Condition, UBaseCondition*> m_condtionList;
-	TMap<FString, UBuff*> m_BuffList;
+	TMap<FString, Trigger> m_BuffList;
+	TMap<Trigger, TMap<FString, UBuff*>> m_CompleteBuffList;
 	TMap<Attributes, uint8> attrList;
 
 	UPROPERTY(Replicated)

@@ -12,12 +12,15 @@
 ABaseCharacter::ABaseCharacter()
 :m_MaxHealth(480),
 m_MaxMana(25),
-m_Health(480),
+m_Health(200),
 m_Mana(25),
 m_HealthRegeneration(0),
 m_ManaRegeneration(4),
 m_ConditionCount(0),
-m_BuffCount(0)
+m_BuffCount(0),
+m_HealthBuffRegneration(0),
+m_ManaBuffRegneration(0),
+m_ManaReduction(0)
 {
 	bReplicates = true;
 	currentSkill.castingSkill = false;
@@ -107,26 +110,24 @@ bool ABaseCharacter::stopCurrenSkill_Validate()
 
 
 void ABaseCharacter::UpdateResources(float DeltaSeconds){
+
+
+	m_Health += DeltaSeconds * ((m_HealthRegeneration) * 2.0f);
+	m_Mana += DeltaSeconds * (m_ManaRegeneration / 3.0f);
+
 	if (m_Health >= m_MaxHealth){
 		m_Health = m_MaxHealth;
-	}
-	else
-	{
-		m_Health += DeltaSeconds * (m_HealthRegeneration * 2.0f);
 	}
 	
 	if (m_Mana >= m_MaxMana){
 		m_Mana = m_MaxMana;
 	}
-	else
-	{
-		m_Mana += DeltaSeconds * (m_ManaRegeneration / 3.0f);
-	}
+	
 	if (m_Mana < 0)
 		m_Mana = 0;
 	if (m_Health < 0)
 		m_Health = m_MaxHealth;
-
+	m_HealthBuffRegneration = 0;
 }
 
 
@@ -150,6 +151,15 @@ void ABaseCharacter::UpdateRegeneration()
 	{
 		m_HealthRegeneration +=  condi.Value->regeneration;
 	}
+	m_HealthRegeneration += m_HealthBuffRegneration;
+
+	if (m_HealthRegeneration > 10)
+		m_HealthRegeneration = 10;
+	else if (m_HealthRegeneration < -10)
+	{
+		m_HealthRegeneration = -10;
+	}
+
 	//add buff
 	// add gate at -/+10 regeneration
 }
@@ -543,16 +553,20 @@ void ABaseCharacter::applyManaReduction(int value)
 
 void ABaseCharacter::applyRegneration(int value, RegnerationType type)
 {
-	switch (type)
+
+	if (HasAuthority())
 	{
-	case RegnerationType::HEALTH:
-		m_HealthRegeneration += value;
-		break;
-	case RegnerationType::MANA:
-		m_ManaBuffRegneration += value;
-		break;
-	default:
-		break;
+		switch (type)
+		{
+		case RegnerationType::HEALTH:
+			m_HealthBuffRegneration += value;
+			break;
+		case RegnerationType::MANA:
+			m_ManaBuffRegneration += value;
+			break;
+		default:
+			break;
+		}
 	}
 }
 

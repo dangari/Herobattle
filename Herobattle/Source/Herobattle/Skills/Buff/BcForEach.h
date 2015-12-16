@@ -5,6 +5,7 @@
 #include "Skills/Components/BaseSkillComponent.h"
 #include "BcForEach.generated.h"
 
+
 /**
  * 
  */
@@ -31,5 +32,5 @@ private:
 	FString skillType;
 
 	UPROPERTY(Replicated)
-	TArray<UBaseSkillComponent*> scList;
+	TArray<UBaseBuffCompenent*> bcList;
 };

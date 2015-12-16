@@ -2,6 +2,7 @@
 
 #include "Herobattle.h"
 #include "BcForEach.h"
+#include "BaseBuffCompenent.h"
 //#include "XmlParser.h"
 //#include "../XMLSkillReader.h"
 //#include "Base/BaseCharacter.h"
@@ -33,12 +34,13 @@ bool UBcForEach::run(ABaseCharacter* caster, ABaseCharacter* self, int value)
 	{
 		count = newTarget->getBuffCount();
 	}
+	UE_LOG(LogTemp, Warning, TEXT("count: %d"), count)
 	if (count > 0){
 		for (int i = 1; i <= count; i++)
 		{
-			for (auto& scObj : scList)
+			for (auto& scObj : bcList)
 			{
-				b = scObj->run(newTarget, newTarget);
+				b = scObj->run(newTarget, newTarget, value);
 			}
 		}
 	}
@@ -61,15 +63,21 @@ void UBcForEach::init(FBuffContainer bContainer, ABaseCharacter* owner)
 	skillType = node->GetAttribute(TEXT("type"));
 	TArray<FXmlNode*> childNodes = node->GetChildrenNodes();
 	targetType = SkillEnums::stringToTargetType(bContainer.node->GetAttribute(TEXT("target")));
-	for (auto& scObj : childNodes)
+	for (auto& bcObj : childNodes)
 	{
-		FString tagName = scObj->GetTag();
-		if (XMLSkillReader::scObjectNameList.Contains(tagName))
+		FString tagName = bcObj->GetTag();
+		if (XMLSkillReader::bcObjectNameList.Contains(tagName))
 		{
-			classFuncPtr createFunc = *(XMLSkillReader::scObjectNameList.Find(tagName));
-			UBaseSkillComponent* sc = createFunc();
-			sc->init(scObj);
-			scList.Add(sc);
+			FBuffContainer buff;
+			buff.buffName = tagName;
+			buff.targetType = SkillEnums::stringToTargetType(bcObj->GetAttribute(TEXT("target")));
+			buff.node = bcObj;
+			buff.fillScaleTable(bcObj);
+
+			bCclassFuncPtr createFunc = *(XMLSkillReader::bcObjectNameList.Find(tagName));
+			UBaseBuffCompenent* bc = createFunc();
+			bc->init(buff, owner);
+			bcList.Add(bc);
 		}
 	}
 }
@@ -82,5 +90,5 @@ void UBcForEach::init(FBuffContainer bContainer, ABaseCharacter* owner)
 void UBcForEach::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(UBcForEach, scList);
+	DOREPLIFETIME(UBcForEach, bcList);
 }

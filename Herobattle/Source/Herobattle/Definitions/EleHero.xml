@@ -205,7 +205,7 @@
 				    <step key="2" value="7"/>
 				    <step key="3" value="8"/>
 				    <foreach type="ENCHANTMENT">
-              <regeneration value="1" scaling="EARTH_PRAYERS" type="HEALTH" target="TARGET">
+              <regeneration value="1" scaling="EARTH_PRAYERS" type="HEALTH" target="SELF">
 						    <step key="3" value="2"/>
 						    <step key="8" value="3"/>
 					    </regeneration>

@@ -245,7 +245,10 @@ private:
 	bool useAutoAttack;
 	HBCharacterState state = HBCharacterState::IDLE;
 
-	int m_ManaReduction = 0;
-	int m_HealthBuffRegneration = 0;
-	int  m_ManaBuffRegneration = 0;
+	UPROPERTY()
+	int32 m_ManaReduction;
+	UPROPERTY()
+	int32 m_HealthBuffRegneration;
+	UPROPERTY()
+	int32  m_ManaBuffRegneration;
 };

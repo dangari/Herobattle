@@ -33,6 +33,7 @@ public:
 
 	
 protected:
+	UPROPERTY()
 	TArray<UBaseBuffCompenent*> m_BcList;
 
 	float m_Duration;

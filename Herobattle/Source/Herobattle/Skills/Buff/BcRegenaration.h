@@ -12,8 +12,22 @@ UCLASS()
 class HEROBATTLE_API UBcRegenaration : public UBaseBuffCompenent
 {
 	GENERATED_BODY()
+public:
+
+	UBcRegenaration();
+	~UBcRegenaration();
+	virtual bool run(ABaseCharacter* caster, ABaseCharacter* self, int value = 0) override;
+	virtual float getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore) override;
+
+	virtual void init(FBuffContainer bContainer, ABaseCharacter* owner) override;
+
+	virtual bool isExpired() override;
+
+	virtual FString ToString() override;
 	
-	
+private:
+	int m_Regenration;
+	RegnerationType type;
 	
 	
 };

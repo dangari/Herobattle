@@ -33,7 +33,8 @@ public:
 private:
 
 	UBuff* createBuff(float duration);
-
+	
+	UPROPERTY()
 	TArray<FBuffContainer> bCBuffList;
 	bool m_isInfinityUsage;
 	FString m_Usage;

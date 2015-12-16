@@ -24,6 +24,7 @@
 #include "Buff/BcBlock.h"
 #include "Buff/BcGiveMana.h"
 #include "Buff/BcReduceMana.h"
+#include "Buff/BcRegenaration.h"
 
 
 
@@ -44,13 +45,14 @@ XMLSkillReader::XMLSkillReader()
 	scObjectNameList.Add(TEXT("foreach"), &createScInstance<UScForEach>);
 	scObjectNameList.Add(TEXT("givemana"), &createScInstance<UScGiveMana>);
 
-	//Flill bcObjectList
+	//Fill bcObjectList
 	bcObjectNameList.Add(TEXT("heal"), &createBcInstance<UBcHeal>);
 	bcObjectNameList.Add(TEXT("when"), &createBcInstance<UBcWhenCondition>);
 	bcObjectNameList.Add(TEXT("foreach"), &createBcInstance<UBcForEach>);
 	bcObjectNameList.Add(TEXT("block"), &createBcInstance<UBcBlock>);
 	bcObjectNameList.Add(TEXT("givemana"), &createBcInstance<UBcGiveMana>);
 	bcObjectNameList.Add(TEXT("reducemanacost"), &createBcInstance<UBcReduceMana>);
+	bcObjectNameList.Add(TEXT("regeneration"), &createBcInstance<UBcRegenaration>);
 	//scObjectNameList.Add(TEXT("heal"), &createScInstance<UScHeal>);
 }
 

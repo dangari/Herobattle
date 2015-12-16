@@ -42,6 +42,15 @@ struct FSkillCooldown
 	float additionalCoolDown = 0.f;
 };
 
+USTRUCT(BlueprintType)
+struct FBuffList
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY()
+	TMap<FString, UBuff*> m_BuffList;
+};
+
 
 UCLASS()
 class HEROBATTLE_API ABaseCharacter: public ACharacter
@@ -93,11 +102,15 @@ public:
 
 	void applyManaReduction(int value);
 
+	void applyRegneration(int value, RegnerationType type);
+
 	uint8 getCondtionCount();
 
 	HBCharacterState getState();
 
 	FWeapon getWeapon();
+
+	uint8 getBuffCount();
 
 	SkillType getCurrentSkillType();
 
@@ -181,9 +194,8 @@ private:
 
 	void updateHealthRegen(float regen);
 
-	void RunBuffsAfterSkill();
+	void RunBuff(Trigger trigger);
 
-	void RunBuffsBeforeSkill();
 	//check if Character is using autotack
 	bool isAttacking();
 
@@ -201,13 +213,22 @@ private:
 	float getAirDistance(APawn* pawn);
 
 	float getWalkDistance(APawn* pawn);
-	
+
+
 
 	Profession primaryProfession;
 	Profession secondaryProfession;
+
+	UPROPERTY()
 	TMap<Condition, UBaseCondition*> m_condtionList;
+
+	UPROPERTY()
 	TMap<FString, Trigger> m_BuffList;
-	TMap<Trigger, TMap<FString, UBuff*>> m_CompleteBuffList;
+
+	UPROPERTY()
+	TMap<Trigger, FBuffList> m_CompleteBuffList;
+	
+	UPROPERTY()
 	TMap<Attributes, uint8> attrList;
 
 	UPROPERTY(Replicated)
@@ -225,4 +246,6 @@ private:
 	HBCharacterState state = HBCharacterState::IDLE;
 
 	int m_ManaReduction = 0;
+	int m_HealthBuffRegneration = 0;
+	int  m_ManaBuffRegneration = 0;
 };

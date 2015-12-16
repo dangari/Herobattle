@@ -24,16 +24,21 @@ bool UBcForEach::run(ABaseCharacter* caster, ABaseCharacter* self, int value)
 {
 	bool b = true;
 	uint8 count = 0;
+	ABaseCharacter* newTarget = getTarget(caster, self);
 	if (skillType.Equals(TEXT("CONDITION")))
 	{
-		count = self->getCondtionCount();
+		count = newTarget->getCondtionCount();
+	}
+	else if (skillType.Equals(TEXT("ENCHANTMENT")))
+	{
+		count = newTarget->getBuffCount();
 	}
 	if (count > 0){
 		for (int i = 1; i <= count; i++)
 		{
 			for (auto& scObj : scList)
 			{
-				b = scObj->run(self, self);
+				b = scObj->run(newTarget, newTarget);
 			}
 		}
 	}
@@ -55,6 +60,7 @@ void UBcForEach::init(FBuffContainer bContainer, ABaseCharacter* owner)
 	FXmlNode* node = bContainer.node;
 	skillType = node->GetAttribute(TEXT("type"));
 	TArray<FXmlNode*> childNodes = node->GetChildrenNodes();
+	targetType = SkillEnums::stringToTargetType(bContainer.node->GetAttribute(TEXT("target")));
 	for (auto& scObj : childNodes)
 	{
 		FString tagName = scObj->GetTag();

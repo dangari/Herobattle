@@ -41,6 +41,8 @@ void ABaseCharacter::BeginPlay()
 		skillList[3] = gm->skillList[3];
 		skillList[4] = gm->skillList[4];
 		skillList[5] = gm->skillList[5];
+		skillList[6] = gm->skillList[6];
+		skillList[7] = gm->skillList[7];
 		messages = NewObject<USkillMessages>();
 		weapon = FWeapon(Weapons::STAFF);
 		currentSkill.castingSkill = false;
@@ -48,6 +50,7 @@ void ABaseCharacter::BeginPlay()
 		attrList.Add(Attributes::FIRE_MAGIC, 14);
 		attrList.Add(Attributes::HEALING_PRAYERS, 14);
 		attrList.Add(Attributes::ENERGY_STORAGE, 10);
+		attrList.Add(Attributes::EARTH_PRAYERS, 8);
 	}
 	else
 	{
@@ -62,6 +65,7 @@ void ABaseCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	if (HasAuthority())
 	{
+		RunBuff(Trigger::NONE);
 		UpdateCondtion(DeltaTime);
 		UpdateRegeneration();
 		UpdateResources(DeltaTime);
@@ -160,7 +164,7 @@ bool ABaseCharacter::skillManaCost(float value)
 	else
 	{
 		float manaCost = value - m_ManaReduction;
-		if (manaCost > 0)
+		if (manaCost < 0)
 			manaCost = 0;
 		m_Mana -= manaCost;
 		return true;
@@ -224,6 +228,11 @@ float ABaseCharacter::getWalkDistance(APawn* pawn)
 	return 1.0f;
 }
 
+uint8 ABaseCharacter::getBuffCount()
+{
+	return m_BuffCount;
+}
+
 bool ABaseCharacter::isEnemy(TeamColor team)
 {
 	bool b = team == ETeam;
@@ -268,20 +277,18 @@ void ABaseCharacter::UpdateSkillCooldown(float deltaTime)
 
 void ABaseCharacter::UpdateBuffs(float deltaTime)
 {
-	TArray<FString> removeBuff;
-	int num = m_BuffList.Num();
-	for (auto& buff : m_BuffList)
+	for (auto& buffList : m_CompleteBuffList)
 	{
-		buff.Value->updateBuff(deltaTime);
-		if (buff.Value->isExpired())
+		for (auto& buff : buffList.Value.m_BuffList)
 		{
-			removeBuff.Add(buff.Key);
-			m_BuffCount--;
+			buff.Value->updateBuff(deltaTime);
+			if (buff.Value->isExpired())
+			{
+				m_BuffList.Remove(buff.Key);
+				buffList.Value.m_BuffList.Remove(buff.Key);
+				m_BuffCount--;
+			}
 		}
-	}
-	for (auto& rm : removeBuff)
-	{
-		m_BuffList.Remove(rm);
 	}
 
 }
@@ -296,7 +303,7 @@ void ABaseCharacter::UpdateCurrentSkill(float deltaTime)
 		skillcooldowns[currentSkill.slot].currentCooldown = currentSkill.skill->recharge;
 		skillcooldowns[currentSkill.slot].maxCooldown = currentSkill.skill->recharge + skillcooldowns[currentSkill.slot].additionalCoolDown;
 		m_ManaReduction = 0;
-		RunBuffsAfterSkill();
+		RunBuff(Trigger::AFTERCAST);
 		if (currentSkill.skill->skillType == SkillType::MELEEATTACK || currentSkill.skill->skillType == SkillType::MELEEATTACK)
 		{
 			state = HBCharacterState::AUTOATTACK;
@@ -407,7 +414,7 @@ bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
 			newTarget = this;
 		}
 
-		RunBuffsBeforeSkill();
+		RunBuff(Trigger::BEFORECAST);
 
 		if (newTarget && !skillIsOnCooldown(slot) && !isCastingSkill() && skill->isValidTarget(newTarget, this) && skillManaCost(skill->manaCost))
 		{
@@ -452,10 +459,10 @@ void ABaseCharacter::heal(ABaseCharacter* caster, float value, bool withBuff)
 
 	if (withBuff)
 	{
-		for (auto& buff : m_BuffList)
+		/*for (auto& buff : m_BuffList)
 		{
 			buff.Value->run(caster, this, value);
-		}
+		}*/
 	}
 	m_Health += value;
 	if (m_Health > m_MaxHealth)
@@ -468,10 +475,10 @@ void ABaseCharacter::damage(ABaseCharacter* caster, float value, HBDamageType da
 	bool b = true;
 	if (withBuff)
 	{
-		for (auto& buff : m_BuffList)
+		/*for (auto& buff : m_BuffList)
 		{
-			b = buff.Value->run(caster, this, -1 * value);
-		}
+		b = buff.Value->run(caster, this, -1 * value);
+		}*/
 	}
 	if (b)
 	{
@@ -484,9 +491,20 @@ void ABaseCharacter::damage(ABaseCharacter* caster, float value, HBDamageType da
 
 void ABaseCharacter::applyBuff(UBuff* buff, Trigger trigger)
 {
+
 	if (!(m_BuffList.Contains(buff->getName())))
 		m_BuffCount++;
-	m_BuffList.Add(buff->getName(), buff);
+	m_BuffList.Add(buff->getName(), trigger);
+	if (m_CompleteBuffList.Contains(trigger))
+	{
+		m_CompleteBuffList.Find(trigger)->m_BuffList.Add(buff->getName(), buff);
+	}
+	else
+	{
+		FBuffList buffList;
+		buffList.m_BuffList.Add(buff->getName(), buff);
+		m_CompleteBuffList.Add(trigger, buffList);
+	}
 }
 
 void ABaseCharacter::applyDebuff(UBaseSkillComponent* buff)
@@ -520,6 +538,21 @@ void ABaseCharacter::applyManaReduction(int value)
 	if (HasAuthority())
 	{
 		m_ManaReduction += value;
+	}
+}
+
+void ABaseCharacter::applyRegneration(int value, RegnerationType type)
+{
+	switch (type)
+	{
+	case RegnerationType::HEALTH:
+		m_HealthRegeneration += value;
+		break;
+	case RegnerationType::MANA:
+		m_ManaBuffRegneration += value;
+		break;
+	default:
+		break;
 	}
 }
 
@@ -577,19 +610,15 @@ void ABaseCharacter::updateHealthRegen(float regen)
 	m_HealthRegeneration += regen;
 }
 
-void ABaseCharacter::RunBuffsAfterSkill()
+void ABaseCharacter::RunBuff(Trigger trigger)
 {
-	for (auto& buff : m_BuffList)
+	if (m_CompleteBuffList.Contains(trigger))
 	{
-		buff.Value->run(currentSkill.target, this);
-	}
-}
-
-void ABaseCharacter::RunBuffsBeforeSkill()
-{
-	for (auto& buff : m_BuffList)
-	{
-		buff.Value->run(currentSkill.target, this);
+		TMap<FString, UBuff*> buffList = m_CompleteBuffList.Find(trigger)->m_BuffList;
+		for (auto& buff : buffList)
+		{
+			buff.Value->run(currentSkill.target, this);
+		}
 	}
 }
 

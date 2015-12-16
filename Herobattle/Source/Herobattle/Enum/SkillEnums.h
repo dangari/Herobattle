@@ -25,7 +25,7 @@ UENUM(BlueprintType)
 enum class HBDamageType : uint8{ FIRE, PHYSICAL, WATER, LIGHTNING };
 
 UENUM(BlueprintType)
-enum class Trigger : uint8 { DAMAGE, HEAL, HIT, AFTERCAST, CASTMANA, BEFORECAST};
+enum class Trigger : uint8 { DAMAGE, HEAL, HIT, AFTERCAST, CASTMANA, BEFORECAST, NONE};
 
 UENUM(BlueprintType)
 enum class ComponentTarget : uint8 { TARGET, SELF };
@@ -35,6 +35,10 @@ enum class CoolDownType : uint8 { CURRENTSKILL, ATTRIBUTE, INTERRUPT, ALL };
 
 UENUM(BlueprintType)
 enum class CostType : uint8 {MANA, ADRENALINE, NONE};
+
+UENUM(BlueprintType)
+enum class RegnerationType : uint8 { MANA, HEALTH};
+
 
 class HEROBATTLE_API SkillEnums
 {
@@ -53,6 +57,7 @@ public:
 	static ComponentTarget stringToComponentTarget(FString sComponentTarget);
 	static CoolDownType stringToCoolDownType(FString sCoolDownType);
 	static CostType stringToCostType(FString sCostType);
+	static RegnerationType stringToRegnerationType(FString sRegnerationType);
 
 	static FString AttributesToString(Attributes attribute);
 

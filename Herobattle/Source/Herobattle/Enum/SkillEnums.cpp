@@ -131,7 +131,9 @@ Trigger SkillEnums::stringToTrigger(FString sTrigger)
 		return Trigger::CASTMANA;
 	if (sTrigger.Equals(TEXT("BEFORECAST")))
 		return Trigger::BEFORECAST;
-	return Trigger::HEAL;
+	if (sTrigger.Equals(TEXT("NONE")))
+		return Trigger::NONE;
+	return Trigger::NONE;
 }
 
 ComponentTarget SkillEnums::stringToComponentTarget(FString sComponentTarget)
@@ -164,6 +166,16 @@ CostType SkillEnums::stringToCostType(FString sCostType)
 	if (sCostType.Equals(TEXT("MANA")))
 		return CostType::ADRENALINE;
 	return CostType::NONE;
+}
+
+RegnerationType SkillEnums::stringToRegnerationType(FString sRegnerationType)
+{
+	if (sRegnerationType.Equals(TEXT("MANA")))
+		return RegnerationType::MANA;
+	if (sRegnerationType.Equals(TEXT("HEALTH")))
+		return RegnerationType::HEALTH;
+	return RegnerationType::HEALTH;
+
 }
 
 FString SkillEnums::AttributesToString(Attributes attribute)

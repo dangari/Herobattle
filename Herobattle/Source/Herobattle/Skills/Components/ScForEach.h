@@ -23,5 +23,7 @@ public:
 	
 private:
 	FString skillType;
+
+	UPROPERTY()
 	TArray<UBaseSkillComponent*> scList;
 };

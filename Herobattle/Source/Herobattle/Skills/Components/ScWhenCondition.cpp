@@ -37,15 +37,21 @@ bool UScWhenCondition::run(ABaseCharacter* target, ABaseCharacter* self, FString
 
 float UScWhenCondition::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
-	float f = 0.f;
+	float score = 0.f;
 	if (testConditions(characterState.self, caster))
 	{
 		for (auto& sc : scTable)
 		{
-			f = sc->getScore(caster, characterState, skillScore);
+			score = sc->getScore(caster, characterState, skillScore);
 		}
+		score = 1.f;
 	}
-	return f;
+	else
+	{
+		score = 1.f / scTable.Num();
+	}
+	skillScore->addScore(score, TEXT("when"));
+	return score;
 }
 
 bool UScWhenCondition::testConditions(ABaseCharacter* target, ABaseCharacter* self)

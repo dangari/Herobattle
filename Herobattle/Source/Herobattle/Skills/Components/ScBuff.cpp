@@ -33,6 +33,10 @@ bool UScBuff::run(ABaseCharacter* target, ABaseCharacter* self, FString SkillNam
 
 float UScBuff::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
+	UBuff* buff = NewObject<UBuff>();
+	float duration = scaleTable[self->getAttributeValue(scaleAttribute)];
+	buff->init(self, bCBuffList, duration, SkillName, m_Usage);
+	buff->getScore(caster, characterState, skillScore);
 	return 1.f;
 }
 

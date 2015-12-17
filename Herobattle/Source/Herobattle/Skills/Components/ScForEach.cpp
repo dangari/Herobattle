@@ -58,5 +58,23 @@ void UScForEach::init(FXmlNode* node)
 
 float UScForEach::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
+	uint8 count = 0;
+	if (skillType.Equals(TEXT("CONDITION")))
+	{
+		count = characterState.conditions.Num();
+	}
+	if (count > 0){
+		for (int i = 1; i <= count; i++)
+		{
+			for (auto& scObj : scList)
+			{
+				scObj->getScore(caster, characterState, skillScore);
+			}
+		}
+	}
+	else
+	{
+		skillScore->addScore(0.f, componentName);
+	}
 	return 0.f;
 }

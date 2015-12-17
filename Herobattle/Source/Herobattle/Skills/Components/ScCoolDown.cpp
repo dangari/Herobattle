@@ -9,7 +9,7 @@
 
 UScCoolDown::UScCoolDown()
 {
-	componentName = TEXT("Damage");
+	componentName = TEXT("cooldown");
 }
 
 UScCoolDown::~UScCoolDown()
@@ -27,19 +27,23 @@ bool UScCoolDown::run(ABaseCharacter* target, ABaseCharacter* self, FString Skil
 
 float UScCoolDown::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
+	float score;
 	if (scaleAttribute == Attributes::NONE)
 	{
-		return 1.f;
+		score = 1.f;
 	}
 	else
 	{
 		int attValue = caster->getAttributeValue(scaleAttribute);
 		float score = attValue / 14.f;
 		if (score > 0.5)
-			return 1.f;
+			score = 1.f;
 		else
-			return score;
+			score = score;
 	}
+
+	skillScore->addScore(score, componentName);
+	return score;
 }
 
 void UScCoolDown::init(FXmlNode* node)

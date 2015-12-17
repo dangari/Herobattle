@@ -37,7 +37,7 @@ public:
 
 	virtual void update(float deltaTime);
 
-	virtual float getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore);
+	virtual float getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration);
 
 	virtual FString ToString();
 	

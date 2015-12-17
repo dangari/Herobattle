@@ -76,6 +76,15 @@ bool UBuff::isExpired()
 	return b;
 }
 
+float UBuff::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
+{
+	for (auto& bC : m_BcList)
+	{
+		bC->getScore(caster, characterState, skillScore, m_Duration);
+	}
+	return 1.f;
+}
+
 FString UBuff::getName()
 {
 	return m_Name;

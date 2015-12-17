@@ -23,7 +23,7 @@ bool UBcGiveMana::run(ABaseCharacter* caster, ABaseCharacter* self, int value)
 	return true;
 }
 
-float UBcGiveMana::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
+float UBcGiveMana::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration)
 {
 	int mana = m_ManaFactor;
 	ABaseCharacter* newTarget = getTarget(characterState.self, caster);

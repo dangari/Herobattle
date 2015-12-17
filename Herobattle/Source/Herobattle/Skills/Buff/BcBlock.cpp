@@ -99,3 +99,9 @@ void UBcBlock::update(float deltaTime)
 {
 
 }
+
+float UBcBlock::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration)
+{
+	//if (characterState.selectedTarget == caster)
+	return 1.f;
+}

@@ -18,7 +18,7 @@ public:
 	UBcGiveManaValue();
 	~UBcGiveManaValue();
 	virtual bool run(ABaseCharacter* caster, ABaseCharacter* self, int value = 0) override;
-	virtual float getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore) override;
+	virtual float getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration) override;
 
 	virtual void init(FBuffContainer bContainer, ABaseCharacter* owner) override;
 

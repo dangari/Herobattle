@@ -23,7 +23,7 @@ bool UBcRegenaration::run(ABaseCharacter* caster, ABaseCharacter* self, int valu
 	return true;
 }
 
-float UBcRegenaration::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
+float UBcRegenaration::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration)
 {
 	return 1.f;
 }

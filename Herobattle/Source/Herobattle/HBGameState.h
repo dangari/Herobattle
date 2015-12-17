@@ -8,12 +8,24 @@
 /**
  * 
  */
+
+USTRUCT(BlueprintType)
+struct FDebugSkill
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Info)
+	FString name;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Info)
+	FString descrition;
+};
+
 UCLASS()
 class HEROBATTLE_API AHBGameState : public AGameState
 {
 	GENERATED_BODY()
-	
-	
-	
+public:
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = Info)
+	TArray<FDebugSkill> DebugSkillList;
 	
 };

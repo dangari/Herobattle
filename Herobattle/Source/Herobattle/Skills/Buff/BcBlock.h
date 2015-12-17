@@ -25,6 +25,8 @@ public:
 
 	virtual void update(float deltaTime);
 
+	virtual float getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration);
+
 private:
 	int usage;
 	bool haveUsages;

@@ -28,7 +28,7 @@ bool UBcGiveManaValue::run(ABaseCharacter* caster, ABaseCharacter* self, int val
 	return true;
 }
 
-float UBcGiveManaValue::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
+float UBcGiveManaValue::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration)
 {
 	float score = 1.f;
 	skillScore->addScore(score, TEXT("givemana"));

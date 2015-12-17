@@ -36,7 +36,7 @@ void UBaseBuffCompenent::update(float deltaTime)
 
 }
 
-float UBaseBuffCompenent::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
+float UBaseBuffCompenent::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration)
 {
 	return 1.f;
 }

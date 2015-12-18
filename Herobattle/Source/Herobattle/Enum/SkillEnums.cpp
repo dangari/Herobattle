@@ -178,6 +178,15 @@ RegnerationType SkillEnums::stringToRegnerationType(FString sRegnerationType)
 
 }
 
+ReductionType SkillEnums::stringTReductionType(FString sReductionTyp)
+{
+	if (sReductionTyp.Equals(TEXT("PRECENT")))
+		return ReductionType::PRECENT;
+	if (sReductionTyp.Equals(TEXT("VALUE")))
+		return ReductionType::VALUE;
+	return ReductionType::VALUE;
+}
+
 FString SkillEnums::AttributesToString(Attributes attribute)
 {
 	switch (attribute)

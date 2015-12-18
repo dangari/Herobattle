@@ -60,7 +60,7 @@ void AHerobattleGameMode::BeginPlay()
 	if (HasAuthority())
 	{
 		XMLSkillReader* test = new XMLSkillReader();
-		skillList = test->ReadXmlSkillFile(TEXT("Source/Herobattle/Definitions/EleHero.xml"));
+		skillList = test->ReadXmlSkillFile(TEXT("Source/Herobattle/Definitions/Monk.xml"));
 	}
 	Super::BeginPlay();
 }

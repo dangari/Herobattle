@@ -39,6 +39,9 @@ enum class CostType : uint8 {MANA, ADRENALINE, NONE};
 UENUM(BlueprintType)
 enum class RegnerationType : uint8 { MANA, HEALTH};
 
+UENUM(BlueprintType)
+enum class ReductionType : uint8 { PRECENT, VALUE };
+
 
 class HEROBATTLE_API SkillEnums
 {
@@ -58,6 +61,8 @@ public:
 	static CoolDownType stringToCoolDownType(FString sCoolDownType);
 	static CostType stringToCostType(FString sCostType);
 	static RegnerationType stringToRegnerationType(FString sRegnerationType);
+	static ReductionType stringTReductionType(FString sReductionTyp);
+
 
 	static FString AttributesToString(Attributes attribute);
 

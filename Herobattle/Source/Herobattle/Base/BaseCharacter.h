@@ -118,7 +118,10 @@ public:
 
 	void setCoolDown(float time, CoolDownType cdType);
 
+	void setState(HBCharacterState state, ABaseCharacter* target);
+
 	bool isEnemy(TeamColor team);
+
 	bool hasCondition(Condition condition);
 
 	//Creates a state of the character
@@ -243,7 +246,7 @@ private:
 	FWeapon weapon;
 
 	bool useAutoAttack;
-	HBCharacterState state = HBCharacterState::IDLE;
+	HBCharacterState m_State = HBCharacterState::IDLE;
 
 	UPROPERTY()
 	int32 m_ManaReduction;

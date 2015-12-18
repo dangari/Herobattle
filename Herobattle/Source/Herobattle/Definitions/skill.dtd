@@ -29,7 +29,7 @@
   >
 <!ELEMENT targettype EMPTY>
 <!ATTLIST targettype
-  value (SELF|SELFFREND|FRIEND|ENEMY) #REQUIRED
+  value (SELF|SELFFRIEND|FRIEND|ENEMY) #REQUIRED
   >
 <!ELEMENT range EMPTY>
 <!ATTLIST range
@@ -133,6 +133,7 @@
   value CDATA #REQUIRED
   scaling CDATA #REQUIRED
   type CDATA #REQUIRED
+  target (TARGET|SELF|OWNER) #REQUIRED
   >
 <!ELEMENT immune EMPTY>
 <!ATTLIST immune 

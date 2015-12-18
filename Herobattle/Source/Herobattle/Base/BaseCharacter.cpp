@@ -12,7 +12,7 @@
 ABaseCharacter::ABaseCharacter()
 :m_MaxHealth(480),
 m_MaxMana(25),
-m_Health(200),
+m_Health(480),
 m_Mana(25),
 m_HealthRegeneration(0),
 m_ManaRegeneration(4),
@@ -79,7 +79,7 @@ void ABaseCharacter::Tick(float DeltaTime)
 			UpdateCurrentSkill(DeltaTime);
 		}
 
-		if (isAttacking())
+		if (m_State == HBCharacterState::AUTOATTACK)
 		{
 			UpdateAtack(DeltaTime);
 		}
@@ -99,7 +99,7 @@ void ABaseCharacter::stopCurrenSkill_Implementation()
 	if (isCastingSkill())
 	{
 		currentSkill.castingSkill = false;
-		state = HBCharacterState::IDLE;
+		m_State = HBCharacterState::IDLE;
 	}
 }
 bool ABaseCharacter::stopCurrenSkill_Validate()
@@ -316,11 +316,11 @@ void ABaseCharacter::UpdateCurrentSkill(float deltaTime)
 		RunBuff(Trigger::AFTERCAST);
 		if (currentSkill.skill->skillType == SkillType::MELEEATTACK || currentSkill.skill->skillType == SkillType::MELEEATTACK)
 		{
-			state = HBCharacterState::AUTOATTACK;
+			m_State = HBCharacterState::AUTOATTACK;
 		}
 		else
 		{
-			state = HBCharacterState::IDLE;
+			m_State = HBCharacterState::IDLE;
 		}
 	}
 }
@@ -345,9 +345,9 @@ void ABaseCharacter::setAttack_Implementation(bool b)
 {
 	useAutoAttack = b;
 	if (b)
-		state = HBCharacterState::AUTOATTACK;
+		m_State = HBCharacterState::AUTOATTACK;
 	else
-		state = HBCharacterState::IDLE;
+		m_State = HBCharacterState::IDLE;
 }
 
 bool ABaseCharacter::isAttacking()
@@ -429,7 +429,7 @@ bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
 		if (newTarget && !skillIsOnCooldown(slot) && !isCastingSkill() && skill->isValidTarget(newTarget, this) && skillManaCost(skill->manaCost))
 		{
 			currentSkill.registerSkill(skill, newTarget, slot);
-			state = HBCharacterState::CASTING;
+			m_State = HBCharacterState::CASTING;
 			UE_LOG(LogTemp, Warning, TEXT("Skill name: %s"), *(currentSkill.skillName));
 			useAutoAttack = false;
 			//bool b = skill->run(target, this);
@@ -577,7 +577,7 @@ uint8 ABaseCharacter::getCondtionCount()
 
 HBCharacterState ABaseCharacter::getState()
 {
-	return state;
+	return m_State;
 }
 
 FWeapon ABaseCharacter::getWeapon()
@@ -617,6 +617,12 @@ void ABaseCharacter::setCoolDown(float time, CoolDownType cdType)
 			break;
 		}
 	}
+}
+
+void ABaseCharacter::setState(HBCharacterState state, ABaseCharacter* target)
+{
+	m_State = state;
+	selectedTarget = target;
 }
 
 void ABaseCharacter::updateHealthRegen(float regen)

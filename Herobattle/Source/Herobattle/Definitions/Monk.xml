@@ -6,7 +6,7 @@
       <costs value="5" type="MANA"/>
       <casttime value="0.75"/>
       <cooldown value="3"/>
-      <targettype value="SELFFREND"/>
+      <targettype value="SELFFRIEND"/>
       <range value="800"/>
       <effects>
         <impact>
@@ -58,7 +58,7 @@
       <costs value="0" type="NONE"/>
       <casttime value="1"/>
       <cooldown value="10"/>
-      <targettype value="SELFFREND"/>
+      <targettype value="SELFFRIEND"/>
       <range value="800"/>
       <effects>
         <impact>
@@ -110,7 +110,7 @@
       <costs value="5" type="MANA"/>
       <casttime value="0.25"/>
       <cooldown value="15"/>
-      <targettype value="SELFFREND"/>
+      <targettype value="SELFFRIEND"/>
       <range value="800"/>
       <effects>
         <impact>
@@ -131,7 +131,7 @@
               <step key="13" value="44"/>
               <step key="14" value="47"/>
             </heal>
-            <damagereduction value="3" scaling="PROTECTION_PRAYERS" type="VALUE">
+            <damagereduction value="3" scaling="PROTECTION_PRAYERS" type="VALUE" target="SELF">
               <step key="1" value="4"/>
               <step key="2" value="5"/>
               <step key="3" value="6"/>
@@ -157,7 +157,7 @@
       <costs value="5" type="MANA"/>
       <casttime value="1"/>
       <cooldown value="4"/>
-      <targettype value="SELFFREND"/>
+      <targettype value="SELFFRIEND"/>
       <range value="800"/>
       <effects>
         <impact>
@@ -178,7 +178,7 @@
       <costs value="5" type="MANA"/>
       <casttime value="1"/>
       <cooldown value="12"/>
-      <targettype value="SELFFREND"/>
+      <targettype value="SELFFRIEND"/>
       <range value="800"/>
       <effects>
         <impact>
@@ -215,7 +215,7 @@
       <costs value="5" type="MANA"/>
       <casttime value="0.75"/>
       <cooldown value="5"/>
-      <targettype value="SELFFREND"/>
+      <targettype value="SELFFRIEND"/>
       <range value="800"/>
       <effects>
         <impact>

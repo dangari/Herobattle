@@ -35,6 +35,8 @@ bool UBoolAttack::test(ABaseCharacter* target, ABaseCharacter* self)
 			SkillType characterSkillType = testTarget->getCurrentSkillType();
 			if (sType == characterSkillType)
 				return true;
+			else if (sType == SkillType::ATTACK && (characterSkillType == SkillType::MELEEATTACK || characterSkillType == SkillType::RANGEATTACK))
+				return true;
 			else
 				return false;
 		}

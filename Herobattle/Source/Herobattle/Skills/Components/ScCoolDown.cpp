@@ -27,7 +27,7 @@ bool UScCoolDown::run(ABaseCharacter* target, ABaseCharacter* self, FString Skil
 
 float UScCoolDown::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
-	float score;
+	float score =0.f;
 	if (scaleAttribute == Attributes::NONE)
 	{
 		score = 1.f;

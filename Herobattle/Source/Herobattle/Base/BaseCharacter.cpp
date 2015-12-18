@@ -54,6 +54,8 @@ void ABaseCharacter::BeginPlay()
 		attrList.Add(Attributes::HEALING_PRAYERS, 14);
 		attrList.Add(Attributes::ENERGY_STORAGE, 10);
 		attrList.Add(Attributes::EARTH_PRAYERS, 8);
+		attrList.Add(Attributes::PROTECTION_PRAYERS, 10);
+		attrList.Add(Attributes::TACTICS, 8);
 	}
 	else
 	{
@@ -68,7 +70,7 @@ void ABaseCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	if (HasAuthority())
 	{
-		RunBuff(Trigger::NONE);
+		RunBuff(Trigger::NONE, this);
 		UpdateCondtion(DeltaTime);
 		UpdateRegeneration();
 		UpdateResources(DeltaTime);
@@ -81,7 +83,7 @@ void ABaseCharacter::Tick(float DeltaTime)
 
 		if (m_State == HBCharacterState::AUTOATTACK)
 		{
-			UpdateAtack(DeltaTime);
+			UpdateAttack(DeltaTime);
 		}
 	}
 
@@ -313,7 +315,7 @@ void ABaseCharacter::UpdateCurrentSkill(float deltaTime)
 		skillcooldowns[currentSkill.slot].currentCooldown = currentSkill.skill->recharge;
 		skillcooldowns[currentSkill.slot].maxCooldown = currentSkill.skill->recharge + skillcooldowns[currentSkill.slot].additionalCoolDown;
 		m_ManaReduction = 0;
-		RunBuff(Trigger::AFTERCAST);
+		RunBuff(Trigger::AFTERCAST, this);
 		if (currentSkill.skill->skillType == SkillType::MELEEATTACK || currentSkill.skill->skillType == SkillType::MELEEATTACK)
 		{
 			m_State = HBCharacterState::AUTOATTACK;
@@ -325,7 +327,7 @@ void ABaseCharacter::UpdateCurrentSkill(float deltaTime)
 	}
 }
 
-void ABaseCharacter::UpdateAtack(float deltaTime)
+void ABaseCharacter::UpdateAttack(float deltaTime)
 {
 	weapon.currentTime -= deltaTime;
 	if (weapon.currentTime <= 0)
@@ -419,12 +421,12 @@ bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
 
 		//automatically sets target to self if the skill can be used on self and the target is enemy
 		//also sets target to self if targettype is self
-		if (skill->targetType == TargetType::SELF || (target && target->isEnemy(ETeam) && skill->targetType == TargetType::SELFFRIEND))
+		if (skill->targetType == TargetType::SELF || skill->targetType == TargetType::SELFFRIEND && ((!target || target->isEnemy(ETeam))))
 		{
 			newTarget = this;
 		}
 
-		RunBuff(Trigger::BEFORECAST);
+		RunBuff(Trigger::BEFORECAST, this);
 
 		if (newTarget && !skillIsOnCooldown(slot) && !isCastingSkill() && skill->isValidTarget(newTarget, this) && skillManaCost(skill->manaCost))
 		{
@@ -467,14 +469,15 @@ bool ABaseCharacter::isCastingSkill(FString message)
 void ABaseCharacter::heal(ABaseCharacter* caster, float value, bool withBuff)
 {
 
+	bool b = true;
 	if (withBuff)
 	{
-		/*for (auto& buff : m_BuffList)
-		{
-			buff.Value->run(caster, this, value);
-		}*/
+		b = RunBuff(Trigger::HEAL, caster);
 	}
-	m_Health += value;
+	if (b)
+	{
+		m_Health += value;
+	}
 	if (m_Health > m_MaxHealth)
 		m_Health = m_MaxHealth;
 }
@@ -485,10 +488,7 @@ void ABaseCharacter::damage(ABaseCharacter* caster, float value, HBDamageType da
 	bool b = true;
 	if (withBuff)
 	{
-		/*for (auto& buff : m_BuffList)
-		{
-		b = buff.Value->run(caster, this, -1 * value);
-		}*/
+		b = RunBuff(Trigger::DAMAGE, caster);
 	}
 	if (b)
 	{
@@ -630,16 +630,18 @@ void ABaseCharacter::updateHealthRegen(float regen)
 	m_HealthRegeneration += regen;
 }
 
-void ABaseCharacter::RunBuff(Trigger trigger)
+bool ABaseCharacter::RunBuff(Trigger trigger, ABaseCharacter* caster)
 {
+	bool b = true;
 	if (m_CompleteBuffList.Contains(trigger))
 	{
 		TMap<FString, UBuff*> buffList = m_CompleteBuffList.Find(trigger)->m_BuffList;
 		for (auto& buff : buffList)
 		{
-			buff.Value->run(currentSkill.target, this);
+			b = b && buff.Value->run(caster, this);
 		}
 	}
+	return b;
 }
 
 void ABaseCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const

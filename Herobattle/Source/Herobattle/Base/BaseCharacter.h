@@ -193,11 +193,11 @@ private:
 	//updates the skill and runs the skill if cast time < 0
 	void UpdateCurrentSkill(float deltaTime);
 
-	void UpdateAtack(float deltaTime);
+	void UpdateAttack(float deltaTime);
 
 	void updateHealthRegen(float regen);
 
-	void RunBuff(Trigger trigger);
+	bool RunBuff(Trigger trigger, ABaseCharacter* caster);
 
 	//check if Character is using autotack
 	bool isAttacking();

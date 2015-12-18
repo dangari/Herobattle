@@ -26,6 +26,8 @@ Attributes SkillEnums::stringToAttribute(FString sAttribute)
 		return Attributes::ENERGY_STORAGE;
 	if (sAttribute.Equals(TEXT("EARTH_PRAYERS")))
 		return Attributes::EARTH_PRAYERS;
+	if (sAttribute.Equals(TEXT("TACTICS")))
+		return Attributes::TACTICS;
 	return Attributes::NONE;
 }
 

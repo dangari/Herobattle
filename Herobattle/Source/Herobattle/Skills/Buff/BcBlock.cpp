@@ -4,6 +4,7 @@
 #include "BcBlock.h"
 #include "Enum/CharacterEnums.h"
 #include "Base/Weapon.h"
+#include "Engine.h"
 
 
 
@@ -41,7 +42,9 @@ bool UBcBlock::run(ABaseCharacter* caster, ABaseCharacter* self, int value)
 	switch (blockType)
 	{
 	case SkillType::ATTACK:
-		if (caster->getState() == HBCharacterState::AUTOATTACK)
+		if (caster->getState() == HBCharacterState::AUTOATTACK ||
+			caster->getState() == HBCharacterState::CASTING && caster->getCurrentSkillType() == SkillType::MELEEATTACK||
+			caster->getState() == HBCharacterState::CASTING && caster->getCurrentSkillType() == SkillType::RANGEATTACK)
 			b = true;
 		else
 			b = false;
@@ -72,9 +75,13 @@ bool UBcBlock::run(ABaseCharacter* caster, ABaseCharacter* self, int value)
 	}
 	if (b)
 	{
-		int blockRand = FPlatformMath::RoundToInt(FMath::FRandRange(0,100));
+		float rng = FMath::FRandRange(0.f, 100.f);
+		FString TheFloatStr = FString::SanitizeFloat(rng);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TheFloatStr);
+		int blockRand = FPlatformMath::RoundToInt(rng);
 		if (blockChance <= blockRand)
 		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Blocked"));
 			return true;
 		}
 		else

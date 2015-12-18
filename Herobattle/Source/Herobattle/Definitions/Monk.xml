@@ -167,7 +167,7 @@
             <step key="8" value="5"/>
             <step key="11" value="6"/>
             <step key="14" value="7"/>
-            <block type="ATTACKS" value="50" scaling= "NONE" usage="INF"/>
+            <block type="ATTACK" value="50" scaling= "NONE" usage="INF"/>
           </buff>
         </impact>
       </effects>
@@ -285,7 +285,7 @@
             <step key="3" value="2"/>
             <step key="8" value="3"/>
             <step key="13" value="4"/>
-            <block value="75" scaling="NONE" type="ATTACKS" usage="INF"/>
+            <block value="75" scaling="NONE" type="ATTACK" usage="INF"/>
           </buff>
         </impact>
       </effects>

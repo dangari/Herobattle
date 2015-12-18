@@ -7,7 +7,7 @@
 #include "CharacterState.h"
 #include "PerformAction.generated.h"
 
-
+class ABaseCharacter;
 
 USTRUCT()
 struct FActionScore
@@ -50,6 +50,8 @@ private:
 	void calcSkillScore(TArray<FCharacterState> chracterState, USkill* skill, int slot);
 	// calculates score for character most time this function is used for the owner
 	void calcSkillScore(ABaseCharacter* character, USkill* skill, int slot);
+
+	FActionScore getBestAutoAttack(TArray<FCharacterState> chracterState);
 
 	FActionScore getBestScore();
 	TArray<FActionScore> m_ActionList;

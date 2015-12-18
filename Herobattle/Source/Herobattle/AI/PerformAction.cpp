@@ -27,6 +27,10 @@ EBTNodeResult::Type UPerformAction::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 	case AIAction::SKILL:
 		m_owner->UseSkill(nextSkill.target, nextSkill.slot);
 		m_owner->selectedTarget = nextSkill.target;
+		break;
+	case  AIAction::AUTOATACK:
+		m_owner->setState(HBCharacterState::AUTOATTACK,nextSkill.target);
+		break;
 	default:
 		break;
 	}
@@ -35,27 +39,41 @@ EBTNodeResult::Type UPerformAction::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 
 AIAction UPerformAction::getNextAction(UBehaviorTreeComponent& OwnerComp)
 {
+
+	FActionScore attackScore;
+	FActionScore skillScore;
+	attackScore.score = 0.f;
+	skillScore.score = 0.f;
 	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
 	FName keyName = "AIGameState";
 	UAIGameState* aiGameState = (UAIGameState*)BlackboardComp->GetValue<UBlackboardKeyType_Object>(keyName);
+	
 	if (aiGameState)
 	{
 		fillScoreList(aiGameState);
+		attackScore = getBestAutoAttack(aiGameState->getEnemyCurrentAIState());
 	}
-	FActionScore score;
+	
+	
 	if (m_ActionList.Num() > 0)
 	{
-		score = getBestScore();
+		skillScore = getBestScore();
 		m_ActionList.Empty();
 	}
-	else
-		return AIAction::IDLE;
-	if (score.score > 0.1)
+	if (skillScore.score > 0.2)
 	{
-		nextSkill = score;
+		nextSkill = skillScore;
 		return AIAction::SKILL;
 	}
-	return AIAction::IDLE;
+	else if (attackScore.score > 0)
+	{
+		nextSkill = attackScore;
+		return AIAction::AUTOATACK;
+	}
+	else
+	{
+		return AIAction::IDLE;
+	}
 }
 
 void UPerformAction::fillScoreList(UAIGameState* aiGameState)
@@ -121,6 +139,33 @@ void UPerformAction::calcSkillScore(ABaseCharacter* character, USkill* skill, in
 		aScore.slot = slot;
 		aScore.target = characterState.self;
 		aScore.score = score;
+		m_ActionList.Add(aScore);
+	}
+}
+
+FActionScore UPerformAction::getBestAutoAttack(TArray<FCharacterState> chracterState)
+{
+	TArray<FActionScore> targetList;
+	for (auto& state : chracterState)
+	{
+		float score = 0.f;
+		score = 1 - (state.airDistance / state.weapon.range);
+		FActionScore aScore;
+		aScore.action = AIAction::AUTOATACK;
+		aScore.target = state.self;
+		aScore.score = score;
+		//aScore.slot = 0;
+		targetList.Add(aScore);
+	}
+	targetList.Sort(FActionScore::ConstPredicate);
+	if (targetList.Num() > 0)
+		return targetList[0];
+	else
+	{
+		FActionScore aScore;
+		aScore.action = AIAction::AUTOATACK;
+		aScore.score = 0.f;
+		return aScore;
 	}
 }
 

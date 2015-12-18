@@ -63,6 +63,10 @@ void USkillScore::calcHealScore(float cHealthSelf, float maxHealthSelf, float cH
 	float missingHealthTarget = maxHealthTarget - cHealthTarget;
 	float completeHealTarget = 0.f;
 	float completeHealSelf = 0.f;
+	if (missingHealthTarget == 0 && missingHealthSelf == 0)
+	{
+		return;
+	}
 	for (FComponentScore& heal : m_HealList)
 	{
 		switch (heal.target)

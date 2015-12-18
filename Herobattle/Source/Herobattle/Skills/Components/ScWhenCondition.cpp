@@ -48,7 +48,7 @@ float UScWhenCondition::getScore(ABaseCharacter* caster, FCharacterState charact
 	}
 	else
 	{
-		score = 1.f / scTable.Num();
+		score = 0.2;
 	}
 	skillScore->addScore(score, TEXT("when"));
 	return score;

@@ -24,7 +24,14 @@ class UBaseCondition;
 class USkillMessages;
 
 
+USTRUCT(BlueprintType)
+struct FAdrenaline
+{
+	GENERATED_USTRUCT_BODY()
 
+	int currentAdrenaline = 0;
+	int maxAdrenaline = 0;
+};
 
 
 USTRUCT(BlueprintType)
@@ -203,6 +210,8 @@ private:
 
 	void updateHealthRegen(float regen);
 
+	void UpdateAdrenaline();
+
 	bool RunBuff(Trigger trigger, ABaseCharacter* caster, int value = 0);
 
 	//check if Character is using autotack
@@ -210,7 +219,9 @@ private:
 
 	//checks if enough mana is remaining for the skill
 	//if enough mana is remaining the mana costs get abstracted from the mana of the character
-	bool skillManaCost(float value);
+	bool skillCost(int slot);
+
+	void useAdrenaline(int slot);
 
 	void setCoolDownAll(float Time);
 	void setInterruptCoolDown(float Time);
@@ -243,6 +254,8 @@ private:
 	UPROPERTY(Replicated)
 	FSkillCooldown skillcooldowns[8];
 	
+	UPROPERTY()
+	FAdrenaline m_AdrenalineList[8];
 	
 	int m_ConditionCount;
 	int m_BuffCount;

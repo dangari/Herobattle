@@ -27,6 +27,8 @@ public:
 	ProfessionName profession;
 	TargetType targetType;
 	SkillType skillType;
+	CostType costType;
+
 
 	float castTime;
 	float recharge;

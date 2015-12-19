@@ -168,20 +168,52 @@ void ABaseCharacter::UpdateRegeneration()
 	// add gate at -/+10 regeneration
 }
 
-bool ABaseCharacter::skillManaCost(float value)
+bool ABaseCharacter::skillCost(int slot)
 {
-	if (((m_Mana + m_ManaReduction) - value) < 0)
+	CostType type = skillList[slot]->costType;
+	int value = skillList[slot]->manaCost;
+	if (type == CostType::MANA)
 	{
-		messages->registerMessage(TEXT("Not enough mana"), MessageType::SKILLERROR);
-		return false;
+		if (((m_Mana + m_ManaReduction) - value) < 0)
+		{
+			messages->registerMessage(TEXT("Not enough mana"), MessageType::SKILLERROR);
+			return false;
+		}
+		else
+		{
+			float manaCost = value - m_ManaReduction;
+			if (manaCost < 0)
+				manaCost = 0;
+			m_Mana -= manaCost;
+			return true;
+		}
+	}
+	else if (type == CostType::ADRENALINE)
+	{
+		if (m_AdrenalineList[slot].currentAdrenaline == m_AdrenalineList[slot].maxAdrenaline)
+		{
+			useAdrenaline(slot);
+			return true;
+		}
+		else
+		{
+			messages->registerMessage(TEXT("Not enough adrenaline"), MessageType::SKILLERROR);
+			return false;
+		}
 	}
 	else
 	{
-		float manaCost = value - m_ManaReduction;
-		if (manaCost < 0)
-			manaCost = 0;
-		m_Mana -= manaCost;
 		return true;
+	}
+}
+
+void ABaseCharacter::useAdrenaline(int slot)
+{
+	m_AdrenalineList[slot].currentAdrenaline = 0;
+	for (auto& adrenaline : m_AdrenalineList)
+	{
+		if (adrenaline.currentAdrenaline > 0)
+			adrenaline.currentAdrenaline--;
 	}
 }
 
@@ -320,6 +352,7 @@ void ABaseCharacter::UpdateCurrentSkill(float deltaTime)
 		RunBuff(Trigger::AFTERCAST, this);
 		if (currentSkill.skill->skillType == SkillType::MELEEATTACK || currentSkill.skill->skillType == SkillType::MELEEATTACK)
 		{
+			UpdateAdrenaline();
 			m_State = HBCharacterState::AUTOATTACK;
 		}
 		else
@@ -336,6 +369,7 @@ void ABaseCharacter::UpdateAttack(float deltaTime)
 	{
 		int damage = FPlatformMath::RoundToInt(FMath::FRandRange(weapon.lowDamage, weapon.maxDamage));
 		selectedTarget->damage(this,damage,HBDamageType::FIRE);
+		UpdateAdrenaline();
 		weapon.currentTime = weapon.attackSpeed;
 	}
 }
@@ -430,7 +464,7 @@ bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
 
 		RunBuff(Trigger::BEFORECAST, this);
 
-		if (newTarget && !skillIsOnCooldown(slot) && !isCastingSkill() && skill->isValidTarget(newTarget, this) && skillManaCost(skill->manaCost))
+		if (newTarget && !skillIsOnCooldown(slot) && !isCastingSkill() && skill->isValidTarget(newTarget, this) && skillCost(slot))
 		{
 			currentSkill.registerSkill(skill, newTarget, slot);
 			m_State = HBCharacterState::CASTING;
@@ -669,6 +703,17 @@ void ABaseCharacter::setState(HBCharacterState state, ABaseCharacter* target)
 void ABaseCharacter::updateHealthRegen(float regen)
 {
 	m_HealthRegeneration += regen;
+}
+
+void ABaseCharacter::UpdateAdrenaline()
+{
+	for (auto& adrenaline : m_AdrenalineList)
+	{
+		if (adrenaline.currentAdrenaline < adrenaline.maxAdrenaline)
+		{
+			adrenaline.currentAdrenaline++;
+		}
+	}
 }
 
 bool ABaseCharacter::RunBuff(Trigger trigger, ABaseCharacter* caster, int value /*= 0*/)

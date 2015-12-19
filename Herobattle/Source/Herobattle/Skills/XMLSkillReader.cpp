@@ -143,6 +143,7 @@ USkill* XMLSkillReader::ReadSkill(FXmlNode* skillRootNode)
 		else if (tagName.Equals(TEXT("costs")))
 		{
 			skill->manaCost = FCString::Atoi(*(prop->GetAttribute(value)));
+			skill->costType = SkillEnums::stringToCostType((prop->GetAttribute(type)));
 		}
 
 		else if(tagName.Equals(TEXT("casttime")))

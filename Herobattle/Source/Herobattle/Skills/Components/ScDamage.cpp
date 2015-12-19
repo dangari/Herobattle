@@ -25,6 +25,11 @@ bool UScDamage::run(ABaseCharacter* target, ABaseCharacter* self, FString SkillN
 		testTarget = target;
 	Super::run(target, self);
 	float damage = scaleTable[self->getAttributeValue(scaleAttribute)];
+	if (m_properties.skillType == SkillType::MELEEATTACK || (m_properties.skillType == SkillType::RANGEATTACK))
+	{
+		FWeaponValues weapon(m_properties.weaponType);
+		damage += weapon.getDamage();
+	}
 	target->damage(self, damage, damageType);
 	return true;
 }

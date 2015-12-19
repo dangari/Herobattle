@@ -367,7 +367,7 @@ void ABaseCharacter::UpdateAttack(float deltaTime)
 	weapon.currentTime -= deltaTime;
 	if (weapon.currentTime <= 0)
 	{
-		int damage = FPlatformMath::RoundToInt(FMath::FRandRange(weapon.lowDamage, weapon.maxDamage));
+		int damage = weapon.getDamage();
 		selectedTarget->damage(this,damage,HBDamageType::FIRE);
 		UpdateAdrenaline();
 		weapon.currentTime = weapon.attackSpeed;
@@ -382,8 +382,13 @@ bool ABaseCharacter::setAttack_Validate(bool b)
 void ABaseCharacter::setAttack_Implementation(bool b)
 {
 	useAutoAttack = b;
-	if (b)
-		m_State = HBCharacterState::AUTOATTACK;
+	if (selectedTarget)
+	{
+		if (b)
+			m_State = HBCharacterState::AUTOATTACK;
+		else
+			m_State = HBCharacterState::IDLE;
+	}
 	else
 		m_State = HBCharacterState::IDLE;
 }

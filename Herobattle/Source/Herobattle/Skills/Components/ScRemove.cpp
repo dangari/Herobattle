@@ -56,8 +56,9 @@ float UScRemove::getScore(ABaseCharacter* caster, FCharacterState characterState
 	skillScore->addScore(score, componentName);
 }
 
-void UScRemove::init(FXmlNode* node)
+void UScRemove::init(FXmlNode* node, FSkillProperties properties)
 {
+	Super::init(node, properties);
 	targetType = SkillEnums::stringToComponentTarget(node->GetAttribute("target"));
 	rType = SkillEnums::stringToRemoveType(node->GetAttribute(TEXT("type")));
 	TArray<FXmlNode*> propertyList = node->GetChildrenNodes();

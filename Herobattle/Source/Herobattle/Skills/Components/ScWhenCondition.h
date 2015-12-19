@@ -34,11 +34,11 @@ private:
 
 	bool testConditions(ABaseCharacter* target, ABaseCharacter* self);
 
-	virtual void init(FXmlNode* node) override;
+	virtual void init(FXmlNode* node, FSkillProperties properties) override;
 
 	void createBoolObjects(FXmlNode* node);
 	
-	void createSkillComponents(FXmlNode* node);
+	void createSkillComponents(FXmlNode* node, FSkillProperties properties);
 
 
 };

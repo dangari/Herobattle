@@ -23,8 +23,9 @@ bool UScRegeneratio::run(ABaseCharacter* target, ABaseCharacter* self, FString S
 	return true;
 }
 
-void UScRegeneratio::init(FXmlNode* node)
+void UScRegeneratio::init(FXmlNode* node, FSkillProperties properties)
 {
+	Super::init(node, properties);
 	TArray<FXmlNode*> propertyList = node->GetChildrenNodes();
 	FString tagName = node->GetTag();
 	if (tagName.Equals(TEXT("regeneration")))

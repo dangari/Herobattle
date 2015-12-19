@@ -49,7 +49,7 @@ void ABaseCharacter::BeginPlay()
 		skillList[6] = gm->skillList[6];
 		skillList[7] = gm->skillList[7];
 		messages = NewObject<USkillMessages>();
-		weapon = FWeapon(Weapons::STAFF);
+		weapon = FWeaponValues(Weapon::STAFF);
 		currentSkill.castingSkill = false;
 
 		attrList.Add(Attributes::FIRE_MAGIC, 14);
@@ -170,8 +170,8 @@ void ABaseCharacter::UpdateRegeneration()
 
 bool ABaseCharacter::skillCost(int slot)
 {
-	CostType type = skillList[slot]->costType;
-	int value = skillList[slot]->manaCost;
+	CostType type = skillList[slot]->properties.costType;
+	int value = skillList[slot]->properties.manaCost;
 	if (type == CostType::MANA)
 	{
 		if (((m_Mana + m_ManaReduction) - value) < 0)
@@ -346,11 +346,11 @@ void ABaseCharacter::UpdateCurrentSkill(float deltaTime)
 	{
 		currentSkill.skill->run(currentSkill.target, this);
 		currentSkill.castingSkill = false;
-		skillcooldowns[currentSkill.slot].currentCooldown = currentSkill.skill->recharge;
-		skillcooldowns[currentSkill.slot].maxCooldown = currentSkill.skill->recharge + skillcooldowns[currentSkill.slot].additionalCoolDown;
+		skillcooldowns[currentSkill.slot].currentCooldown = currentSkill.skill->properties.recharge;
+		skillcooldowns[currentSkill.slot].maxCooldown = currentSkill.skill->properties.recharge + skillcooldowns[currentSkill.slot].additionalCoolDown;
 		m_ManaReduction = 0;
 		RunBuff(Trigger::AFTERCAST, this);
-		if (currentSkill.skill->skillType == SkillType::MELEEATTACK || currentSkill.skill->skillType == SkillType::MELEEATTACK)
+		if (currentSkill.skill->properties.skillType == SkillType::MELEEATTACK || currentSkill.skill->properties.skillType == SkillType::MELEEATTACK)
 		{
 			UpdateAdrenaline();
 			m_State = HBCharacterState::AUTOATTACK;
@@ -457,7 +457,7 @@ bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
 
 		//automatically sets target to self if the skill can be used on self and the target is enemy
 		//also sets target to self if targettype is self
-		if (skill->targetType == TargetType::SELF || skill->targetType == TargetType::SELFFRIEND && ((!target || target->isEnemy(ETeam))))
+		if (skill->properties.targetType == TargetType::SELF || skill->properties.targetType == TargetType::SELFFRIEND && ((!target || target->isEnemy(ETeam))))
 		{
 			newTarget = this;
 		}
@@ -638,14 +638,14 @@ HBCharacterState ABaseCharacter::getState()
 	return m_State;
 }
 
-FWeapon ABaseCharacter::getWeapon()
+FWeaponValues ABaseCharacter::getWeapon()
 {
 	return weapon;
 }
 
 SkillType ABaseCharacter::getCurrentSkillType()
 {
-	return currentSkill.skill->skillType;
+	return currentSkill.skill->properties.skillType;
 }
 
 void ABaseCharacter::knockDownCharacter(float duration)

@@ -16,7 +16,7 @@ public:
 	UBcReduceMana();
 	~UBcReduceMana();
 
-	virtual void init(FBuffContainer bContainer, ABaseCharacter* owner);
+	virtual void init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties);
 
 	virtual bool run(ABaseCharacter* caster, ABaseCharacter* self, int value = 0);
 

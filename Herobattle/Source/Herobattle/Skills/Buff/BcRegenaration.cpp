@@ -28,7 +28,7 @@ float UBcRegenaration::getScore(ABaseCharacter* caster, FCharacterState characte
 	return 1.f;
 }
 
-void UBcRegenaration::init(FBuffContainer bContainer, ABaseCharacter* owner)
+void UBcRegenaration::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties)
 {
 	FString tagName = bContainer.node->GetTag();
 	targetType = SkillEnums::stringToTargetType(bContainer.node->GetAttribute(TEXT("target")));

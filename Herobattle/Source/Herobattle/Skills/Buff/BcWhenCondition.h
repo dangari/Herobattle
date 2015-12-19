@@ -25,7 +25,7 @@ public:
 	~UBcWhenCondition();
 	
 
-	virtual void init(FBuffContainer bContainer, ABaseCharacter* owner) override;
+	virtual void init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties) override;
 
 
 	virtual bool run(ABaseCharacter* caster, ABaseCharacter* self, int value = 0) override;
@@ -40,7 +40,7 @@ private:
 
 	void createBoolObjects(FXmlNode* node);
 
-	void createSkillComponents(FXmlNode* node);
+	void createSkillComponents(FXmlNode* node, FSkillProperties properties);
 
 
 	UPROPERTY(Replicated)

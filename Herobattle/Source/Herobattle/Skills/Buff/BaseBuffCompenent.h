@@ -7,6 +7,7 @@
 #include "BuffContainer.h"
 #include "XmlParser.h"
 #include "AI/CharacterState.h"
+#include "../Skill.h"
 #include "BaseBuffCompenent.generated.h"
 
 /**
@@ -27,7 +28,7 @@ public:
 	UBaseBuffCompenent();
 	~UBaseBuffCompenent();
 
-	virtual void init(FBuffContainer bContainer, ABaseCharacter* owner);
+	virtual void init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties);
 
 	// value ist the incoming heal or damage
 	// damage is always negative and heal always Positve
@@ -47,5 +48,7 @@ protected:
 	TargetType targetType;
 
 	ABaseCharacter* getTarget(ABaseCharacter* caster, ABaseCharacter* self);
+
+	FSkillProperties m_properties;
 
 };

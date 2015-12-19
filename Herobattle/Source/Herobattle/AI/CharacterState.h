@@ -16,7 +16,7 @@ struct FCharacterState
 	GENERATED_USTRUCT_BODY()
 
 	TeamColor ETeam;
-	FWeapon weapon;
+	FWeaponValues weapon;
 
 	FVector location;
 	float airDistance;

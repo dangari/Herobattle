@@ -37,8 +37,9 @@ bool UBcWhenCondition::testConditions(ABaseCharacter* target, ABaseCharacter* se
 	return true;
 }
 
-void UBcWhenCondition::init(FBuffContainer bContainer, ABaseCharacter* owner)
+void UBcWhenCondition::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties)
 {
+	Super::init(bContainer, owner, properties);
 	FXmlNode* node = bContainer.node;
 	FString cType = node->GetAttribute(TEXT("type"));
 	targetType = SkillEnums::stringToComponentTarget(cType);
@@ -52,7 +53,7 @@ void UBcWhenCondition::init(FBuffContainer bContainer, ABaseCharacter* owner)
 		}
 		if (tagName.Equals(TEXT("then")))
 		{
-			createSkillComponents(prop);
+			createSkillComponents(prop, properties);
 		}
 	}
 }
@@ -106,7 +107,7 @@ void UBcWhenCondition::createBoolObjects(FXmlNode* node)
 	}
 }
 
-void UBcWhenCondition::createSkillComponents(FXmlNode* node)
+void UBcWhenCondition::createSkillComponents(FXmlNode* node, FSkillProperties properties)
 {
 	TArray<FXmlNode*> boolObjectList = node->GetChildrenNodes();
 	for (auto& prop : boolObjectList)
@@ -116,7 +117,7 @@ void UBcWhenCondition::createSkillComponents(FXmlNode* node)
 		{
 			classFuncPtr createFunc = *(XMLSkillReader::scObjectNameList.Find(tagName));
 			UBaseSkillComponent* sc = createFunc();
-			sc->init(prop);
+			sc->init(prop, properties);
 			scTable.Add(sc);
 		}
 	}

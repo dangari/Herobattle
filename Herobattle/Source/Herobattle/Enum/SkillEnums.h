@@ -44,7 +44,11 @@ enum class ReductionType : uint8 { PRECENT, VALUE };
 
 UENUM(BlueprintType)
 enum class RemoveType : uint8 { HEX, ENTCHANTMENT, STANCE, CONDI };
-
+UENUM()
+enum class Weapon : uint8
+{
+	SWORD, AXE, HAMMER, BOW, STAFF, SPEAR, NONE
+};
 
 class HEROBATTLE_API SkillEnums
 {
@@ -66,6 +70,7 @@ public:
 	static RegnerationType stringToRegnerationType(FString sRegnerationType);
 	static ReductionType stringTReductionType(FString sReductionTyp);
 	static RemoveType stringToRemoveType(FString sRemoveType);
+	static Weapon stringToWeapon(FString sWeapon);
 
 	static FString AttributesToString(Attributes attribute);
 

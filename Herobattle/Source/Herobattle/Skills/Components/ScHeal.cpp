@@ -34,8 +34,9 @@ float UScHeal::getScore(ABaseCharacter* caster, FCharacterState characterState, 
 	return 0.0f;
 }
 
-void UScHeal::init(FXmlNode* node)
+void UScHeal::init(FXmlNode* node, FSkillProperties properties)
 {
+	Super::init(node, properties);
 	targetType = SkillEnums::stringToComponentTarget(node->GetAttribute("target"));
 	FString tagName = node->GetTag();
 	if (tagName.Equals(TEXT("heal")))

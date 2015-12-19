@@ -86,7 +86,7 @@ void UPerformAction::fillScoreList(UAIGameState* aiGameState)
 			USkill* skill = m_owner->skillList[i];
 			if (skill && !(m_owner->skillIsOnCooldown(i)))
 			{
-				switch (skill->targetType)
+				switch (skill->properties.targetType)
 				{
 				case TargetType::ENEMY:
 					calcSkillScore(aiGameState->getEnemyCurrentAIState(), skill, i);

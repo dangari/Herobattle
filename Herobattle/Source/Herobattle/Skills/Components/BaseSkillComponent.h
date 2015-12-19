@@ -3,6 +3,7 @@
 #include "../../Enum/SkillEnums.h"
 #include "XmlParser.h"
 #include "AI/CharacterState.h"
+#include "../Skill.h"
 #include "BaseSkillComponent.generated.h"
 
 
@@ -25,7 +26,7 @@ public:
 
 	virtual bool run(ABaseCharacter* target, ABaseCharacter* self, FString SkillName = TEXT("Name"));
 	virtual float getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore);
-	virtual void init(FXmlNode* node);
+	virtual void init(FXmlNode* node, FSkillProperties properties);
 	virtual FString ToString();
 
 	static UBaseSkillComponent* UBaseSkillComponent::MAKE();
@@ -42,5 +43,7 @@ protected:
 	FString componentName;
 
 	ComponentTarget targetType;
+
+	FSkillProperties m_properties;
 };
 

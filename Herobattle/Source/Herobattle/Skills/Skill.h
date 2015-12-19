@@ -9,11 +9,32 @@
 
 class UBaseSkillComponent;
 class ABaseCharacter;
+
+
+USTRUCT(BlueprintType)
+struct FSkillProperties
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
+	FString name;
+	ProfessionName profession;
+	TargetType targetType;
+	SkillType skillType;
+	CostType costType;
+	Weapon weaponType = Weapon::NONE;
+
+	float castTime;
+	float recharge;
+	float currentRecharge;
+	int manaCost;
+
+	int32 range;
+};
 /**
  * 
  */
 
-// Damage 
 UCLASS()
 class HEROBATTLE_API USkill : public UObject
 {
@@ -24,20 +45,12 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
 	FString name;
-	ProfessionName profession;
-	TargetType targetType;
-	SkillType skillType;
-	CostType costType;
-
-
-	float castTime;
-	float recharge;
-	float currentRecharge;
-	int manaCost;
+	
+	FSkillProperties properties;
 
 	UPROPERTY(Replicated)
 	TArray<UBaseSkillComponent*> componentList;
-	int32 range;
+	
 	bool run(ABaseCharacter* target, ABaseCharacter* self);
 	bool isValidTarget(ABaseCharacter* target, ABaseCharacter* self);
 

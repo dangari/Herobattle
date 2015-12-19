@@ -57,8 +57,9 @@ void UBcForEach::update(float deltaTime)
 
 }
 
-void UBcForEach::init(FBuffContainer bContainer, ABaseCharacter* owner)
+void UBcForEach::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties)
 {
+	Super::init(bContainer, owner, properties);
 	FXmlNode* node = bContainer.node;
 	skillType = node->GetAttribute(TEXT("type"));
 	TArray<FXmlNode*> childNodes = node->GetChildrenNodes();
@@ -76,7 +77,7 @@ void UBcForEach::init(FBuffContainer bContainer, ABaseCharacter* owner)
 
 			bCclassFuncPtr createFunc = *(XMLSkillReader::bcObjectNameList.Find(tagName));
 			UBaseBuffCompenent* bc = createFunc();
-			bc->init(buff, owner);
+			bc->init(buff, owner, properties);
 			bcList.Add(bc);
 		}
 	}

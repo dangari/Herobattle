@@ -77,7 +77,7 @@ TArray<USkill*> XMLSkillReader::ReadXmlSkillFile(FString path)
 }
 
 
-TArray<UBaseSkillComponent*> XMLSkillReader::createImpact(FXmlNode* impactNode)
+TArray<UBaseSkillComponent*> XMLSkillReader::createImpact(FXmlNode* impactNode, FSkillProperties properties)
 {
 	TArray<UBaseSkillComponent*> skillComponentList;
 	TArray<FXmlNode*> objList = impactNode->GetChildrenNodes();
@@ -89,7 +89,7 @@ TArray<UBaseSkillComponent*> XMLSkillReader::createImpact(FXmlNode* impactNode)
 		{
 			classFuncPtr createFunc = *(scObjectNameList.Find(tagName));
 			UBaseSkillComponent* sc = createFunc();
-			sc->init(obj);
+			sc->init(obj, properties);
 			sc->SkillName = currentSkillName;
 			skillComponentList.Add(sc);
 		}
@@ -127,7 +127,8 @@ USkill* XMLSkillReader::ReadSkill(FXmlNode* skillRootNode)
 
 	//values needed for Skill creation
 	USkill* skill = NewObject<USkill>();
-	skill->skillType = SkillEnums::stringToSkillType(skillRootNode->GetAttribute(type));
+	skill->properties.skillType = SkillEnums::stringToSkillType(skillRootNode->GetAttribute(type));
+	FSkillProperties properties;
 	TArray<UBaseSkillComponent*> componentList;
 
 	TArray<FXmlNode*> propertyList = skillRootNode->GetChildrenNodes();
@@ -137,42 +138,47 @@ USkill* XMLSkillReader::ReadSkill(FXmlNode* skillRootNode)
 		if (tagName.Equals(TEXT("name")))
 		{
 			skill->name = prop->GetAttribute(value);
+			properties.name = prop->GetAttribute(value);
 			currentSkillName = prop->GetAttribute(value);
 		}
 
 		else if (tagName.Equals(TEXT("costs")))
 		{
-			skill->manaCost = FCString::Atoi(*(prop->GetAttribute(value)));
-			skill->costType = SkillEnums::stringToCostType((prop->GetAttribute(type)));
+			properties.manaCost = FCString::Atoi(*(prop->GetAttribute(value)));
+			properties.costType = SkillEnums::stringToCostType((prop->GetAttribute(type)));
 		}
 
 		else if(tagName.Equals(TEXT("casttime")))
 		{
-			skill->castTime = FCString::Atof(*(prop->GetAttribute(value)));
+			properties.castTime = FCString::Atof(*(prop->GetAttribute(value)));
 		}
 
 		else if(tagName.Equals(TEXT("cooldown")))
 		{
-			skill->recharge = FCString::Atoi(*(prop->GetAttribute(value)));
+			properties.recharge = FCString::Atoi(*(prop->GetAttribute(value)));
 		}
 
 		else if(tagName.Equals(TEXT("targettype")))
 		{
-			skill->targetType = SkillEnums::stringToTargetType(prop->GetAttribute(value));
+			properties.targetType = SkillEnums::stringToTargetType(prop->GetAttribute(value));
 		}
 		else if (tagName.Equals(TEXT("range")))
 		{
-			skill->range = FCString::Atoi(*(prop->GetAttribute(value)));
+			properties.range = FCString::Atoi(*(prop->GetAttribute(value)));
+		}
+		else if (tagName.Equals(TEXT("weapon")))
+		{
+			properties.weaponType = SkillEnums::stringToWeapon(prop->GetAttribute(value));
 		}
 
 		else if(tagName.Equals(TEXT("effects")))
 		{
 			FXmlNode* impactNode = prop->GetChildrenNodes()[0];
-			skill->componentList = createImpact(impactNode);
+			skill->componentList = createImpact(impactNode, properties);
 		}
 
 		
 	}
-
+	skill->properties = properties;
 	return skill;
 }

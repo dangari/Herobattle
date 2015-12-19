@@ -36,8 +36,9 @@ float UScDamage::getScore(ABaseCharacter* caster, FCharacterState characterState
 	return 1.f;
 }
 
-void UScDamage::init(FXmlNode* node)
+void UScDamage::init(FXmlNode* node, FSkillProperties properties)
 {
+	Super::init(node, properties);
 	targetType = SkillEnums::stringToComponentTarget(node->GetAttribute("target"));
 	FString cType = node->GetAttribute(TEXT("type"));
 	this->damageType = SkillEnums::stringToHBDamageType(cType);

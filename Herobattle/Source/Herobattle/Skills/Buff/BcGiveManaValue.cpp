@@ -21,7 +21,7 @@ bool UBcGiveManaValue::run(ABaseCharacter* caster, ABaseCharacter* self, int val
 	ABaseCharacter* newTarget = getTarget(caster, self);
 	if (m_CostType == CostType::MANA)
 	{
-		int manacost = newTarget->currentSkill.skill->manaCost;
+		int manacost = newTarget->currentSkill.skill->properties.manaCost;
 		int mana = FPlatformMath::RoundToInt((m_ManaFactor / 100)*manacost);
 		newTarget->ChangeMana(mana);
 	}
@@ -35,8 +35,9 @@ float UBcGiveManaValue::getScore(ABaseCharacter* caster, FCharacterState charact
 	return 1.f;
 }
 
-void UBcGiveManaValue::init(FBuffContainer bContainer, ABaseCharacter* owner)
+void UBcGiveManaValue::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties)
 {
+	Super::init(bContainer, owner, properties);
 	FString tagName = bContainer.node->GetTag();
 	m_CostType = SkillEnums::stringToCostType(bContainer.node->GetAttribute(TEXT("type")));
 	targetType = SkillEnums::stringToTargetType(bContainer.node->GetAttribute(TEXT("target")));

@@ -21,9 +21,9 @@ void FSkillStatus::registerSkill(USkill* skill, ABaseCharacter* target, int32 sl
 {
 	castingSkill = true;
 	this->skill = skill;
-	leftCastTime = skill->castTime;
-	skillName = skill->name;
+	leftCastTime = skill->properties.castTime;
+	skillName = skill->properties.name;
 	this->target = target;
 	this->slot = slot;
-	castTime = skill->castTime;
+	castTime = skill->properties.castTime;
 }

@@ -53,8 +53,9 @@ float UScGiveMana::getScore(ABaseCharacter* caster, FCharacterState characterSta
 	return 1.f;
 }
 
-void UScGiveMana::init(FXmlNode* node)
+void UScGiveMana::init(FXmlNode* node, FSkillProperties properties)
 {
+	Super::init(node, properties);
 	FString tagName = node->GetTag();
 	targetType = SkillEnums::stringToComponentTarget(node->GetAttribute(TEXT("target")));
 	if (tagName.Equals(TEXT("givemana")))

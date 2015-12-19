@@ -38,8 +38,9 @@ float UBcDamageReduction::getScore(ABaseCharacter* caster, FCharacterState chara
 	return 0.0f;
 }
 
-void UBcDamageReduction::init(FBuffContainer bContainer, ABaseCharacter* owner)
+void UBcDamageReduction::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties)
 {
+	Super::init(bContainer, owner, properties);
 	targetType = SkillEnums::stringToTargetType(bContainer.node->GetAttribute(TEXT("target")));
 	m_Reduction = bContainer.scaleTable[owner->getAttributeValue(bContainer.scaleAttribute)];
 	m_RType = SkillEnums::stringTReductionType(bContainer.node->GetAttribute(TEXT("type")));

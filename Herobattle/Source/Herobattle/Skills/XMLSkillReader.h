@@ -35,7 +35,7 @@ public:
 
 private:
 
-	TArray<UBaseSkillComponent*> createImpact(FXmlNode* impactNode);
+	TArray<UBaseSkillComponent*> createImpact(FXmlNode* impactNode, FSkillProperties properties);
 	TArray<USkill*> readeSkillsFromXml(FXmlNode* node);
 
 

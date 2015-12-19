@@ -53,8 +53,9 @@ float UBcGiveMana::getScore(ABaseCharacter* caster, FCharacterState characterSta
 	return 1.f;
 }
 
-void UBcGiveMana::init(FBuffContainer bContainer, ABaseCharacter* owner)
+void UBcGiveMana::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties)
 {
+	Super::init(bContainer, owner, properties);
 	FString tagName = bContainer.node->GetTag();
 	targetType = SkillEnums::stringToTargetType(bContainer.node->GetAttribute(TEXT("target")));
 	m_ManaFactor = bContainer.scaleTable[owner->getAttributeValue(bContainer.scaleAttribute)];

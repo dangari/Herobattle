@@ -119,7 +119,7 @@ public:
 
 	HBCharacterState getState();
 
-	FWeapon getWeapon();
+	FWeaponValues getWeapon();
 
 	uint8 getBuffCount();
 
@@ -262,7 +262,7 @@ private:
 	int m_DebuffCount;
 
 	UPROPERTY(Replicated)
-	FWeapon weapon;
+	FWeaponValues weapon;
 
 	bool useAutoAttack;
 	HBCharacterState m_State = HBCharacterState::IDLE;

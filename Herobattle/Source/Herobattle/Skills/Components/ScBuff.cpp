@@ -26,7 +26,7 @@ bool UScBuff::run(ABaseCharacter* target, ABaseCharacter* self, FString SkillNam
 
 	UBuff* buff = NewObject<UBuff>();
 	float duration = scaleTable[self->getAttributeValue(scaleAttribute)];
-	buff->init(self, bCBuffList, duration, SkillName, m_Usage);
+	buff->init(self, bCBuffList, duration, SkillName, m_Usage, m_properties);
 	target->applyBuff(buff, m_Trigger);
 	return b;
 }
@@ -35,13 +35,14 @@ float UScBuff::getScore(ABaseCharacter* caster, FCharacterState characterState, 
 {
 	UBuff* buff = NewObject<UBuff>();
 	float duration = scaleTable[caster->getAttributeValue(scaleAttribute)];
-	buff->init(caster, bCBuffList, duration, SkillName, m_Usage);
+	buff->init(caster, bCBuffList, duration, SkillName, m_Usage, m_properties);
 	buff->getScore(caster, characterState, skillScore);
 	return 1.f;
 }
 
-void UScBuff::init(FXmlNode* node)
+void UScBuff::init(FXmlNode* node, FSkillProperties properties)
 {
+	Super::init(node, properties);
 	// the skill type of the buff like stance, enchantment ...
 	FString cType = node->GetAttribute(TEXT("type"));
 	this->skillType = SkillEnums::stringToSkillType(cType);

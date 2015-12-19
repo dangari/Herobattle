@@ -202,6 +202,21 @@ RemoveType SkillEnums::stringToRemoveType(FString sRemoveType)
 	return RemoveType::STANCE;
 }
 
+Weapon SkillEnums::stringToWeapon(FString sWeapon)
+{
+	if (sWeapon.Equals(TEXT("AXE")))
+		return Weapon::AXE;
+	if (sWeapon.Equals(TEXT("BOW")))
+		return Weapon::BOW;
+	if (sWeapon.Equals(TEXT("STAFF")))
+		return Weapon::STAFF;
+	if (sWeapon.Equals(TEXT("SPEAR")))
+		return Weapon::SPEAR;
+	if (sWeapon.Equals(TEXT("SWORD")))
+		return Weapon::SWORD;
+	return Weapon::NONE;
+}
+
 FString SkillEnums::AttributesToString(Attributes attribute)
 {
 	switch (attribute)

@@ -19,8 +19,9 @@ UBcHeal::~UBcHeal()
 
 }
 
-void UBcHeal::init(FBuffContainer bContainer, ABaseCharacter* owner)
+void UBcHeal::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties)
 {
+	Super::init(bContainer, owner, properties);
 	targetType = bContainer.targetType;
 	heal = bContainer.scaleTable[owner->getAttributeValue(bContainer.scaleAttribute)];
 	trigger = SkillEnums::stringToTrigger(bContainer.node->GetAttribute(TEXT("trigger")));
@@ -37,7 +38,7 @@ bool UBcHeal::run(ABaseCharacter* caster, ABaseCharacter* self, int value)
 	if (Trigger::CASTMANA == trigger)
 	{
 		ABaseCharacter* testTarget = getTarget(caster, self);
-		float currentHeal = testTarget->currentSkill.skill->manaCost * (heal / 100);
+		float currentHeal = testTarget->currentSkill.skill->properties.manaCost * (heal / 100);
 		testTarget->heal(testTarget, currentHeal, false);
 	}
 	return true;

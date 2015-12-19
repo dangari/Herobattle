@@ -14,7 +14,7 @@ UBuff::~UBuff()
 {
 }
 
-void UBuff::init(ABaseCharacter* owner, TArray<FBuffContainer> bCBuffList, float duration, FString name, FString usage)
+void UBuff::init(ABaseCharacter* owner, TArray<FBuffContainer> bCBuffList, float duration, FString name, FString usage, FSkillProperties properties)
 {
 	
 	m_Duration = duration;
@@ -36,7 +36,7 @@ void UBuff::init(ABaseCharacter* owner, TArray<FBuffContainer> bCBuffList, float
 
 		bCclassFuncPtr createFunc = *(XMLSkillReader::bcObjectNameList.Find(buff.buffName));
 		UBaseBuffCompenent* bC = createFunc();
-		bC->init(buff, owner);
+		bC->init(buff, owner, properties);
 		m_BcList.Add(bC);
 
 	}

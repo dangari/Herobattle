@@ -28,8 +28,9 @@ float UBaseSkillComponent::getScore(ABaseCharacter* caster, FCharacterState char
 }
 
 
-void UBaseSkillComponent::init(FXmlNode* node)
+void UBaseSkillComponent::init(FXmlNode* node, FSkillProperties properties)
 {
+	m_properties = properties;
 }
 
 FString UBaseSkillComponent::ToString()

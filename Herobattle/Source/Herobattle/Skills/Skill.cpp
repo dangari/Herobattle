@@ -24,7 +24,7 @@ bool USkill::run(ABaseCharacter* target, ABaseCharacter* self)
 {
 	bool b = true;
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, name);
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::FromInt(manaCost));
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::FromInt(properties.manaCost));
 	for (auto& sc : componentList)
 	{
 		b = sc->run(target, self, name);
@@ -35,19 +35,19 @@ bool USkill::run(ABaseCharacter* target, ABaseCharacter* self)
 
 bool USkill::isValidTarget(ABaseCharacter* target, ABaseCharacter* self)
 {
-	if (target->isEnemy(self->ETeam) && targetType == TargetType::ENEMY)
+	if (target->isEnemy(self->ETeam) && properties.targetType == TargetType::ENEMY)
 	{
 		return true;
 	}
-	else if (!(target->isEnemy(self->ETeam)) && targetType == TargetType::SELFFRIEND)
+	else if (!(target->isEnemy(self->ETeam)) && properties.targetType == TargetType::SELFFRIEND)
 	{
 		return true;
 	}
-	else if (!(target->isEnemy(self->ETeam)) && targetType == TargetType::FRIEND && target != self)
+	else if (!(target->isEnemy(self->ETeam)) && properties.targetType == TargetType::FRIEND && target != self)
 	{
 		return true;
 	}
-	else if (target == self && targetType == TargetType::SELF)
+	else if (target == self && properties.targetType == TargetType::SELF)
 	{
 		return true;
 	}
@@ -60,7 +60,7 @@ bool USkill::isValidTarget(ABaseCharacter* target, ABaseCharacter* self)
 
 float USkill::getScore(ABaseCharacter* caster, FCharacterState charcterState)
 {
-	if (caster->m_Mana - manaCost < 0)
+	if (caster->m_Mana - properties.manaCost < 0)
 		return 0.0f;
 	else
 	{

@@ -46,8 +46,9 @@ float UScCoolDown::getScore(ABaseCharacter* caster, FCharacterState characterSta
 	return score;
 }
 
-void UScCoolDown::init(FXmlNode* node)
+void UScCoolDown::init(FXmlNode* node, FSkillProperties properties)
 {
+	Super::init(node, properties);
 	targetType = SkillEnums::stringToComponentTarget(node->GetAttribute("target"));
 	coolDownType = SkillEnums::stringToCoolDownType(node->GetAttribute("type"));
 	TArray<FXmlNode*> propertyList = node->GetChildrenNodes();

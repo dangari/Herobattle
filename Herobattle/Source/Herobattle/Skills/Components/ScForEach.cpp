@@ -39,8 +39,9 @@ bool UScForEach::run(ABaseCharacter* target, ABaseCharacter* self, FString Skill
 	return b;
 }
 
-void UScForEach::init(FXmlNode* node)
+void UScForEach::init(FXmlNode* node, FSkillProperties properties)
 {
+	Super::init(node, properties);
 	skillType = node->GetAttribute(TEXT("type"));
 	TArray<FXmlNode*> childNodes = node->GetChildrenNodes();
 	for (auto& scObj : childNodes)
@@ -50,7 +51,7 @@ void UScForEach::init(FXmlNode* node)
 		{
 			classFuncPtr createFunc = *(XMLSkillReader::scObjectNameList.Find(tagName));
 			UBaseSkillComponent* sc = createFunc();
-			sc->init(scObj);
+			sc->init(scObj, properties);
 			scList.Add(sc);
 		}
 	}

@@ -3,16 +3,13 @@
 #pragma once
 
 #include "Object.h"
+#include "Enum/SkillEnums.h"
 #include "Weapon.generated.h"
 
 /**
  * 
  */
-UENUM()
-enum class Weapons : uint8
-{
-	SWORD,AXE,HAMMER,BOW,STAFF
-};
+
 
 UENUM()
 enum class WeaponType : uint8
@@ -21,7 +18,7 @@ enum class WeaponType : uint8
 };
 
 USTRUCT()
-struct FWeapon
+struct FWeaponValues
 {
 	GENERATED_USTRUCT_BODY()
 
@@ -39,16 +36,16 @@ struct FWeapon
 	UPROPERTY()
 	WeaponType wType;
 
-	FWeapon()
+	FWeaponValues()
 	{
 
 	}
 
-	FWeapon(Weapons weapon)
+	FWeaponValues(Weapon weapon)
 	{
 		switch (weapon)
 		{
-		case Weapons::SWORD:
+		case Weapon::SWORD:
 			range = 120.0f;
 			attackSpeed = 1.33;
 			lowDamage = 24.0f;
@@ -56,7 +53,7 @@ struct FWeapon
 			currentTime = attackSpeed;
 			wType = WeaponType::MELEE;
 			break;
-		case Weapons::AXE:
+		case Weapon::AXE:
 			range = 120.0f;
 			attackSpeed = 1.33;
 			lowDamage = 24.0f;
@@ -64,7 +61,7 @@ struct FWeapon
 			currentTime = attackSpeed;
 			wType = WeaponType::MELEE;
 			break;
-		case Weapons::HAMMER:
+		case Weapon::HAMMER:
 			range = 150.0;
 			attackSpeed = 1.75;
 			lowDamage = 24.0f;
@@ -72,7 +69,7 @@ struct FWeapon
 			currentTime = attackSpeed;
 			wType = WeaponType::MELEE;
 			break;
-		case Weapons::BOW:
+		case Weapon::BOW:
 			range = 1000.0f;
 			attackSpeed = 1.75;
 			lowDamage = 24.0f;
@@ -80,11 +77,19 @@ struct FWeapon
 			currentTime = attackSpeed;
 			wType = WeaponType::RANGE;
 			break;
-		case Weapons::STAFF:
+		case Weapon::STAFF:
 			range = 800.0f;
 			attackSpeed = 1.75;
-			lowDamage = 24.0f;
-			maxDamage = 30.0f;
+			lowDamage = 11.f;
+			maxDamage = 22.f;
+			currentTime = attackSpeed;
+			wType = WeaponType::RANGE;
+			break;
+		case Weapon::SPEAR:
+			range = 800.0f;
+			attackSpeed = 1.5;
+			lowDamage = 14.f;
+			maxDamage = 27.f;
 			currentTime = attackSpeed;
 			wType = WeaponType::RANGE;
 			break;

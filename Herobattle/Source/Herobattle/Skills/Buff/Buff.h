@@ -18,7 +18,7 @@ public:
 	UBuff();
 	~UBuff();
 
-	void init(ABaseCharacter* owner, TArray<FBuffContainer> bCBuffList, float duration, FString name, FString usage);
+	void init(ABaseCharacter* owner, TArray<FBuffContainer> bCBuffList, float duration, FString name, FString usage, FSkillProperties properties);
 
 	//value is incoming damage or heal
 	// heal is positive and and damage is negative

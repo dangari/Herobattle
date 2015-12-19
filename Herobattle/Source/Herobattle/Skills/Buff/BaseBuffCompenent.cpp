@@ -21,9 +21,9 @@ UBaseBuffCompenent::~UBaseBuffCompenent()
 
 }
 
-void UBaseBuffCompenent::init(FBuffContainer bContainer, ABaseCharacter* owner)
+void UBaseBuffCompenent::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties)
 {
-
+	m_properties = properties;
 }
 
 bool UBaseBuffCompenent::isExpired()

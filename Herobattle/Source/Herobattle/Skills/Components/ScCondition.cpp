@@ -37,9 +37,9 @@ float UScCondition::getScore(ABaseCharacter* caster, FCharacterState characterSt
 	return 0.f;
 }
 
-void UScCondition::init(FXmlNode* node)
+void UScCondition::init(FXmlNode* node, FSkillProperties properties)
 {
-
+	Super::init(node, properties);
 	targetType = SkillEnums::stringToTargetType(node->GetAttribute("target"));
 	FString cType = node->GetAttribute(TEXT("type"));
 	this->conditionType = SkillEnums::stringToCondition(cType);

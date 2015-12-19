@@ -16,8 +16,9 @@ UBcReduceMana::~UBcReduceMana()
 
 }
 
-void UBcReduceMana::init(FBuffContainer bContainer, ABaseCharacter* owner)
-{	
+void UBcReduceMana::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties)
+{
+	Super::init(bContainer, owner, properties);
 	reduction = bContainer.scaleTable[owner->getAttributeValue(bContainer.scaleAttribute)];
 }
 

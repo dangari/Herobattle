@@ -19,8 +19,9 @@ UBcBlock::~UBcBlock()
 
 }
 
-void UBcBlock::init(FBuffContainer bContainer, ABaseCharacter* owner)
+void UBcBlock::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties)
 {
+	Super::init(bContainer, owner, properties);
 	FXmlNode* node = bContainer.node;
 	blockType = SkillEnums::stringToSkillType(node->GetAttribute(TEXT("type")));
 	FString sUsage = node->GetAttribute(TEXT("usage"));

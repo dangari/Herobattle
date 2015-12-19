@@ -102,6 +102,8 @@ public:
 
 	void applyManaReduction(int value);
 
+	void applyDamageReduction(float value);
+
 	void applyRegneration(int value, RegnerationType type);
 
 	uint8 getCondtionCount();
@@ -197,7 +199,7 @@ private:
 
 	void updateHealthRegen(float regen);
 
-	bool RunBuff(Trigger trigger, ABaseCharacter* caster);
+	bool RunBuff(Trigger trigger, ABaseCharacter* caster, int value = 0);
 
 	//check if Character is using autotack
 	bool isAttacking();
@@ -250,6 +252,8 @@ private:
 
 	UPROPERTY()
 	int32 m_ManaReduction;
+	UPROPERTY()
+	float m_DamageReduction;
 	UPROPERTY()
 	int32 m_HealthBuffRegneration;
 	UPROPERTY()

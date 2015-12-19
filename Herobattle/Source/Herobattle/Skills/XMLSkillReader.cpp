@@ -25,6 +25,7 @@
 #include "Buff/BcGiveMana.h"
 #include "Buff/BcReduceMana.h"
 #include "Buff/BcRegenaration.h"
+#include "Buff/BcDamageReduction.h"
 
 
 
@@ -53,6 +54,7 @@ XMLSkillReader::XMLSkillReader()
 	bcObjectNameList.Add(TEXT("givemana"), &createBcInstance<UBcGiveMana>);
 	bcObjectNameList.Add(TEXT("reducemanacost"), &createBcInstance<UBcReduceMana>);
 	bcObjectNameList.Add(TEXT("regeneration"), &createBcInstance<UBcRegenaration>);
+	bcObjectNameList.Add(TEXT("damagereduction"), &createBcInstance<UBcDamageReduction>);
 	//scObjectNameList.Add(TEXT("heal"), &createScInstance<UScHeal>);
 }
 

@@ -20,7 +20,8 @@ m_ConditionCount(0),
 m_BuffCount(0),
 m_HealthBuffRegneration(0),
 m_ManaBuffRegneration(0),
-m_ManaReduction(0)
+m_ManaReduction(0),
+m_DamageReduction(0)
 {
 	bReplicates = true;
 	currentSkill.castingSkill = false;
@@ -469,34 +470,43 @@ bool ABaseCharacter::isCastingSkill(FString message)
 void ABaseCharacter::heal(ABaseCharacter* caster, float value, bool withBuff)
 {
 
-	bool b = true;
-	if (withBuff)
+	if (HasAuthority())
 	{
-		b = RunBuff(Trigger::HEAL, caster);
+		bool b = true;
+		if (withBuff)
+		{
+			b = RunBuff(Trigger::HEAL, caster, value);
+		}
+		if (b)
+		{
+			m_Health += value;
+		}
+		if (m_Health > m_MaxHealth)
+			m_Health = m_MaxHealth;
 	}
-	if (b)
-	{
-		m_Health += value;
-	}
-	if (m_Health > m_MaxHealth)
-		m_Health = m_MaxHealth;
 }
 
 
 void ABaseCharacter::damage(ABaseCharacter* caster, float value, HBDamageType damageType, bool withBuff)
 {
-	bool b = true;
-	if (withBuff)
+	if (HasAuthority())
 	{
-		b = RunBuff(Trigger::DAMAGE, caster);
+		bool b = true;
+		if (withBuff)
+		{
+			b = RunBuff(Trigger::DAMAGE, caster, value);
+		}
+		if (b)
+		{
+			float damage = value - m_DamageReduction;
+			if (damage > 0) 
+				m_Health -= damage;
+		}
+		// test if target is dead
+		if (m_Health < 0)
+			m_Health = m_MaxHealth;
+		m_DamageReduction = 0;
 	}
-	if (b)
-	{
-		m_Health -= value;
-	}
-	// test if target is dead
-	if (m_Health < 0)
-		m_Health = m_MaxHealth;
 }
 
 void ABaseCharacter::applyBuff(UBuff* buff, Trigger trigger)
@@ -548,6 +558,14 @@ void ABaseCharacter::applyManaReduction(int value)
 	if (HasAuthority())
 	{
 		m_ManaReduction += value;
+	}
+}
+
+void ABaseCharacter::applyDamageReduction(float value)
+{
+	if (HasAuthority())
+	{
+		m_DamageReduction += value;
 	}
 }
 
@@ -630,7 +648,7 @@ void ABaseCharacter::updateHealthRegen(float regen)
 	m_HealthRegeneration += regen;
 }
 
-bool ABaseCharacter::RunBuff(Trigger trigger, ABaseCharacter* caster)
+bool ABaseCharacter::RunBuff(Trigger trigger, ABaseCharacter* caster, int value /*= 0*/)
 {
 	bool b = true;
 	if (m_CompleteBuffList.Contains(trigger))
@@ -638,7 +656,7 @@ bool ABaseCharacter::RunBuff(Trigger trigger, ABaseCharacter* caster)
 		TMap<FString, UBuff*> buffList = m_CompleteBuffList.Find(trigger)->m_BuffList;
 		for (auto& buff : buffList)
 		{
-			b = b && buff.Value->run(caster, this);
+			b = b && buff.Value->run(caster, this, value);
 		}
 	}
 	return b;

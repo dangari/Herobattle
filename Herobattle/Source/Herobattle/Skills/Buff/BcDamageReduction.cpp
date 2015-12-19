@@ -21,16 +21,14 @@ bool UBcDamageReduction::run(ABaseCharacter* caster, ABaseCharacter* self, int v
 	float reduction = 0.f;
 	if (m_RType == ReductionType::VALUE)
 	{
-		reduction = m_Reduction - value;
-		if (reduction < 0)
-			reduction = m_Reduction;
+		reduction = m_Reduction;
 	}
 	else
 	{
 		reduction = m_Reduction * value;
 	}
 	ABaseCharacter* newTarget = getTarget(caster, self);
-	newTarget->heal(newTarget, reduction, false);
+	newTarget->applyDamageReduction(reduction);
 
 	return true;
 }

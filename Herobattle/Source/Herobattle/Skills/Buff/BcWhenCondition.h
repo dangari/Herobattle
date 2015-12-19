@@ -35,17 +35,19 @@ public:
 	virtual void update(float deltaTime) override;
 
 private:
+	bool testConditions(ABaseCharacter* target, ABaseCharacter* self);
+
+
+	void createBoolObjects(FXmlNode* node);
+
+	void createSkillComponents(FXmlNode* node);
+
 
 	UPROPERTY(Replicated)
 	TArray<UBaseSkillComponent*> scTable; // components that gets executed when condition is true
 	UPROPERTY(Replicated)
 	TArray<UBoolObject*> boolObjects;
 	ComponentTarget targetType;
-	bool testConditions(ABaseCharacter* target, ABaseCharacter* self);
-
-
-	void createBoolObjects(FXmlNode* node);
 	
-	void createSkillComponents(FXmlNode* node);
 
 };

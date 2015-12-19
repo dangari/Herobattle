@@ -108,6 +108,8 @@ public:
 
 	uint8 getCondtionCount();
 
+	uint8 getDebuffCount();
+
 	HBCharacterState getState();
 
 	FWeapon getWeapon();
@@ -117,6 +119,8 @@ public:
 	SkillType getCurrentSkillType();
 
 	void knockDownCharacter(float duration);
+
+	void Remove(RemoveType type, int count);
 
 	void setCoolDown(float time, CoolDownType cdType);
 

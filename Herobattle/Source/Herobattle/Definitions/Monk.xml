@@ -181,13 +181,13 @@
       <targettype value="SELFFRIEND"/>
       <range value="800"/>
       <effects>
-        <impact>
-          <remove value="1" scaling="NONE" target="TARGET" type="HEX"/>
+        <impact> 
           <when value="TARGET">
             <whencondition>
               <hex/>
             </whencondition>
             <then>
+              <remove value="1" scaling="NONE" target="TARGET" type="HEX"/>
               <heal value="30" scaling="HEALING_PRAYERS" target="TARGET">
                 <step key="1" value="36"/>
                 <step key="2" value="42"/>

@@ -26,6 +26,7 @@ struct FCharacterState
 	bool isAutoAttacking = false;
 	bool isBuffed = false;
 	bool isHexed = false;
+	bool hasStance = false;
 	
 	TArray<Condition> conditions;
 

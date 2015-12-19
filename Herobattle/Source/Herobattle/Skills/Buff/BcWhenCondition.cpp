@@ -10,6 +10,7 @@
 #include "../Components/BaseSkillComponent.h"
 #include "../Components/BoolObjects/BoolAttack.h"
 #include "../Components/BoolObjects/BoolCondition.h"
+#include "../Components/BoolObjects/BoolHex.h"
 
 UBcWhenCondition::UBcWhenCondition()
 {
@@ -89,9 +90,15 @@ void UBcWhenCondition::createBoolObjects(FXmlNode* node)
 			attackBool->init(prop, targetType);
 			boolObjects.Add(attackBool);
 		}
-		else if (tagName.Equals(TEXT("attack")))
+		else if (tagName.Equals(TEXT("condi")))
 		{
 			UBoolCondition* attackCondition = NewObject<UBoolCondition>();
+			attackCondition->init(prop, targetType);
+			boolObjects.Add(attackCondition);
+		}
+		else if (tagName.Equals(TEXT("hex")))
+		{
+			UBoolHex* attackCondition = NewObject<UBoolHex>();
 			attackCondition->init(prop, targetType);
 			boolObjects.Add(attackCondition);
 		}

@@ -18,6 +18,7 @@ m_HealthRegeneration(0),
 m_ManaRegeneration(4),
 m_ConditionCount(0),
 m_BuffCount(0),
+m_DebuffCount(1),
 m_HealthBuffRegneration(0),
 m_ManaBuffRegneration(0),
 m_ManaReduction(0),
@@ -593,6 +594,11 @@ uint8 ABaseCharacter::getCondtionCount()
 	return m_ConditionCount;
 }
 
+uint8 ABaseCharacter::getDebuffCount()
+{
+	return m_DebuffCount;
+}
+
 HBCharacterState ABaseCharacter::getState()
 {
 	return m_State;
@@ -611,6 +617,23 @@ SkillType ABaseCharacter::getCurrentSkillType()
 void ABaseCharacter::knockDownCharacter(float duration)
 {
 
+}
+
+void ABaseCharacter::Remove(RemoveType type, int count)
+{
+	switch (type)
+	{
+	case RemoveType::CONDI:
+		break;
+	case  RemoveType::HEX:
+		break;
+	case RemoveType::ENTCHANTMENT:
+		break;
+	case RemoveType::STANCE:
+		break;
+	default:
+		break;
+	}
 }
 
 void ABaseCharacter::setCoolDown(float time, CoolDownType cdType)

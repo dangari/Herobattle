@@ -189,6 +189,19 @@ ReductionType SkillEnums::stringTReductionType(FString sReductionTyp)
 	return ReductionType::VALUE;
 }
 
+RemoveType SkillEnums::stringToRemoveType(FString sRemoveType)
+{
+	if (sRemoveType.Equals(TEXT("CONDI")))
+		return RemoveType::CONDI;
+	if (sRemoveType.Equals(TEXT("HEX")))
+		return RemoveType::HEX;
+	if (sRemoveType.Equals(TEXT("STANCE")))
+		return RemoveType::STANCE;
+	if (sRemoveType.Equals(TEXT("ENTCHANTMENT")))
+		return RemoveType::ENTCHANTMENT;
+	return RemoveType::STANCE;
+}
+
 FString SkillEnums::AttributesToString(Attributes attribute)
 {
 	switch (attribute)

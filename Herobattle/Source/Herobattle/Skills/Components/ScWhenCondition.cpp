@@ -10,6 +10,7 @@
 #include "BoolObjects/BoolAttack.h"
 #include "BoolObjects/BoolCondition.h"
 #include "BoolObjects/BoolMana.h"
+#include "BoolObjects/BoolHex.h"
 
 UScWhenCondition::UScWhenCondition()
 {
@@ -112,6 +113,12 @@ void UScWhenCondition::createBoolObjects(FXmlNode* node)
 		else if (tagName.Equals(TEXT("condi")))
 		{
 			UBoolCondition* attackCondition = NewObject<UBoolCondition>();
+			attackCondition->init(prop, targetType);
+			boolObjects.Add(attackCondition);
+		}
+		else if (tagName.Equals(TEXT("hex")))
+		{
+			UBoolHex* attackCondition = NewObject<UBoolHex>();
 			attackCondition->init(prop, targetType);
 			boolObjects.Add(attackCondition);
 		}

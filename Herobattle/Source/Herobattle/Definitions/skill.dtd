@@ -169,7 +169,7 @@
   >
 
 <!-- sub nodes -->
-<!ELEMENT then (heal|damage|buff|condition|regeneration|knockdown|skillcooldown|givemana|giveadrenaline)*>
+<!ELEMENT then (heal|damage|buff|condition|regeneration|knockdown|skillcooldown|givemana|giveadrenaline|remove)*>
 
 <!ELEMENT attack EMPTY>
 <!ATTLIST attack

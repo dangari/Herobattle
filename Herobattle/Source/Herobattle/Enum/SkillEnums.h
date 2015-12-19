@@ -42,6 +42,9 @@ enum class RegnerationType : uint8 { MANA, HEALTH};
 UENUM(BlueprintType)
 enum class ReductionType : uint8 { PRECENT, VALUE };
 
+UENUM(BlueprintType)
+enum class RemoveType : uint8 { HEX, ENTCHANTMENT, STANCE, CONDI };
+
 
 class HEROBATTLE_API SkillEnums
 {
@@ -62,7 +65,7 @@ public:
 	static CostType stringToCostType(FString sCostType);
 	static RegnerationType stringToRegnerationType(FString sRegnerationType);
 	static ReductionType stringTReductionType(FString sReductionTyp);
-
+	static RemoveType stringToRemoveType(FString sRemoveType);
 
 	static FString AttributesToString(Attributes attribute);
 

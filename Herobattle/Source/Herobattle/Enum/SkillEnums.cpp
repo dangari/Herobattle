@@ -28,6 +28,8 @@ Attributes SkillEnums::stringToAttribute(FString sAttribute)
 		return Attributes::EARTH_PRAYERS;
 	if (sAttribute.Equals(TEXT("TACTICS")))
 		return Attributes::TACTICS;
+	if (sAttribute.Equals(TEXT("SPEAR_MASTERY")))
+		return Attributes::SPEAR_MASTERY;
 	return Attributes::NONE;
 }
 
@@ -103,6 +105,8 @@ Condition SkillEnums::stringToCondition(FString sCondition)
 		return Condition::DEEPWOUND;
 	if (sCondition.Equals(TEXT("CRIPPLED")))
 		return Condition::CRIPPLED;
+	if (sCondition.Equals(TEXT("DAZED")))
+		return Condition::DAZED;
 	return Condition::ALL;
 }
 
@@ -165,7 +169,7 @@ CostType SkillEnums::stringToCostType(FString sCostType)
 {
 	if (sCostType.Equals(TEXT("MANA")))
 		return CostType::MANA;
-	if (sCostType.Equals(TEXT("MANA")))
+	if (sCostType.Equals(TEXT("ADRENALINE")))
 		return CostType::ADRENALINE;
 	return CostType::NONE;
 }

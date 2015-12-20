@@ -26,6 +26,8 @@
 #include "Buff/BcReduceMana.h"
 #include "Buff/BcRegenaration.h"
 #include "Buff/BcDamageReduction.h"
+#include "Buff/BcAttackSpeed.h"
+#include "Buff/BcMovementSpeed.h"
 
 
 
@@ -55,7 +57,8 @@ XMLSkillReader::XMLSkillReader()
 	bcObjectNameList.Add(TEXT("reducemanacost"), &createBcInstance<UBcReduceMana>);
 	bcObjectNameList.Add(TEXT("regeneration"), &createBcInstance<UBcRegenaration>);
 	bcObjectNameList.Add(TEXT("damagereduction"), &createBcInstance<UBcDamageReduction>);
-	//scObjectNameList.Add(TEXT("heal"), &createScInstance<UScHeal>);
+	bcObjectNameList.Add(TEXT("attackspeed"), &createBcInstance<UBcAttackSpeed>);
+	bcObjectNameList.Add(TEXT("movementspeed"), &createBcInstance<UBcMovementSpeed>);
 }
 
 XMLSkillReader::~XMLSkillReader()
@@ -127,8 +130,8 @@ USkill* XMLSkillReader::ReadSkill(FXmlNode* skillRootNode)
 
 	//values needed for Skill creation
 	USkill* skill = NewObject<USkill>();
-	skill->properties.skillType = SkillEnums::stringToSkillType(skillRootNode->GetAttribute(type));
 	FSkillProperties properties;
+	properties.skillType = SkillEnums::stringToSkillType(skillRootNode->GetAttribute(type));
 	TArray<UBaseSkillComponent*> componentList;
 
 	TArray<FXmlNode*> propertyList = skillRootNode->GetChildrenNodes();
@@ -144,7 +147,7 @@ USkill* XMLSkillReader::ReadSkill(FXmlNode* skillRootNode)
 
 		else if (tagName.Equals(TEXT("costs")))
 		{
-			properties.manaCost = FCString::Atoi(*(prop->GetAttribute(value)));
+			properties.cost = FCString::Atoi(*(prop->GetAttribute(value)));
 			properties.costType = SkillEnums::stringToCostType((prop->GetAttribute(type)));
 		}
 

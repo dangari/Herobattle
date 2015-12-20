@@ -18,11 +18,12 @@ m_HealthRegeneration(0),
 m_ManaRegeneration(4),
 m_ConditionCount(0),
 m_BuffCount(0),
-m_DebuffCount(1),
+m_DebuffCount(0),
 m_HealthBuffRegneration(0),
 m_ManaBuffRegneration(0),
 m_ManaReduction(0),
-m_DamageReduction(0)
+m_DamageReduction(0),
+m_NewAttackSpeed(1)
 {
 	bReplicates = true;
 	currentSkill.castingSkill = false;
@@ -39,6 +40,7 @@ void ABaseCharacter::BeginPlay()
 	Super::BeginPlay();
 	if (HasAuthority())
 	{
+		m_DefaultMovementSpeed = GetCharacterMovement()->MaxWalkSpeed;
 		AHerobattleGameMode* gm = (AHerobattleGameMode*)(GetWorld()->GetAuthGameMode());
 		skillList[0] = gm->skillList[0];
 		skillList[1] = gm->skillList[1];
@@ -48,8 +50,11 @@ void ABaseCharacter::BeginPlay()
 		skillList[5] = gm->skillList[5];
 		skillList[6] = gm->skillList[6];
 		skillList[7] = gm->skillList[7];
+		InitializeAdrenaline();
 		messages = NewObject<USkillMessages>();
 		weapon = FWeaponValues(Weapon::STAFF);
+		m_leftAttackTime = weapon.attackSpeed;
+		m_AttackSpeed = weapon.attackSpeed;
 		currentSkill.castingSkill = false;
 
 		attrList.Add(Attributes::FIRE_MAGIC, 14);
@@ -58,6 +63,8 @@ void ABaseCharacter::BeginPlay()
 		attrList.Add(Attributes::EARTH_PRAYERS, 8);
 		attrList.Add(Attributes::PROTECTION_PRAYERS, 10);
 		attrList.Add(Attributes::TACTICS, 8);
+		attrList.Add(Attributes::STRENGTH, 14);
+		attrList.Add(Attributes::SPEAR_MASTERY, 12);
 	}
 	else
 	{
@@ -73,6 +80,7 @@ void ABaseCharacter::Tick(float DeltaTime)
 	if (HasAuthority())
 	{
 		RunBuff(Trigger::NONE, this);
+		UpdateModifier();
 		UpdateCondtion(DeltaTime);
 		UpdateRegeneration();
 		UpdateResources(DeltaTime);
@@ -112,6 +120,19 @@ bool ABaseCharacter::stopCurrenSkill_Validate()
 }
 
 
+
+void ABaseCharacter::InitializeAdrenaline()
+{
+	int i = 0;
+	for (auto& skill : skillList)
+	{
+		if (skill->properties.costType == CostType::ADRENALINE)
+		{
+			m_AdrenalineList[i].maxAdrenaline = skill->properties.cost;
+		}
+		i++;
+	}
+}
 
 void ABaseCharacter::UpdateResources(float DeltaSeconds){
 
@@ -171,7 +192,7 @@ void ABaseCharacter::UpdateRegeneration()
 bool ABaseCharacter::skillCost(int slot)
 {
 	CostType type = skillList[slot]->properties.costType;
-	int value = skillList[slot]->properties.manaCost;
+	int value = skillList[slot]->properties.cost;
 	if (type == CostType::MANA)
 	{
 		if (((m_Mana + m_ManaReduction) - value) < 0)
@@ -308,6 +329,7 @@ FCharacterState ABaseCharacter::AiExtractor(ABaseCharacter* character)
 	characterState.skillState = currentSkill.copy();
 	characterState.selectedTarget = selectedTarget;
 	characterState.self = this;
+	characterState.state = m_State;
 	return characterState;
 }
 
@@ -350,7 +372,7 @@ void ABaseCharacter::UpdateCurrentSkill(float deltaTime)
 		skillcooldowns[currentSkill.slot].maxCooldown = currentSkill.skill->properties.recharge + skillcooldowns[currentSkill.slot].additionalCoolDown;
 		m_ManaReduction = 0;
 		RunBuff(Trigger::AFTERCAST, this);
-		if (currentSkill.skill->properties.skillType == SkillType::MELEEATTACK || currentSkill.skill->properties.skillType == SkillType::MELEEATTACK)
+		if (currentSkill.skill->properties.skillType == SkillType::RANGEATTACK || currentSkill.skill->properties.skillType == SkillType::MELEEATTACK)
 		{
 			UpdateAdrenaline();
 			m_State = HBCharacterState::AUTOATTACK;
@@ -364,13 +386,13 @@ void ABaseCharacter::UpdateCurrentSkill(float deltaTime)
 
 void ABaseCharacter::UpdateAttack(float deltaTime)
 {
-	weapon.currentTime -= deltaTime;
-	if (weapon.currentTime <= 0)
+	m_leftAttackTime -= deltaTime;
+	if (m_leftAttackTime <= 0)
 	{
 		int damage = weapon.getDamage();
 		selectedTarget->damage(this,damage,HBDamageType::FIRE);
 		UpdateAdrenaline();
-		weapon.currentTime = weapon.attackSpeed;
+		m_leftAttackTime = m_AttackSpeed;
 	}
 }
 
@@ -472,6 +494,11 @@ bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
 		if (newTarget && !skillIsOnCooldown(slot) && !isCastingSkill() && skill->isValidTarget(newTarget, this) && skillCost(slot))
 		{
 			currentSkill.registerSkill(skill, newTarget, slot);
+			if (skill->properties.skillType == SkillType::MELEEATTACK || skill->properties.skillType == SkillType::RANGEATTACK)
+			{
+				currentSkill.castTime = m_AttackSpeed;
+				currentSkill.leftCastTime = m_AttackSpeed;
+			}
 			m_State = HBCharacterState::CASTING;
 			UE_LOG(LogTemp, Warning, TEXT("Skill name: %s"), *(currentSkill.skillName));
 			useAutoAttack = false;
@@ -505,6 +532,11 @@ bool ABaseCharacter::isCastingSkill(FString message)
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, out);
 	}
 	return b;
+}
+
+FAdrenaline ABaseCharacter::GetCurrentAdrenaline(uint8 slot)
+{
+	return m_AdrenalineList[slot];
 }
 
 void ABaseCharacter::heal(ABaseCharacter* caster, float value, bool withBuff)
@@ -628,6 +660,17 @@ void ABaseCharacter::applyRegneration(int value, RegnerationType type)
 	}
 }
 
+void ABaseCharacter::applyAttackSpeed(float value)
+{
+	float newAttackSpeed = value;
+	m_NewAttackSpeed = newAttackSpeed;
+}
+
+void ABaseCharacter::applyMovementSpeed(float value)
+{
+	m_MovementSpeed = m_DefaultMovementSpeed * value;
+}
+
 uint8 ABaseCharacter::getCondtionCount()
 {
 	return m_ConditionCount;
@@ -721,6 +764,19 @@ void ABaseCharacter::UpdateAdrenaline()
 	}
 }
 
+void ABaseCharacter::UpdateModifier()
+{
+	if (m_AttackSpeed != m_AttackSpeed)
+		m_AttackSpeed = m_NewAttackSpeed;
+	if (m_DefaultMovementSpeed != m_MovementSpeed)
+		GetCharacterMovement()->MaxWalkSpeed = m_MovementSpeed;
+	else
+		GetCharacterMovement()->MaxWalkSpeed = m_DefaultMovementSpeed;
+
+	m_NewAttackSpeed = weapon.attackSpeed;
+	m_MovementSpeed = m_DefaultMovementSpeed;
+}
+
 bool ABaseCharacter::RunBuff(Trigger trigger, ABaseCharacter* caster, int value /*= 0*/)
 {
 	bool b = true;
@@ -749,5 +805,6 @@ void ABaseCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & Ou
 	DOREPLIFETIME(ABaseCharacter, selectedTarget);
 	DOREPLIFETIME(ABaseCharacter, weapon);
 	DOREPLIFETIME(ABaseCharacter, skillcooldowns);
+	DOREPLIFETIME(ABaseCharacter, m_AdrenalineList);
 }
 

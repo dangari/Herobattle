@@ -38,7 +38,7 @@ bool UBcHeal::run(ABaseCharacter* caster, ABaseCharacter* self, int value)
 	if (Trigger::CASTMANA == trigger)
 	{
 		ABaseCharacter* testTarget = getTarget(caster, self);
-		float currentHeal = testTarget->currentSkill.skill->properties.manaCost * (heal / 100);
+		float currentHeal = testTarget->currentSkill.skill->properties.cost * (heal / 100);
 		testTarget->heal(testTarget, currentHeal, false);
 	}
 	return true;

@@ -24,7 +24,7 @@ bool USkill::run(ABaseCharacter* target, ABaseCharacter* self)
 {
 	bool b = true;
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, name);
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::FromInt(properties.manaCost));
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::FromInt(properties.cost));
 	for (auto& sc : componentList)
 	{
 		b = sc->run(target, self, name);
@@ -60,7 +60,7 @@ bool USkill::isValidTarget(ABaseCharacter* target, ABaseCharacter* self)
 
 float USkill::getScore(ABaseCharacter* caster, FCharacterState charcterState)
 {
-	if (caster->m_Mana - properties.manaCost < 0)
+	if (caster->m_Mana - properties.cost < 0)
 		return 0.0f;
 	else
 	{

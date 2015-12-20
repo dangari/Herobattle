@@ -39,4 +39,6 @@ struct FCharacterState
 
 	float DeltaTime;
 
+	HBCharacterState state;
+
 };

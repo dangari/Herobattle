@@ -27,7 +27,7 @@ struct FSkillProperties
 	float castTime;
 	float recharge;
 	float currentRecharge;
-	int manaCost;
+	int cost;
 
 	int32 range;
 };

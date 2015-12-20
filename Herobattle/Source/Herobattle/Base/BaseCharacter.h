@@ -29,8 +29,11 @@ struct FAdrenaline
 {
 	GENERATED_USTRUCT_BODY()
 
-	int currentAdrenaline = 0;
-	int maxAdrenaline = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
+	int32 currentAdrenaline = 0;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
+	int32 maxAdrenaline = 0;
 };
 
 
@@ -91,6 +94,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Skills)
 	bool isCastingSkill(FString message = TEXT("NOTHING"));
 
+	UFUNCTION(BlueprintCallable, Category = Meachnics)
+	FAdrenaline GetCurrentAdrenaline(uint8 slot);
+
 
 // this Functions get called by Skills
 	void heal(ABaseCharacter* caster, float value, bool withBuff = true);
@@ -112,6 +118,10 @@ public:
 	void applyDamageReduction(float value);
 
 	void applyRegneration(int value, RegnerationType type);
+
+	void applyAttackSpeed(float value);
+
+	void applyMovementSpeed(float value);
 
 	uint8 getCondtionCount();
 
@@ -188,6 +198,8 @@ protected:
 
 private:
 
+	void InitializeAdrenaline();
+
 	// updates health and mana
 	void UpdateResources(float DeltaSeconds);
 
@@ -211,6 +223,8 @@ private:
 	void updateHealthRegen(float regen);
 
 	void UpdateAdrenaline();
+
+	void UpdateModifier();
 
 	bool RunBuff(Trigger trigger, ABaseCharacter* caster, int value = 0);
 
@@ -254,12 +268,18 @@ private:
 	UPROPERTY(Replicated)
 	FSkillCooldown skillcooldowns[8];
 	
-	UPROPERTY()
+	UPROPERTY(Replicated)
 	FAdrenaline m_AdrenalineList[8];
 	
 	int m_ConditionCount;
 	int m_BuffCount;
 	int m_DebuffCount;
+
+	float m_NewAttackSpeed;
+	float m_AttackSpeed;
+	float m_leftAttackTime;
+	float m_DefaultMovementSpeed;
+	float m_MovementSpeed;
 
 	UPROPERTY(Replicated)
 	FWeaponValues weapon;

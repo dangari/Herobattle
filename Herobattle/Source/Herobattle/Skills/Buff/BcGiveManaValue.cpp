@@ -21,7 +21,7 @@ bool UBcGiveManaValue::run(ABaseCharacter* caster, ABaseCharacter* self, int val
 	ABaseCharacter* newTarget = getTarget(caster, self);
 	if (m_CostType == CostType::MANA)
 	{
-		int manacost = newTarget->currentSkill.skill->properties.manaCost;
+		int manacost = newTarget->currentSkill.skill->properties.cost;
 		int mana = FPlatformMath::RoundToInt((m_ManaFactor / 100)*manacost);
 		newTarget->ChangeMana(mana);
 	}

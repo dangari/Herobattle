@@ -182,6 +182,9 @@ public:
 	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = Info)
 	TeamColor ETeam;
 
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = Info)
+	ProfessionName proffession;
+
 	UPROPERTY(Replicated)
 	USkill* skillList[8];
 
@@ -199,7 +202,7 @@ protected:
 private:
 
 	void InitializeAdrenaline();
-
+	void InitializeSkills();
 	// updates health and mana
 	void UpdateResources(float DeltaSeconds);
 

@@ -8,6 +8,7 @@
 #include "HerobattleGameMode.h"
 #include "SkillMessages.h"
 #include "Engine.h"
+#include "Skills/XMLSkillReader.h"
 
 ABaseCharacter::ABaseCharacter()
 :m_MaxHealth(480),
@@ -41,15 +42,7 @@ void ABaseCharacter::BeginPlay()
 	if (HasAuthority())
 	{
 		m_DefaultMovementSpeed = GetCharacterMovement()->MaxWalkSpeed;
-		AHerobattleGameMode* gm = (AHerobattleGameMode*)(GetWorld()->GetAuthGameMode());
-		skillList[0] = gm->skillList[0];
-		skillList[1] = gm->skillList[1];
-		skillList[2] = gm->skillList[2];
-		skillList[3] = gm->skillList[3];
-		skillList[4] = gm->skillList[4];
-		skillList[5] = gm->skillList[5];
-		skillList[6] = gm->skillList[6];
-		skillList[7] = gm->skillList[7];
+		InitializeSkills();
 		InitializeAdrenaline();
 		messages = NewObject<USkillMessages>();
 		weapon = FWeaponValues(Weapon::STAFF);
@@ -132,6 +125,51 @@ void ABaseCharacter::InitializeAdrenaline()
 		}
 		i++;
 	}
+}
+
+void ABaseCharacter::InitializeSkills()
+{
+	XMLSkillReader* skillReader = new XMLSkillReader();
+	TArray<USkill*> skillList;
+	FString fileName = TEXT("Source/Herobattle/Definitions/Monk.xml");
+	switch (proffession)
+	{
+	case ProfessionName::NONE:
+		break;
+	case ProfessionName::ASSASINE:
+		break;
+	case ProfessionName::ELEMENTALIST:
+		fileName = TEXT("Source/Herobattle/Definitions/EleHero.xml");
+		break;
+	case ProfessionName::MONK:
+		fileName = TEXT("Source/Herobattle/Definitions/Monk.xml");
+		break;
+	case ProfessionName::DERWISH:
+		break;
+	case ProfessionName::NEKROMANT:
+		break;
+	case ProfessionName::PARAGON:
+		break;
+	case ProfessionName::WARRIOR:
+		fileName = TEXT("Source/Herobattle/Definitions/Warrior.xml");
+		break;
+	case ProfessionName::MESMER:
+		break;
+	case ProfessionName::RITUALIST:
+		break;
+	default:
+		break;
+	}
+	TArray<USkill*> curSkillList = skillReader->ReadXmlSkillFile(fileName);
+
+	skillList[0] = curSkillList[0];
+	skillList[1] = curSkillList[1];
+	skillList[2] = curSkillList[2];
+	skillList[3] = curSkillList[3];
+	skillList[4] = curSkillList[4];
+	skillList[5] = curSkillList[5];
+	skillList[6] = curSkillList[6];
+	skillList[7] = curSkillList[7];
 }
 
 void ABaseCharacter::UpdateResources(float DeltaSeconds){

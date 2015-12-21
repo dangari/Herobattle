@@ -70,6 +70,9 @@ public:
 	ABaseCharacter();
 	~ABaseCharacter();
 	
+	UFUNCTION(BlueprintCallable, Category = Mechanics)
+	void InitializeSkills();
+
 	virtual void BeginPlay() override;
 
 	// Called every frame
@@ -202,7 +205,7 @@ protected:
 private:
 
 	void InitializeAdrenaline();
-	void InitializeSkills();
+	
 	// updates health and mana
 	void UpdateResources(float DeltaSeconds);
 

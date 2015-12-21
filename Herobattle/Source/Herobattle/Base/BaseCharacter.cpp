@@ -130,7 +130,6 @@ void ABaseCharacter::InitializeAdrenaline()
 void ABaseCharacter::InitializeSkills()
 {
 	XMLSkillReader* skillReader = new XMLSkillReader();
-	TArray<USkill*> skillList;
 	FString fileName = TEXT("Source/Herobattle/Definitions/Monk.xml");
 	switch (proffession)
 	{

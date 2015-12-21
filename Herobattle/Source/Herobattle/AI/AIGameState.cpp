@@ -4,6 +4,7 @@
 #include "AIGameState.h"
 #include "Base/BaseCharacter.h"
 #include "HeroBattleHero.h"
+#include "Enum/CharacterEnums.h"
 
 
 
@@ -21,6 +22,7 @@ UAIGameState::~UAIGameState()
 void UAIGameState::newState(ABaseCharacter* owner)
 {
 	m_owner = Cast<AHeroBattleHero>(owner);
+	m_ownerState = m_owner->AiExtractor(owner);
 	EnemyOldAIState = EnemyCurrentAIState;
 	TArray<FCharacterState> newEnemyState;
 	EnemyCurrentAIState = newEnemyState;
@@ -42,6 +44,56 @@ void UAIGameState::addCharacterState(FCharacterState state)
 	{
 		AlliesCurrentAIState.Add(state);
 	}
+}
+
+
+
+
+
+
+void UAIGameState::UpdateAttackerNumber()
+{
+	for (auto& ally : AlliesCurrentAIState)
+	{
+		for (auto enemy : EnemyCurrentAIState)
+		{
+			if (enemy.selectedTarget == ally.self)
+			{
+				if (enemy.state == HBCharacterState::AUTOATTACK ||
+					(enemy.state == HBCharacterState::CASTING && (enemy.skillType == SkillType::MELEEATTACK || enemy.skillType == SkillType::RANGEATTACK)))
+				{
+					ally.attackers++;
+				}
+				else if (enemy.state == HBCharacterState::CASTING)
+				{
+					ally.caster++;
+				}
+
+			}
+		}
+	}
+	for (auto enemy : EnemyCurrentAIState)
+	{
+		if (enemy.selectedTarget == m_owner)
+		{
+			if (enemy.state == HBCharacterState::AUTOATTACK ||
+				(enemy.state == HBCharacterState::CASTING && (enemy.skillType == SkillType::MELEEATTACK || enemy.skillType == SkillType::RANGEATTACK)))
+			{
+				m_ownerState.attackers++;
+			}
+			else if (enemy.state == HBCharacterState::CASTING)
+			{
+				m_ownerState.caster++;
+			}
+
+		}
+	}
+
+}
+
+FCharacterState UAIGameState::getOwnerState()
+{
+	return m_ownerState;
 }
 
 TArray<FCharacterState> UAIGameState::getAlliesCurrentAIState()

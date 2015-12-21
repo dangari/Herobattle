@@ -29,6 +29,8 @@ public:
 	//adds a characterState to currentAiState
 	void addCharacterState(FCharacterState state);
 
+	void UpdateAttackerNumber();
+
 	TArray<FCharacterState> getAlliesCurrentAIState();
 
 	TArray<FCharacterState> getAlliesOldAIState();
@@ -36,6 +38,8 @@ public:
 	TArray<FCharacterState> getEnemyCurrentAIState();
 
 	TArray<FCharacterState> getEnemyOldAIState();
+
+	FCharacterState getOwnerState();
 
 	void addDeltaTime(float DeltaTime);
 
@@ -54,4 +58,5 @@ private:
 
 	
 	AHeroBattleHero* m_owner;
+	FCharacterState m_ownerState;
 };

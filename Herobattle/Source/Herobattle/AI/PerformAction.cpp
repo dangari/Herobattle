@@ -96,10 +96,10 @@ void UPerformAction::fillScoreList(UAIGameState* aiGameState)
 					break;
 				case TargetType::SELFFRIEND:
 					calcSkillScore(aiGameState->getAlliesCurrentAIState(), skill, i);
-					calcSkillScore(m_owner, skill, i);
+					calcSkillScore(aiGameState->getOwnerState(), skill, i);
 					break;
 				case  TargetType::SELF:
-					calcSkillScore(m_owner, skill, i);
+					calcSkillScore(aiGameState->getOwnerState(), skill, i);
 					break;
 				default:
 					break;
@@ -128,9 +128,8 @@ void UPerformAction::calcSkillScore(TArray<FCharacterState> characterState, USki
 	}
 }
 
-void UPerformAction::calcSkillScore(ABaseCharacter* character, USkill* skill, int slot)
+void UPerformAction::calcSkillScore(FCharacterState characterState, USkill* skill, int slot)
 {
-	FCharacterState characterState = character->AiExtractor(character);
 	float score = skill->getScore(m_owner, characterState);
 	if (score > 0)
 	{

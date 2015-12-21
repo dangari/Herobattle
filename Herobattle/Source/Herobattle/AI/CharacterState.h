@@ -41,4 +41,9 @@ struct FCharacterState
 
 	HBCharacterState state;
 
+	int attackers;
+	int caster;
+
+	SkillType skillType;
+
 };

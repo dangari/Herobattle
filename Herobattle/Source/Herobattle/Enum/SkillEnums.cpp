@@ -74,7 +74,9 @@ SkillType SkillEnums::stringToSkillType(FString sSkillType)
 		return SkillType::HEAL;
 	if (sSkillType.Equals(TEXT("UNIQUE_BUFF")))
 		return SkillType::UNIQUE_BUFF;
-	return SkillType::SPELL;
+	if (sSkillType.Equals(TEXT("NONE")))
+		return SkillType::NONE;
+	return SkillType::NONE;
 }
 
 TargetType SkillEnums::stringToTargetType(FString sTargetType)

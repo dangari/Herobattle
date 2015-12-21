@@ -367,6 +367,10 @@ FCharacterState ABaseCharacter::AiExtractor(ABaseCharacter* character)
 	characterState.selectedTarget = selectedTarget;
 	characterState.self = this;
 	characterState.state = m_State;
+	if (m_State == HBCharacterState::CASTING)
+		characterState.skillType = currentSkill.skill->properties.skillType;
+	else
+		characterState.skillType = SkillType::NONE;
 	return characterState;
 }
 

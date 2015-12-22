@@ -56,6 +56,8 @@ float UBcMovementSpeed::getScore(ABaseCharacter* caster, FCharacterState charact
 			score = 1.f;
 		}
 	}
+	if (m_MovementSpeed < 0 && characterState.state != HBCharacterState::MOVEING)
+		score = 1.f;
 	skillScore->addScore(score, TEXT("movementspeed"));
 	return 1.f;
 }

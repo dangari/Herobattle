@@ -91,6 +91,9 @@ FString USkill::ToString()
 
 float USkill::manaScore(ABaseCharacter* caster, FCharacterState charcterState)
 {
+	if (properties.costType == CostType::ADRENALINE || properties.costType == CostType::NONE)
+		return 1;
+
 	float currentMana = caster->m_Mana;
 	float maxMana = caster->m_MaxMana;
 	int regen = caster->m_ManaRegeneration;

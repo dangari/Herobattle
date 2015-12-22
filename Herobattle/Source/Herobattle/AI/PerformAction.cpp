@@ -46,15 +46,16 @@ AIAction UPerformAction::getNextAction(UBehaviorTreeComponent& OwnerComp)
 	skillScore.score = 0.f;
 	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
 	FName keyName = "AIGameState";
-	UAIGameState* aiGameState = (UAIGameState*)BlackboardComp->GetValue<UBlackboardKeyType_Object>(keyName);
+	UAIGameState* aiGameState = Cast<UAIGameState>(BlackboardComp->GetValue<UBlackboardKeyType_Object>(keyName));
 	
-	if (aiGameState)
+
+	if (aiGameState && aiGameState->getOwner())
 	{
 		fillScoreList(aiGameState);
 		attackScore = getBestAutoAttack(aiGameState->getEnemyCurrentAIState());
 	}
-	
-	
+
+
 	if (m_ActionList.Num() > 0)
 	{
 		skillScore = getBestScore();
@@ -74,6 +75,8 @@ AIAction UPerformAction::getNextAction(UBehaviorTreeComponent& OwnerComp)
 	{
 		return AIAction::IDLE;
 	}
+
+
 }
 
 void UPerformAction::fillScoreList(UAIGameState* aiGameState)

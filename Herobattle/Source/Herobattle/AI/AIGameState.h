@@ -48,10 +48,16 @@ public:
 	float m_deltaTime;
 
 private:
+	UPROPERTY()
 	TArray<FCharacterState> AlliesCurrentAIState;
+
+	UPROPERTY()
 	TArray<FCharacterState> AlliesOldAIState;
 
+	UPROPERTY()
 	TArray<FCharacterState> EnemyCurrentAIState;
+
+	UPROPERTY()
 	TArray<FCharacterState> EnemyOldAIState;
 	
 	//Time since last newStateCall

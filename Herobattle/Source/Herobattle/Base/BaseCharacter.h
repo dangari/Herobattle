@@ -10,6 +10,7 @@
 #include "Enum/CharacterEnums.h"
 #include "SkillContainer.h"
 #include "AI/CharacterState.h"
+#include "CharacterProperties.h"
 #include "BaseCharacter.generated.h"
 
 
@@ -24,42 +25,7 @@ class UBaseCondition;
 class USkillMessages;
 
 
-USTRUCT(BlueprintType)
-struct FAdrenaline
-{
-	GENERATED_USTRUCT_BODY()
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
-	int32 currentAdrenaline = 0;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
-	int32 maxAdrenaline = 0;
-};
-
-
-USTRUCT(BlueprintType)
-struct FSkillCooldown
-{
-	GENERATED_USTRUCT_BODY()
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skills)
-	float currentCooldown = 0.f;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skills)
-	float maxCooldown = 0.f;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skills)
-	float additionalCoolDown = 0.f;
-};
-
-USTRUCT(BlueprintType)
-struct FBuffList
-{
-	GENERATED_USTRUCT_BODY()
-
-	UPROPERTY()
-	TMap<FString, UBuff*> m_BuffList;
-};
 
 
 UCLASS()
@@ -100,6 +66,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Meachnics)
 	FAdrenaline GetCurrentAdrenaline(uint8 slot);
 
+
 	
 
 
@@ -137,6 +104,8 @@ public:
 	FWeaponValues getWeapon();
 
 	uint8 getBuffCount();
+
+	FCharacterProperties getProperties();
 
 	SkillType getCurrentSkillType();
 

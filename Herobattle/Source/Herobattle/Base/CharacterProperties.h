@@ -3,18 +3,59 @@
 #pragma once
 
 #include "Object.h"
+#include "Enum/CharacterEnums.h"
+#include "Enum/SkillEnums.h"
+#include "Skills/Skill.h"
+#include "Skills/Condition/BaseCondition.h"
 #include "CharacterProperties.generated.h"
-#include "Enum\CharacterEnums.h"
-#include "Enum\SkillEnums.h"
-#include "Skills\Skill.h"
-#include "Skills\Condition\BaseCondition.h"
-#include "BaseCharacter.h"
 
+class ABaseCharacter;
+class UBuff;
 /**
  * 
  */
+
+
+USTRUCT(BlueprintType)
+struct FAdrenaline
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
+	int32 currentAdrenaline = 0;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
+		int32 maxAdrenaline = 0;
+};
+
+
+USTRUCT(BlueprintType)
+struct FSkillCooldown
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skills)
+	float currentCooldown = 0.f;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skills)
+		float maxCooldown = 0.f;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skills)
+		float additionalCoolDown = 0.f;
+};
+
+USTRUCT(BlueprintType)
+struct FBuffList
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY()
+	TMap<FString, UBuff*> m_BuffList;
+};
+
+
 USTRUCT()
-class HEROBATTLE_API FCharacterProperties
+struct HEROBATTLE_API FCharacterProperties
 {
 	GENERATED_USTRUCT_BODY()
 	

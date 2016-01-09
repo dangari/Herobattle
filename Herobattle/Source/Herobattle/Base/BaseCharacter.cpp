@@ -337,6 +337,41 @@ uint8 ABaseCharacter::getBuffCount()
 	return m_BuffCount;
 }
 
+FCharacterProperties ABaseCharacter::getProperties()
+{
+	FCharacterProperties properties;
+	properties.m_MaxHealth = m_MaxHealth;
+	properties.m_Health = m_Health;
+	properties.m_MaxMana = m_MaxMana;
+	properties.m_Mana = m_Mana;
+	properties.m_ManaRegeneration = m_ManaRegeneration;
+	properties.ETeam = ETeam;
+	properties.proffession = proffession;
+
+	for (int i = 0; i < 8; i++)
+	{
+		properties.skillList[i] = skillList[i];
+		properties.skillcooldowns[i] = skillcooldowns[i];
+		properties.m_AdrenalineList[i] = m_AdrenalineList[i];
+	}
+
+	properties.m_condtionList = m_condtionList;
+	properties.m_BuffList = m_BuffList;
+	properties.m_CompleteBuffList = m_CompleteBuffList;
+	properties.attrList = attrList;
+	
+
+	properties.weapon = weapon;
+	properties.m_State = m_State;
+	properties.m_ManaReduction = m_ManaReduction;
+	properties.m_DamageReduction = m_DamageReduction;
+	properties.m_HealthBuffRegneration = m_HealthBuffRegneration;
+	properties.m_ManaBuffRegneration = m_ManaBuffRegneration;
+
+	return properties;
+
+}
+
 bool ABaseCharacter::isEnemy(TeamColor team)
 {
 	bool b = team == ETeam;

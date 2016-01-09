@@ -47,7 +47,7 @@ FWeaponValues::FWeaponValues(Weapon weapon)
 		wType = WeaponType::RANGE;
 		break;
 	case Weapon::STAFF:
-		range = 800.0f;
+		range = 1000.0f;
 		attackSpeed = 1.75;
 		lowDamage = 11.f;
 		maxDamage = 22.f;
@@ -55,7 +55,7 @@ FWeaponValues::FWeaponValues(Weapon weapon)
 		wType = WeaponType::RANGE;
 		break;
 	case Weapon::SPEAR:
-		range = 800.0f;
+		range = 900.0f;
 		attackSpeed = 1.5;
 		lowDamage = 14.f;
 		maxDamage = 27.f;

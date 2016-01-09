@@ -15,7 +15,7 @@ class HEROBATTLE_API AAISimCharacter : public ABaseCharacter
 	
 public:
 	void init(FCharacterState state);
-	void init(ABaseCharacter* character);
+	void init(FCharacterProperties character);
 
 private:
 

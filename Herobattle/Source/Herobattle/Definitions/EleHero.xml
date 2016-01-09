@@ -124,7 +124,7 @@
       <effects>
         <impact>
           <buff value="30" scaling="NONE" usage="INF" type="ENCHANTMENT" trigger="AFTERCAST">
-            <heal value="200" target="SELF" scaling="ENERGY_STORAGE" trigger="CASTMANA">
+            <heal value="200" target="SELF" scaling="ENERGY_STORAGE">
               <step key="1" value="213"/>
               <step key="2" value="227"/>
               <step key="3" value="240"/>

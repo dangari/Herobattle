@@ -130,7 +130,7 @@ void ABaseCharacter::InitializeAdrenaline()
 void ABaseCharacter::InitializeSkills()
 {
 	XMLSkillReader* skillReader = new XMLSkillReader();
-	FString fileName = TEXT("Source/Herobattle/Definitions/Monk.xml");
+	FString fileName = TEXT("Source/Herobattle/Definitions/Warrior.xml");
 	switch (proffession)
 	{
 	case ProfessionName::NONE:
@@ -735,6 +735,15 @@ FWeaponValues ABaseCharacter::getWeapon()
 SkillType ABaseCharacter::getCurrentSkillType()
 {
 	return currentSkill.skill->properties.skillType;
+}
+
+ABaseCharacter* ABaseCharacter::clone()
+{
+	ABaseCharacter* character = NewObject<ABaseCharacter>();
+	character->m_Health = m_Health;
+	character->m_MaxHealth = m_MaxHealth;
+
+	return character;
 }
 
 void ABaseCharacter::knockDownCharacter(float duration)

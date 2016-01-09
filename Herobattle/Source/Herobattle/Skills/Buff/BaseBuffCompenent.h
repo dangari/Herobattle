@@ -42,8 +42,10 @@ public:
 
 	virtual FString ToString();
 	
-protected:
+
 	ABaseCharacter* owner;
+protected:
+	
 	int usage;
 	TargetType targetType;
 

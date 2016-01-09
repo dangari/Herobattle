@@ -100,6 +100,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Meachnics)
 	FAdrenaline GetCurrentAdrenaline(uint8 slot);
 
+	
+
 
 // this Functions get called by Skills
 	void heal(ABaseCharacter* caster, float value, bool withBuff = true);
@@ -137,6 +139,8 @@ public:
 	uint8 getBuffCount();
 
 	SkillType getCurrentSkillType();
+
+	ABaseCharacter* clone();
 
 	void knockDownCharacter(float duration);
 
@@ -201,6 +205,7 @@ protected:
 	UFUNCTION(Server, WithValidation, reliable)
 	void stopCurrenSkill();
 
+	void getBuffs();
 
 private:
 
@@ -254,7 +259,7 @@ private:
 
 	float getWalkDistance(APawn* pawn);
 
-
+protected:
 
 	Profession primaryProfession;
 	Profession secondaryProfession;

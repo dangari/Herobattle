@@ -20,6 +20,8 @@ public:
 
 	void init(ABaseCharacter* owner, TArray<FBuffContainer> bCBuffList, float duration, FString name, FString usage, FSkillProperties properties);
 
+	void initDummyBuff();
+
 	//value is incoming damage or heal
 	// heal is positive and and damage is negative
 	bool run(ABaseCharacter* target, ABaseCharacter* self, int value = 0);
@@ -32,8 +34,10 @@ public:
 	//getter/setter
 	FString getName();
 
+	UBuff* copy();
+
 	
-protected:
+
 	UPROPERTY()
 	TArray<UBaseBuffCompenent*> m_BcList;
 

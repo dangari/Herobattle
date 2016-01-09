@@ -43,6 +43,13 @@ void UBuff::init(ABaseCharacter* owner, TArray<FBuffContainer> bCBuffList, float
 }
 
 
+void UBuff::initDummyBuff()
+{
+	m_Duration = 10.f;
+	m_Name = TEXT("Dummy Buff");
+	m_IsInfinityUsage = true;
+}
+
 bool UBuff::run(ABaseCharacter* target, ABaseCharacter* self, int value)
 {
 	bool b = true;
@@ -88,4 +95,20 @@ float UBuff::getScore(ABaseCharacter* caster, FCharacterState characterState, US
 FString UBuff::getName()
 {
 	return m_Name;
+}
+
+UBuff* UBuff::copy()
+{
+	UBuff* buff = NewObject<UBuff>();
+	buff->m_Duration = m_Duration; 
+	buff->m_Name = m_Name;
+	buff->m_IsInfinityUsage = m_IsInfinityUsage;
+	buff->m_Usage = m_Usage;
+	
+	for (auto& bC : m_BcList)
+	{
+		buff->m_BcList.Add(bC);
+	}
+	
+	return buff;
 }

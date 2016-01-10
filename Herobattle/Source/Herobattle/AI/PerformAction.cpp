@@ -6,6 +6,7 @@
 #include "BehaviorTree/Blackboard/BlackboardKeyType_Object.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Skills/Skill.h"
+#include "AISimCharacter.h"
 
 
 
@@ -141,15 +142,34 @@ void UPerformAction::calcSkillScore(TArray<FCharacterState> characterState, USki
 	}
 }
 
+void UPerformAction::calcSkillScore(FCharacterState characterState, USkill* skill, int slot)
+{
+	float score = skill->getScore(m_owner, characterState);
+	if (score > 0)
+	{
+		FActionScore aScore;
+		aScore.action = AIAction::SKILL;
+		aScore.slot = slot;
+		aScore.target = characterState.self;
+		aScore.score = score;
+		m_ActionList.Add(aScore);
+	}
+}
+
 
 
 void UPerformAction::TemporalSkillScore(UAIGameState* aiGameState)
 {
+	TArray<FActionScore> tempActionList;
+	UAIGameState* newGameState = aiGameState;
+	AAISimCharacter* character = NewObject<AAISimCharacter>();
+	character->init(m_owner->getProperties());
+
 	for (int i = 0; i < 3; i++)
 	{
 		for (int i = 0; i < 8; i++)
 		{
-			if (m_owner->canUseSkill(i))
+			if (character->canUseSkill(i))
 			{
 				USkill* skill = m_owner->skillList[i];
 				if (skill && !(m_owner->skillIsOnCooldown(i)))
@@ -157,17 +177,17 @@ void UPerformAction::TemporalSkillScore(UAIGameState* aiGameState)
 					switch (skill->properties.targetType)
 					{
 					case TargetType::ENEMY:
-						calcSkillScore(aiGameState->getEnemyCurrentAIState(), skill, i);
+						calcSkillScore(newGameState->getEnemyCurrentAIState(), skill, i);
 						break;
 					case  TargetType::FRIEND:
-						calcSkillScore(aiGameState->getAlliesCurrentAIState(), skill, i);
+						calcSkillScore(newGameState->getAlliesCurrentAIState(), skill, i);
 						break;
 					case TargetType::SELFFRIEND:
-						calcSkillScore(aiGameState->getAlliesCurrentAIState(), skill, i);
-						calcSkillScore(aiGameState->getOwnerState(), skill, i);
+						calcSkillScore(newGameState->getAlliesCurrentAIState(), skill, i);
+						calcSkillScore(newGameState->getOwnerState(), skill, i);
 						break;
 					case  TargetType::SELF:
-						calcSkillScore(aiGameState->getOwnerState(), skill, i);
+						calcSkillScore(newGameState->getOwnerState(), skill, i);
 						break;
 					default:
 						break;
@@ -177,6 +197,19 @@ void UPerformAction::TemporalSkillScore(UAIGameState* aiGameState)
 		}
 	}
 	FActionScore action = getBestScore();
+	tempActionList.Add(action);
+	float DeltaTime = 0.5f;
+	if (action.action == AIAction::AUTOATACK)
+	{
+		DeltaTime = m_owner->getWeapon().attackSpeed;
+	}
+	if (action.action == AIAction::SKILL)
+	{
+		DeltaTime = m_owner->skillList[action.slot]->properties.castTime;
+	}
+	newGameState->newState(character);
+	newGameState = newGameState->simulate(DeltaTime);
+	//character->simulate()
 }
 
 FActionScore UPerformAction::getBestAutoAttack(TArray<FCharacterState> chracterState)

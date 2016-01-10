@@ -51,7 +51,7 @@ public:
 
 private:
 
-	TArray<FCharacterState> simulateCharacter(float DeltaTime, TArray<FCharacterState> state, UAIGameState* gameState);
+	void simulateCharacter(float DeltaTime, TArray<FCharacterState> stateList, UAIGameState* gameState);
 
 	UPROPERTY()
 	TArray<FCharacterState> AlliesCurrentAIState;

@@ -105,6 +105,7 @@ UAIGameState* UAIGameState::simulate(float DeltaTime)
 	gameState->newState(m_owner);
 	simulateCharacter(DeltaTime, AlliesCurrentAIState, gameState);
 	simulateCharacter(DeltaTime, EnemyCurrentAIState, gameState);
+	return gameState;
 }
 
 TArray<FCharacterState> UAIGameState::getAlliesCurrentAIState()
@@ -137,7 +138,7 @@ AHeroBattleHero* UAIGameState::getOwner()
 	return m_owner;
 }
 
-TArray<FCharacterState> UAIGameState::simulateCharacter(float DeltaTime, TArray<FCharacterState> stateList, UAIGameState* gameState)
+void UAIGameState::simulateCharacter(float DeltaTime, TArray<FCharacterState> stateList, UAIGameState* gameState)
 {
 	AAISimCharacter* character = NewObject<AAISimCharacter>();
 	TArray<FCharacterState> newStateList;

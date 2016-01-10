@@ -15,6 +15,7 @@
 UPerformAction::UPerformAction()
 {
 	bCreateNodeInstance = true;
+	temporalPlanning = false;
 }
 
 UPerformAction::~UPerformAction()
@@ -24,31 +25,46 @@ UPerformAction::~UPerformAction()
 
 EBTNodeResult::Type UPerformAction::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	switch (getNextAction(OwnerComp))
+	FActionScore action;
+
+	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
+	FName keyName = "AIGameState";
+	UAIGameState* aiGameState = Cast<UAIGameState>(BlackboardComp->GetValue<UBlackboardKeyType_Object>(keyName));
+
+	if (aiGameState)
 	{
-	case AIAction::SKILL:
-		m_owner->UseSkill(nextSkill.target, nextSkill.slot);
-		m_owner->selectedTarget = nextSkill.target;
-		break;
-	case  AIAction::AUTOATACK:
-		m_owner->setState(HBCharacterState::AUTOATTACK,nextSkill.target);
-		break;
-	default:
-		break;
+		if (temporalPlanning)
+		{
+			action = TemporalSkillScore(aiGameState, m_owner);
+		}
+		else
+		{
+			action = getNextAction(aiGameState);
+		}
+		switch (action.action)
+		{
+		case AIAction::SKILL:
+			m_owner->UseSkill(action.target, action.slot);
+			m_owner->selectedTarget = action.target;
+			break;
+		case  AIAction::AUTOATACK:
+			m_owner->setState(HBCharacterState::AUTOATTACK, action.target);
+			break;
+		default:
+			break;
+		}
 	}
 	return EBTNodeResult::Succeeded;
 }
 
-AIAction UPerformAction::getNextAction(UBehaviorTreeComponent& OwnerComp)
+FActionScore UPerformAction::getNextAction(UAIGameState* aiGameState)
 {
 
 	FActionScore attackScore;
 	FActionScore skillScore;
 	attackScore.score = 0.f;
 	skillScore.score = 0.f;
-	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
-	FName keyName = "AIGameState";
-	UAIGameState* aiGameState = Cast<UAIGameState>(BlackboardComp->GetValue<UBlackboardKeyType_Object>(keyName));
+	
 	
 
 	if (aiGameState && aiGameState->getOwner())
@@ -62,27 +78,20 @@ AIAction UPerformAction::getNextAction(UBehaviorTreeComponent& OwnerComp)
 		attackScore.score = 0.2f;
 		m_ActionList.Add(attackScore);
 	}
-	else
-	{
-		attackScore.score = 0.2f;
-		attackScore.action = AIAction::IDLE;
-		m_ActionList.Add(attackScore);
-	}
 
-	if (m_ActionList.Num() > 0)
-	{
-		FActionScore action = getBestScore();
-		if (action.action == AIAction::SKILL)
+	FActionScore idleScore;
+	idleScore.score = 0.19f;
+	idleScore.action = AIAction::IDLE;
+	m_ActionList.Add(idleScore);
+
+
+
+	FActionScore action = getBestScore();
+	if (action.action == AIAction::SKILL)
 		nextSkill = action;
-		m_ActionList.Empty();
-		return action.action;
+	m_ActionList.Empty();
+	return action;
 
-		
-	}
-	else
-	{
-		return AIAction::IDLE;
-	}
 	
 
 
@@ -197,16 +206,44 @@ TArray<FActionScore> UPerformAction::calcTempSkillScore(ABaseCharacter* owner, F
 	return actionList;
 }
 
-void UPerformAction::TemporalSkillScore(UAIGameState* aiGameState, ABaseCharacter* owner)
+FActionScore UPerformAction::TemporalSkillScore(UAIGameState* aiGameState, ABaseCharacter* owner)
 {
 	TArray<FActionScore> tempActionList;
 	UAIGameState* newGameState = aiGameState;
-	AAISimCharacter* character = NewObject<AAISimCharacter>();
-	character->init(owner->getProperties());
-
+	AHerobattleCharacter* character = Cast<AHerobattleCharacter>(m_owner->owningPlayer);
 
 	TArray<FActionScore> bestActionList = getSkillScore(newGameState, owner, 2);
+	TArray<FSimAction> simActionList;
+	int size = bestActionList.Num() - 1;
+	float time = 0.f;
+	for (int i = size; i >= 0; i--)
+	{
+		FActionScore action = bestActionList[i];
+		FSimAction simAction;
+		simAction.action = action.action;
+		simAction.targetName = action.target->m_Name;
+		simAction.ownerName = m_owner->m_Name;
+		simAction.skill = m_owner->skillList[action.slot];
+		switch (action.action)
+		{
+		case AIAction::IDLE:
+			time += 0.5;
+			break;
+		case AIAction::AUTOATACK:
+			time += m_owner->getWeapon().attackSpeed;
+			break;
+		case AIAction::SKILL:
+			time += simAction.skill->properties.castTime;
+			break;
+		default:
+			break;
+		}
+		simActionList.Add(simAction);
+		
+	}
+	character->blackboard->addAction(m_owner->m_Name, simActionList);
 
+	return bestActionList[bestActionList.Num() - 1];
 }
 
 TArray<FActionScore> UPerformAction::getSkillScore(UAIGameState* newGameState, ABaseCharacter* owner, int depth)
@@ -223,6 +260,7 @@ TArray<FActionScore> UPerformAction::getSkillScore(UAIGameState* newGameState, A
 	{
 		attackScore.score = 0.2f;
 		attackScore.action = AIAction::IDLE;
+		attackScore.target = owner;
 		temporalActionScoreList.Add(attackScore);
 	}
 

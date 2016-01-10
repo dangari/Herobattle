@@ -61,14 +61,14 @@ public:
 	
 
 private:
-	AIAction getNextAction(UBehaviorTreeComponent& OwnerComp);
+	FActionScore getNextAction(UAIGameState* aiGameState);
 	void fillScoreList(UAIGameState* aiGameState);
 	//calculates score for characterstate
 	void calcSkillScore(TArray<FCharacterState> characterState, USkill* skill, int slot);
 	// calculates score for character most time this function is used for the owner
 	void calcSkillScore(FCharacterState characterState, USkill* skill, int slot);
 
-	void TemporalSkillScore(UAIGameState* aiGameState, ABaseCharacter* owner);
+	FActionScore TemporalSkillScore(UAIGameState* aiGameState, ABaseCharacter* owner);
 
 	TArray<FActionScore> calcTempSkillScore(ABaseCharacter* owner, TArray<FCharacterState> characterState, USkill* skill, int slot);
 	// calculates score for character most time this function is used for the owner
@@ -87,4 +87,5 @@ private:
 
 	AHeroBattleHero* m_owner;
 	FActionScore nextSkill;
+	bool temporalPlanning;
 };

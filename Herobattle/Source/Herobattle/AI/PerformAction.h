@@ -26,6 +26,22 @@ struct FActionScore
 	}
 };
 
+USTRUCT()
+struct FTemporalActionScore
+{
+
+	GENERATED_USTRUCT_BODY()
+	TArray<FActionScore> actionList;
+	int slot;
+	float score;
+	ABaseCharacter* target;
+
+	inline static bool ConstPredicate(const FActionScore ip1, const FActionScore ip2)
+	{
+		return (ip1.score > ip2.score);
+	}
+};
+
 /**
  * 
  */
@@ -48,16 +64,27 @@ private:
 	AIAction getNextAction(UBehaviorTreeComponent& OwnerComp);
 	void fillScoreList(UAIGameState* aiGameState);
 	//calculates score for characterstate
-	void calcSkillScore(TArray<FCharacterState> chracterState, USkill* skill, int slot);
+	void calcSkillScore(TArray<FCharacterState> characterState, USkill* skill, int slot);
 	// calculates score for character most time this function is used for the owner
 	void calcSkillScore(FCharacterState characterState, USkill* skill, int slot);
 
-	void TemporalSkillScore(UAIGameState* aiGameState);
+	void TemporalSkillScore(UAIGameState* aiGameState, ABaseCharacter* owner);
+
+	TArray<FActionScore> calcTempSkillScore(ABaseCharacter* owner, TArray<FCharacterState> characterState, USkill* skill, int slot);
+	// calculates score for character most time this function is used for the owner
+	TArray<FActionScore> calcTempSkillScore(ABaseCharacter* owner, FCharacterState characterState, USkill* skill, int slot);
+
+	TArray<FActionScore> getSkillScore(UAIGameState* newGameState, ABaseCharacter* owner, int depth);
+
+	void simulateNextState(UAIGameState* newGameState, TArray<FActionScore> actionList, int depth);
+
+
 
 	FActionScore getBestAutoAttack(TArray<FCharacterState> chracterState);
 
 	FActionScore getBestScore();
 	TArray<FActionScore> m_ActionList;
+
 	AHeroBattleHero* m_owner;
 	FActionScore nextSkill;
 };

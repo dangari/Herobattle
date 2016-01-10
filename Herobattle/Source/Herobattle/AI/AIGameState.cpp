@@ -94,6 +94,34 @@ void UAIGameState::UpdateAttackerNumber()
 
 }
 
+void UAIGameState::replaceState(FCharacterState state)
+{
+	if (m_owner->ETeam == state.ETeam)
+	{
+		for (auto& currentState : AlliesCurrentAIState)
+		{
+			if (state.name.Equals(currentState.name))
+			{
+				AlliesCurrentAIState.Remove(currentState);
+				
+			}
+		}
+		AlliesCurrentAIState.Add(state);
+	}
+	else
+	{
+		for (auto& currentState : EnemyCurrentAIState)
+		{
+			if (state.name.Equals(currentState.name))
+			{
+				EnemyCurrentAIState.Remove(currentState);
+				
+			}
+		}
+		EnemyCurrentAIState.Add(state);
+	}
+}
+
 FCharacterState UAIGameState::getOwnerState()
 {
 	return m_ownerState;
@@ -128,6 +156,24 @@ TArray<FCharacterState> UAIGameState::getEnemyOldAIState()
 	return EnemyCurrentAIState;
 }
 
+TMap<FString, FCharacterState> UAIGameState::getCharacterList()
+{
+	for (auto& state : AlliesCurrentAIState)
+	{
+		FString name = state.name;
+		completeList.Add(name, state);
+	}
+	for (auto& state : EnemyCurrentAIState)
+	{
+		FString name = state.name;
+		completeList.Add(name, state);
+	}
+	FString name = m_ownerState.name;
+	completeList.Add(name, m_ownerState);
+
+	return completeList;
+}
+
 void UAIGameState::addDeltaTime(float DeltaTime)
 {
 	m_deltaTime += DeltaTime;
@@ -148,7 +194,7 @@ void UAIGameState::simulateCharacter(float DeltaTime, TArray<FCharacterState> st
 		TArray<FSimAction> actionList = dummyCharacter->blackboard->getActions(state.name, DeltaTime);
 
 		character->init(state);
-		character->simulate(actionList, completeList,DeltaTime);
+		character->simulate(actionList, getCharacterList(), DeltaTime);
 		gameState->addCharacterState(character->AiExtractor(m_owner));
 	}
 }

@@ -31,6 +31,8 @@ public:
 
 	void UpdateAttackerNumber();
 
+	void replaceState(FCharacterState state);
+
 	TArray<FCharacterState> getAlliesCurrentAIState();
 
 	TArray<FCharacterState> getAlliesOldAIState();
@@ -38,6 +40,8 @@ public:
 	TArray<FCharacterState> getEnemyCurrentAIState();
 
 	TArray<FCharacterState> getEnemyOldAIState();
+
+	TMap<FString, FCharacterState> getCharacterList();
 
 	FCharacterState getOwnerState();
 

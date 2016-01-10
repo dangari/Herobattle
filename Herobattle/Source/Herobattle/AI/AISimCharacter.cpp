@@ -94,38 +94,47 @@ void AAISimCharacter::simulate(TArray<FSimAction> actionList, TMap<FString, FCha
 	for (auto& action : actionList)
 	{
 		if (duration + action.time > DeltaTime)
-		if (action.action == AIAction::SKILL)
 		{
-			if (action.ownerName.Equals(m_Name))
-			{
-				if (skillCost(getSlot(action.skill)))
-				{
-					action.skill->run(NewObject<ABaseCharacter>(), this);
-					RunBuff(Trigger::AFTERCAST, this);
-				}
-			}
-			else
-			{
-				AAISimCharacter* dummyCharacter = NewObject<AAISimCharacter>();
-				dummyCharacter->init(*characterList.Find(action.ownerName));
-				action.skill->run(this, dummyCharacter);
-			}
+
+			simulateAction(action, characterList, duration);
+
+			duration += action.time - duration;
 		}
-		if (action.action == AIAction::AUTOATACK)
-		{
-			if (action.ownerName.Equals(m_Name))
-			{
-				simulateAutoAttack();
-			}
-			else
-			{
-				FCharacterState owner = *characterList.Find(action.ownerName);
-				damage(NewObject<ABaseCharacter>(),owner.weapon.getDamage(), HBDamageType::PHYSICAL);
-			}
-		}
-		Update(action.time - duration);
-		duration += action.time - duration;
 	}
+}
+
+void AAISimCharacter::simulateAction(FSimAction &action, TMap<FString, FCharacterState> &characterList, float duration)
+{
+	if (action.action == AIAction::SKILL)
+	{
+		if (action.ownerName.Equals(m_Name))
+		{
+			if (skillCost(getSlot(action.skill)))
+			{
+				action.skill->run(NewObject<ABaseCharacter>(), this);
+				RunBuff(Trigger::AFTERCAST, this);
+			}
+		}
+		else
+		{
+			AAISimCharacter* dummyCharacter = NewObject<AAISimCharacter>();
+			dummyCharacter->init(*characterList.Find(action.ownerName));
+			action.skill->run(this, dummyCharacter);
+		}
+	}
+	if (action.action == AIAction::AUTOATACK)
+	{
+		if (action.ownerName.Equals(m_Name))
+		{
+			simulateAutoAttack();
+		}
+		else
+		{
+			FCharacterState owner = *characterList.Find(action.ownerName);
+			damage(NewObject<ABaseCharacter>(), owner.weapon.getDamage(), HBDamageType::PHYSICAL);
+		}
+	}
+	Update(action.time - duration);
 }
 
 void AAISimCharacter::applyCondition(TArray<Condition> conditions)

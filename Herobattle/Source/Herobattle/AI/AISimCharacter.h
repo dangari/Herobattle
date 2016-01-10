@@ -20,6 +20,8 @@ public:
 
 	void simulate(TArray<FSimAction> actionList, TMap<FString, FCharacterState> characterList, float DeltaTime);
 
+	void simulateAction(FSimAction &action, TMap<FString, FCharacterState> &characterList, float duration);
+
 
 
 private:

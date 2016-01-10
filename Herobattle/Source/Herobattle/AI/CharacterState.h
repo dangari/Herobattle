@@ -50,4 +50,9 @@ struct FCharacterState
 
 	FString name;
 
+	inline bool operator==(const FCharacterState& Other) const
+	{
+		return name.Equals(Other.name);
+	}
+
 };

@@ -46,4 +46,6 @@ struct FCharacterState
 
 	SkillType skillType;
 
+	TMap<Attributes, uint8 > attrList;
+
 };

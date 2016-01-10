@@ -24,6 +24,8 @@ void AAISimCharacter::init(FCharacterState state)
 
 	m_hasStance = state.hasStance;
 
+	attrList = state.attrList;
+
 	applyCondition(state.conditions);
 
 	if (m_isBuffed)
@@ -83,6 +85,47 @@ void AAISimCharacter::init(FCharacterProperties properties)
 		UBaseCondition* condition = UBaseCondition::MAKE(condi->condition, condi->currentDuration);
 		ABaseCharacter::applyCondition(condi);
 	}
+	Update(0.f);
+}
+
+void AAISimCharacter::simulate(TArray<FSimAction> actionList, TMap<FString, FCharacterState> characterList, float DeltaTime)
+{
+	float duration = 0.f;
+	for (auto& action : actionList)
+	{
+		if (duration + action.time > DeltaTime)
+		if (action.action == AIAction::SKILL)
+		{
+			if (action.ownerName.Equals(m_Name))
+			{
+				if (skillCost(getSlot(action.skill)))
+				{
+					action.skill->run(NewObject<ABaseCharacter>(), this);
+					RunBuff(Trigger::AFTERCAST, this);
+				}
+			}
+			else
+			{
+				AAISimCharacter* dummyCharacter = NewObject<AAISimCharacter>();
+				dummyCharacter->init(*characterList.Find(action.ownerName));
+				action.skill->run(this, dummyCharacter);
+			}
+		}
+		if (action.action == AIAction::AUTOATACK)
+		{
+			if (action.ownerName.Equals(m_Name))
+			{
+				simulateAutoAttack();
+			}
+			else
+			{
+				FCharacterState owner = *characterList.Find(action.ownerName);
+				damage(NewObject<ABaseCharacter>(),owner.weapon.getDamage(), HBDamageType::PHYSICAL);
+			}
+		}
+		Update(action.time - duration);
+		duration += action.time - duration;
+	}
 }
 
 void AAISimCharacter::applyCondition(TArray<Condition> conditions)
@@ -100,4 +143,25 @@ void AAISimCharacter::applyDummyBuff()
 	UBuff* dummyBuff = NewObject<UBuff>();
 	dummyBuff->initDummyBuff();
 	applyBuff(dummyBuff, Trigger::NONE);
+}
+
+
+
+
+void AAISimCharacter::simulateAutoAttack()
+{
+	UpdateAdrenaline();
+	m_State = HBCharacterState::AUTOATTACK;
+}
+
+int AAISimCharacter::getSlot(USkill* skill)
+{
+	for (int i = 0; i < 8; i++)
+	{
+		if (skillList[i]->name.Equals(skill->name))
+		{
+			return i;
+		}
+	}
+	return 0;
 }

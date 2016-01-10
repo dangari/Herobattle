@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Base/BaseCharacter.h"
+#include "HBBlackboard.h"
 #include "AISimCharacter.generated.h"
 
 /**
@@ -17,10 +18,18 @@ public:
 	void init(FCharacterState state);
 	void init(FCharacterProperties character);
 
+	void simulate(TArray<FSimAction> actionList, TMap<FString, FCharacterState> characterList, float DeltaTime);
+
+
+
 private:
 
 	void applyCondition(TArray<Condition> conditions);
-	void applyDummyBuff();
+	void applyDummyBuff();	
+
+	void simulateAutoAttack();
+	
+	int getSlot(USkill* skill);
 
 
 	FVector m_location;

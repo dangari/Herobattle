@@ -72,24 +72,30 @@ void ABaseCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	if (HasAuthority())
 	{
-		RunBuff(Trigger::NONE, this);
-		UpdateModifier();
-		UpdateCondtion(DeltaTime);
-		UpdateRegeneration();
-		UpdateResources(DeltaTime);
-		UpdateSkillCooldown(DeltaTime);
-		UpdateBuffs(DeltaTime);
-		if (currentSkill.castingSkill)
-		{
-			UpdateCurrentSkill(DeltaTime);
-		}
+		Update(DeltaTime);
 
-		if (m_State == HBCharacterState::AUTOATTACK)
-		{
-			UpdateAttack(DeltaTime);
-		}
 	}
 
+}
+
+void ABaseCharacter::Update(float DeltaTime)
+{
+	RunBuff(Trigger::NONE, this);
+	UpdateModifier();
+	UpdateCondtion(DeltaTime);
+	UpdateRegeneration();
+	UpdateResources(DeltaTime);
+	UpdateSkillCooldown(DeltaTime);
+	UpdateBuffs(DeltaTime);
+	if (currentSkill.castingSkill)
+	{
+		UpdateCurrentSkill(DeltaTime);
+	}
+
+	if (m_State == HBCharacterState::AUTOATTACK)
+	{
+		UpdateAttack(DeltaTime);
+	}
 }
 
 // Called to bind functionality to input
@@ -265,6 +271,9 @@ bool ABaseCharacter::skillCost(int slot)
 	}
 }
 
+
+
+
 void ABaseCharacter::useAdrenaline(int slot)
 {
 	m_AdrenalineList[slot].currentAdrenaline = 0;
@@ -383,6 +392,22 @@ bool ABaseCharacter::hasCondition(Condition condition)
 	return m_condtionList.Contains(condition);
 }
 
+bool ABaseCharacter::canUseSkill(int slot)
+{
+	if (skillList[slot]->properties.costType == CostType::ADRENALINE)
+	{
+		if (m_AdrenalineList[slot].currentAdrenaline == m_AdrenalineList[slot].maxAdrenaline)
+			return true;
+		
+	}
+	else if (skillList[slot]->properties.costType == CostType::MANA)
+	{
+		if (skillList[slot]->properties.cost < m_Mana + m_ManaReduction)
+			return true;
+	}
+	return false;
+}
+
 FCharacterState ABaseCharacter::AiExtractor(ABaseCharacter* character)
 {
 	FCharacterState characterState;
@@ -406,6 +431,8 @@ FCharacterState ABaseCharacter::AiExtractor(ABaseCharacter* character)
 		characterState.skillType = currentSkill.skill->properties.skillType;
 	else
 		characterState.skillType = SkillType::NONE;
+
+	characterState.attrList = attrList;
 	return characterState;
 }
 

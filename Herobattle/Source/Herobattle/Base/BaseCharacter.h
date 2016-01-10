@@ -44,6 +44,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaSeconds) override;
 
+	
+
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
@@ -123,12 +125,16 @@ public:
 
 	bool hasCondition(Condition condition);
 
+	bool canUseSkill(int slot);
+
 	//Creates a state of the character
 	FCharacterState AiExtractor(ABaseCharacter* character);
 
 	//test if the skill is on cooldown
 	bool skillIsOnCooldown(int slot);
 
+
+	FString m_Name;
 
 	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
 	float m_MaxHealth;
@@ -176,10 +182,13 @@ protected:
 
 	void getBuffs();
 
-private:
+	void Update(float DeltaTime);
+
+
 
 	void InitializeAdrenaline();
 	
+
 	// updates health and mana
 	void UpdateResources(float DeltaSeconds);
 
@@ -228,7 +237,6 @@ private:
 
 	float getWalkDistance(APawn* pawn);
 
-protected:
 
 	Profession primaryProfession;
 	Profession secondaryProfession;

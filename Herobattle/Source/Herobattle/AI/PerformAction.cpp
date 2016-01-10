@@ -55,26 +55,33 @@ AIAction UPerformAction::getNextAction(UBehaviorTreeComponent& OwnerComp)
 		attackScore = getBestAutoAttack(aiGameState->getEnemyCurrentAIState());
 	}
 
+	if (attackScore.score > 0)
+	{
+		attackScore.score = 0.2f;
+		m_ActionList.Add(attackScore);
+	}
+	else
+	{
+		attackScore.score = 0.2f;
+		attackScore.action = AIAction::IDLE;
+		m_ActionList.Add(attackScore);
+	}
 
 	if (m_ActionList.Num() > 0)
 	{
-		skillScore = getBestScore();
+		FActionScore action = getBestScore();
+		if (action.action == AIAction::SKILL)
+		nextSkill = action;
 		m_ActionList.Empty();
-	}
-	if (skillScore.score > 0.2)
-	{
-		nextSkill = skillScore;
-		return AIAction::SKILL;
-	}
-	else if (attackScore.score > 0)
-	{
-		nextSkill = attackScore;
-		return AIAction::AUTOATACK;
+		return action.action;
+
+		
 	}
 	else
 	{
 		return AIAction::IDLE;
 	}
+	
 
 
 }
@@ -86,26 +93,29 @@ void UPerformAction::fillScoreList(UAIGameState* aiGameState)
 	{
 		for (int i = 0; i < 8; i++)
 		{
-			USkill* skill = m_owner->skillList[i];
-			if (skill && !(m_owner->skillIsOnCooldown(i)))
+			if (m_owner->canUseSkill(i))
 			{
-				switch (skill->properties.targetType)
+				USkill* skill = m_owner->skillList[i];
+				if (skill && !(m_owner->skillIsOnCooldown(i)))
 				{
-				case TargetType::ENEMY:
-					calcSkillScore(aiGameState->getEnemyCurrentAIState(), skill, i);
-					break;
-				case  TargetType::FRIEND:
-					calcSkillScore(aiGameState->getAlliesCurrentAIState(), skill, i);
-					break;
-				case TargetType::SELFFRIEND:
-					calcSkillScore(aiGameState->getAlliesCurrentAIState(), skill, i);
-					calcSkillScore(aiGameState->getOwnerState(), skill, i);
-					break;
-				case  TargetType::SELF:
-					calcSkillScore(aiGameState->getOwnerState(), skill, i);
-					break;
-				default:
-					break;
+					switch (skill->properties.targetType)
+					{
+					case TargetType::ENEMY:
+						calcSkillScore(aiGameState->getEnemyCurrentAIState(), skill, i);
+						break;
+					case  TargetType::FRIEND:
+						calcSkillScore(aiGameState->getAlliesCurrentAIState(), skill, i);
+						break;
+					case TargetType::SELFFRIEND:
+						calcSkillScore(aiGameState->getAlliesCurrentAIState(), skill, i);
+						calcSkillScore(aiGameState->getOwnerState(), skill, i);
+						break;
+					case  TargetType::SELF:
+						calcSkillScore(aiGameState->getOwnerState(), skill, i);
+						break;
+					default:
+						break;
+					}
 				}
 			}
 		}
@@ -156,7 +166,6 @@ FActionScore UPerformAction::getBestAutoAttack(TArray<FCharacterState> chracterS
 		aScore.action = AIAction::AUTOATACK;
 		aScore.target = state.self;
 		aScore.score = score;
-		//aScore.slot = 0;
 		targetList.Add(aScore);
 	}
 	targetList.Sort(FActionScore::ConstPredicate);

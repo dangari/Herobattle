@@ -76,7 +76,7 @@ private:
 
 	TArray<FActionScore> getSkillScore(UAIGameState* newGameState, ABaseCharacter* owner, int depth);
 
-	void simulateNextState(UAIGameState* newGameState, TArray<FActionScore> actionList, int depth);
+	UAIGameState* simulateNextState(UAIGameState* newGameState,FActionScore action);
 
 
 

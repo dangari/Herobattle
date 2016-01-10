@@ -141,18 +141,42 @@ void UPerformAction::calcSkillScore(TArray<FCharacterState> characterState, USki
 	}
 }
 
-void UPerformAction::calcSkillScore(FCharacterState characterState, USkill* skill, int slot)
+
+
+void UPerformAction::TemporalSkillScore(UAIGameState* aiGameState)
 {
-	float score = skill->getScore(m_owner, characterState);
-	if (score > 0)
+	for (int i = 0; i < 3; i++)
 	{
-		FActionScore aScore;
-		aScore.action = AIAction::SKILL;
-		aScore.slot = slot;
-		aScore.target = characterState.self;
-		aScore.score = score;
-		m_ActionList.Add(aScore);
+		for (int i = 0; i < 8; i++)
+		{
+			if (m_owner->canUseSkill(i))
+			{
+				USkill* skill = m_owner->skillList[i];
+				if (skill && !(m_owner->skillIsOnCooldown(i)))
+				{
+					switch (skill->properties.targetType)
+					{
+					case TargetType::ENEMY:
+						calcSkillScore(aiGameState->getEnemyCurrentAIState(), skill, i);
+						break;
+					case  TargetType::FRIEND:
+						calcSkillScore(aiGameState->getAlliesCurrentAIState(), skill, i);
+						break;
+					case TargetType::SELFFRIEND:
+						calcSkillScore(aiGameState->getAlliesCurrentAIState(), skill, i);
+						calcSkillScore(aiGameState->getOwnerState(), skill, i);
+						break;
+					case  TargetType::SELF:
+						calcSkillScore(aiGameState->getOwnerState(), skill, i);
+						break;
+					default:
+						break;
+					}
+				}
+			}
+		}
 	}
+	FActionScore action = getBestScore();
 }
 
 FActionScore UPerformAction::getBestAutoAttack(TArray<FCharacterState> chracterState)

@@ -21,7 +21,7 @@ void UHBBlackboard::addAction(FString name, TArray<FSimAction> actionList)
 	}
 }
 
-TArray<FSimAction> UHBBlackboard::getActions(FString name)
+TArray<FSimAction> UHBBlackboard::getActions(FString name, float DeltaTime)
 {
 	if (actionUserList.Contains(name))
 	{

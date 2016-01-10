@@ -41,6 +41,8 @@ public:
 
 	FCharacterState getOwnerState();
 
+	UAIGameState* simulate(float DeltaTime);
+
 	void addDeltaTime(float DeltaTime);
 
 	AHeroBattleHero* getOwner();
@@ -48,6 +50,9 @@ public:
 	float m_deltaTime;
 
 private:
+
+	TArray<FCharacterState> simulateCharacter(float DeltaTime, TArray<FCharacterState> state, UAIGameState* gameState);
+
 	UPROPERTY()
 	TArray<FCharacterState> AlliesCurrentAIState;
 
@@ -60,7 +65,7 @@ private:
 	UPROPERTY()
 	TArray<FCharacterState> EnemyOldAIState;
 	
-	//Time since last newStateCall
+	TMap<FString, FCharacterState> completeList;
 
 	
 	AHeroBattleHero* m_owner;

@@ -48,4 +48,6 @@ struct FCharacterState
 
 	TMap<Attributes, uint8 > attrList;
 
+	FString name;
+
 };

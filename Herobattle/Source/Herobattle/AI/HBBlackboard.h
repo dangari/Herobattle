@@ -47,7 +47,7 @@ public:
 
 	void addAction(FString name, TArray<FSimAction> actionList);
 
-	TArray<FSimAction> getActions(FString name);
+	TArray<FSimAction> getActions(FString name, float DeltaTime);
 
 	TArray<FSimAction> getTargetAction(FString name);
 

@@ -6,7 +6,7 @@
 
 class AHeroBattleHero;
 class AHBPlayerController;
-
+class UHBBlackboard;
 
 UENUM(BlueprintType)
 enum class SelectedFlag : uint8
@@ -46,6 +46,8 @@ public:
 	float fStartRange;
 	UPROPERTY(BluePrintReadWrite, EditDefaultsOnly, Category = CamaraZoom)
 	float fCameraZoomSpeed;
+
+	UHBBlackboard* blackboard;
 
 	UFUNCTION(BlueprintCallable, Category = OnStart)
 	void initializeMouse();

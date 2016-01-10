@@ -51,6 +51,9 @@ private:
 	// calculates score for character most time this function is used for the owner
 	void calcSkillScore(FCharacterState characterState, USkill* skill, int slot);
 
+	void calcSkillScoreTemporal(FCharacterState characterState, USkill* skill, int slot);
+	void calcSkillScoreTemporal(TArray<FCharacterState> chracterState, USkill* skill, int slot);
+
 	FActionScore getBestAutoAttack(TArray<FCharacterState> chracterState);
 
 	FActionScore getBestScore();

@@ -5,6 +5,9 @@
 #include "Base/BaseCharacter.h"
 #include "HeroBattleHero.h"
 #include "Enum/CharacterEnums.h"
+#include "HerobattleCharacter.h"
+#include "HBBlackboard.h"
+#include "AISimCharacter.h"
 
 
 
@@ -96,6 +99,14 @@ FCharacterState UAIGameState::getOwnerState()
 	return m_ownerState;
 }
 
+UAIGameState* UAIGameState::simulate(float DeltaTime)
+{
+	UAIGameState* gameState = NewObject<UAIGameState>();
+	gameState->newState(m_owner);
+	simulateCharacter(DeltaTime, AlliesCurrentAIState, gameState);
+	simulateCharacter(DeltaTime, EnemyCurrentAIState, gameState);
+}
+
 TArray<FCharacterState> UAIGameState::getAlliesCurrentAIState()
 {
 	return AlliesCurrentAIState;
@@ -125,3 +136,19 @@ AHeroBattleHero* UAIGameState::getOwner()
 {
 	return m_owner;
 }
+
+TArray<FCharacterState> UAIGameState::simulateCharacter(float DeltaTime, TArray<FCharacterState> stateList, UAIGameState* gameState)
+{
+	AAISimCharacter* character = NewObject<AAISimCharacter>();
+	TArray<FCharacterState> newStateList;
+	for (auto& state : stateList)
+	{
+		AHerobattleCharacter* dummyCharacter = Cast<AHerobattleCharacter>(m_owner->owningPlayer);
+		TArray<FSimAction> actionList = dummyCharacter->blackboard->getActions(state.name, DeltaTime);
+
+		character->init(state);
+		character->simulate(actionList, completeList,DeltaTime);
+		gameState->addCharacterState(character->AiExtractor(m_owner));
+	}
+}
+

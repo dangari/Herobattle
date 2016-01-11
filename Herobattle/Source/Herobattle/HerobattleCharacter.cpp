@@ -6,14 +6,17 @@
 #include "HBPlayerController.h"
 #include "UnrealNetwork.h"
 #include "HeroBattleHero.h"
+#include "AI/HBBlackboard.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AHerobattleCharacter
 
 AHerobattleCharacter::AHerobattleCharacter() :AHerobattleCharacter::ABaseCharacter()
 {
-	bReplicates = true;
 
+	
+	bReplicates = true;
+	
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
@@ -208,9 +211,26 @@ AHeroBattleHero* AHerobattleCharacter::getHero(uint8 index)
 
 void AHerobattleCharacter::updateTeamColor()
 {
+	int i = 1;
 	for (auto& hero : heroList)
 	{
 		hero->ETeam = ETeam;
+		hero->m_Name.Append(m_Name).Append(TEXT("_Hero_")).AppendInt(i);
+		i++;
+	}
+}
+
+UHBBlackboard* AHerobattleCharacter::getBlackBoard()
+{
+	if (blackboard)
+	{
+		return blackboard;
+	}
+	else
+	{
+		blackboard = NewObject<UHBBlackboard>();
+		blackboard->SetFlags(RF_RootSet);
+		return blackboard;
 	}
 }
 

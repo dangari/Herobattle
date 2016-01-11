@@ -15,12 +15,15 @@ class HEROBATTLE_API AAISimCharacter : public ABaseCharacter
 	GENERATED_BODY()
 	
 public:
+	AAISimCharacter();
+	~AAISimCharacter();
+
 	void init(FCharacterState state);
 	void init(FCharacterProperties character);
 
-	void simulate(TArray<FSimAction> actionList, TMap<FString, FCharacterState> characterList, float DeltaTime);
+	void simulate(TArray<USimAction*> actionList, TMap<FString, FCharacterState> characterList, float DeltaTime);
 
-	void simulateAction(FSimAction &action, TMap<FString, FCharacterState> &characterList, float duration);
+	void simulateAction(USimAction* action, TMap<FString, FCharacterState> &characterList, float duration);
 
 
 

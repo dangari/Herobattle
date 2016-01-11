@@ -23,8 +23,8 @@ public:
 	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = CharacterProperties)
 	TeamColor ETeam;
 
-
-
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = CharacterProperties)
+	FString m_Name;
 
 	AHBPlayerController(const FObjectInitializer& ObjectInitializer);
 	virtual void BeginPlay() override;

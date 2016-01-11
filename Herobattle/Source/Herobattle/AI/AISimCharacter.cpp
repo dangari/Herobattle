@@ -8,6 +8,16 @@
 
 
 
+AAISimCharacter::AAISimCharacter()
+{
+
+}
+
+AAISimCharacter::~AAISimCharacter()
+{
+
+}
+
 void AAISimCharacter::init(FCharacterState state)
 {
 	ETeam = state.ETeam;
@@ -88,53 +98,53 @@ void AAISimCharacter::init(FCharacterProperties properties)
 	Update(0.f);
 }
 
-void AAISimCharacter::simulate(TArray<FSimAction> actionList, TMap<FString, FCharacterState> characterList, float DeltaTime)
+void AAISimCharacter::simulate(TArray<USimAction*> actionList, TMap<FString, FCharacterState> characterList, float DeltaTime)
 {
 	float duration = 0.f;
 	for (auto& action : actionList)
 	{
-		if (duration + action.time > DeltaTime)
+		if (duration + action->time > DeltaTime)
 		{
 
 			simulateAction(action, characterList, duration);
 
-			duration += action.time - duration;
+			duration += action->time - duration;
 		}
 	}
 }
 
-void AAISimCharacter::simulateAction(FSimAction &action, TMap<FString, FCharacterState> &characterList, float duration)
+void AAISimCharacter::simulateAction(USimAction* action, TMap<FString, FCharacterState> &characterList, float duration)
 {
-	if (action.action == AIAction::SKILL)
+	if (action->action == AIAction::SKILL)
 	{
-		if (action.ownerName.Equals(m_Name))
+		if (action->ownerName.Equals(m_Name))
 		{
-			if (skillCost(getSlot(action.skill)))
+			if (skillCost(getSlot(action->skill)))
 			{
-				action.skill->run(NewObject<ABaseCharacter>(), this);
+				action->skill->run(NewObject<ABaseCharacter>(), this);
 				RunBuff(Trigger::AFTERCAST, this);
 			}
 		}
 		else
 		{
 			AAISimCharacter* dummyCharacter = NewObject<AAISimCharacter>();
-			dummyCharacter->init(*characterList.Find(action.ownerName));
-			action.skill->run(this, dummyCharacter);
+			dummyCharacter->init(*characterList.Find(action->ownerName));
+			action->skill->run(this, dummyCharacter);
 		}
 	}
-	if (action.action == AIAction::AUTOATACK)
+	if (action->action == AIAction::AUTOATACK)
 	{
-		if (action.ownerName.Equals(m_Name))
+		if (action->ownerName.Equals(m_Name))
 		{
 			simulateAutoAttack();
 		}
 		else
 		{
-			FCharacterState owner = *characterList.Find(action.ownerName);
+			FCharacterState owner = *characterList.Find(action->ownerName);
 			damage(NewObject<ABaseCharacter>(), owner.weapon.getDamage(), HBDamageType::PHYSICAL);
 		}
 	}
-	Update(action.time - duration);
+	Update(action->time - duration);
 }
 
 void AAISimCharacter::applyCondition(TArray<Condition> conditions)

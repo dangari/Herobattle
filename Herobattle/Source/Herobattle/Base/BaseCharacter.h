@@ -133,7 +133,7 @@ public:
 	//test if the skill is on cooldown
 	bool skillIsOnCooldown(int slot);
 
-
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = CharacterProperties)
 	FString m_Name;
 
 	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
@@ -168,7 +168,7 @@ public:
 	ProfessionName proffession;
 
 	UPROPERTY(Replicated)
-	USkill* skillList[8];
+	TArray<USkill*> skillList;
 
 	
 

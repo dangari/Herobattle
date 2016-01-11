@@ -11,31 +11,39 @@
  * 
  */
 
-USTRUCT()
-struct FSimAction
+UCLASS()
+class USimAction : public UObject
 {
 
-	GENERATED_USTRUCT_BODY()
+	GENERATED_BODY()
 
+public:
+	UPROPERTY()
 	float time;
+	UPROPERTY()
 	AIAction action;
+	UPROPERTY()
 	FString targetName;
+	UPROPERTY()
 	FString ownerName;
-	USkill* skill;
+	UPROPERTY()
+	USkill* skill = nullptr;
 
-	inline static bool ConstPredicate(const FSimAction ip1, const FSimAction ip2)
+	inline static bool ConstPredicate(const USimAction& ip1, const USimAction& ip2)
 	{
 		return (ip1.time > ip2.time);
 	}
 
 };
 
-USTRUCT()
-struct FSimCharacter
+UCLASS()
+class USimCharacter : public UObject
 {
-	GENERATED_USTRUCT_BODY()
+	GENERATED_BODY()
+public:
 
-	TArray<FSimAction> actionList;
+	UPROPERTY()
+	TArray<USimAction*> actionList;
 
 };
 
@@ -45,16 +53,21 @@ class HEROBATTLE_API UHBBlackboard : public UObject
 	GENERATED_BODY()
 public:
 
-	void addAction(FString name, TArray<FSimAction> actionList);
+	void addAction(FString name, TArray<USimAction*> actionList);
 
-	TArray<FSimAction> getActions(FString name, float DeltaTime);
 
-	TArray<FSimAction> getTargetAction(FString name);
+	TArray<USimAction*> getActions(FString name, float DeltaTime);
+
+
+	TArray<USimAction*> getTargetAction(FString name);
 
 
 private:
-	TMap<FString, FSimCharacter> actionUserList;
 
-	TMap<FString, FSimCharacter> actionTargetList;
+	UPROPERTY()
+	TMap<FString, USimCharacter*> actionUserList;
+
+	UPROPERTY()
+	TMap<FString, USimCharacter*> actionTargetList;
 	
 };

@@ -37,15 +37,18 @@ void AHerobattleGameMode::PostLogin(APlayerController * NewPlayer)
 		if (m_PlayerCount == 0)
 		{
 			controller->ETeam = TeamColor::RED;
+			
 		}
 		else
 		{
 			controller->ETeam = TeamColor::BLUE;
 		}
+		controller->m_Name.Append(TEXT("_")).AppendInt(m_PlayerCount);
 		AHerobattleCharacter* character = (AHerobattleCharacter*)controller->GetPawn();
 		if (character)
 		{
 			character->ETeam = controller->ETeam;
+			character->m_Name = controller->m_Name;
 			character->updateTeamColor();
 		}
 		m_PlayerCount++;

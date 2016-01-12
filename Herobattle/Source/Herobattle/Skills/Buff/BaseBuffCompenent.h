@@ -17,6 +17,7 @@
 class ABaseCharacter;
 class FXmlNode;
 class USkillScore;
+class UAISimCharacter;
 
 UCLASS()
 class HEROBATTLE_API UBaseBuffCompenent : public UObject
@@ -29,27 +30,32 @@ public:
 	~UBaseBuffCompenent();
 
 	virtual void init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties);
-
+	virtual void initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties);
 	// value ist the incoming heal or damage
 	// damage is always negative and heal always Positve
 	virtual bool run(ABaseCharacter* caster, ABaseCharacter* self, int value = 0);
+	virtual bool runSim(UAISimCharacter* caster, UAISimCharacter* self, int value = 0);
+
 
 	virtual bool isExpired();
 
 	virtual void update(float deltaTime);
 
 	virtual float getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration);
+	virtual float getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration);
 
 	virtual FString ToString();
 	
 
 	ABaseCharacter* owner;
+	UAISimCharacter* sim_owner;
 protected:
 	
 	int usage;
 	TargetType targetType;
 
 	ABaseCharacter* getTarget(ABaseCharacter* caster, ABaseCharacter* self);
+	UAISimCharacter* getTargetSim(UAISimCharacter* caster, UAISimCharacter* self);
 
 	FSkillProperties m_properties;
 

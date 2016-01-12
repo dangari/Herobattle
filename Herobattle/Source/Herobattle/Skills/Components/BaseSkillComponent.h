@@ -9,6 +9,7 @@
 
 class USkillScore;
 class ABaseCharacter;
+class UAISimCharacter;
 
 
 
@@ -25,7 +26,12 @@ public:
 	~UBaseSkillComponent();
 
 	virtual bool run(ABaseCharacter* target, ABaseCharacter* self, FString SkillName = TEXT("Name"));
+	virtual bool runSim(UAISimCharacter* target, UAISimCharacter* self, FString SkillName = TEXT("Name"));
+
+
 	virtual float getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore);
+	virtual float getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore);
+
 	virtual void init(FXmlNode* node, FSkillProperties properties);
 	virtual FString ToString();
 

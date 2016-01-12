@@ -25,7 +25,14 @@ void UBcHeal::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillPrope
 	targetType = bContainer.targetType;
 	heal = bContainer.scaleTable[owner->getAttributeValue(bContainer.scaleAttribute)];
 	trigger = SkillEnums::stringToTrigger(bContainer.node->GetAttribute(TEXT("trigger")));
-	this->owner = owner;
+}
+
+void UBcHeal::initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties)
+{
+	Super::initSim(bContainer, owner, properties);
+	targetType = bContainer.targetType;
+	heal = bContainer.scaleTable[owner->getAttributeValue(bContainer.scaleAttribute)];
+	trigger = SkillEnums::stringToTrigger(bContainer.node->GetAttribute(TEXT("trigger")));
 }
 
 bool UBcHeal::run(ABaseCharacter* caster, ABaseCharacter* self, int value)
@@ -42,6 +49,32 @@ bool UBcHeal::run(ABaseCharacter* caster, ABaseCharacter* self, int value)
 		testTarget->heal(testTarget, currentHeal, false);
 	}
 	return true;
+}
+
+bool UBcHeal::runSim(UAISimCharacter* caster, UAISimCharacter* self, int value /*= 0*/)
+{
+	if ((value < 0 && trigger == Trigger::DAMAGE) || value > 0 && trigger == Trigger::HEAL)
+	{
+		UAISimCharacter* testTarget = getTargetSim(caster, self);
+		testTarget->heal(testTarget, heal, false);
+	}
+	if (Trigger::CASTMANA == trigger)
+	{
+		UAISimCharacter* testTarget = getTargetSim(caster, self);
+		float currentHeal = testTarget->currentSkill.skill->properties.cost * (heal / 100);
+		testTarget->heal(testTarget, currentHeal, false);
+	}
+	return true;
+}
+
+float UBcHeal::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration)
+{
+	return 1.f;
+}
+
+float UBcHeal::getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration)
+{
+	return 1.f;
 }
 
 bool UBcHeal::isExpired()

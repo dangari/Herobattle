@@ -19,9 +19,16 @@ public:
 	~UBcHeal();
 
 	virtual void init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties) override;
+	virtual void initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties) override;
 
 	
 	virtual bool run(ABaseCharacter* caster, ABaseCharacter* self, int value = 0) override;
+	virtual bool runSim(UAISimCharacter* caster, UAISimCharacter* self, int value = 0) override;
+
+
+	virtual float getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration) override;
+	virtual float getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration) override;
+
 
 	virtual bool isExpired() override;
 	

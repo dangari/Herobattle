@@ -24,6 +24,13 @@ UBaseBuffCompenent::~UBaseBuffCompenent()
 void UBaseBuffCompenent::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties)
 {
 	m_properties = properties;
+	this->owner = owner;
+}
+
+void UBaseBuffCompenent::initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties)
+{
+	m_properties = properties;
+	sim_owner = owner;
 }
 
 bool UBaseBuffCompenent::isExpired()
@@ -37,6 +44,11 @@ void UBaseBuffCompenent::update(float deltaTime)
 }
 
 float UBaseBuffCompenent::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration)
+{
+	return 1.f;
+}
+
+float UBaseBuffCompenent::getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration)
 {
 	return 1.f;
 }
@@ -56,7 +68,22 @@ ABaseCharacter* UBaseBuffCompenent::getTarget(ABaseCharacter* caster, ABaseChara
 		return caster;
 }
 
+UAISimCharacter* UBaseBuffCompenent::getTargetSim(UAISimCharacter* caster, UAISimCharacter* self)
+{
+	if (targetType == TargetType::SELF)
+		return self;
+	else if (targetType == TargetType::OWNER)
+		return sim_owner;
+	else
+		return caster;
+}
+
 bool UBaseBuffCompenent::run(ABaseCharacter* caster, ABaseCharacter* self, int value)
+{
+	return true;
+}
+
+bool UBaseBuffCompenent::runSim(UAISimCharacter* caster, UAISimCharacter* self, int value /*= 0*/)
 {
 	return true;
 }

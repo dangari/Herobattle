@@ -3,6 +3,7 @@
 #include "../Components/BaseSkillComponent.h"
 #include "Base/BaseCharacter.h"
 #include "../XMLSkillReader.h"
+#include "AI/AISimCharacter.h"
 
 
 UBuff::UBuff()
@@ -43,6 +44,33 @@ void UBuff::init(ABaseCharacter* owner, TArray<FBuffContainer> bCBuffList, float
 }
 
 
+void UBuff::initSim(UAISimCharacter* owner, TArray<FBuffContainer> bCBuffList, float duration, FString name, FString usage, FSkillProperties properties)
+{
+	m_Duration = duration;
+	m_Name = name;
+
+	//set Usage if not infinte
+	if (usage.Equals(TEXT("INF")))
+	{
+		m_IsInfinityUsage = true;
+	}
+	else
+	{
+		m_IsInfinityUsage = false;
+		m_Usage = FCString::Atoi(*usage);
+	}
+
+	for (auto& buff : bCBuffList)
+	{
+
+		bCclassFuncPtr createFunc = *(XMLSkillReader::bcObjectNameList.Find(buff.buffName));
+		UBaseBuffCompenent* bC = createFunc();
+		bC->initSim(buff, owner, properties);
+		m_BcList.Add(bC);
+
+	}
+}
+
 void UBuff::initDummyBuff()
 {
 	m_Duration = 10.f;
@@ -56,6 +84,19 @@ bool UBuff::run(ABaseCharacter* target, ABaseCharacter* self, int value)
 	for (auto& sc : m_BcList)
 	{
 		b = sc->run(target, self,value);
+	}
+	if (b && !m_IsInfinityUsage)
+		m_Usage--;
+	return b;
+}
+
+bool UBuff::runSim(UAISimCharacter* target, UAISimCharacter* self, int value /*= 0*/)
+{
+
+	bool b = true;
+	for (auto& sc : m_BcList)
+	{
+		b = sc->runSim(target, self, value);
 	}
 	if (b && !m_IsInfinityUsage)
 		m_Usage--;
@@ -88,6 +129,15 @@ float UBuff::getScore(ABaseCharacter* caster, FCharacterState characterState, US
 	for (auto& bC : m_BcList)
 	{
 		bC->getScore(caster, characterState, skillScore, m_Duration);
+	}
+	return 1.f;
+}
+
+float UBuff::getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
+{
+	for (auto& bC : m_BcList)
+	{
+		bC->getScoreSim(caster, characterState, skillScore, m_Duration);
 	}
 	return 1.f;
 }

@@ -5,6 +5,7 @@
 
 
 class ABaseCharacter;
+class UAISimCharacter;
 
 
 typedef UBaseBuffCompenent* (*bCclassFuncPtr)();
@@ -19,18 +20,22 @@ public:
 	~UBuff();
 
 	void init(ABaseCharacter* owner, TArray<FBuffContainer> bCBuffList, float duration, FString name, FString usage, FSkillProperties properties);
+	void initSim(UAISimCharacter* owner, TArray<FBuffContainer> bCBuffList, float duration, FString name, FString usage, FSkillProperties properties);
 
 	void initDummyBuff();
 
 	//value is incoming damage or heal
 	// heal is positive and and damage is negative
 	bool run(ABaseCharacter* target, ABaseCharacter* self, int value = 0);
+	bool runSim(UAISimCharacter* target, UAISimCharacter* self, int value = 0);
 
 	void updateBuff(float deltaTime);
 	// test if the buff is still active
 	bool isExpired();
 
 	float getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore);
+	float getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore);
+
 	//getter/setter
 	FString getName();
 

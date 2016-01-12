@@ -22,11 +22,22 @@ bool UBaseSkillComponent::run(ABaseCharacter* target, ABaseCharacter* self, FStr
 {
 	return true;
 }
+
+bool UBaseSkillComponent::runSim(UAISimCharacter* target, UAISimCharacter* self, FString SkillName /*= TEXT("Name")*/)
+{
+	return true;
+}
+
 float UBaseSkillComponent::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
 	return 0.f;
 }
 
+
+float UBaseSkillComponent::getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
+{
+	return 1.f;
+}
 
 void UBaseSkillComponent::init(FXmlNode* node, FSkillProperties properties)
 {

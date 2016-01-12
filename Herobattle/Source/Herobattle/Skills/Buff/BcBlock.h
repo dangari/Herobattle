@@ -17,15 +17,19 @@ public:
 	UBcBlock();
 	~UBcBlock();
 
-	virtual void init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties);
+	virtual void init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties) override;
+	virtual void initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties) override;
 
-	virtual bool run(ABaseCharacter* caster, ABaseCharacter* self, int value = 0);
 
-	virtual bool isExpired();
+	virtual bool run(ABaseCharacter* caster, ABaseCharacter* self, int value = 0) override;
+	virtual bool runSim(UAISimCharacter* caster, UAISimCharacter* self, int value = 0) override;
 
-	virtual void update(float deltaTime);
+	virtual bool isExpired() override;
 
-	virtual float getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration);
+	virtual void update(float deltaTime) override;
+
+	virtual float getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration) override;
+	virtual float getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration) override;
 
 private:
 	int usage;

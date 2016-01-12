@@ -58,7 +58,33 @@ void UBcWhenCondition::init(FBuffContainer bContainer, ABaseCharacter* owner, FS
 	}
 }
 
+void UBcWhenCondition::initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties)
+{
+	Super::initSim(bContainer, owner, properties);
+	FXmlNode* node = bContainer.node;
+	FString cType = node->GetAttribute(TEXT("type"));
+	targetType = SkillEnums::stringToComponentTarget(cType);
+	TArray<FXmlNode*> propertyList = node->GetChildrenNodes();
+	for (auto& prop : propertyList)
+	{
+		FString tagName = prop->GetTag();
+		if (tagName.Equals(TEXT("whencondition")))
+		{
+			createBoolObjects(prop);
+		}
+		if (tagName.Equals(TEXT("then")))
+		{
+			createSkillComponents(prop, properties);
+		}
+	}
+}
+
 bool UBcWhenCondition::run(ABaseCharacter* caster, ABaseCharacter* self, int value)
+{
+	return true;
+}
+
+bool UBcWhenCondition::runSim(UAISimCharacter* caster, UAISimCharacter* self, int value /*= 0*/)
 {
 	return true;
 }
@@ -71,6 +97,16 @@ bool UBcWhenCondition::isExpired()
 void UBcWhenCondition::update(float deltaTime)
 {
 
+}
+
+float UBcWhenCondition::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration)
+{
+	return 1.f;
+}
+
+float UBcWhenCondition::getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration)
+{
+	return 1.f;
 }
 
 void UBcWhenCondition::createBoolObjects(FXmlNode* node)

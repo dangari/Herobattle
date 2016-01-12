@@ -45,6 +45,7 @@ protected:
 	void fillScaleTable(FXmlNode* node);
 
 	ABaseCharacter* getTarget(ABaseCharacter* target, ABaseCharacter* self);
+	UAISimCharacter* getTargetSim(UAISimCharacter* target, UAISimCharacter* self);
 
 	FString componentName;
 

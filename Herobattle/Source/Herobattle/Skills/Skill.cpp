@@ -8,6 +8,7 @@
 #include "UnrealNetwork.h"
 #include "SkillMessages.h"
 #include "AI/SkillScore.h"
+#include "AI/AISimCharacter.h"
 
 
 
@@ -28,6 +29,17 @@ bool USkill::run(ABaseCharacter* target, ABaseCharacter* self)
 	for (auto& sc : componentList)
 	{
 		b = sc->run(target, self, name);
+	}
+
+	return b;
+}
+
+bool USkill::runSim(UAISimCharacter* target, UAISimCharacter* self)
+{
+	bool b = true;
+	for (auto& sc : componentList)
+	{
+		b = sc->runSim(target, self, name);
 	}
 
 	return b;
@@ -58,6 +70,30 @@ bool USkill::isValidTarget(ABaseCharacter* target, ABaseCharacter* self)
 	}
 }
 
+bool USkill::isValidTargetSim(UAISimCharacter* target, UAISimCharacter* self)
+{
+	if (target->isEnemy(self->ETeam) && properties.targetType == TargetType::ENEMY)
+	{
+		return true;
+	}
+	else if (!(target->isEnemy(self->ETeam)) && properties.targetType == TargetType::SELFFRIEND)
+	{
+		return true;
+	}
+	else if (!(target->isEnemy(self->ETeam)) && properties.targetType == TargetType::FRIEND && target != self)
+	{
+		return true;
+	}
+	else if (target == self && properties.targetType == TargetType::SELF)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 float USkill::getScore(ABaseCharacter* caster, FCharacterState charcterState)
 {
 	if (caster->m_Mana - properties.cost < 0)
@@ -77,6 +113,25 @@ float USkill::getScore(ABaseCharacter* caster, FCharacterState charcterState)
 	}
 }
 
+float USkill::getScoreSim(UAISimCharacter* caster, FCharacterState characterState)
+{
+	if (caster->m_Mana - properties.cost < 0)
+		return 0.0f;
+	else
+	{
+		USkillScore* skillScore = NewObject<USkillScore>();
+		for (auto& component : componentList)
+		{
+			component->getScoreSim(caster, characterState, skillScore);
+		}
+		ABaseCharacter* target = characterState.self;
+		skillScore->calcDamageScore(caster->m_Health, caster->m_MaxHealth, target->m_Health, target->m_MaxHealth);
+		skillScore->calcHealScore(caster->m_Health, caster->m_MaxHealth, target->m_Health, target->m_MaxHealth);
+		float score = skillScore->calcCompleteScore() *  manaScoreSim(caster, characterState);
+		return score;
+	}
+}
+
 FString USkill::ToString()
 {
 	FString skillText = name;
@@ -90,6 +145,20 @@ FString USkill::ToString()
 }
 
 float USkill::manaScore(ABaseCharacter* caster, FCharacterState charcterState)
+{
+	if (properties.costType == CostType::ADRENALINE || properties.costType == CostType::NONE)
+		return 1;
+
+	float currentMana = caster->m_Mana;
+	float maxMana = caster->m_MaxMana;
+	int regen = caster->m_ManaRegeneration;
+
+	currentMana += (charcterState.DeltaTime * (regen / 3.0));
+	float score = currentMana / maxMana;
+	return score;
+}
+
+float USkill::manaScoreSim(UAISimCharacter* caster, FCharacterState charcterState)
 {
 	if (properties.costType == CostType::ADRENALINE || properties.costType == CostType::NONE)
 		return 1;

@@ -102,6 +102,18 @@ ABaseCharacter* UBaseSkillComponent::getTarget(ABaseCharacter* target, ABaseChar
 	}
 }
 
+UAISimCharacter* UBaseSkillComponent::getTargetSim(UAISimCharacter* target, UAISimCharacter* self)
+{
+	if (targetType == ComponentTarget::SELF)
+	{
+		return self;
+	}
+	else
+	{
+		return target;
+	}
+}
+
 UBaseSkillComponent* UBaseSkillComponent::MAKE()
 {
 	UBaseSkillComponent* w = NewObject<UBaseSkillComponent>();

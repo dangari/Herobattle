@@ -36,6 +36,19 @@ bool UScWhenCondition::run(ABaseCharacter* target, ABaseCharacter* self, FString
 	return b;
 }
 
+bool UScWhenCondition::runSim(UAISimCharacter* target, UAISimCharacter* self, FString SkillName /*= TEXT("Name")*/)
+{
+	bool b = true;
+	if (testConditionsSim(target, self))
+	{
+		for (auto& sc : scTable)
+		{
+			b = sc->runSim(target, self);
+		}
+	}
+	return b;
+}
+
 float UScWhenCondition::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
 	float score = 0.f;
@@ -55,11 +68,42 @@ float UScWhenCondition::getScore(ABaseCharacter* caster, FCharacterState charact
 	return score;
 }
 
+float UScWhenCondition::getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
+{
+	float score = 0.f;
+	if (testConditionsSim(characterState.selfSim, caster))
+	{
+		for (auto& sc : scTable)
+		{
+			score = sc->getScoreSim(caster, characterState, skillScore);
+		}
+		score = 1.f;
+	}
+	else
+	{
+		score = 0.2;
+	}
+	skillScore->addScore(score, TEXT("when"));
+	return score;
+}
+
 bool UScWhenCondition::testConditions(ABaseCharacter* target, ABaseCharacter* self)
 {
 	for (auto& bo : boolObjects)
 	{
 		if (bo->test(target, self) == false)
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+bool UScWhenCondition::testConditionsSim(UAISimCharacter* target, UAISimCharacter* self)
+{
+	for (auto& bo : boolObjects)
+	{
+		if (bo->testSim(target, self) == false)
 		{
 			return false;
 		}

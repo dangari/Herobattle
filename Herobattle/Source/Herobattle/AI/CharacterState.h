@@ -9,6 +9,7 @@
 
 
 class ABaseCharacter;
+class UAISimCharacter;
 
 USTRUCT()
 struct FCharacterState
@@ -35,7 +36,9 @@ struct FCharacterState
 	FSkillStatus skillState;
 
 	ABaseCharacter* selectedTarget;
+	UAISimCharacter* selectedTargetSim;
 	ABaseCharacter* self;
+	UAISimCharacter* selfSim;
 
 	float DeltaTime;
 

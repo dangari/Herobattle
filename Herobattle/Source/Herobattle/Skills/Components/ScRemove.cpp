@@ -24,6 +24,14 @@ bool UScRemove::run(ABaseCharacter* target, ABaseCharacter* self, FString SkillN
 	return true;
 }
 
+bool UScRemove::runSim(UAISimCharacter* target, UAISimCharacter* self, FString SkillName /*= TEXT("Name")*/)
+{
+	int count = scaleTable[self->getAttributeValue(scaleAttribute)];
+	UAISimCharacter* newTarget = getTargetSim(target, self);
+	newTarget->Remove(rType, count);
+	return true;
+}
+
 float UScRemove::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
 	float score = 0.f;
@@ -54,6 +62,36 @@ float UScRemove::getScore(ABaseCharacter* caster, FCharacterState characterState
 	return 1.f;
 
 	skillScore->addScore(score, componentName);
+}
+
+float UScRemove::getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
+{
+	float score = 0.f;
+	switch (rType)
+	{
+	case RemoveType::HEX:
+		if (characterState.isHexed)
+			score = 1.f;
+		break;
+	case RemoveType::ENTCHANTMENT:
+		if (characterState.isBuffed)
+			score = 1.f;
+		break;
+	case RemoveType::STANCE:
+		if (characterState.hasStance)
+			score = 1.f;
+		break;
+	case RemoveType::CONDI:
+		if (characterState.conditions.Num() > 0)
+		{
+			int count = scaleTable[caster->getAttributeValue(scaleAttribute)];
+			score = characterState.conditions.Num() / count;
+		}
+		break;
+	default:
+		break;
+	}
+	return 1.f;
 }
 
 void UScRemove::init(FXmlNode* node, FSkillProperties properties)

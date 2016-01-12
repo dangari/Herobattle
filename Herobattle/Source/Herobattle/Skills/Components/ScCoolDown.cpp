@@ -25,9 +25,38 @@ bool UScCoolDown::run(ABaseCharacter* target, ABaseCharacter* self, FString Skil
 	return true;
 }
 
+bool UScCoolDown::runSim(UAISimCharacter* target, UAISimCharacter* self, FString SkillName /*= TEXT("Name")*/)
+{
+	UAISimCharacter* newTarget = getTargetSim(target, self);
+	float time = scaleTable[self->getAttributeValue(scaleAttribute)];
+	newTarget->setCoolDown(time, coolDownType);
+	return true;
+}
+
 float UScCoolDown::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
 	float score =0.f;
+	if (scaleAttribute == Attributes::NONE)
+	{
+		score = 1.f;
+	}
+	else
+	{
+		int attValue = caster->getAttributeValue(scaleAttribute);
+		float score = attValue / 14.f;
+		if (score > 0.5)
+			score = 1.f;
+		else
+			score = score;
+	}
+
+	skillScore->addScore(score, componentName);
+	return score;
+}
+
+float UScCoolDown::getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
+{
+	float score = 0.f;
 	if (scaleAttribute == Attributes::NONE)
 	{
 		score = 1.f;

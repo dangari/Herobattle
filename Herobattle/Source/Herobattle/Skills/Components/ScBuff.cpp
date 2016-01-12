@@ -31,12 +31,32 @@ bool UScBuff::run(ABaseCharacter* target, ABaseCharacter* self, FString SkillNam
 	return b;
 }
 
+bool UScBuff::runSim(UAISimCharacter* target, UAISimCharacter* self, FString SkillName /*= TEXT("Name")*/)
+{
+	bool b = true;
+
+	UBuff* buff = NewObject<UBuff>();
+	float duration = scaleTable[self->getAttributeValue(scaleAttribute)];
+	buff->initSim(self, bCBuffList, duration, SkillName, m_Usage, m_properties);
+	target->applyBuff(buff, m_Trigger);
+	return b;
+}
+
 float UScBuff::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
 	UBuff* buff = NewObject<UBuff>();
 	float duration = scaleTable[caster->getAttributeValue(scaleAttribute)];
 	buff->init(caster, bCBuffList, duration, SkillName, m_Usage, m_properties);
 	buff->getScore(caster, characterState, skillScore);
+	return 1.f;
+}
+
+float UScBuff::getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
+{
+	UBuff* buff = NewObject<UBuff>();
+	float duration = scaleTable[caster->getAttributeValue(scaleAttribute)];
+	buff->initSim(caster, bCBuffList, duration, SkillName, m_Usage, m_properties);
+	buff->getScoreSim(caster, characterState, skillScore);
 	return 1.f;
 }
 

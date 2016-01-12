@@ -7,6 +7,7 @@
 #include "BoolObject.generated.h"
 
 class ABaseCharacter;
+class UAISimCharacter;
 
 UCLASS()
 class HEROBATTLE_API UBoolObject : public UObject
@@ -19,6 +20,7 @@ public:
 	~UBoolObject();
 
 	virtual bool test(ABaseCharacter* target, ABaseCharacter* self);
+	virtual bool testSim(UAISimCharacter* target, UAISimCharacter* self);
 
 	virtual void init(FXmlNode* node, ComponentTarget target);
 
@@ -26,6 +28,7 @@ public:
 protected:
 
 	ABaseCharacter* getTarget(ABaseCharacter* target, ABaseCharacter* self);
+	UAISimCharacter* getTargetSim(UAISimCharacter* target, UAISimCharacter* self);
 
 	ComponentTarget targetType;
 

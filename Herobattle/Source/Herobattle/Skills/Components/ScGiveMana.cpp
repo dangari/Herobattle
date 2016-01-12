@@ -23,6 +23,13 @@ bool UScGiveMana::run(ABaseCharacter* target, ABaseCharacter* self, FString Skil
 	return true;
 }
 
+bool UScGiveMana::runSim(UAISimCharacter* target, UAISimCharacter* self, FString SkillName /*= TEXT("Name")*/)
+{
+	UAISimCharacter* newTarget = getTargetSim(target, self);
+	newTarget->ChangeMana(scaleTable[self->getAttributeValue(scaleAttribute)]);
+	return true;
+}
+
 float UScGiveMana::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
 	int mana = scaleTable[caster->getAttributeValue(scaleAttribute)];
@@ -50,6 +57,23 @@ float UScGiveMana::getScore(ABaseCharacter* caster, FCharacterState characterSta
 		if (score > 0)
 			skillScore->addScore(score, TEXT("givemana"));
 	}
+	return 1.f;
+}
+
+float UScGiveMana::getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
+{
+	int mana = scaleTable[caster->getAttributeValue(scaleAttribute)];
+	float score;
+	if (mana < treshhold)
+	{
+		score = mana / treshhold;
+	}
+	else
+	{
+		score = 1.f;
+	}
+	if (score > 0)
+		skillScore->addScore(score, TEXT("givemana"));
 	return 1.f;
 }
 

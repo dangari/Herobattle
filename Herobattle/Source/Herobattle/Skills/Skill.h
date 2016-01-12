@@ -9,6 +9,7 @@
 
 class UBaseSkillComponent;
 class ABaseCharacter;
+class UAISimCharacter;
 
 
 USTRUCT(BlueprintType)
@@ -53,10 +54,13 @@ public:
 	TArray<UBaseSkillComponent*> componentList;
 	
 	bool run(ABaseCharacter* target, ABaseCharacter* self);
+	bool runSim(UAISimCharacter* target, UAISimCharacter* self);
+
 	bool isValidTarget(ABaseCharacter* target, ABaseCharacter* self);
+	bool isValidTargetSim(UAISimCharacter* target, UAISimCharacter* self);
 
 	float getScore(ABaseCharacter* caster, FCharacterState charcterState);
-
+	float getScoreSim(UAISimCharacter* caster, FCharacterState charcterState);
 
 	UFUNCTION(BlueprintCallable, Category = Debug)
 	FString ToString();
@@ -64,4 +68,6 @@ public:
 
 private: 
 	float manaScore(ABaseCharacter* caster, FCharacterState charcterState);
+	float manaScoreSim(UAISimCharacter* caster, FCharacterState charcterState);
+
 };

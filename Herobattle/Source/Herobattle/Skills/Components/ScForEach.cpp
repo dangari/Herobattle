@@ -39,6 +39,26 @@ bool UScForEach::run(ABaseCharacter* target, ABaseCharacter* self, FString Skill
 	return b;
 }
 
+bool UScForEach::runSim(UAISimCharacter* target, UAISimCharacter* self, FString SkillName /*= TEXT("Name")*/)
+{
+	bool b = true;
+	uint8 count = 0;
+	if (skillType.Equals(TEXT("CONDITION")))
+	{
+		count = target->getCondtionCount();
+	}
+	if (count > 0){
+		for (int i = 1; i <= count; i++)
+		{
+			for (auto& scObj : scList)
+			{
+				b = scObj->runSim(target, self);
+			}
+		}
+	}
+	return b;
+}
+
 void UScForEach::init(FXmlNode* node, FSkillProperties properties)
 {
 	Super::init(node, properties);
@@ -70,6 +90,29 @@ float UScForEach::getScore(ABaseCharacter* caster, FCharacterState characterStat
 			for (auto& scObj : scList)
 			{
 				scObj->getScore(caster, characterState, skillScore);
+			}
+		}
+	}
+	else
+	{
+		skillScore->addScore(0.f, componentName);
+	}
+	return 0.f;
+}
+
+float UScForEach::getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
+{
+	uint8 count = 0;
+	if (skillType.Equals(TEXT("CONDITION")))
+	{
+		count = characterState.conditions.Num();
+	}
+	if (count > 0){
+		for (int i = 1; i <= count; i++)
+		{
+			for (auto& scObj : scList)
+			{
+				scObj->getScoreSim(caster, characterState, skillScore);
 			}
 		}
 	}

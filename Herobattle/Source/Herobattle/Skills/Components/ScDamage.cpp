@@ -18,11 +18,7 @@ UScDamage::~UScDamage()
 
 bool UScDamage::run(ABaseCharacter* target, ABaseCharacter* self, FString SkillName /*= TEXT("Name")*/)
 {
-	ABaseCharacter* testTarget;
-	if (targetType == ComponentTarget::SELF)
-		testTarget = self;
-	else
-		testTarget = target;
+	ABaseCharacter* testTarget = getTarget(target,self);
 	Super::run(target, self);
 	float damage = scaleTable[self->getAttributeValue(scaleAttribute)];
 	if (m_properties.skillType == SkillType::MELEEATTACK || (m_properties.skillType == SkillType::RANGEATTACK))
@@ -34,7 +30,27 @@ bool UScDamage::run(ABaseCharacter* target, ABaseCharacter* self, FString SkillN
 	return true;
 }
 
+bool UScDamage::runSim(UAISimCharacter* target, UAISimCharacter* self, FString SkillName /*= TEXT("Name")*/)
+{
+	UAISimCharacter* testTarget = getTargetSim(target, self);
+	float damage = scaleTable[self->getAttributeValue(scaleAttribute)];
+	if (m_properties.skillType == SkillType::MELEEATTACK || (m_properties.skillType == SkillType::RANGEATTACK))
+	{
+		FWeaponValues weapon(m_properties.weaponType);
+		damage += weapon.getDamage();
+	}
+	target->damage(self, damage, damageType);
+	return true;
+}
+
 float UScDamage::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
+{
+	float damage = scaleTable[caster->getAttributeValue(scaleAttribute)];
+	skillScore->addDamage(damage, targetType);
+	return 1.f;
+}
+
+float UScDamage::getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
 	float damage = scaleTable[caster->getAttributeValue(scaleAttribute)];
 	skillScore->addDamage(damage, targetType);

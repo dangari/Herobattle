@@ -19,11 +19,7 @@ UScCondition::~UScCondition()
 
 bool UScCondition::run(ABaseCharacter* target, ABaseCharacter* self, FString SkillName /*= TEXT("Name")*/)
 {
-	ABaseCharacter* testTarget;
-	if (targetType == TargetType::SELF)
-		testTarget = self;
-	else
-		testTarget = target;
+	ABaseCharacter* testTarget =getTarget(target,self);
 	float duration = scaleTable[self->getAttributeValue(scaleAttribute)];
 	UBaseCondition* condition = UBaseCondition::MAKE(conditionType, duration);
 	testTarget->applyCondition(condition);
@@ -31,7 +27,23 @@ bool UScCondition::run(ABaseCharacter* target, ABaseCharacter* self, FString Ski
 	
 	
 }
+
+bool UScCondition::runSim(UAISimCharacter* target, UAISimCharacter* self, FString SkillName /*= TEXT("Name")*/)
+{
+	UAISimCharacter* testTarget = getTargetSim(target, self);
+	float duration = scaleTable[self->getAttributeValue(scaleAttribute)];
+	UBaseCondition* condition = UBaseCondition::MAKE(conditionType, duration);
+	testTarget->applyCondition(condition);
+	return true;
+}
+
 float UScCondition::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
+{
+	skillScore->addScore(1.f, componentName);
+	return 0.f;
+}
+
+float UScCondition::getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
 	skillScore->addScore(1.f, componentName);
 	return 0.f;

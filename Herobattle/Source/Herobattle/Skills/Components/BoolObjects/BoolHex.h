@@ -20,6 +20,8 @@ public:
 	~UBoolHex();
 
 	virtual bool test(ABaseCharacter* target, ABaseCharacter* self) override;
+	virtual bool testSim(UAISimCharacter* target, UAISimCharacter* self) override;
+
 
 	virtual void init(FXmlNode* node, ComponentTarget target) override;
 

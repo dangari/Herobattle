@@ -30,6 +30,23 @@ bool UBoolMana::test(ABaseCharacter* target, ABaseCharacter* self)
 	return test;
 }
 
+bool UBoolMana::testSim(UAISimCharacter* target, UAISimCharacter* self)
+{
+	bool test;
+	UAISimCharacter* testTarget = getTargetSim(target, self);
+
+	float manaPrec = (testTarget->m_Mana / testTarget->m_MaxMana) * 100;
+	if (c.Equals(TEXT("-")))
+	{
+		test = manaPrec < treshold;
+	}
+	else
+	{
+		test = manaPrec > treshold;
+	}
+	return test;
+}
+
 void UBoolMana::init(FXmlNode* node, ComponentTarget target)
 {
 	targetType = target;

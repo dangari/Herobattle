@@ -31,6 +31,23 @@ bool UBoolCondition::test(ABaseCharacter* target, ABaseCharacter* self)
 
 }
 
+bool UBoolCondition::testSim(UAISimCharacter* target, UAISimCharacter* self)
+{
+	UAISimCharacter* testTarget = getTargetSim(target, self);
+
+	int cCount = testTarget->getCondtionCount();
+	if (cCount > 0)
+	{
+		if (cType == Condition::ALL)
+			return true;
+		if (testTarget->hasCondition(cType))
+			return true;
+		else
+			return false;
+	}
+	return false;
+}
+
 void UBoolCondition::init(FXmlNode* node, ComponentTarget target)
 {
 	targetType = target;

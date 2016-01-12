@@ -52,6 +52,42 @@ bool UBoolAttack::test(ABaseCharacter* target, ABaseCharacter* self)
 
 }
 
+bool UBoolAttack::testSim(UAISimCharacter* target, UAISimCharacter* self)
+{
+	UAISimCharacter* testTarget = getTargetSim(target, self);
+
+	if ((testTarget->selectedTarget == self || targetType == ComponentTarget::SELF) && (target->getState() != HBCharacterState::IDLE) || target->getState() != HBCharacterState::MOVEING)
+	{
+		if (testTarget->getState() == HBCharacterState::AUTOATTACK &&
+			sType == SkillType::ATTACK)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+		if (testTarget->getState() == HBCharacterState::CASTING)
+		{
+			SkillType characterSkillType = testTarget->getCurrentSkillType();
+			if (sType == characterSkillType)
+				return true;
+			else if (sType == SkillType::ATTACK && (characterSkillType == SkillType::MELEEATTACK || characterSkillType == SkillType::RANGEATTACK))
+				return true;
+			else
+				return false;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else
+	{
+		return false;
+	}
+}
+
 void UBoolAttack::init(FXmlNode* node, ComponentTarget target)
 {
 	targetType = target;

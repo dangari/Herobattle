@@ -46,6 +46,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
 	FString name;
 	
+	UPROPERTY()
 	FSkillProperties properties;
 
 	UPROPERTY(Replicated)

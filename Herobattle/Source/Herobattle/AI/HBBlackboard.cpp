@@ -6,49 +6,55 @@
 
 
 
-void UHBBlackboard::addAction(FString name, TArray<FSimAction> actionList)
+void UHBBlackboard::addAction(FString name, TArray<USimAction*> actionList)
 {
+	if (actionUserList.Num() == 0)
+	{
+		USimCharacter* character = NewObject<USimCharacter>();
+		character->actionList = actionList;
+		actionUserList.Add(name, character);
+	}
 	if (actionUserList.Contains(name))
 	{
-		FSimCharacter character = *actionUserList.Find(name);
-		character.actionList = actionList;
+		USimCharacter* character = *actionUserList.Find(name);
+		character->actionList = actionList;
 	}
 	else
 	{
-		FSimCharacter character;
-		character.actionList = actionList;
+		USimCharacter* character = NewObject<USimCharacter>();
+		character->actionList = actionList;
 		actionUserList.Add(name, character);
 	}
 }
 
-TArray<FSimAction> UHBBlackboard::getActions(FString name, float DeltaTime)
+TArray<USimAction*> UHBBlackboard::getActions(FString name, float DeltaTime)
 {
 	if (actionUserList.Contains(name))
 	{
-		FSimCharacter character = *actionUserList.Find(name);
-		return character.actionList;
+		USimCharacter* character = *actionUserList.Find(name);
+		return character->actionList;
 	}
 	else
 	{
-		TArray<FSimAction> emptyList;
+		TArray<USimAction*> emptyList;
 		return emptyList;
 	}
 }
 
-TArray<FSimAction> UHBBlackboard::getTargetAction(FString name)
+TArray<USimAction*> UHBBlackboard::getTargetAction(FString name)
 {
-	TArray<FSimAction> targetActionList;
+	TArray<USimAction*> targetActionList;
 	for (auto& character : actionUserList)
 	{
-		TArray<FSimAction> list = character.Value.actionList;
+		TArray<USimAction*> list = character.Value->actionList;
 		for (auto& action : list)
 		{
-			if (action.targetName.Equals(name) || action.ownerName.Equals(name))
+			if (action->targetName.Equals(name) || action->ownerName.Equals(name))
 			{
 				targetActionList.Add(action);
 			}
 		}
 	}
-	targetActionList.Sort(FSimAction::ConstPredicate);
+	targetActionList.Sort(USimAction::ConstPredicate);
 	return targetActionList;
 }

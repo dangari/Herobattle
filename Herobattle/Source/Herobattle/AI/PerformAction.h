@@ -16,7 +16,7 @@ struct FActionScore
 
 	GENERATED_USTRUCT_BODY()
 	AIAction action;
-	int slot;
+	int slot = 0;
 	float score;
 	ABaseCharacter* target;
 

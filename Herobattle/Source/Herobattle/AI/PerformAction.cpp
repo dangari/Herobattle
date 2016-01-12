@@ -325,7 +325,7 @@ TArray<FActionScore> UPerformAction::getSkillScore(UAIGameState* newGameState, A
 			for (auto& tempAction : bestTempActionList)
 			{
 				score = action.score * tempAction.score;
-				if (score > bestAction.score)
+				if (score < bestAction.score)
 				{
 					bestAction = tempAction;
 					bestActionList = bestTempActionList;

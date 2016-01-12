@@ -166,15 +166,15 @@ void ABaseCharacter::InitializeSkills()
 		break;
 	}
 	TArray<USkill*> curSkillList = skillReader->ReadXmlSkillFile(fileName);
-
-	skillList[0] = curSkillList[0];
-	skillList[1] = curSkillList[1];
-	skillList[2] = curSkillList[2];
-	skillList[3] = curSkillList[3];
-	skillList[4] = curSkillList[4];
-	skillList[5] = curSkillList[5];
-	skillList[6] = curSkillList[6];
-	skillList[7] = curSkillList[7];
+	skillList.Empty();
+	skillList.Add(curSkillList[0]);
+	skillList.Add(curSkillList[1]);
+	skillList.Add(curSkillList[2]);
+	skillList.Add(curSkillList[3]);
+	skillList.Add(curSkillList[4]);
+	skillList.Add(curSkillList[5]);
+	skillList.Add(curSkillList[6]);
+	skillList.Add(curSkillList[7]);
 }
 
 void ABaseCharacter::UpdateResources(float DeltaSeconds){

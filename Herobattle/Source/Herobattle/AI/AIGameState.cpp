@@ -186,16 +186,19 @@ AHeroBattleHero* UAIGameState::getOwner()
 
 void UAIGameState::simulateCharacter(float DeltaTime, TArray<FCharacterState> stateList, UAIGameState* gameState)
 {
-	AAISimCharacter* character = NewObject<AAISimCharacter>();
+	UAISimCharacter* character = NewObject<UAISimCharacter>();
 	TArray<FCharacterState> newStateList;
 	for (auto& state : stateList)
 	{
 		AHerobattleCharacter* dummyCharacter = Cast<AHerobattleCharacter>(m_owner->owningPlayer);
-		TArray<FSimAction> actionList = dummyCharacter->blackboard->getActions(state.name, DeltaTime);
+		TArray<USimAction*> actionList = dummyCharacter->blackboard->getActions(state.name, DeltaTime);
 
 		character->init(state);
 		character->simulate(actionList, getCharacterList(), DeltaTime);
-		gameState->addCharacterState(character->AiExtractor(m_owner));
+		//gameState->addCharacterState(character->AiExtractor(m_owner));
 	}
 }
+
+
+
 

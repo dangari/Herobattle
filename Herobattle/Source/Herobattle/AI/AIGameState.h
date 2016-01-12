@@ -26,6 +26,7 @@ public:
 	//sets the currentAIStae to oldAIState
 	void newState(ABaseCharacter* owner);
 
+	void newStateSim(UAISimCharacter* owner);
 	//adds a characterState to currentAiState
 	void addCharacterState(FCharacterState state);
 
@@ -53,7 +54,8 @@ public:
 
 	float m_deltaTime;
 
-private:
+	UAIGameState* copy();
+
 
 	void simulateCharacter(float DeltaTime, TArray<FCharacterState> stateList, UAIGameState* gameState);
 
@@ -73,5 +75,7 @@ private:
 
 	
 	AHeroBattleHero* m_owner;
+	UAISimCharacter* m_SimOwner;
+
 	FCharacterState m_ownerState;
 };

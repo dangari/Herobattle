@@ -69,6 +69,7 @@ void UAISimCharacter::init(FCharacterProperties properties)
 	m_DamageReduction = properties.m_DamageReduction;
 	m_HealthBuffRegneration = properties.m_HealthBuffRegneration;
 	m_ManaBuffRegneration = properties.m_ManaBuffRegneration;
+	m_location = properties.location;
 
 	UAISimCharacter* dummy = NewObject<UAISimCharacter>();
 	dummy->init(properties.selectedTarget->AiExtractorSim(this));
@@ -461,6 +462,7 @@ FCharacterProperties UAISimCharacter::getProperties()
 	properties.m_DamageReduction = m_DamageReduction;
 	properties.m_HealthBuffRegneration = m_HealthBuffRegneration;
 	properties.m_ManaBuffRegneration = m_ManaBuffRegneration;
+	properties.location = m_location;
 
 	return properties;
 

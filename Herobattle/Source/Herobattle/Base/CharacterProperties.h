@@ -113,5 +113,9 @@ struct HEROBATTLE_API FCharacterProperties
 	UPROPERTY()
 	int32  m_ManaBuffRegneration;
 
+	UPROPERTY()
 	ABaseCharacter* selectedTarget;
+
+	UPROPERTY()
+	FVector location;
 };

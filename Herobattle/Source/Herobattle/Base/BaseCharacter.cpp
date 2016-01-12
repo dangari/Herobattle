@@ -374,6 +374,8 @@ FCharacterProperties ABaseCharacter::getProperties()
 	properties.m_HealthBuffRegneration = m_HealthBuffRegneration;
 	properties.m_ManaBuffRegneration = m_ManaBuffRegneration;
 
+	properties.location = GetActorLocation();
+
 	return properties;
 
 }

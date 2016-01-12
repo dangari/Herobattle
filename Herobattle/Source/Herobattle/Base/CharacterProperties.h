@@ -79,7 +79,7 @@ struct HEROBATTLE_API FCharacterProperties
 	ProfessionName proffession;
 
 	UPROPERTY()
-	USkill* skillList[8];
+	TArray<USkill*> skillList;
 
 	UPROPERTY()
 	TMap<Condition, UBaseCondition*> m_condtionList;
@@ -113,5 +113,5 @@ struct HEROBATTLE_API FCharacterProperties
 	UPROPERTY()
 	int32  m_ManaBuffRegneration;
 
-
+	ABaseCharacter* selectedTarget;
 };

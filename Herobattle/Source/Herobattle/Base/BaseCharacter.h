@@ -23,7 +23,7 @@
 class UBuff;
 class UBaseCondition;
 class USkillMessages;
-
+class UAISimCharacter;
 
 
 
@@ -129,6 +129,7 @@ public:
 
 	//Creates a state of the character
 	FCharacterState AiExtractor(ABaseCharacter* character);
+	FCharacterState AiExtractorSim(UAISimCharacter* character);
 
 	//test if the skill is on cooldown
 	bool skillIsOnCooldown(int slot);

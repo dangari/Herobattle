@@ -9,6 +9,7 @@
 #include "SkillMessages.h"
 #include "Engine.h"
 #include "Skills/XMLSkillReader.h"
+#include "AI/AISimCharacter.h"
 
 ABaseCharacter::ABaseCharacter()
 :m_MaxHealth(480),
@@ -356,13 +357,9 @@ FCharacterProperties ABaseCharacter::getProperties()
 	properties.m_ManaRegeneration = m_ManaRegeneration;
 	properties.ETeam = ETeam;
 	properties.proffession = proffession;
+	properties.selectedTarget = selectedTarget;
 
-	for (int i = 0; i < 8; i++)
-	{
-		properties.skillList[i] = skillList[i];
-		properties.skillcooldowns[i] = skillcooldowns[i];
-		properties.m_AdrenalineList[i] = m_AdrenalineList[i];
-	}
+	properties.skillList = skillList;
 
 	properties.m_condtionList = m_condtionList;
 	properties.m_BuffList = m_BuffList;
@@ -433,6 +430,37 @@ FCharacterState ABaseCharacter::AiExtractor(ABaseCharacter* character)
 		characterState.skillType = SkillType::NONE;
 
 	characterState.attrList = attrList;
+
+	characterState.name = m_Name;
+	return characterState;
+}
+
+FCharacterState ABaseCharacter::AiExtractorSim(UAISimCharacter* character)
+{
+	FCharacterState characterState;
+	characterState.ETeam = ETeam;
+	characterState.weapon = weapon;
+	characterState.location = this->GetActorLocation();
+	characterState.airDistance = (characterState.location - character->m_location).Size();
+	characterState.isCasting = currentSkill.castingSkill;
+	characterState.isAutoAttacking = useAutoAttack;
+	if (m_BuffCount > 0)
+		characterState.isBuffed = true;
+	if (m_DebuffCount > 0)
+		characterState.isHexed = true;
+	characterState.conditions = getConditions();
+	characterState.health = m_Health;
+	characterState.skillState = currentSkill.copy();
+	characterState.selectedTarget = selectedTarget;
+	characterState.self = this;
+	characterState.state = m_State;
+	if (m_State == HBCharacterState::CASTING)
+		characterState.skillType = currentSkill.skill->properties.skillType;
+	else
+		characterState.skillType = SkillType::NONE;
+
+	characterState.attrList = attrList;
+	characterState.name = m_Name;
 	return characterState;
 }
 

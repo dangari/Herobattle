@@ -22,9 +22,12 @@ UAISimCharacter::~UAISimCharacter()
 
 void UAISimCharacter::init(FCharacterState state)
 {
-	/*ETeam = state.ETeam;
+	ETeam = state.ETeam;
 	weapon = state.weapon;
 	m_location = state.location;
+	m_AirDistance = state.airDistance;
+	m_WalkDistance = state.walkDistance;
+
 	m_MaxHealth = state.self->m_MaxHealth;
 	m_Health = state.self->m_Health;
 	m_State = state.state;
@@ -43,7 +46,7 @@ void UAISimCharacter::init(FCharacterState state)
 	if (m_isBuffed)
 	{
 		applyDummyBuff();
-	}*/
+	}
 	
 }
 
@@ -51,7 +54,7 @@ void UAISimCharacter::init(FCharacterState state)
 
 void UAISimCharacter::init(FCharacterProperties properties)
 {
-	/*m_MaxHealth = properties.m_MaxHealth;
+	m_MaxHealth = properties.m_MaxHealth;
 	m_Health = properties.m_Health;
 	m_MaxMana = properties.m_MaxMana;
 	m_Mana = properties.m_Mana;
@@ -67,37 +70,37 @@ void UAISimCharacter::init(FCharacterProperties properties)
 	m_HealthBuffRegneration = properties.m_HealthBuffRegneration;
 	m_ManaBuffRegneration = properties.m_ManaBuffRegneration;
 
+	UAISimCharacter* dummy = NewObject<UAISimCharacter>();
+	dummy->init(properties.selectedTarget->AiExtractorSim(this));
+	selectedTarget = dummy;
+	
+
 
 	for (auto& elem : properties.m_CompleteBuffList)
 	{
-	FBuffList buffList = elem.Value;
-	FBuffList newBuffList;
-	Trigger trigger = elem.Key;
-	for (auto& item : buffList.m_BuffList)
-	{
-	UBuff* buff = item.Value;
-	UBuff* newBuff = buff->copy();
-	newBuffList.m_BuffList.Add(newBuff->m_Name, newBuff);
-	}
-	m_CompleteBuffList.Add(trigger, newBuffList);
+		FBuffList buffList = elem.Value;
+		FBuffList newBuffList;
+		Trigger trigger = elem.Key;
+		for (auto& item : buffList.m_BuffList)
+		{
+			UBuff* buff = item.Value;
+			UBuff* newBuff = buff->copy();
+			newBuffList.m_BuffList.Add(newBuff->m_Name, newBuff);
+		}
+		m_CompleteBuffList.Add(trigger, newBuffList);
 
 	}
 
-	for (int i = 0; i < 8; i++)
-	{
-	skillList[i] = properties.skillList[i];
-	skillcooldowns[i] = properties.skillcooldowns[i];
-	m_AdrenalineList[i] = properties.m_AdrenalineList[i];
-	}
+	skillList = properties.skillList;
 
 
 	for (auto& elem : properties.m_condtionList)
 	{
-	UBaseCondition* condi = elem.Value;
-	UBaseCondition* condition = UBaseCondition::MAKE(condi->condition, condi->currentDuration);
-	UAISimCharacter::applyCondition(condi);
+		UBaseCondition* condi = elem.Value;
+		UBaseCondition* condition = UBaseCondition::MAKE(condi->condition, condi->currentDuration);
+		UAISimCharacter::applyCondition(condi);
 	}
-	Update(0.f);*/
+	Update(0.f);
 }
 
 void UAISimCharacter::simulate(TArray<USimAction*> actionList, TMap<FString, FCharacterState> characterList, float DeltaTime)
@@ -112,58 +115,80 @@ void UAISimCharacter::simulate(TArray<USimAction*> actionList, TMap<FString, FCh
 
 			duration += action->time - duration;
 		}
+		else
+		{
+			switch (action->action)
+			{
+			case AIAction::IDLE:
+				m_State = HBCharacterState::IDLE;
+				break;
+			case AIAction::AUTOATACK:
+				m_State = HBCharacterState::AUTOATTACK;
+				break;
+			case AIAction::SKILL:
+				currentSkill.castingSkill = true;
+				currentSkill.castTime = action->skill->properties.castTime;
+				currentSkill.leftCastTime = currentSkill.castTime - (action->time - duration);
+				break;
+			default:
+				break;
+			}
+		}
 	}
 }
 
 void UAISimCharacter::simulateAction(USimAction* action, TMap<FString, FCharacterState> &characterList, float duration)
 {
-	//if (action->action == AIAction::SKILL)
-	//{
-	//	if (action->ownerName.Equals(m_Name))
-	//	{
-	//		if (skillCost(getSlot(action->skill)))
-	//		{
-	//			action->skill->run(NewObject<UAISimCharacter>(), this);
-	//			//RunBuff(Trigger::AFTERCAST, this);
-	//		}
-	//	}
-	//	else
-	//	{
-	//		UAISimCharacter* dummyCharacter = NewObject<UAISimCharacter>();
-	//		dummyCharacter->init(*characterList.Find(action->ownerName));
-	//		//action->skill->run(this, dummyCharacter);
-	//	}
-	//}
-	//if (action->action == AIAction::AUTOATACK)
-	//{
-	//	if (action->ownerName.Equals(m_Name))
-	//	{
-	//		simulateAutoAttack();
-	//	}
-	//	else
-	//	{
-	//		FCharacterState owner = *characterList.Find(action->ownerName);
-	//		damage(NewObject<UAISimCharacter>(), owner.weapon.getDamage(), HBDamageType::PHYSICAL);
-	//	}
-	//}
-	//Update(action->time - duration);
+	if (action->action == AIAction::SKILL)
+	{
+		if (action->ownerName.Equals(m_Name))
+		{
+			RunBuff(Trigger::BEFORECAST, this);
+			if (skillCost(getSlot(action->skill)))
+			{
+				action->skill->runSim(NewObject<UAISimCharacter>(), this);
+				RunBuff(Trigger::AFTERCAST, this);
+				skillcooldowns[getSlot(action->skill)].maxCooldown = action->skill->properties.recharge;
+				skillcooldowns[getSlot(action->skill)].currentCooldown = action->skill->properties.recharge;
+			}
+		}
+		else
+		{
+			UAISimCharacter* dummyCharacter = NewObject<UAISimCharacter>();
+			dummyCharacter->init(*characterList.Find(action->ownerName));
+			action->skill->runSim(this, dummyCharacter);
+		}
+	}
+	if (action->action == AIAction::AUTOATACK)
+	{
+		if (action->ownerName.Equals(m_Name))
+		{
+			simulateAutoAttack();
+		}
+		else
+		{
+			FCharacterState owner = *characterList.Find(action->ownerName);
+			damage(NewObject<UAISimCharacter>(), owner.weapon.getDamage(), HBDamageType::PHYSICAL);
+		}
+	}
+	Update(action->time - duration);
 }
 
 void UAISimCharacter::applyCondition(TArray<Condition> conditions)
 {
-	/*for (auto& condi : conditions)
+	for (auto& condi : conditions)
 	{
 		UBaseCondition* simCondi = NewObject<UBaseCondition>();
 		simCondi->init(condi, 10);
 		UAISimCharacter::applyCondition(simCondi);
-	}*/
+	}
 }
 
 void UAISimCharacter::applyDummyBuff()
 {
-	/*UBuff* dummyBuff = NewObject<UBuff>();
+	UBuff* dummyBuff = NewObject<UBuff>();
 	dummyBuff->initDummyBuff();
-	applyBuff(dummyBuff, Trigger::NONE);*/
+	applyBuff(dummyBuff, Trigger::NONE);
 }
 
 
@@ -171,19 +196,19 @@ void UAISimCharacter::applyDummyBuff()
 
 void UAISimCharacter::simulateAutoAttack()
 {
-	/*UpdateAdrenaline();
-	m_State = HBCharacterState::AUTOATTACK;*/
+	UpdateAdrenaline();
+	m_State = HBCharacterState::AUTOATTACK;
 }
 
 int UAISimCharacter::getSlot(USkill* skill)
 {
-	/*for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 8; i++)
 	{
-	if (skillList[i]->name.Equals(skill->name))
-	{
-	return i;
+		if (skillList[i]->name.Equals(skill->name))
+		{
+			return i;
+		}
 	}
-	}*/
 	return 0;
 }
 
@@ -195,7 +220,7 @@ void UAISimCharacter::Tick(float DeltaTime)
 
 void UAISimCharacter::Update(float DeltaTime)
 {
-	//RunBuff(Trigger::NONE, this);
+	RunBuff(Trigger::NONE, this);
 	UpdateModifier();
 	UpdateCondtion(DeltaTime);
 	UpdateRegeneration();
@@ -306,7 +331,6 @@ bool UAISimCharacter::skillCost(int slot)
 	{
 		if (((m_Mana + m_ManaReduction) - value) < 0)
 		{
-			messages->registerMessage(TEXT("Not enough mana"), MessageType::SKILLERROR);
 			return false;
 		}
 		else
@@ -327,7 +351,6 @@ bool UAISimCharacter::skillCost(int slot)
 		}
 		else
 		{
-			messages->registerMessage(TEXT("Not enough adrenaline"), MessageType::SKILLERROR);
 			return false;
 		}
 	}
@@ -379,7 +402,6 @@ bool UAISimCharacter::skillIsOnCooldown(int slot)
 		return false;
 	else
 	{
-		messages->registerMessage(TEXT("skill is on cooldown"), MessageType::SKILLERROR);
 		return true;
 	}
 }
@@ -476,8 +498,8 @@ FCharacterState UAISimCharacter::AiExtractor(UAISimCharacter* character)
 	FCharacterState characterState;
 	characterState.ETeam = ETeam;
 	characterState.weapon = weapon;
-	/*characterState.location = this->GetActorLocation();
-	characterState.airDistance = (characterState.location - character->GetActorLocation()).Size();*/
+	characterState.location = m_location;
+	characterState.airDistance = (characterState.location - character->m_location).Size();
 	characterState.isCasting = currentSkill.castingSkill;
 	characterState.isAutoAttacking = useAutoAttack;
 	if (m_BuffCount > 0)
@@ -487,8 +509,8 @@ FCharacterState UAISimCharacter::AiExtractor(UAISimCharacter* character)
 	characterState.conditions = getConditions();
 	characterState.health = m_Health;
 	characterState.skillState = currentSkill.copy();
-//	characterState.selectedTarget = selectedTarget;
-	//characterState.self = this;
+	characterState.selectedTargetSim = selectedTarget;
+	characterState.selfSim = this;
 	characterState.state = m_State;
 	if (m_State == HBCharacterState::CASTING)
 		characterState.skillType = currentSkill.skill->properties.skillType;
@@ -529,25 +551,25 @@ void UAISimCharacter::UpdateBuffs(float deltaTime)
 
 void UAISimCharacter::UpdateCurrentSkill(float deltaTime)
 {
-	currentSkill.leftCastTime -= deltaTime;
-	if (currentSkill.leftCastTime <= 0)
-	{
-	//	currentSkill.skill->run(currentSkill.target, this);
-		currentSkill.castingSkill = false;
-		skillcooldowns[currentSkill.slot].currentCooldown = currentSkill.skill->properties.recharge;
-		skillcooldowns[currentSkill.slot].maxCooldown = currentSkill.skill->properties.recharge + skillcooldowns[currentSkill.slot].additionalCoolDown;
-		m_ManaReduction = 0;
-	//	RunBuff(Trigger::AFTERCAST, this);
-		if (currentSkill.skill->properties.skillType == SkillType::RANGEATTACK || currentSkill.skill->properties.skillType == SkillType::MELEEATTACK)
-		{
-			UpdateAdrenaline();
-			m_State = HBCharacterState::AUTOATTACK;
-		}
-		else
-		{
-			m_State = HBCharacterState::IDLE;
-		}
-	}
+	//currentSkill.leftCastTime -= deltaTime;
+	//if (currentSkill.leftCastTime <= 0)
+	//{
+	//	currentSkill.skill->runSim(currentSkill.target, this);
+	//	currentSkill.castingSkill = false;
+	//	skillcooldowns[currentSkill.slot].currentCooldown = currentSkill.skill->properties.recharge;
+	//	skillcooldowns[currentSkill.slot].maxCooldown = currentSkill.skill->properties.recharge + skillcooldowns[currentSkill.slot].additionalCoolDown;
+	//	m_ManaReduction = 0;
+	////	RunBuff(Trigger::AFTERCAST, this);
+	//	if (currentSkill.skill->properties.skillType == SkillType::RANGEATTACK || currentSkill.skill->properties.skillType == SkillType::MELEEATTACK)
+	//	{
+	//		UpdateAdrenaline();
+	//		m_State = HBCharacterState::AUTOATTACK;
+	//	}
+	//	else
+	//	{
+	//		m_State = HBCharacterState::IDLE;
+	//	}
+	//}
 }
 
 void UAISimCharacter::UpdateAttack(float deltaTime)
@@ -912,7 +934,7 @@ bool UAISimCharacter::RunBuff(Trigger trigger, UAISimCharacter* caster, int valu
 		TMap<FString, UBuff*> buffList = m_CompleteBuffList.Find(trigger)->m_BuffList;
 		for (auto& buff : buffList)
 		{
-			//b = b && buff.Value->run(caster, this, value);
+			b = b && buff.Value->runSim(caster, this, value);
 		}
 	}
 	return b;

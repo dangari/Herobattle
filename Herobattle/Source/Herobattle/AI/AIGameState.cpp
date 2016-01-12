@@ -60,7 +60,7 @@ void UAIGameState::UpdateAttackerNumber()
 	{
 		for (auto enemy : EnemyCurrentAIState)
 		{
-			if (enemy.selectedTarget == ally.self)
+			if (enemy.name.Equals(ally.name))
 			{
 				if (enemy.state == HBCharacterState::AUTOATTACK ||
 					(enemy.state == HBCharacterState::CASTING && (enemy.skillType == SkillType::MELEEATTACK || enemy.skillType == SkillType::RANGEATTACK)))

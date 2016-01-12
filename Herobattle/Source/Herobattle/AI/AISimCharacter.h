@@ -32,7 +32,9 @@ public:
 
 	void simulateAction(USimAction* action, TMap<FString, FCharacterState> &characterList, float duration);
 
-
+	FVector m_location;
+	float m_AirDistance;
+	float m_WalkDistance;
 
 private:
 
@@ -44,7 +46,7 @@ private:
 	int getSlot(USkill* skill);
 
 
-	FVector m_location;
+	
 	int m_attackers;
 	int m_caster;
 
@@ -290,4 +292,5 @@ protected:
 	int32 m_HealthBuffRegneration;
 	UPROPERTY()
 	int32  m_ManaBuffRegneration;
+
 };

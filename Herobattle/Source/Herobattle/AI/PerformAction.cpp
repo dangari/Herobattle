@@ -318,10 +318,11 @@ TArray<FActionScore> UPerformAction::getSkillScore(UAIGameState* newGameState, A
 		FActionScore bestAction;
 		bestAction.score = 0.f;
 		TArray<FActionScore> bestActionList;
+		int newDepth = depth--;
 		for (auto& action : temporalActionScoreList)
 		{
 			UAIGameState* nextGameState = simulateNextState(newGameState, action);
-			TArray<FActionScore> bestTempActionList = getSkillScore(nextGameState, nextGameState->getOwner(), depth--);
+			TArray<FActionScore> bestTempActionList = getSkillScore(nextGameState, nextGameState->getOwner(), newDepth);
 			float score = 0.f;
 			for (auto& tempAction : bestTempActionList)
 			{
@@ -360,6 +361,7 @@ UAIGameState* UPerformAction::simulateNextState(UAIGameState* newGameState,FActi
 		break;
 	case AIAction::SKILL:
 		simAction->time = m_owner->skillList[action.slot]->properties.castTime;
+		simAction->skill = m_owner->skillList[action.slot];
 		break;
 	default:
 		break;

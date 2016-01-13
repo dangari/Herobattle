@@ -131,7 +131,7 @@ void UAIGameState::replaceState(FCharacterState state)
 	{
 		for (auto& currentState : EnemyCurrentAIState)
 		{
-			if (state.name.Equals(currentState.name))
+			if (!state.name.Equals(currentState.name))
 			{
 				newStateList.Add(currentState);
 				
@@ -150,6 +150,7 @@ FCharacterState UAIGameState::getOwnerState()
 UAIGameState* UAIGameState::simulate(float DeltaTime)
 {
 	UAIGameState* gameState = copy();
+	gameState->newState(m_owner);
 	simulateCharacter(DeltaTime, AlliesCurrentAIState, gameState);
 	simulateCharacter(DeltaTime, EnemyCurrentAIState, gameState);
 	return gameState;

@@ -16,6 +16,8 @@ struct FCharacterState
 {
 	GENERATED_USTRUCT_BODY()
 
+	FString name;
+
 	TeamColor ETeam;
 	FWeaponValues weapon;
 
@@ -51,7 +53,7 @@ struct FCharacterState
 
 	TMap<Attributes, uint8 > attrList;
 
-	FString name;
+	
 
 	inline bool operator==(const FCharacterState& Other) const
 	{

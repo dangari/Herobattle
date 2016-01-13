@@ -215,7 +215,7 @@ FActionScore UPerformAction::TemporalSkillScore(UAIGameState* aiGameState, ABase
 		UAIGameState* newGameState = aiGameState;
 		AHerobattleCharacter* character = Cast<AHerobattleCharacter>(m_owner->owningPlayer);
 	
-		TArray<FActionScore> bestActionList = getSkillScore(newGameState, owner, 0);
+		TArray<FActionScore> bestActionList = getSkillScore(newGameState, owner, 1);
 		TArray<USimAction*> simActionList;
 		int size = bestActionList.Num() - 1;
 		float time = 0.f;
@@ -260,6 +260,7 @@ FActionScore UPerformAction::TemporalSkillScore(UAIGameState* aiGameState, ABase
 
 TArray<FActionScore> UPerformAction::getSkillScore(UAIGameState* newGameState, ABaseCharacter* owner, int depth)
 {
+	
 	TArray<FActionScore> temporalActionScoreList;
 
 	FActionScore attackScore = getBestAutoAttack(newGameState->getEnemyCurrentAIState());
@@ -345,39 +346,38 @@ TArray<FActionScore> UPerformAction::getSkillScore(UAIGameState* newGameState, A
 UAIGameState* UPerformAction::simulateNextState(UAIGameState* newGameState,FActionScore action)
 {
 
-	USimAction simAction;
-	simAction.action = action.action;
-	simAction.ownerName = m_owner->m_Name;
-	simAction.targetName = action.target->m_Name;
+	USimAction* simAction = NewObject<USimAction>();
+	simAction->action = action.action;
+	simAction->ownerName = m_owner->m_Name;
+	simAction->targetName = action.target->m_Name;
 	switch (action.action)
 	{
 	case AIAction::IDLE:
-		simAction.time = 0.5;
+		simAction->time = 0.5;
 		break;
 	case AIAction::AUTOATACK:
-		simAction.time = m_owner->getWeapon().attackSpeed;
+		simAction->time = m_owner->getWeapon().attackSpeed;
 		break;
 	case AIAction::SKILL:
-		simAction.time = m_owner->skillList[action.slot]->properties.castTime;
+		simAction->time = m_owner->skillList[action.slot]->properties.castTime;
 		break;
 	default:
 		break;
 	}
-	/*AAISimCharacter* character = GetWorld()->SpawnActor<AAISimCharacter>();
+	UAISimCharacter* character = NewObject<UAISimCharacter>();
 	character->init(m_owner->getProperties());
 	AHerobattleCharacter* hbCharacter = Cast<AHerobattleCharacter>(m_owner->owningPlayer);
 	TMap<FString, FCharacterState> charachterList = newGameState->getCharacterList();
-	character->simulate(hbCharacter->blackboard->getTargetAction(m_owner->m_Name), charachterList, simAction.time);
+	character->simulate(hbCharacter->getBlackBoard()->getTargetAction(m_owner->m_Name), charachterList, simAction->time);
 	character->simulateAction(simAction, charachterList, 0.f);
 
 
-	newGameState->newState(character);
-	newGameState = newGameState->simulate(simAction.time);
+	newGameState = newGameState->simulate(simAction->time);
 	charachterList = newGameState->getCharacterList();
-	AAISimCharacter* targetCharacter = GetWorld()->SpawnActor<AAISimCharacter>();
-	targetCharacter->init(*charachterList.Find(simAction.targetName));
+	UAISimCharacter* targetCharacter = NewObject<UAISimCharacter>();
+	targetCharacter->init(*charachterList.Find(simAction->targetName));
 	targetCharacter->simulateAction(simAction, charachterList, 0.f);
-	newGameState->replaceState(targetCharacter->AiExtractor(character));*/
+	newGameState->replaceState(targetCharacter->AiExtractor(character));
 	return newGameState;
 }
 

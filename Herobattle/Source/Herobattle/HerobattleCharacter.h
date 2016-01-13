@@ -47,8 +47,8 @@ public:
 	UPROPERTY(BluePrintReadWrite, EditDefaultsOnly, Category = CamaraZoom)
 	float fCameraZoomSpeed;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UHBBlackboard* blackboard;
+
+	
 
 	UFUNCTION(BlueprintCallable, Category = OnStart)
 	void initializeMouse();
@@ -121,5 +121,8 @@ private:
 
 	//interrupt skill and Stop autoattack
 	void stopAllActions();
+
+	UPROPERTY()
+	UHBBlackboard* blackboard;
 };
 

@@ -59,7 +59,9 @@ USTRUCT()
 struct HEROBATTLE_API FCharacterProperties
 {
 	GENERATED_USTRUCT_BODY()
-	
+
+	FString m_Name;
+
 	UPROPERTY()
 	float m_MaxHealth;
 	UPROPERTY()

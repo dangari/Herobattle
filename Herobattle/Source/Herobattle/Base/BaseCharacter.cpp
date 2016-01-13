@@ -353,6 +353,7 @@ uint8 ABaseCharacter::getBuffCount()
 FCharacterProperties ABaseCharacter::getProperties()
 {
 	FCharacterProperties properties;
+	properties.m_Name = m_Name;
 	properties.m_MaxHealth = m_MaxHealth;
 	properties.m_Health = m_Health;
 	properties.m_MaxMana = m_MaxMana;

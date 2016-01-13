@@ -113,17 +113,19 @@ void UAIGameState::UpdateAttackerNumber()
 
 void UAIGameState::replaceState(FCharacterState state)
 {
+
+	TArray<FCharacterState> newStateList;
 	if (m_owner->ETeam == state.ETeam)
 	{
 		for (auto& currentState : AlliesCurrentAIState)
 		{
-			if (state.name.Equals(currentState.name))
+			if (!state.name.Equals(currentState.name))
 			{
-				AlliesCurrentAIState.Remove(currentState);
-				
+				newStateList.Add(currentState);
 			}
 		}
-		AlliesCurrentAIState.Add(state);
+		newStateList.Add(state);
+		AlliesCurrentAIState = newStateList;
 	}
 	else
 	{
@@ -131,11 +133,12 @@ void UAIGameState::replaceState(FCharacterState state)
 		{
 			if (state.name.Equals(currentState.name))
 			{
-				EnemyCurrentAIState.Remove(currentState);
+				newStateList.Add(currentState);
 				
 			}
 		}
-		EnemyCurrentAIState.Add(state);
+		newStateList.Add(state);
+		EnemyCurrentAIState = newStateList;
 	}
 }
 
@@ -146,8 +149,7 @@ FCharacterState UAIGameState::getOwnerState()
 
 UAIGameState* UAIGameState::simulate(float DeltaTime)
 {
-	UAIGameState* gameState = NewObject<UAIGameState>();
-	gameState->newState(m_owner);
+	UAIGameState* gameState = copy();
 	simulateCharacter(DeltaTime, AlliesCurrentAIState, gameState);
 	simulateCharacter(DeltaTime, EnemyCurrentAIState, gameState);
 	return gameState;
@@ -210,7 +212,6 @@ UAIGameState* UAIGameState::copy()
 	newGamestate->EnemyOldAIState = EnemyOldAIState;
 	newGamestate->m_owner = m_owner;
 	newGamestate->m_ownerState = m_ownerState;
-	UAISimCharacter* character = NewObject<UAISimCharacter>();
 
 	newGamestate->m_SimOwner = m_SimOwner;
 	return newGamestate;
@@ -221,26 +222,13 @@ void UAIGameState::simulateCharacter(float DeltaTime, TArray<FCharacterState> st
 	AHerobattleCharacter* dummyCharacter = Cast<AHerobattleCharacter>(m_owner->owningPlayer);
 
 	UAISimCharacter* character = NewObject<UAISimCharacter>();
-	if (m_SimOwner)
-	{
-		m_SimOwner->simulate(dummyCharacter->blackboard->getTargetAction(m_ownerState.name), getCharacterList(), DeltaTime);
-		m_ownerState = m_SimOwner->AiExtractor(m_SimOwner);
-	}
-	else
-	{
-		UAISimCharacter* simOwner = NewObject<UAISimCharacter>();
-		simOwner->init(m_owner->getProperties());
-		simOwner->simulate(dummyCharacter->blackboard->getTargetAction(m_ownerState.name), getCharacterList(), DeltaTime);
-		m_ownerState = simOwner->AiExtractor(simOwner);
-		m_SimOwner = simOwner;
-	}
 
 	
 	TArray<FCharacterState> newStateList;
 	for (auto& state : stateList)
 	{
 		
-		TArray<USimAction*> actionList = dummyCharacter->blackboard->getTargetAction(state.name);
+		TArray<USimAction*> actionList = dummyCharacter->getBlackBoard()->getTargetAction(state.name);
 
 		character->init(state);
 		character->simulate(actionList, getCharacterList(), DeltaTime);

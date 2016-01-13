@@ -24,7 +24,7 @@ void UAISimCharacter::init(FCharacterState state)
 {
 
 	reset();
-
+	m_Name = state.name;
 	ETeam = state.ETeam;
 	weapon = state.weapon;
 	m_location = state.location;
@@ -59,7 +59,7 @@ void UAISimCharacter::init(FCharacterProperties properties)
 {
 
 	reset();
-
+	m_Name = properties.m_Name;
 	m_MaxHealth = properties.m_MaxHealth;
 	m_Health = properties.m_Health;
 	m_MaxMana = properties.m_MaxMana;
@@ -153,6 +153,8 @@ void UAISimCharacter::simulate(TArray<USimAction*> actionList, TMap<FString, FCh
 
 void UAISimCharacter::simulateAction(USimAction* action, TMap<FString, FCharacterState> &characterList, float duration)
 {
+	m_SimCharacterTarget->init(*characterList.Find(action->targetName));
+	selectedTarget = m_SimCharacterTarget;
 	if (action->action == AIAction::SKILL)
 	{
 		if (action->ownerName.Equals(m_Name))
@@ -474,6 +476,7 @@ uint8 UAISimCharacter::getBuffCount()
 FCharacterProperties UAISimCharacter::getProperties()
 {
 	FCharacterProperties properties;
+	properties.m_Name = m_Name;
 	properties.m_MaxHealth = m_MaxHealth;
 	properties.m_Health = m_Health;
 	properties.m_MaxMana = m_MaxMana;
@@ -538,6 +541,7 @@ bool UAISimCharacter::canUseSkill(int slot)
 FCharacterState UAISimCharacter::AiExtractor(UAISimCharacter* character)
 {
 	FCharacterState characterState;
+	characterState.name = m_Name;
 	characterState.ETeam = ETeam;
 	characterState.weapon = weapon;
 	characterState.location = m_location;

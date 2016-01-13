@@ -42,6 +42,7 @@ struct FTemporalActionScore
 	}
 };
 
+
 /**
  * 
  */
@@ -84,6 +85,7 @@ private:
 
 	FActionScore getBestScore();
 	TArray<FActionScore> m_ActionList;
+
 
 	AHeroBattleHero* m_owner;
 	FActionScore nextSkill;

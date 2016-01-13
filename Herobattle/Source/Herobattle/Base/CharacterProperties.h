@@ -10,6 +10,7 @@
 #include "CharacterProperties.generated.h"
 
 class ABaseCharacter;
+class UAISimCharacter;
 class UBuff;
 /**
  * 
@@ -115,6 +116,9 @@ struct HEROBATTLE_API FCharacterProperties
 
 	UPROPERTY()
 	ABaseCharacter* selectedTarget;
+
+	UPROPERTY()
+	UAISimCharacter* simSelectedTarget;
 
 	UPROPERTY()
 	FVector location;

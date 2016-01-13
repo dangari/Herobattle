@@ -39,7 +39,10 @@ ABaseCharacter::~ABaseCharacter()
 // Called when the game starts or when spawned
 void ABaseCharacter::BeginPlay()
 {
+
 	Super::BeginPlay();
+	m_SimCharacter = NewObject<UAISimCharacter>();
+	m_SimCharacterTarget = NewObject<UAISimCharacter>();
 	if (HasAuthority())
 	{
 		m_DefaultMovementSpeed = GetCharacterMovement()->MaxWalkSpeed;
@@ -424,7 +427,10 @@ FCharacterState ABaseCharacter::AiExtractor(ABaseCharacter* character)
 	characterState.health = m_Health;
 	characterState.skillState = currentSkill.copy();
 	characterState.selectedTarget = selectedTarget;
+
+	
 	characterState.self = this;
+
 	characterState.state = m_State;
 	if (m_State == HBCharacterState::CASTING)
 		characterState.skillType = currentSkill.skill->properties.skillType;
@@ -454,7 +460,10 @@ FCharacterState ABaseCharacter::AiExtractorSim(UAISimCharacter* character)
 	characterState.health = m_Health;
 	characterState.skillState = currentSkill.copy();
 	characterState.selectedTarget = selectedTarget;
+
+
 	characterState.self = this;
+	
 	characterState.state = m_State;
 	if (m_State == HBCharacterState::CASTING)
 		characterState.skillType = currentSkill.skill->properties.skillType;

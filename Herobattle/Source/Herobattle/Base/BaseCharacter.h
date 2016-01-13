@@ -284,4 +284,8 @@ protected:
 	int32 m_HealthBuffRegneration;
 	UPROPERTY()
 	int32  m_ManaBuffRegneration;
+
+	UAISimCharacter* m_SimCharacter;
+	UAISimCharacter* m_SimCharacterTarget;
+
 };

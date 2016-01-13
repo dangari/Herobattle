@@ -27,6 +27,7 @@ public:
 
 	void init(FCharacterState state);
 	void init(FCharacterProperties character);
+	UAISimCharacter* reset();
 
 	void simulate(TArray<USimAction*> actionList, TMap<FString, FCharacterState> characterList, float DeltaTime);
 
@@ -44,6 +45,7 @@ private:
 	void simulateAutoAttack();
 	
 	int getSlot(USkill* skill);
+
 
 
 	
@@ -292,5 +294,8 @@ protected:
 	int32 m_HealthBuffRegneration;
 	UPROPERTY()
 	int32  m_ManaBuffRegneration;
+
+	UAISimCharacter* m_SimCharacter;
+	UAISimCharacter* m_SimCharacterTarget;
 
 };

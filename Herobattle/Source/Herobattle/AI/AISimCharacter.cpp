@@ -12,7 +12,7 @@
 
 UAISimCharacter::UAISimCharacter()
 {
-
+	
 }
 
 UAISimCharacter::~UAISimCharacter()
@@ -22,6 +22,9 @@ UAISimCharacter::~UAISimCharacter()
 
 void UAISimCharacter::init(FCharacterState state)
 {
+
+	reset();
+
 	ETeam = state.ETeam;
 	weapon = state.weapon;
 	m_location = state.location;
@@ -54,6 +57,9 @@ void UAISimCharacter::init(FCharacterState state)
 
 void UAISimCharacter::init(FCharacterProperties properties)
 {
+
+	reset();
+
 	m_MaxHealth = properties.m_MaxHealth;
 	m_Health = properties.m_Health;
 	m_MaxMana = properties.m_MaxMana;
@@ -71,9 +77,16 @@ void UAISimCharacter::init(FCharacterProperties properties)
 	m_ManaBuffRegneration = properties.m_ManaBuffRegneration;
 	m_location = properties.location;
 
-	UAISimCharacter* dummy = NewObject<UAISimCharacter>();
-	dummy->init(properties.selectedTarget->AiExtractorSim(this));
-	selectedTarget = dummy;
+	if (properties.simSelectedTarget)
+	{
+		selectedTarget = properties.simSelectedTarget;
+	}
+	else if (properties.selectedTarget)
+	{
+		m_SimCharacterTarget->init(properties.selectedTarget->AiExtractorSim(this));
+		selectedTarget = m_SimCharacterTarget;
+	}
+	
 	
 
 
@@ -147,7 +160,7 @@ void UAISimCharacter::simulateAction(USimAction* action, TMap<FString, FCharacte
 			RunBuff(Trigger::BEFORECAST, this);
 			if (skillCost(getSlot(action->skill)))
 			{
-				action->skill->runSim(NewObject<UAISimCharacter>(), this);
+				action->skill->runSim(m_SimCharacter->reset(), this);
 				RunBuff(Trigger::AFTERCAST, this);
 				skillcooldowns[getSlot(action->skill)].maxCooldown = action->skill->properties.recharge;
 				skillcooldowns[getSlot(action->skill)].currentCooldown = action->skill->properties.recharge;
@@ -155,9 +168,8 @@ void UAISimCharacter::simulateAction(USimAction* action, TMap<FString, FCharacte
 		}
 		else
 		{
-			UAISimCharacter* dummyCharacter = NewObject<UAISimCharacter>();
-			dummyCharacter->init(*characterList.Find(action->ownerName));
-			action->skill->runSim(this, dummyCharacter);
+			m_SimCharacter->init(*characterList.Find(action->ownerName));
+			action->skill->runSim(this, m_SimCharacter);
 		}
 	}
 	if (action->action == AIAction::AUTOATACK)
@@ -169,7 +181,7 @@ void UAISimCharacter::simulateAction(USimAction* action, TMap<FString, FCharacte
 		else
 		{
 			FCharacterState owner = *characterList.Find(action->ownerName);
-			damage(NewObject<UAISimCharacter>(), owner.weapon.getDamage(), HBDamageType::PHYSICAL);
+			damage(m_SimCharacter->reset(), owner.weapon.getDamage(), HBDamageType::PHYSICAL);
 		}
 	}
 	Update(action->time - duration);
@@ -213,6 +225,33 @@ int UAISimCharacter::getSlot(USkill* skill)
 	return 0;
 }
 
+
+UAISimCharacter* UAISimCharacter::reset()
+{
+
+	if (!m_SimCharacter)
+		m_SimCharacter = NewObject<UAISimCharacter>();
+	if (!m_SimCharacterTarget)
+		m_SimCharacterTarget = NewObject<UAISimCharacter>();
+
+	m_isCasting = false;
+	m_isAutoAttacking = false;
+	m_isBuffed = false;
+	m_isHexed = false;
+	m_hasStance = false;
+
+
+	m_condtionList.Empty();
+	m_BuffList.Empty();
+	m_CompleteBuffList.Empty();
+	attrList.Empty();
+
+	m_ConditionCount = 0;
+	m_BuffCount = 0;
+	m_DebuffCount = 0;
+	return this;
+	
+}
 
 void UAISimCharacter::Tick(float DeltaTime)
 {
@@ -463,6 +502,7 @@ FCharacterProperties UAISimCharacter::getProperties()
 	properties.m_HealthBuffRegneration = m_HealthBuffRegneration;
 	properties.m_ManaBuffRegneration = m_ManaBuffRegneration;
 	properties.location = m_location;
+	properties.simSelectedTarget = selectedTarget;
 
 	return properties;
 

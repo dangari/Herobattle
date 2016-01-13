@@ -14,7 +14,7 @@
 
 UAIGameState::UAIGameState()
 {
-
+	m_SimOwner = NewObject<UAISimCharacter>();
 }
 
 UAIGameState::~UAIGameState()
@@ -26,6 +26,8 @@ void UAIGameState::newState(ABaseCharacter* owner)
 {
 	m_owner = Cast<AHeroBattleHero>(owner);
 	m_ownerState = m_owner->AiExtractor(owner);
+	m_SimOwner->init(owner->getProperties());
+
 	EnemyOldAIState = EnemyCurrentAIState;
 	TArray<FCharacterState> newEnemyState;
 	EnemyCurrentAIState = newEnemyState;
@@ -209,8 +211,8 @@ UAIGameState* UAIGameState::copy()
 	newGamestate->m_owner = m_owner;
 	newGamestate->m_ownerState = m_ownerState;
 	UAISimCharacter* character = NewObject<UAISimCharacter>();
-	character->init(m_SimOwner->getProperties());
-	newGamestate->m_SimOwner = character;
+
+	newGamestate->m_SimOwner = m_SimOwner;
 	return newGamestate;
 }
 

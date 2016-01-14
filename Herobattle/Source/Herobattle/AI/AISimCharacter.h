@@ -296,9 +296,11 @@ protected:
 	UPROPERTY()
 	int32  m_ManaBuffRegneration;
 
+	UPROPERTY()
 	UAISimCharacter* m_SimCharacter;
+	UPROPERTY()
 	UAISimCharacter* m_SimCharacterTarget;
-
+	UPROPERTY()
 	ABaseCharacter* m_orgSelectedTarget;
 
 };

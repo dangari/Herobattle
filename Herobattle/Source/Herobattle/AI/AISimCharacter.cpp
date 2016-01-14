@@ -542,6 +542,10 @@ bool UAISimCharacter::hasCondition(Condition condition)
 
 bool UAISimCharacter::canUseSkill(int slot)
 {
+	if (skillList[slot]->properties.costType == CostType::NONE)
+	{
+		return true;
+	}
 	if (skillList[slot]->properties.costType == CostType::ADRENALINE)
 	{
 		if (m_AdrenalineList[slot].currentAdrenaline == m_AdrenalineList[slot].maxAdrenaline)

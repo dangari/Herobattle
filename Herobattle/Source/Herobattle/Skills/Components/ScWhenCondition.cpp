@@ -81,7 +81,7 @@ float UScWhenCondition::getScoreSim(UAISimCharacter* caster, FCharacterState cha
 	}
 	else
 	{
-		score = 0.2;
+		score = 0.0;
 	}
 	skillScore->addScore(score, TEXT("when"));
 	return score;

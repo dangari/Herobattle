@@ -41,7 +41,7 @@ EBTNodeResult::Type UPerformAction::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 
 	
 
-	if (aiGameState)
+	if (aiGameState && aiGameState->m_owner)
 	{
 		TMap<FString, ABaseCharacter*> characterList = aiGameState->getCharacterInstanceList();
 		if (temporalPlanning)

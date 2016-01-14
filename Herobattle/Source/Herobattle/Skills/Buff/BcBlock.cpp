@@ -185,7 +185,19 @@ void UBcBlock::update(float deltaTime)
 
 float UBcBlock::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration)
 {
-	//if (characterState.selectedTarget == caster)
+	if (blockType == SkillType::ATTACK && characterState.attackers > 0)
+	{
+		skillScore->addScore(1.f, TEXT("block"));
+	}
+	else if (characterState.caster > 0)
+	{
+		skillScore->addScore(1.f, TEXT("block"));
+	}
+	else
+	{
+		skillScore->addScore(0.f, TEXT("block"));
+	}
+		
 	return 1.f;
 }
 

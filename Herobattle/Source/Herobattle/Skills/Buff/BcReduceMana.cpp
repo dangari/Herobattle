@@ -54,10 +54,12 @@ void UBcReduceMana::update(float deltaTime)
 
 float UBcReduceMana::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration)
 {
+	skillScore->addScore(1.f, TEXT("reduceMana"));
 	return 1.f;
 }
 
 float UBcReduceMana::getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration)
 {
+	skillScore->addScore(1.f, TEXT("reduceMana"));
 	return 1.f;
 }

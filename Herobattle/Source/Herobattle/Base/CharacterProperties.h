@@ -124,4 +124,7 @@ struct HEROBATTLE_API FCharacterProperties
 
 	UPROPERTY()
 	FVector location;
+
+	UPROPERTY()
+	FSkillStatus m_CurrentSkill;
 };

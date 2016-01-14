@@ -31,18 +31,22 @@ void UAISimCharacter::init(FCharacterState state)
 	m_AirDistance = state.airDistance;
 	m_WalkDistance = state.walkDistance;
 
-	m_MaxHealth = state.self->m_MaxHealth;
-	m_Health = state.self->m_Health;
+	m_MaxHealth = state.maxHealth;
+	m_Health = state.health;
 	m_State = state.state;
 
 	m_isCasting = state.isCasting;
 	m_isAutoAttacking = state.isAutoAttacking;
 	m_isBuffed = state.isBuffed;
 	m_isHexed = state.isHexed;
-
+	m_orgSelectedTarget = state.selectedTarget;
 	m_hasStance = state.hasStance;
 
 	attrList = state.attrList;
+
+	currentSkill = state.skillState;
+
+	selectedTarget = m_SimCharacterTarget;
 
 	applyCondition(state.conditions);
 
@@ -50,7 +54,7 @@ void UAISimCharacter::init(FCharacterState state)
 	{
 		applyDummyBuff();
 	}
-	
+
 }
 
 
@@ -76,6 +80,8 @@ void UAISimCharacter::init(FCharacterProperties properties)
 	m_HealthBuffRegneration = properties.m_HealthBuffRegneration;
 	m_ManaBuffRegneration = properties.m_ManaBuffRegneration;
 	m_location = properties.location;
+	currentSkill = properties.m_CurrentSkill;
+	m_orgSelectedTarget = properties.selectedTarget;
 
 	if (properties.simSelectedTarget)
 	{
@@ -84,6 +90,10 @@ void UAISimCharacter::init(FCharacterProperties properties)
 	else if (properties.selectedTarget)
 	{
 		m_SimCharacterTarget->init(properties.selectedTarget->AiExtractorSim(this));
+		selectedTarget = m_SimCharacterTarget;
+	}
+	else
+	{
 		selectedTarget = m_SimCharacterTarget;
 	}
 	
@@ -106,6 +116,11 @@ void UAISimCharacter::init(FCharacterProperties properties)
 	}
 
 	skillList = properties.skillList;
+	for (int i = 0; i < 8; i++)
+	{
+		m_AdrenalineList[i] = properties.m_AdrenalineList[i];
+		skillcooldowns[i] = properties.skillcooldowns[i];
+	}
 
 
 	for (auto& elem : properties.m_condtionList)
@@ -151,7 +166,7 @@ void UAISimCharacter::simulate(TArray<USimAction*> actionList, TMap<FString, FCh
 	}
 }
 
-void UAISimCharacter::simulateAction(USimAction* action, TMap<FString, FCharacterState> &characterList, float duration)
+void UAISimCharacter::simulateAction(USimAction* action, TMap<FString, FCharacterState> &characterList, float duration, bool withCost)
 {
 	m_SimCharacterTarget->init(*characterList.Find(action->targetName));
 	selectedTarget = m_SimCharacterTarget;
@@ -160,7 +175,7 @@ void UAISimCharacter::simulateAction(USimAction* action, TMap<FString, FCharacte
 		if (action->ownerName.Equals(m_Name))
 		{
 			RunBuff(Trigger::BEFORECAST, this);
-			if (skillCost(getSlot(action->skill)))
+			if (skillCost(!withCost || getSlot(action->skill)))
 			{
 				action->skill->runSim(m_SimCharacter->reset(), this);
 				RunBuff(Trigger::AFTERCAST, this);
@@ -232,9 +247,12 @@ UAISimCharacter* UAISimCharacter::reset()
 {
 
 	if (!m_SimCharacter)
-		m_SimCharacter = NewObject<UAISimCharacter>();
+		m_SimCharacter = NewObject<UAISimCharacter>(this);
 	if (!m_SimCharacterTarget)
-		m_SimCharacterTarget = NewObject<UAISimCharacter>();
+	{
+		m_SimCharacterTarget = NewObject<UAISimCharacter>(this);
+	}
+	selectedTarget = m_SimCharacterTarget;
 
 	m_isCasting = false;
 	m_isAutoAttacking = false;
@@ -506,7 +524,7 @@ FCharacterProperties UAISimCharacter::getProperties()
 	properties.m_ManaBuffRegneration = m_ManaBuffRegneration;
 	properties.location = m_location;
 	properties.simSelectedTarget = selectedTarget;
-
+	properties.m_CurrentSkill = currentSkill;
 	return properties;
 
 }
@@ -554,10 +572,12 @@ FCharacterState UAISimCharacter::AiExtractor(UAISimCharacter* character)
 		characterState.isHexed = true;
 	characterState.conditions = getConditions();
 	characterState.health = m_Health;
+	characterState.maxHealth = m_MaxHealth;
 	characterState.skillState = currentSkill.copy();
 	characterState.selectedTargetSim = selectedTarget;
 	characterState.selfSim = this;
 	characterState.state = m_State;
+	characterState.selectedTarget = m_orgSelectedTarget;
 	if (m_State == HBCharacterState::CASTING)
 		characterState.skillType = currentSkill.skill->properties.skillType;
 	else

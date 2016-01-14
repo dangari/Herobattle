@@ -54,18 +54,18 @@ float UBcGiveManaValue::getScoreSim(UAISimCharacter* caster, FCharacterState cha
 	return 1.f;
 }
 
-void UBcGiveManaValue::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties)
+void UBcGiveManaValue::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties, UBuff* ownerBuff)
 {
-	Super::init(bContainer, owner, properties);
+	Super::init(bContainer, owner, properties, ownerBuff);
 	FString tagName = bContainer.node->GetTag();
 	m_CostType = SkillEnums::stringToCostType(bContainer.node->GetAttribute(TEXT("type")));
 	targetType = SkillEnums::stringToTargetType(bContainer.node->GetAttribute(TEXT("target")));
 	m_ManaFactor = bContainer.scaleTable[owner->getAttributeValue(bContainer.scaleAttribute)];
 }
 
-void UBcGiveManaValue::initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties)
+void UBcGiveManaValue::initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties, UBuff* ownerBuff)
 {
-	Super::initSim(bContainer, owner, properties);
+	Super::initSim(bContainer, owner, properties, ownerBuff);
 	FString tagName = bContainer.node->GetTag();
 	m_CostType = SkillEnums::stringToCostType(bContainer.node->GetAttribute(TEXT("type")));
 	targetType = SkillEnums::stringToTargetType(bContainer.node->GetAttribute(TEXT("target")));

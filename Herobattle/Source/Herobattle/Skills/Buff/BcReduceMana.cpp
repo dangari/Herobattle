@@ -16,15 +16,15 @@ UBcReduceMana::~UBcReduceMana()
 
 }
 
-void UBcReduceMana::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties)
+void UBcReduceMana::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties, UBuff* ownerBuff)
 {
-	Super::init(bContainer, owner, properties);
+	Super::init(bContainer, owner, properties, ownerBuff);
 	reduction = bContainer.scaleTable[owner->getAttributeValue(bContainer.scaleAttribute)];
 }
 
-void UBcReduceMana::initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties)
+void UBcReduceMana::initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties, UBuff* ownerBuff)
 {
-	Super::initSim(bContainer, owner, properties);
+	Super::initSim(bContainer, owner, properties, ownerBuff);
 	reduction = bContainer.scaleTable[owner->getAttributeValue(bContainer.scaleAttribute)];
 }
 

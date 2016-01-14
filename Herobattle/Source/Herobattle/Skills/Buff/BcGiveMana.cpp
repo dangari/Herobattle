@@ -90,17 +90,17 @@ float UBcGiveMana::getScoreSim(UAISimCharacter* caster, FCharacterState characte
 	return 1.f;
 }
 
-void UBcGiveMana::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties)
+void UBcGiveMana::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties, UBuff* ownerBuff)
 {
-	Super::init(bContainer, owner, properties);
+	Super::init(bContainer, owner, properties, ownerBuff);
 	FString tagName = bContainer.node->GetTag();
 	targetType = SkillEnums::stringToTargetType(bContainer.node->GetAttribute(TEXT("target")));
 	m_ManaFactor = bContainer.scaleTable[owner->getAttributeValue(bContainer.scaleAttribute)];
 }
 
-void UBcGiveMana::initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties)
+void UBcGiveMana::initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties, UBuff* ownerBuff)
 {
-	Super::initSim(bContainer, owner, properties);
+	Super::initSim(bContainer, owner, properties, ownerBuff);
 	FString tagName = bContainer.node->GetTag();
 	targetType = SkillEnums::stringToTargetType(bContainer.node->GetAttribute(TEXT("target")));
 	m_ManaFactor = bContainer.scaleTable[owner->getAttributeValue(bContainer.scaleAttribute)];

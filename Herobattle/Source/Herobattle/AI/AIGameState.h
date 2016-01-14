@@ -34,6 +34,8 @@ public:
 
 	void replaceState(FCharacterState state);
 
+	void createSimCharacters();
+
 	TArray<FCharacterState> getAlliesCurrentAIState();
 
 	TArray<FCharacterState> getAlliesOldAIState();
@@ -43,6 +45,8 @@ public:
 	TArray<FCharacterState> getEnemyOldAIState();
 
 	TMap<FString, FCharacterState> getCharacterList();
+
+	TMap<FString, ABaseCharacter*> getCharacterInstanceList();
 
 	FCharacterState getOwnerState();
 
@@ -58,7 +62,8 @@ public:
 
 
 	void simulateCharacter(float DeltaTime, TArray<FCharacterState> stateList, UAIGameState* gameState);
-
+	void setSimOwner(UAISimCharacter* character);
+	UAISimCharacter* getSimOwner();
 	UPROPERTY()
 	TArray<FCharacterState> AlliesCurrentAIState;
 
@@ -78,4 +83,5 @@ public:
 	UAISimCharacter* m_SimOwner;
 
 	FCharacterState m_ownerState;
+	UAISimCharacter* character;
 };

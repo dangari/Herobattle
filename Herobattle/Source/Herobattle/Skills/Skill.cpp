@@ -96,40 +96,38 @@ bool USkill::isValidTargetSim(UAISimCharacter* target, UAISimCharacter* self)
 
 float USkill::getScore(ABaseCharacter* caster, FCharacterState charcterState)
 {
-	if (caster->m_Mana - properties.cost < 0)
-		return 0.0f;
-	else
+
+	USkillScore* skillScore = NewObject<USkillScore>();
+	for (auto& component : componentList)
 	{
-		USkillScore* skillScore = NewObject<USkillScore>();
-		for (auto& component : componentList)
-		{
-			component->getScore(caster, charcterState, skillScore);
-		}
-		ABaseCharacter* target = charcterState.self;
-		skillScore->calcDamageScore(caster->m_Health, caster->m_MaxHealth, target->m_Health, target->m_MaxHealth);
-		skillScore->calcHealScore(caster->m_Health, caster->m_MaxHealth, target->m_Health, target->m_MaxHealth);
-		float score = skillScore->calcCompleteScore() *  manaScore(caster, charcterState);
-		return score;
+		component->getScore(caster, charcterState, skillScore);
 	}
+	ABaseCharacter* target = charcterState.self;
+	skillScore->calcDamageScore(caster->m_Health, caster->m_MaxHealth, target->m_Health, target->m_MaxHealth);
+	skillScore->calcHealScore(caster->m_Health, caster->m_MaxHealth, target->m_Health, target->m_MaxHealth);
+	float score = skillScore->calcCompleteScore() *  manaScore(caster, charcterState);
+	return score;
+
 }
 
 float USkill::getScoreSim(UAISimCharacter* caster, FCharacterState characterState)
 {
-	if (caster->m_Mana - properties.cost < 0)
-		return 0.0f;
-	else
+	
+	USkillScore* skillScore = NewObject<USkillScore>();
+	
+	UAISimCharacter* self = NewObject<UAISimCharacter>(this);
+	self->init(characterState);
+	characterState.selfSim = self;
+
+	for (auto& component : componentList)
 	{
-		USkillScore* skillScore = NewObject<USkillScore>();
-		for (auto& component : componentList)
-		{
-			component->getScoreSim(caster, characterState, skillScore);
-		}
-		ABaseCharacter* target = characterState.self;
-		skillScore->calcDamageScore(caster->m_Health, caster->m_MaxHealth, target->m_Health, target->m_MaxHealth);
-		skillScore->calcHealScore(caster->m_Health, caster->m_MaxHealth, target->m_Health, target->m_MaxHealth);
-		float score = skillScore->calcCompleteScore() *  manaScoreSim(caster, characterState);
-		return score;
+		component->getScoreSim(caster, characterState, skillScore);
 	}
+	UAISimCharacter* target = characterState.selfSim;
+	skillScore->calcDamageScore(caster->m_Health, caster->m_MaxHealth, target->m_Health, target->m_MaxHealth);
+	skillScore->calcHealScore(caster->m_Health, caster->m_MaxHealth, target->m_Health, target->m_MaxHealth);
+	float score = skillScore->calcCompleteScore() *  manaScoreSim(caster, characterState);
+	return score;
 }
 
 FString USkill::ToString()

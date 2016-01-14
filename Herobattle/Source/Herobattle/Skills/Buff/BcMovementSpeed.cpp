@@ -16,16 +16,16 @@ UBcMovementSpeed::~UBcMovementSpeed()
 
 }
 
-void UBcMovementSpeed::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties)
+void UBcMovementSpeed::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties, UBuff* ownerBuff)
 {
-	Super::init(bContainer, owner, properties);
+	Super::init(bContainer, owner, properties, ownerBuff);
 	targetType = bContainer.targetType;
 	m_MovementSpeed = bContainer.scaleTable[owner->getAttributeValue(bContainer.scaleAttribute)];
 }
 
-void UBcMovementSpeed::initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties)
+void UBcMovementSpeed::initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties, UBuff* ownerBuff)
 {
-	Super::initSim(bContainer, owner, properties);
+	Super::initSim(bContainer, owner, properties, ownerBuff);
 	targetType = bContainer.targetType;
 	m_MovementSpeed = bContainer.scaleTable[owner->getAttributeValue(bContainer.scaleAttribute)];
 }

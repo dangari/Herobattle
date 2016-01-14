@@ -24,9 +24,9 @@ bool UScBuff::run(ABaseCharacter* target, ABaseCharacter* self, FString SkillNam
 {
 	bool b = true;
 
-	UBuff* buff = NewObject<UBuff>();
+	UBuff* buff = NewObject<UBuff>(target);
 	float duration = scaleTable[self->getAttributeValue(scaleAttribute)];
-	buff->init(self, bCBuffList, duration, SkillName, m_Usage, m_properties);
+	buff->init(self, bCBuffList, duration, SkillName, m_Usage, m_properties, buff);
 	target->applyBuff(buff, m_Trigger);
 	return b;
 }
@@ -35,28 +35,30 @@ bool UScBuff::runSim(UAISimCharacter* target, UAISimCharacter* self, FString Ski
 {
 	bool b = true;
 
-	UBuff* buff = NewObject<UBuff>();
+	UBuff* buff = NewObject<UBuff>(target);
 	float duration = scaleTable[self->getAttributeValue(scaleAttribute)];
-	buff->initSim(self, bCBuffList, duration, SkillName, m_Usage, m_properties);
+	buff->initSim(self, bCBuffList, duration, SkillName, m_Usage, m_properties, buff);
 	target->applyBuff(buff, m_Trigger);
 	return b;
 }
 
 float UScBuff::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
-	UBuff* buff = NewObject<UBuff>();
+	UBuff* buff = NewObject<UBuff>(this);
 	float duration = scaleTable[caster->getAttributeValue(scaleAttribute)];
-	buff->init(caster, bCBuffList, duration, SkillName, m_Usage, m_properties);
+	buff->init(caster, bCBuffList, duration, SkillName, m_Usage, m_properties, buff);
 	buff->getScore(caster, characterState, skillScore);
+	DestroyObject(buff);
 	return 1.f;
 }
 
 float UScBuff::getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
-	UBuff* buff = NewObject<UBuff>();
+	UBuff* buff = NewObject<UBuff>(this);
 	float duration = scaleTable[caster->getAttributeValue(scaleAttribute)];
-	buff->initSim(caster, bCBuffList, duration, SkillName, m_Usage, m_properties);
+	buff->initSim(caster, bCBuffList, duration, SkillName, m_Usage, m_properties, buff);
 	buff->getScoreSim(caster, characterState, skillScore);
+	DestroyObject(buff);
 	return 1.f;
 }
 
@@ -79,7 +81,7 @@ void UScBuff::init(FXmlNode* node, FSkillProperties properties)
 		for (auto& buffs : buffList)
 		{
 			tagName = buffs->GetTag();
-			if (XMLSkillReader::bcObjectNameList.Contains(tagName))
+			if (UBuff::bcObjectNameList.Contains(tagName))
 			{
 				FBuffContainer buff;
 				buff.buffName = tagName;

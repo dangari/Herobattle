@@ -44,7 +44,7 @@ bool UBoolMana::testSim(UAISimCharacter* target, UAISimCharacter* self)
 	{
 		test = manaPrec > treshold;
 	}
-	return test;
+	return true;
 }
 
 void UBoolMana::init(FXmlNode* node, ComponentTarget target)

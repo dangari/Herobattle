@@ -7,8 +7,9 @@
 class ABaseCharacter;
 class UAISimCharacter;
 
+template<typename T> UBaseBuffCompenent * createBcInstance(UObject* obj) { return NewObject<T>(obj); }
 
-typedef UBaseBuffCompenent* (*bCclassFuncPtr)();
+typedef UBaseBuffCompenent* (*bCclassFuncPtr)(UObject* obj);
 
 
 UCLASS()
@@ -19,8 +20,8 @@ public:
 	UBuff();
 	~UBuff();
 
-	void init(ABaseCharacter* owner, TArray<FBuffContainer> bCBuffList, float duration, FString name, FString usage, FSkillProperties properties);
-	void initSim(UAISimCharacter* owner, TArray<FBuffContainer> bCBuffList, float duration, FString name, FString usage, FSkillProperties properties);
+	void init(ABaseCharacter* owner, TArray<FBuffContainer> bCBuffList, float duration, FString name, FString usage, FSkillProperties properties, UBuff* ownerBuff);
+	void initSim(UAISimCharacter* owner, TArray<FBuffContainer> bCBuffList, float duration, FString name, FString usage, FSkillProperties properties, UBuff* ownerBuff);
 
 	void initDummyBuff();
 
@@ -41,7 +42,7 @@ public:
 
 	UBuff* copy();
 
-	
+	static TMap<FString, bCclassFuncPtr> bcObjectNameList;
 
 	UPROPERTY()
 	TArray<UBaseBuffCompenent*> m_BcList;

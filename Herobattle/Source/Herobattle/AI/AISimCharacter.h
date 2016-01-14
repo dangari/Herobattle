@@ -15,6 +15,7 @@ class UBuff;
 class UBaseCondition;
 class USkillMessages;
 class USkill;
+class ABaseCharacter;
 
 UCLASS()
 class HEROBATTLE_API UAISimCharacter : public UObject
@@ -31,7 +32,7 @@ public:
 
 	void simulate(TArray<USimAction*> actionList, TMap<FString, FCharacterState> characterList, float DeltaTime);
 
-	void simulateAction(USimAction* action, TMap<FString, FCharacterState> &characterList, float duration);
+	void simulateAction(USimAction* action, TMap<FString, FCharacterState> &characterList, float duration, bool withCost = false);
 
 	FVector m_location;
 	float m_AirDistance;
@@ -297,5 +298,7 @@ protected:
 
 	UAISimCharacter* m_SimCharacter;
 	UAISimCharacter* m_SimCharacterTarget;
+
+	ABaseCharacter* m_orgSelectedTarget;
 
 };

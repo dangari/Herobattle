@@ -3,6 +3,7 @@
 #include "Herobattle.h"
 #include "BcForEach.h"
 #include "BaseBuffCompenent.h"
+#include "Buff.h"
 //#include "XmlParser.h"
 //#include "../XMLSkillReader.h"
 //#include "Base/BaseCharacter.h"
@@ -93,9 +94,9 @@ float UBcForEach::getScoreSim(UAISimCharacter* caster, FCharacterState character
 	return 1.f;
 }
 
-void UBcForEach::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties)
+void UBcForEach::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties, UBuff* ownerBuff)
 {
-	Super::init(bContainer, owner, properties);
+	Super::init(bContainer, owner, properties, ownerBuff);
 	FXmlNode* node = bContainer.node;
 	skillType = node->GetAttribute(TEXT("type"));
 	TArray<FXmlNode*> childNodes = node->GetChildrenNodes();
@@ -103,7 +104,7 @@ void UBcForEach::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillPr
 	for (auto& bcObj : childNodes)
 	{
 		FString tagName = bcObj->GetTag();
-		if (XMLSkillReader::bcObjectNameList.Contains(tagName))
+		if (UBuff::bcObjectNameList.Contains(tagName))
 		{
 			FBuffContainer buff;
 			buff.buffName = tagName;
@@ -111,17 +112,17 @@ void UBcForEach::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillPr
 			buff.node = bcObj;
 			buff.fillScaleTable(bcObj);
 
-			bCclassFuncPtr createFunc = *(XMLSkillReader::bcObjectNameList.Find(tagName));
-			UBaseBuffCompenent* bc = createFunc();
-			bc->init(buff, owner, properties);
+			bCclassFuncPtr createFunc = *(UBuff::bcObjectNameList.Find(tagName));
+			UBaseBuffCompenent* bc = createFunc(ownerBuff);
+			bc->init(buff, owner, properties, ownerBuff);
 			bcList.Add(bc);
 		}
 	}
 }
 
-void UBcForEach::initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties)
+void UBcForEach::initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties, UBuff* ownerBuff)
 {
-	Super::initSim(bContainer, owner, properties);
+	Super::initSim(bContainer, owner, properties, ownerBuff);
 	FXmlNode* node = bContainer.node;
 	skillType = node->GetAttribute(TEXT("type"));
 	TArray<FXmlNode*> childNodes = node->GetChildrenNodes();
@@ -129,7 +130,7 @@ void UBcForEach::initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSki
 	for (auto& bcObj : childNodes)
 	{
 		FString tagName = bcObj->GetTag();
-		if (XMLSkillReader::bcObjectNameList.Contains(tagName))
+		if (UBuff::bcObjectNameList.Contains(tagName))
 		{
 			FBuffContainer buff;
 			buff.buffName = tagName;
@@ -137,9 +138,9 @@ void UBcForEach::initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSki
 			buff.node = bcObj;
 			buff.fillScaleTable(bcObj);
 
-			bCclassFuncPtr createFunc = *(XMLSkillReader::bcObjectNameList.Find(tagName));
-			UBaseBuffCompenent* bc = createFunc();
-			bc->initSim(buff, owner, properties);
+			bCclassFuncPtr createFunc = *(UBuff::bcObjectNameList.Find(tagName));
+			UBaseBuffCompenent* bc = createFunc(this);
+			bc->initSim(buff, owner, properties, ownerBuff);
 			bcList.Add(bc);
 		}
 	}

@@ -70,7 +70,7 @@ void UScForEach::init(FXmlNode* node, FSkillProperties properties)
 		if (XMLSkillReader::scObjectNameList.Contains(tagName))
 		{
 			classFuncPtr createFunc = *(XMLSkillReader::scObjectNameList.Find(tagName));
-			UBaseSkillComponent* sc = createFunc();
+			UBaseSkillComponent* sc = createFunc(this);
 			sc->init(scObj, properties);
 			scList.Add(sc);
 		}

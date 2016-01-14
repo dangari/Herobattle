@@ -20,9 +20,9 @@ UBcBlock::~UBcBlock()
 
 }
 
-void UBcBlock::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties)
+void UBcBlock::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties, UBuff* ownerBuff)
 {
-	Super::init(bContainer, owner, properties);
+	Super::init(bContainer, owner, properties, ownerBuff);
 	FXmlNode* node = bContainer.node;
 	blockType = SkillEnums::stringToSkillType(node->GetAttribute(TEXT("type")));
 	FString sUsage = node->GetAttribute(TEXT("usage"));
@@ -38,9 +38,9 @@ void UBcBlock::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProp
 	blockChance = bContainer.scaleTable[owner->getAttributeValue(bContainer.scaleAttribute)];
 }
 
-void UBcBlock::initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties)
+void UBcBlock::initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties, UBuff* ownerBuff)
 {
-	Super::initSim(bContainer, owner, properties);
+	Super::initSim(bContainer, owner, properties, ownerBuff);
 	FXmlNode* node = bContainer.node;
 	blockType = SkillEnums::stringToSkillType(node->GetAttribute(TEXT("type")));
 	FString sUsage = node->GetAttribute(TEXT("usage"));

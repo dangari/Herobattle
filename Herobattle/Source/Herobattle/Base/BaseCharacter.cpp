@@ -41,8 +41,8 @@ void ABaseCharacter::BeginPlay()
 {
 
 	Super::BeginPlay();
-	m_SimCharacter = NewObject<UAISimCharacter>();
-	m_SimCharacterTarget = NewObject<UAISimCharacter>();
+	m_SimCharacter = NewObject<UAISimCharacter>(this);
+	m_SimCharacterTarget = NewObject<UAISimCharacter>(this);
 	if (HasAuthority())
 	{
 		m_DefaultMovementSpeed = GetCharacterMovement()->MaxWalkSpeed;
@@ -169,7 +169,7 @@ void ABaseCharacter::InitializeSkills()
 	default:
 		break;
 	}
-	TArray<USkill*> curSkillList = skillReader->ReadXmlSkillFile(fileName);
+	TArray<USkill*> curSkillList = skillReader->ReadXmlSkillFile(fileName, this);
 	skillList.Empty();
 	skillList.Add(curSkillList[0]);
 	skillList.Add(curSkillList[1]);
@@ -362,7 +362,7 @@ FCharacterProperties ABaseCharacter::getProperties()
 	properties.ETeam = ETeam;
 	properties.proffession = proffession;
 	properties.selectedTarget = selectedTarget;
-
+	properties.simSelectedTarget = nullptr;
 	properties.skillList = skillList;
 
 	properties.m_condtionList = m_condtionList;
@@ -378,7 +378,15 @@ FCharacterProperties ABaseCharacter::getProperties()
 	properties.m_HealthBuffRegneration = m_HealthBuffRegneration;
 	properties.m_ManaBuffRegneration = m_ManaBuffRegneration;
 
+	properties.m_CurrentSkill = currentSkill;
+
 	properties.location = GetActorLocation();
+
+	for (int i = 0; i < 8; i++)
+	{
+		properties.m_AdrenalineList[i] = m_AdrenalineList[i];
+		properties.skillcooldowns[i] = skillcooldowns[i];
+	}
 
 	return properties;
 
@@ -426,6 +434,7 @@ FCharacterState ABaseCharacter::AiExtractor(ABaseCharacter* character)
 		characterState.isHexed = true;
 	characterState.conditions = getConditions();
 	characterState.health = m_Health;
+	characterState.maxHealth = m_MaxHealth;
 	characterState.skillState = currentSkill.copy();
 	characterState.selectedTarget = selectedTarget;
 
@@ -459,6 +468,7 @@ FCharacterState ABaseCharacter::AiExtractorSim(UAISimCharacter* character)
 		characterState.isHexed = true;
 	characterState.conditions = getConditions();
 	characterState.health = m_Health;
+	characterState.maxHealth = m_MaxHealth;
 	characterState.skillState = currentSkill.copy();
 	characterState.selectedTarget = selectedTarget;
 

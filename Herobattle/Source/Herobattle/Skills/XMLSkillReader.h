@@ -12,31 +12,28 @@ class USkill;
 class UBaseSkillComponent;
 class UBaseBuffCompenent;
 
-template<typename T> UBaseSkillComponent * createScInstance() { return NewObject<T>(); }
-template<typename T> UBaseBuffCompenent * createBcInstance() { return NewObject<T>(); }
+template<typename T> UBaseSkillComponent * createScInstance(UObject* obj) { return NewObject<T>(obj); }
 
-typedef UBaseSkillComponent* (*classFuncPtr)();
-typedef UBaseBuffCompenent* (*bCclassFuncPtr)();
+typedef UBaseSkillComponent* (*classFuncPtr)(UObject* obj);
 
 class HEROBATTLE_API XMLSkillReader
 {
 public:
 	XMLSkillReader();
 	~XMLSkillReader();
-	TArray<USkill*> ReadXmlSkillFile(FString path);
+	TArray<USkill*> ReadXmlSkillFile(FString path, UObject* owner);
 
 	
 	// read from <spell> node
-	USkill* ReadSkill(FXmlNode* skillRootNode);
+	USkill* ReadSkill(FXmlNode* skillRootNode, UObject* owner);
 
 
 	static TMap<FString, classFuncPtr> scObjectNameList;
-	static TMap<FString, bCclassFuncPtr> bcObjectNameList;
 
 private:
 
-	TArray<UBaseSkillComponent*> createImpact(FXmlNode* impactNode, FSkillProperties properties);
-	TArray<USkill*> readeSkillsFromXml(FXmlNode* node);
+	TArray<UBaseSkillComponent*> createImpact(FXmlNode* impactNode, FSkillProperties properties, UObject* owner);
+	TArray<USkill*> readeSkillsFromXml(FXmlNode* node, UObject* owner);
 
 
 	FString currentSkillName;

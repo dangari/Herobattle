@@ -51,9 +51,9 @@ bool UBcDamageReduction::runSim(UAISimCharacter* caster, UAISimCharacter* self, 
 	return true;
 }
 
-void UBcDamageReduction::initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties)
+void UBcDamageReduction::initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties, UBuff* ownerBuff)
 {
-	Super::initSim(bContainer, owner, properties);
+	Super::initSim(bContainer, owner, properties, ownerBuff);
 	targetType = SkillEnums::stringToTargetType(bContainer.node->GetAttribute(TEXT("target")));
 	m_Reduction = bContainer.scaleTable[owner->getAttributeValue(bContainer.scaleAttribute)];
 	m_RType = SkillEnums::stringTReductionType(bContainer.node->GetAttribute(TEXT("type")));
@@ -69,9 +69,9 @@ float UBcDamageReduction::getScoreSim(UAISimCharacter* caster, FCharacterState c
 	return 0.0f;
 }
 
-void UBcDamageReduction::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties)
+void UBcDamageReduction::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties, UBuff* ownerBuff)
 {
-	Super::init(bContainer, owner, properties);
+	Super::init(bContainer, owner, properties, ownerBuff);
 	targetType = SkillEnums::stringToTargetType(bContainer.node->GetAttribute(TEXT("target")));
 	m_Reduction = bContainer.scaleTable[owner->getAttributeValue(bContainer.scaleAttribute)];
 	m_RType = SkillEnums::stringTReductionType(bContainer.node->GetAttribute(TEXT("type")));

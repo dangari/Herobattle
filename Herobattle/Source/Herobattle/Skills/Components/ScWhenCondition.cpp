@@ -179,7 +179,7 @@ void UScWhenCondition::createSkillComponents(FXmlNode* node, FSkillProperties pr
 		if (XMLSkillReader::scObjectNameList.Contains(tagName))
 		{
 			classFuncPtr createFunc = *(XMLSkillReader::scObjectNameList.Find(tagName));
-			UBaseSkillComponent* sc = createFunc();
+			UBaseSkillComponent* sc = createFunc(this);
 			sc->init(prop, properties);
 			scTable.Add(sc);
 		}

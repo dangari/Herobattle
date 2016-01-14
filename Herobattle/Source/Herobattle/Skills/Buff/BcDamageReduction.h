@@ -16,8 +16,8 @@ public:
 
 	UBcDamageReduction();
 	~UBcDamageReduction();
-	virtual void init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties) override;
-	virtual void initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties) override;
+	virtual void init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties, UBuff* ownerBuff) override;
+	virtual void initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties, UBuff* ownerBuff) override;
 
 	virtual bool run(ABaseCharacter* caster, ABaseCharacter* self, int value = 0) override;
 	virtual bool runSim(UAISimCharacter* caster, UAISimCharacter* self, int value = 0) override;

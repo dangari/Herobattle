@@ -35,6 +35,8 @@ struct FCharacterState
 
 	float health;
 
+	float maxHealth;
+
 	FSkillStatus skillState;
 
 	ABaseCharacter* selectedTarget;

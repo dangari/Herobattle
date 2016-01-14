@@ -23,8 +23,8 @@ public:
 	virtual float getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration) override;
 	virtual float getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration) override;
 
-	virtual void init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties) override;
-	virtual void initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties) override;
+	virtual void init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties, UBuff* ownerBuff) override;
+	virtual void initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties, UBuff* ownerBuff) override;
 
 	virtual bool isExpired() override;
 

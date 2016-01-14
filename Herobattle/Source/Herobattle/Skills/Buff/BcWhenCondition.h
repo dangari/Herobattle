@@ -25,8 +25,8 @@ public:
 	~UBcWhenCondition();
 	
 
-	virtual void init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties) override;
-	virtual void initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties) override;
+	virtual void init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties, UBuff* ownerBuff) override;
+	virtual void initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties, UBuff* ownerBuff) override;
 
 
 
@@ -47,7 +47,7 @@ private:
 	bool testConditions(ABaseCharacter* target, ABaseCharacter* self);
 
 
-	void createBoolObjects(FXmlNode* node);
+	void createBoolObjects(FXmlNode* node, UBuff* ownerBuff);
 
 	void createSkillComponents(FXmlNode* node, FSkillProperties properties);
 

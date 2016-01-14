@@ -34,6 +34,8 @@ public:
 	void calcHealScore(float cHealthSelf, float maxHealthSelf, float cHealthTarget, float maxHealthTarget);
 
 	float calcCompleteScore();
+
+
 private:
 
 	TArray<FComponentScore> m_DamageList;

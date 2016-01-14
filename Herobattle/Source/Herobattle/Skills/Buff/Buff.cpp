@@ -4,10 +4,33 @@
 #include "Base/BaseCharacter.h"
 #include "../XMLSkillReader.h"
 #include "AI/AISimCharacter.h"
+#include "BcHeal.h"
+#include "BcWhenCondition.h"
+#include "BcForEach.h"
+#include "BcBlock.h"
+#include "BcGiveMana.h"
+#include "BcReduceMana.h"
+#include "BcRegenaration.h"
+#include "BcDamageReduction.h"
+#include "BcAttackSpeed.h"
+#include "BcMovementSpeed.h"
 
+
+TMap<FString, bCclassFuncPtr>  UBuff::bcObjectNameList;
 
 UBuff::UBuff()
 {
+
+	bcObjectNameList.Add(TEXT("heal"), &createBcInstance<UBcHeal>);
+	bcObjectNameList.Add(TEXT("when"), &createBcInstance<UBcWhenCondition>);
+	bcObjectNameList.Add(TEXT("foreach"), &createBcInstance<UBcForEach>);
+	bcObjectNameList.Add(TEXT("block"), &createBcInstance<UBcBlock>);
+	bcObjectNameList.Add(TEXT("givemana"), &createBcInstance<UBcGiveMana>);
+	bcObjectNameList.Add(TEXT("reducemanacost"), &createBcInstance<UBcReduceMana>);
+	bcObjectNameList.Add(TEXT("regeneration"), &createBcInstance<UBcRegenaration>);
+	bcObjectNameList.Add(TEXT("damagereduction"), &createBcInstance<UBcDamageReduction>);
+	bcObjectNameList.Add(TEXT("attackspeed"), &createBcInstance<UBcAttackSpeed>);
+	bcObjectNameList.Add(TEXT("movementspeed"), &createBcInstance<UBcMovementSpeed>);
 }
 
 
@@ -15,7 +38,7 @@ UBuff::~UBuff()
 {
 }
 
-void UBuff::init(ABaseCharacter* owner, TArray<FBuffContainer> bCBuffList, float duration, FString name, FString usage, FSkillProperties properties)
+void UBuff::init(ABaseCharacter* owner, TArray<FBuffContainer> bCBuffList, float duration, FString name, FString usage, FSkillProperties properties, UBuff* ownerBuff)
 {
 	
 	m_Duration = duration;
@@ -35,16 +58,16 @@ void UBuff::init(ABaseCharacter* owner, TArray<FBuffContainer> bCBuffList, float
 	for (auto& buff : bCBuffList)
 	{
 
-		bCclassFuncPtr createFunc = *(XMLSkillReader::bcObjectNameList.Find(buff.buffName));
-		UBaseBuffCompenent* bC = createFunc();
-		bC->init(buff, owner, properties);
+		bCclassFuncPtr createFunc = *(bcObjectNameList.Find(buff.buffName));
+		UBaseBuffCompenent* bC = createFunc(ownerBuff);
+		bC->init(buff, owner, properties, ownerBuff);
 		m_BcList.Add(bC);
 
 	}
 }
 
 
-void UBuff::initSim(UAISimCharacter* owner, TArray<FBuffContainer> bCBuffList, float duration, FString name, FString usage, FSkillProperties properties)
+void UBuff::initSim(UAISimCharacter* owner, TArray<FBuffContainer> bCBuffList, float duration, FString name, FString usage, FSkillProperties properties, UBuff* ownerBuff)
 {
 	m_Duration = duration;
 	m_Name = name;
@@ -63,9 +86,9 @@ void UBuff::initSim(UAISimCharacter* owner, TArray<FBuffContainer> bCBuffList, f
 	for (auto& buff : bCBuffList)
 	{
 
-		bCclassFuncPtr createFunc = *(XMLSkillReader::bcObjectNameList.Find(buff.buffName));
-		UBaseBuffCompenent* bC = createFunc();
-		bC->initSim(buff, owner, properties);
+		bCclassFuncPtr createFunc = *(bcObjectNameList.Find(buff.buffName));
+		UBaseBuffCompenent* bC = createFunc(ownerBuff);
+		bC->initSim(buff, owner, properties, ownerBuff);
 		m_BcList.Add(bC);
 
 	}
@@ -135,6 +158,7 @@ float UBuff::getScore(ABaseCharacter* caster, FCharacterState characterState, US
 
 float UBuff::getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
 {
+	
 	for (auto& bC : m_BcList)
 	{
 		bC->getScoreSim(caster, characterState, skillScore, m_Duration);

@@ -34,7 +34,6 @@
 
 
 TMap<FString, classFuncPtr> XMLSkillReader::scObjectNameList;
-TMap<FString, bCclassFuncPtr> XMLSkillReader::bcObjectNameList;
 
 
 XMLSkillReader::XMLSkillReader()
@@ -49,18 +48,6 @@ XMLSkillReader::XMLSkillReader()
 	scObjectNameList.Add(TEXT("foreach"), &createScInstance<UScForEach>);
 	scObjectNameList.Add(TEXT("givemana"), &createScInstance<UScGiveMana>);
 	scObjectNameList.Add(TEXT("remove"), &createScInstance<UScRemove>);
-
-	//Fill bcObjectList
-	bcObjectNameList.Add(TEXT("heal"), &createBcInstance<UBcHeal>);
-	bcObjectNameList.Add(TEXT("when"), &createBcInstance<UBcWhenCondition>);
-	bcObjectNameList.Add(TEXT("foreach"), &createBcInstance<UBcForEach>);
-	bcObjectNameList.Add(TEXT("block"), &createBcInstance<UBcBlock>);
-	bcObjectNameList.Add(TEXT("givemana"), &createBcInstance<UBcGiveMana>);
-	bcObjectNameList.Add(TEXT("reducemanacost"), &createBcInstance<UBcReduceMana>);
-	bcObjectNameList.Add(TEXT("regeneration"), &createBcInstance<UBcRegenaration>);
-	bcObjectNameList.Add(TEXT("damagereduction"), &createBcInstance<UBcDamageReduction>);
-	bcObjectNameList.Add(TEXT("attackspeed"), &createBcInstance<UBcAttackSpeed>);
-	bcObjectNameList.Add(TEXT("movementspeed"), &createBcInstance<UBcMovementSpeed>);
 }
 
 XMLSkillReader::~XMLSkillReader()
@@ -68,7 +55,7 @@ XMLSkillReader::~XMLSkillReader()
 }
 
 
-TArray<USkill*> XMLSkillReader::ReadXmlSkillFile(FString path)
+TArray<USkill*> XMLSkillReader::ReadXmlSkillFile(FString path, UObject* owner)
 {
 	FString projectDir = FPaths::GameDir();
 	FXmlFile* file = new FXmlFile();
@@ -78,11 +65,11 @@ TArray<USkill*> XMLSkillReader::ReadXmlSkillFile(FString path)
 	// get Root node
 	auto pRoot = file->GetRootNode();
 	
-	return readeSkillsFromXml(pRoot);
+	return readeSkillsFromXml(pRoot, owner);
 }
 
 
-TArray<UBaseSkillComponent*> XMLSkillReader::createImpact(FXmlNode* impactNode, FSkillProperties properties)
+TArray<UBaseSkillComponent*> XMLSkillReader::createImpact(FXmlNode* impactNode, FSkillProperties properties, UObject* owner)
 {
 	TArray<UBaseSkillComponent*> skillComponentList;
 	TArray<FXmlNode*> objList = impactNode->GetChildrenNodes();
@@ -93,7 +80,7 @@ TArray<UBaseSkillComponent*> XMLSkillReader::createImpact(FXmlNode* impactNode, 
 		if (scObjectNameList.Contains(tagName))
 		{
 			classFuncPtr createFunc = *(scObjectNameList.Find(tagName));
-			UBaseSkillComponent* sc = createFunc();
+			UBaseSkillComponent* sc = createFunc(owner);
 			sc->init(obj, properties);
 			sc->SkillName = currentSkillName;
 			skillComponentList.Add(sc);
@@ -102,7 +89,7 @@ TArray<UBaseSkillComponent*> XMLSkillReader::createImpact(FXmlNode* impactNode, 
 	return skillComponentList;
 }
 
-TArray<USkill*> XMLSkillReader::readeSkillsFromXml(FXmlNode* node)
+TArray<USkill*> XMLSkillReader::readeSkillsFromXml(FXmlNode* node, UObject* owner)
 {
 	ProfessionName profession;
 	TArray<USkill*> SkillObjList;
@@ -113,7 +100,7 @@ TArray<USkill*> XMLSkillReader::readeSkillsFromXml(FXmlNode* node)
 		TArray<FXmlNode*> skillList = prop->GetChildrenNodes();
 		for (auto& skillNode : skillList)
 		{
-			SkillObjList.Add(ReadSkill(skillNode));
+			SkillObjList.Add(ReadSkill(skillNode, owner));
 		}
 
 	}
@@ -122,7 +109,7 @@ TArray<USkill*> XMLSkillReader::readeSkillsFromXml(FXmlNode* node)
 
 
 
-USkill* XMLSkillReader::ReadSkill(FXmlNode* skillRootNode)
+USkill* XMLSkillReader::ReadSkill(FXmlNode* skillRootNode, UObject* owner)
 {
 	//attribute names
 	FString value = FString(TEXT("value"));
@@ -131,7 +118,7 @@ USkill* XMLSkillReader::ReadSkill(FXmlNode* skillRootNode)
 	FString key = FString(TEXT("key"));
 
 	//values needed for Skill creation
-	USkill* skill = NewObject<USkill>();
+	USkill* skill = NewObject<USkill>(owner);
 	FSkillProperties properties;
 	properties.skillType = SkillEnums::stringToSkillType(skillRootNode->GetAttribute(type));
 	TArray<UBaseSkillComponent*> componentList;
@@ -179,7 +166,7 @@ USkill* XMLSkillReader::ReadSkill(FXmlNode* skillRootNode)
 		else if(tagName.Equals(TEXT("effects")))
 		{
 			FXmlNode* impactNode = prop->GetChildrenNodes()[0];
-			skill->componentList = createImpact(impactNode, properties);
+			skill->componentList = createImpact(impactNode, properties, skill);
 		}
 
 		

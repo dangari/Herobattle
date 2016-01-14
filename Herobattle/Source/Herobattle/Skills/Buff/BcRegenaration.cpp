@@ -40,18 +40,18 @@ float UBcRegenaration::getScoreSim(UAISimCharacter* caster, FCharacterState char
 	return 1.f;
 }
 
-void UBcRegenaration::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties)
+void UBcRegenaration::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties, UBuff* ownerBuff)
 {
-	Super::init(bContainer, owner, properties);
+	Super::init(bContainer, owner, properties, ownerBuff);
 	FString tagName = bContainer.node->GetTag();
 	targetType = SkillEnums::stringToTargetType(bContainer.node->GetAttribute(TEXT("target")));
 	m_Regenration = bContainer.scaleTable[owner->getAttributeValue(bContainer.scaleAttribute)];
 	type = SkillEnums::stringToRegnerationType(bContainer.node->GetAttribute(TEXT("type")));
 }
 
-void UBcRegenaration::initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties)
+void UBcRegenaration::initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties, UBuff* ownerBuff)
 {
-	Super::initSim(bContainer, owner, properties);
+	Super::initSim(bContainer, owner, properties, ownerBuff);
 	FString tagName = bContainer.node->GetTag();
 	targetType = SkillEnums::stringToTargetType(bContainer.node->GetAttribute(TEXT("target")));
 	m_Regenration = bContainer.scaleTable[owner->getAttributeValue(bContainer.scaleAttribute)];

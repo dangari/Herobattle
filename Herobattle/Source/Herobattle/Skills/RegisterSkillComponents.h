@@ -4,8 +4,8 @@
 
 class UBaseSkillComponent;
 
-template<typename T> UBaseSkillComponent* createT() { return NewObject<T>(); }
-typedef UBaseSkillComponent* (*classFuncPtr)();
+template<typename T> UBaseSkillComponent* createT(UObject* obj) { return NewObject<T>(obj); }
+typedef UBaseSkillComponent* (*classFuncPtr)(UObject* obj);
 
 template<typename T>
 struct RegisterComponent

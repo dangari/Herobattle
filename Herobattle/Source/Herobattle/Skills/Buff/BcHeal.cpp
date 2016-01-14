@@ -19,17 +19,17 @@ UBcHeal::~UBcHeal()
 
 }
 
-void UBcHeal::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties)
+void UBcHeal::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties, UBuff* ownerBuff)
 {
-	Super::init(bContainer, owner, properties);
+	Super::init(bContainer, owner, properties, ownerBuff);
 	targetType = bContainer.targetType;
 	heal = bContainer.scaleTable[owner->getAttributeValue(bContainer.scaleAttribute)];
 	trigger = SkillEnums::stringToTrigger(bContainer.node->GetAttribute(TEXT("trigger")));
 }
 
-void UBcHeal::initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties)
+void UBcHeal::initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties, UBuff* ownerBuff)
 {
-	Super::initSim(bContainer, owner, properties);
+	Super::initSim(bContainer, owner, properties, ownerBuff);
 	targetType = bContainer.targetType;
 	heal = bContainer.scaleTable[owner->getAttributeValue(bContainer.scaleAttribute)];
 	trigger = SkillEnums::stringToTrigger(bContainer.node->GetAttribute(TEXT("trigger")));

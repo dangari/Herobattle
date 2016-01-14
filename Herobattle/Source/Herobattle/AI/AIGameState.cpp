@@ -14,7 +14,7 @@
 
 UAIGameState::UAIGameState()
 {
-	m_SimOwner = NewObject<UAISimCharacter>();
+	
 }
 
 UAIGameState::~UAIGameState()
@@ -24,6 +24,7 @@ UAIGameState::~UAIGameState()
 
 void UAIGameState::newState(ABaseCharacter* owner)
 {
+	createSimCharacters();
 	m_owner = Cast<AHeroBattleHero>(owner);
 	m_ownerState = m_owner->AiExtractor(owner);
 	m_SimOwner->init(owner->getProperties());
@@ -41,6 +42,7 @@ void UAIGameState::newState(ABaseCharacter* owner)
 
 void UAIGameState::newStateSim(UAISimCharacter* owner)
 {
+	createSimCharacters();
 	m_SimOwner = owner;
 	m_ownerState = m_SimOwner->AiExtractor(m_SimOwner);
 	EnemyOldAIState = EnemyCurrentAIState;
@@ -142,6 +144,14 @@ void UAIGameState::replaceState(FCharacterState state)
 	}
 }
 
+void UAIGameState::createSimCharacters()
+{
+	if (!m_SimOwner)
+		m_SimOwner = NewObject<UAISimCharacter>(this);
+	if (!character)
+		character = NewObject<UAISimCharacter>(this);
+}	
+
 FCharacterState UAIGameState::getOwnerState()
 {
 	return m_ownerState;
@@ -178,6 +188,7 @@ TArray<FCharacterState> UAIGameState::getEnemyOldAIState()
 
 TMap<FString, FCharacterState> UAIGameState::getCharacterList()
 {
+	TMap<FString, FCharacterState> completeList;
 	for (auto& state : AlliesCurrentAIState)
 	{
 		FString name = state.name;
@@ -194,6 +205,24 @@ TMap<FString, FCharacterState> UAIGameState::getCharacterList()
 	return completeList;
 }
 
+TMap<FString, ABaseCharacter*> UAIGameState::getCharacterInstanceList()
+{
+	TMap<FString, ABaseCharacter*> characterList;
+	characterList.Add(m_owner->m_Name, m_owner);
+	for (auto& state : AlliesCurrentAIState)
+	{
+		FString name = state.name;
+		characterList.Add(name, state.self);
+	}
+	for (auto& state : EnemyCurrentAIState)
+	{
+		FString name = state.name;
+		characterList.Add(name, state.self);
+	}
+
+	return characterList;
+}
+
 void UAIGameState::addDeltaTime(float DeltaTime)
 {
 	m_deltaTime += DeltaTime;
@@ -206,7 +235,7 @@ AHeroBattleHero* UAIGameState::getOwner()
 
 UAIGameState* UAIGameState::copy()
 {
-	UAIGameState*  newGamestate = NewObject<UAIGameState>();
+	UAIGameState*  newGamestate = NewObject<UAIGameState>(this);
 	newGamestate->AlliesCurrentAIState = AlliesCurrentAIState;
 	newGamestate->EnemyCurrentAIState = EnemyCurrentAIState;
 	newGamestate->AlliesOldAIState = AlliesOldAIState;
@@ -222,7 +251,7 @@ void UAIGameState::simulateCharacter(float DeltaTime, TArray<FCharacterState> st
 {
 	AHerobattleCharacter* dummyCharacter = Cast<AHerobattleCharacter>(m_owner->owningPlayer);
 
-	UAISimCharacter* character = NewObject<UAISimCharacter>();
+	
 
 	
 	TArray<FCharacterState> newStateList;
@@ -237,6 +266,15 @@ void UAIGameState::simulateCharacter(float DeltaTime, TArray<FCharacterState> st
 	}
 }
 
+void UAIGameState::setSimOwner(UAISimCharacter* character)
+{
+	m_SimOwner = character;
+	m_ownerState = character->AiExtractor(character);
+}
 
+UAISimCharacter* UAIGameState::getSimOwner()
+{
+	return m_SimOwner;
+}
 
 

@@ -21,13 +21,13 @@ UBaseBuffCompenent::~UBaseBuffCompenent()
 
 }
 
-void UBaseBuffCompenent::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties)
+void UBaseBuffCompenent::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties, UBuff* ownerBuff)
 {
 	m_properties = properties;
 	this->owner = owner;
 }
 
-void UBaseBuffCompenent::initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties)
+void UBaseBuffCompenent::initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties, UBuff* ownerBuff)
 {
 	m_properties = properties;
 	sim_owner = owner;

@@ -18,7 +18,7 @@ struct FActionScore
 	AIAction action;
 	int slot = 0;
 	float score;
-	ABaseCharacter* target;
+	FString targetName;
 
 	inline static bool ConstPredicate(const FActionScore ip1, const FActionScore ip2)
 	{
@@ -62,6 +62,9 @@ public:
 	
 
 private:
+
+	void DestroyObj(UObject* obj);
+
 	FActionScore getNextAction(UAIGameState* aiGameState);
 	void fillScoreList(UAIGameState* aiGameState);
 	//calculates score for characterstate
@@ -71,11 +74,11 @@ private:
 
 	FActionScore TemporalSkillScore(UAIGameState* aiGameState, ABaseCharacter* owner);
 
-	TArray<FActionScore> calcTempSkillScore(ABaseCharacter* owner, TArray<FCharacterState> characterState, USkill* skill, int slot);
+	TArray<FActionScore> calcTempSkillScore(UAISimCharacter* owner, TArray<FCharacterState> characterState, USkill* skill, int slot);
 	// calculates score for character most time this function is used for the owner
-	TArray<FActionScore> calcTempSkillScore(ABaseCharacter* owner, FCharacterState characterState, USkill* skill, int slot);
+	TArray<FActionScore> calcTempSkillScore(UAISimCharacter* owner, FCharacterState characterState, USkill* skill, int slot);
 
-	TArray<FActionScore> getSkillScore(UAIGameState* newGameState, ABaseCharacter* owner, int depth);
+	TArray<FActionScore> getSkillScore(UAIGameState* newGameState, UAISimCharacter* owner, int depth);
 
 	UAIGameState* simulateNextState(UAIGameState* newGameState,FActionScore action);
 
@@ -90,4 +93,11 @@ private:
 	AHeroBattleHero* m_owner;
 	FActionScore nextSkill;
 	bool temporalPlanning;
+
+	UPROPERTY()
+	UAISimCharacter* targetCharacter;
+	UPROPERTY()
+	UAISimCharacter* character;
+
+	int count = 0;
 };

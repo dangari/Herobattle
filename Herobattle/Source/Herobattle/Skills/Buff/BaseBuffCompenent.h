@@ -29,8 +29,8 @@ public:
 	UBaseBuffCompenent();
 	~UBaseBuffCompenent();
 
-	virtual void init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties);
-	virtual void initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties);
+	virtual void init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties, UBuff* ownerBuff);
+	virtual void initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties, UBuff* ownerBuff);
 	// value ist the incoming heal or damage
 	// damage is always negative and heal always Positve
 	virtual bool run(ABaseCharacter* caster, ABaseCharacter* self, int value = 0);

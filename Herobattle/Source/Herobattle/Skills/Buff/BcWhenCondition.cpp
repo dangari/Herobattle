@@ -37,9 +37,9 @@ bool UBcWhenCondition::testConditions(ABaseCharacter* target, ABaseCharacter* se
 	return true;
 }
 
-void UBcWhenCondition::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties)
+void UBcWhenCondition::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties, UBuff* ownerBuff)
 {
-	Super::init(bContainer, owner, properties);
+	Super::init(bContainer, owner, properties,ownerBuff);
 	FXmlNode* node = bContainer.node;
 	FString cType = node->GetAttribute(TEXT("type"));
 	targetType = SkillEnums::stringToComponentTarget(cType);
@@ -49,7 +49,7 @@ void UBcWhenCondition::init(FBuffContainer bContainer, ABaseCharacter* owner, FS
 		FString tagName = prop->GetTag();
 		if (tagName.Equals(TEXT("whencondition")))
 		{
-			createBoolObjects(prop);
+			createBoolObjects(prop, ownerBuff);
 		}
 		if (tagName.Equals(TEXT("then")))
 		{
@@ -58,9 +58,9 @@ void UBcWhenCondition::init(FBuffContainer bContainer, ABaseCharacter* owner, FS
 	}
 }
 
-void UBcWhenCondition::initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties)
+void UBcWhenCondition::initSim(FBuffContainer bContainer, UAISimCharacter* owner, FSkillProperties properties, UBuff* ownerBuff)
 {
-	Super::initSim(bContainer, owner, properties);
+	Super::initSim(bContainer, owner, properties, ownerBuff);
 	FXmlNode* node = bContainer.node;
 	FString cType = node->GetAttribute(TEXT("type"));
 	targetType = SkillEnums::stringToComponentTarget(cType);
@@ -70,7 +70,7 @@ void UBcWhenCondition::initSim(FBuffContainer bContainer, UAISimCharacter* owner
 		FString tagName = prop->GetTag();
 		if (tagName.Equals(TEXT("whencondition")))
 		{
-			createBoolObjects(prop);
+			createBoolObjects(prop, ownerBuff);
 		}
 		if (tagName.Equals(TEXT("then")))
 		{
@@ -109,7 +109,7 @@ float UBcWhenCondition::getScoreSim(UAISimCharacter* caster, FCharacterState cha
 	return 1.f;
 }
 
-void UBcWhenCondition::createBoolObjects(FXmlNode* node)
+void UBcWhenCondition::createBoolObjects(FXmlNode* node, UBuff* ownerBuff)
 {
 	TArray<FXmlNode*> boolObjectList = node->GetChildrenNodes();
 	for (auto& prop : boolObjectList)
@@ -117,25 +117,25 @@ void UBcWhenCondition::createBoolObjects(FXmlNode* node)
 		FString tagName = prop->GetTag();
 		if (tagName.Equals(TEXT("hp")))
 		{
-			UBoolHealth* hpBool = NewObject<UBoolHealth>();
+			UBoolHealth* hpBool = NewObject<UBoolHealth>(ownerBuff);
 			hpBool->init(prop, targetType);
 			boolObjects.Add(hpBool);
 		}
 		else if (tagName.Equals(TEXT("attack")))
 		{
-			UBoolAttack* attackBool = NewObject<UBoolAttack>();
+			UBoolAttack* attackBool = NewObject<UBoolAttack>(ownerBuff);
 			attackBool->init(prop, targetType);
 			boolObjects.Add(attackBool);
 		}
 		else if (tagName.Equals(TEXT("condi")))
 		{
-			UBoolCondition* attackCondition = NewObject<UBoolCondition>();
+			UBoolCondition* attackCondition = NewObject<UBoolCondition>(ownerBuff);
 			attackCondition->init(prop, targetType);
 			boolObjects.Add(attackCondition);
 		}
 		else if (tagName.Equals(TEXT("hex")))
 		{
-			UBoolHex* attackCondition = NewObject<UBoolHex>();
+			UBoolHex* attackCondition = NewObject<UBoolHex>(ownerBuff);
 			attackCondition->init(prop, targetType);
 			boolObjects.Add(attackCondition);
 		}
@@ -152,7 +152,7 @@ void UBcWhenCondition::createSkillComponents(FXmlNode* node, FSkillProperties pr
 		if (XMLSkillReader::scObjectNameList.Contains(tagName))
 		{
 			classFuncPtr createFunc = *(XMLSkillReader::scObjectNameList.Find(tagName));
-			UBaseSkillComponent* sc = createFunc();
+			UBaseSkillComponent* sc = createFunc(this);
 			sc->init(prop, properties);
 			scTable.Add(sc);
 		}

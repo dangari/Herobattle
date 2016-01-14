@@ -52,5 +52,7 @@ protected:
 	ComponentTarget targetType;
 
 	FSkillProperties m_properties;
+
+	void DestroyObject(UObject* obj);
 };
 

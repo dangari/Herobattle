@@ -114,6 +114,15 @@ UAISimCharacter* UBaseSkillComponent::getTargetSim(UAISimCharacter* target, UAIS
 	}
 }
 
+void UBaseSkillComponent::DestroyObject(UObject* obj)
+{
+	if (!obj) return;
+	if (!obj->IsValidLowLevel()) return;
+
+	obj->ConditionalBeginDestroy(); //instantly clears UObject out of memory
+	obj = nullptr;
+}
+
 UBaseSkillComponent* UBaseSkillComponent::MAKE()
 {
 	UBaseSkillComponent* w = NewObject<UBaseSkillComponent>();

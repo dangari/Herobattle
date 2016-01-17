@@ -49,7 +49,6 @@ void AHerobattleGameMode::PostLogin(APlayerController * NewPlayer)
 		{
 			character->ETeam = controller->ETeam;
 			character->m_Name = controller->m_Name;
-			character->updateTeamColor();
 		}
 		m_PlayerCount++;
 		FString name = TEXT("Gamemode: c++");

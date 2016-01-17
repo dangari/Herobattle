@@ -502,10 +502,10 @@ FCharacterProperties UAISimCharacter::getProperties()
 	properties.m_ManaRegeneration = m_ManaRegeneration;
 	properties.ETeam = ETeam;
 	properties.proffession = proffession;
+	properties.skillList = skillList;
 
 	for (int i = 0; i < 8; i++)
 	{
-		properties.skillList[i] = skillList[i];
 		properties.skillcooldowns[i] = skillcooldowns[i];
 		properties.m_AdrenalineList[i] = m_AdrenalineList[i];
 	}

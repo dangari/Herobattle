@@ -241,13 +241,15 @@ FActionScore UPerformAction::TemporalSkillScore(UAIGameState* aiGameState, ABase
 	if (owner && aiGameState->getOwner())
 	{
 		TArray<FActionScore> tempActionList;
-		UAIGameState* newGameState = aiGameState;
+		UAIGameState* newGameState = aiGameState->copy();
+		character->init(m_owner->getProperties());
+		newGameState->setSimOwner(character);
 		AHerobattleCharacter* character = Cast<AHerobattleCharacter>(m_owner->owningPlayer);
 	
 		UAISimCharacter* simOwner = NewObject<UAISimCharacter>(this);
 		simOwner->init(owner->getProperties());
 
-		TArray<FActionScore> bestActionList = getSkillScore(newGameState, simOwner, 1);
+		TArray<FActionScore> bestActionList = getSkillScore(newGameState, simOwner, 2);
 		TArray<USimAction*> simActionList;
 		int size = bestActionList.Num() - 1;
 		float time = 0.f;
@@ -299,7 +301,7 @@ TArray<FActionScore> UPerformAction::getSkillScore(UAIGameState* newGameState, U
 	FActionScore attackScore = getBestAutoAttack(newGameState->getEnemyCurrentAIState());
 	if (attackScore.score > 0)
 	{
-		attackScore.score = 0.2f;
+		attackScore.score = m_attackScore;
 		temporalActionScoreList.Add(attackScore);
 	}
 	else
@@ -353,6 +355,7 @@ TArray<FActionScore> UPerformAction::getSkillScore(UAIGameState* newGameState, U
 		TArray<FActionScore> bestActionList;
 		for (auto& action : temporalActionScoreList)
 		{
+
 			UAIGameState* nextGameState = simulateNextState(newGameState, action);
 			TArray<FActionScore> bestTempActionList = getSkillScore(nextGameState, nextGameState->getSimOwner(), depth - 1);
 			float score = 0.f;
@@ -366,6 +369,7 @@ TArray<FActionScore> UPerformAction::getSkillScore(UAIGameState* newGameState, U
 				}
 			}
 			DestroyObj(nextGameState);
+
 		}
 		bestActionList.Add(bestAction);
 		return bestActionList;
@@ -399,18 +403,18 @@ UAIGameState* UPerformAction::simulateNextState(UAIGameState* newGameState,FActi
 	default:
 		break;
 	}
-	
-	character->init(m_owner->getProperties());
+	UAISimCharacter* newOwner = NewObject<UAISimCharacter>(m_owner);
+	newOwner->init(newGameState->getSimOwner()->getProperties());
 	AHerobattleCharacter* hbCharacter = Cast<AHerobattleCharacter>(m_owner->owningPlayer);
 	TMap<FString, FCharacterState> charachterList = newGameState->getCharacterList();
-	character->simulate(hbCharacter->getBlackBoard()->getTargetAction(m_owner->m_Name), charachterList, simAction->time);
-	character->simulateAction(simAction, charachterList, 0.f);
+	newOwner->simulate(hbCharacter->getBlackBoard()->getTargetAction(m_owner->m_Name), charachterList, simAction->time);
+	newOwner->simulateAction(simAction, charachterList, 0.f);
 
 
 	newGameState = newGameState->simulate(simAction->time);
 	charachterList = newGameState->getCharacterList();
 	
-	if (simAction->targetName.Equals(character->m_Name))
+	if (simAction->targetName.Equals(newOwner->m_Name))
 	{
 		newGameState->setSimOwner(character);
 	}
@@ -419,6 +423,7 @@ UAIGameState* UPerformAction::simulateNextState(UAIGameState* newGameState,FActi
 		targetCharacter->init(*charachterList.Find(simAction->targetName));
 		targetCharacter->simulateAction(simAction, charachterList, 0.f, false);
 		newGameState->replaceState(targetCharacter->AiExtractor(character));
+		newGameState->setSimOwner(newOwner);
 	}
 	
 	

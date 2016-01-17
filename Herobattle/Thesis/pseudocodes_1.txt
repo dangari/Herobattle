@@ -1,0 +1,223 @@
+function getNextAction()
+	actionList;
+	 //calaculates the best target and returns an action object with a score and target
+	 //if he can't find a target in range it returns 0
+	autoAttack = getBestTarget();
+
+	//adds AutoAttack action
+	if(auttoAttack.score > 0)
+		action.name = attoAttack
+		action.target = autoAttack.Target
+		action.score = autoAtackScore // in our case 0.2
+		actionList.add(action);
+	end
+
+	//adds idle
+	action.name = idle
+	action.target = none
+	action.score = idleScore // in our case 0.19
+	actionList.add(action);
+
+	skillAction = getBestSkillAction() // returns the best target skill combination
+
+	actionList.add(skillAction);
+
+	actionList.sort() // sorts all actions by thier scores
+
+	nextAction = actionList.first()
+
+	return nextAction;
+
+end
+
+
+function getBestSkillAction()
+	skillActionList;
+	foreach(skill in sillList)
+		// checks if the hero can use the skill
+		if(isAvaible(skill))
+			switch(skill.type)
+				case SELF:
+					//calculates score for the hero
+					skillActionList.add(getActionScoreSelf())
+				case FRIEND:
+					//calculates all scores for every ally
+					skillActionLis.append(getActionScoresAllies())
+				case SELFFRIEND:
+					//calculates all scores for every ally
+					// and for the hero
+				case Enemy:
+					//calculates all scores for every enemy
+					skillActionLis.append(getActionScoresEnemies())
+			end
+		end
+	end
+	skillActionlist.sort() // sorts the list by the score
+	skillAction = skillActionList.First()
+
+end
+
+function getSkillscore()
+	foreach(skillComponent in componentList)
+		//claculates 
+		score += skillComponent.GetScore()
+	end
+
+	//claculates the resource score
+	reSourceScore = getResourcScore()
+end
+
+
+-		UObjectBase	(Name=0x000002242b9998b8 "AISimCharacter"_26)	UObjectBase
+
+
+
+function generateAiGameState()
+if(gameState == null)
+	gameState = new GameState();
+//Updates the delta time
+gameState.DeltaTime += DeltaTime;
+
+// Checks if the current character casting a skill. 
+//If he is casting a skill he stops here.
+if(hero.state != casting)
+
+	//Saves the current AI states as previous AI game state
+	// and sets the delta time to zero
+	gameState.NewGameState();
+
+	//Get all characters in action radius
+	CharacterList = getAllCharacterInActionRadius()
+
+	//Generate for each character the character state
+	foreach(character in CharacterList)
+
+		//extracts all information for characterState
+		characterState = character.AiExtractor();
+
+		// Checks if the character is an enemy or
+		// ally and save them in the fitting list
+		gameState.Add(characterState)
+	end
+
+	//calcualtes the attacker and caster count
+	gameState.calculateAttackerCount()
+end
+
+
+end
+
+
+function calculateAttackerCount()
+
+foreach(ally in allyCharacterList)
+	
+	foreach(enemy in enemyCharacterList)
+
+		if(ally.name == enemy.selectedName)
+			if(enemy.state = casting)
+				casterCount++;
+			end
+			if(enemy.state == autoAttack)
+				attackerCount++;
+			end
+		end
+
+	end
+
+end
+
+end
+
+function addActions()
+	
+	float time;
+
+	//calculates how long it takes till the action is executed
+	foreach(action : actionList)
+	{
+		swith(action.action)
+			case idle:
+				time = time + 0.5;
+			case attoattack. 
+				time = time + auttatackspeed
+			case skill
+				time = time + skill.casttime
+			case moveInCastRange
+				time = time + calculatePathtime();
+			case moveInMeleeRange
+				time = time + calculatePathtime();
+		end
+		action.time = time;
+	}
+
+	//removes all old actions of the hero who adds the actions
+	removeOldActions()
+
+	//adds all new actions of the hero the Black board
+	addNewActions()
+
+end
+
+
+function getActions()
+	ActionList;
+
+	//searches all action which affects the requested character
+	foreach(charcter in characterList)
+
+		foreach(action in character.ActionList)
+			//checks if the requested character affected by the action
+			if(action.target == name || action.owner == name)
+				ActionList.add(action);
+			end
+		end
+	end
+	//sorts the list by the time
+	ActionList.sort();
+
+	FinalActionList;
+
+	//only adds action which are in in the time duration
+	foreach(action in ActionList)
+		if(time > action.time)
+			FinalActionList.add(action);
+		end
+		else
+			return FinalActionList;
+		end
+	end
+
+end
+
+function simulateAction()
+
+//sets the state of the
+swtich(action.action)
+	case attoattack. 
+		state = attoattack;
+	case skill
+		if(action.owner == this)
+			state = casting;
+			currentSkill = action.skill;
+		end
+	case moveInCastRange
+		state = moveingCastRange;
+		target = action.targetPosition;
+	case moveInMeleeRange
+		state = moveingMeleeRange;
+		target = action.targetPosition;
+end
+
+update(action.time)
+//checks if the action is a skill and if the target is the simulated character
+if(action.ation == skill && action.target == target && ation.owner != this)
+	//creates a new simualtion character from the action owner
+	simCharacter = createNewSimCharacter(action.owner);
+	//uses the skill on the simulated character
+	//and uses the simCharacter as caster
+	skill.run(this, simCharacter);
+end
+end
+
+

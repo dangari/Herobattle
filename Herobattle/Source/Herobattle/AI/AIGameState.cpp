@@ -160,6 +160,7 @@ FCharacterState UAIGameState::getOwnerState()
 UAIGameState* UAIGameState::simulate(float DeltaTime)
 {
 	UAIGameState* gameState = copy();
+	createSimCharacters();
 	gameState->newState(m_owner);
 	simulateCharacter(DeltaTime, AlliesCurrentAIState, gameState);
 	simulateCharacter(DeltaTime, EnemyCurrentAIState, gameState);

@@ -100,4 +100,5 @@ private:
 	UAISimCharacter* character;
 
 	int count = 0;
+	float m_attackScore = 0.2;
 };

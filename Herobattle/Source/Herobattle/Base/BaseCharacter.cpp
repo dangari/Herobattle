@@ -831,7 +831,7 @@ uint8 ABaseCharacter::getCondtionCount()
 
 uint8 ABaseCharacter::getDebuffCount()
 {
-	return m_DebuffCount;
+	return 0;
 }
 
 HBCharacterState ABaseCharacter::getState()

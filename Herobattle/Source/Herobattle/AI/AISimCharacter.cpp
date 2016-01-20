@@ -889,7 +889,7 @@ uint8 UAISimCharacter::getCondtionCount()
 
 uint8 UAISimCharacter::getDebuffCount()
 {
-	return m_DebuffCount;
+	return 0;
 }
 
 HBCharacterState UAISimCharacter::getState()

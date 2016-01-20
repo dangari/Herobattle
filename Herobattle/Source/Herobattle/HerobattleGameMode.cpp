@@ -29,8 +29,8 @@ AHerobattleGameMode::AHerobattleGameMode()
 }
 void AHerobattleGameMode::PostLogin(APlayerController * NewPlayer)
 {
+	
 	Super::PostLogin(NewPlayer);
-
 	if (HasAuthority())
 	{
 		AHBPlayerController* controller = (AHBPlayerController*) NewPlayer;
@@ -49,11 +49,18 @@ void AHerobattleGameMode::PostLogin(APlayerController * NewPlayer)
 		{
 			character->ETeam = controller->ETeam;
 			character->m_Name = controller->m_Name;
+			finishedPostLogin(NewPlayer);
 		}
 		m_PlayerCount++;
 		FString name = TEXT("Gamemode: c++");
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, name);
 	}
+	
+}
+
+void AHerobattleGameMode::finishedPostLogin_Implementation(APlayerController * NewPlayer)
+{
+
 }
 
 void AHerobattleGameMode::BeginPlay()

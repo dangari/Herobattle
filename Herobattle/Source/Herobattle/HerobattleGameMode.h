@@ -44,6 +44,9 @@ public:
 
 	void PostLogin(APlayerController * NewPlayer) override;
 
+	UFUNCTION(BlueprintNativeEvent, Category = "after Login")
+	void finishedPostLogin(APlayerController * NewPlayer);
+	void finishedPostLogin_Implementation(APlayerController * NewPlayer);
 	virtual void BeginPlay() override;
 
 };

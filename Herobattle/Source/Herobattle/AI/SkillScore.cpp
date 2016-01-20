@@ -106,6 +106,8 @@ float USkillScore::calcCompleteScore()
 
 float USkillScore::uFunctionHeal(float missingHealth, float heal)
 {
+	if (heal == 0)
+		return 0;
 	float score = (heal + m_healOffset) / missingHealth;
 	if (score > 1)
 	{
@@ -127,6 +129,8 @@ float USkillScore::uFunctionHeal(float missingHealth, float heal)
 
 float USkillScore::uFunctionDamage(float missingHealth, float damage)
 {
+	if (damage == 0)
+		return 0;
 	float score = (damage - m_damageOffset) / missingHealth;
 	if (score > 1)
 	{

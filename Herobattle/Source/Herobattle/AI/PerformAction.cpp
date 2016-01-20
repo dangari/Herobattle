@@ -249,7 +249,7 @@ FActionScore UPerformAction::TemporalSkillScore(UAIGameState* aiGameState, ABase
 		UAISimCharacter* simOwner = NewObject<UAISimCharacter>(this);
 		simOwner->init(owner->getProperties());
 
-		TArray<FActionScore> bestActionList = getSkillScore(newGameState, simOwner, 2);
+		TArray<FActionScore> bestActionList = getSkillScore(newGameState, simOwner, 1);
 		TArray<USimAction*> simActionList;
 		int size = bestActionList.Num() - 1;
 		float time = 0.f;
@@ -344,29 +344,32 @@ TArray<FActionScore> UPerformAction::getSkillScore(UAIGameState* newGameState, U
 	{
 		temporalActionScoreList.Sort(FActionScore::ConstPredicate);
 		TArray<FActionScore> bestActionList;
-		bestActionList.Add(temporalActionScoreList[0]);
+		FActionScore bestAction = temporalActionScoreList[0];
+		bestActionList.Add(bestAction);
 		return bestActionList;
 		
 	}
 	else
 	{
 		FActionScore bestAction;
-		bestAction.score = 0.f;
+		bestAction.score;
+		float bestScore = 0.f;
 		TArray<FActionScore> bestActionList;
 		for (auto& action : temporalActionScoreList)
 		{
 
 			UAIGameState* nextGameState = simulateNextState(newGameState, action);
 			TArray<FActionScore> bestTempActionList = getSkillScore(nextGameState, nextGameState->getSimOwner(), depth - 1);
-			float score = 0.f;
+			float score = action.score;
 			for (auto& tempAction : bestTempActionList)
 			{
-				score = action.score * tempAction.score;
-				if (score > bestAction.score)
-				{
-					bestAction = tempAction;
-					bestActionList = bestTempActionList;
-				}
+				score = score * tempAction.score;
+				
+			}
+			if (score > bestScore)
+			{
+				bestAction = action;
+				bestActionList = bestTempActionList;
 			}
 			DestroyObj(nextGameState);
 

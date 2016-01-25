@@ -41,7 +41,7 @@ TArray<USimAction*> UHBBlackboard::getActions(FString name, float DeltaTime)
 	}
 }
 
-TArray<USimAction*> UHBBlackboard::getTargetAction(FString name)
+TArray<USimAction*> UHBBlackboard::getTargetAction(FString name, float StartTime, float duration)
 {
 	TArray<USimAction*> targetActionList;
 	for (auto& character : actionUserList)
@@ -51,7 +51,12 @@ TArray<USimAction*> UHBBlackboard::getTargetAction(FString name)
 		{
 			if (action->targetName.Equals(name) || action->ownerName.Equals(name))
 			{
-				targetActionList.Add(action);
+				float futureTime = StartTime + duration;
+				if (action->time > StartTime && action->time < futureTime)
+				{
+					targetActionList.Add(action);
+				}
+				
 			}
 		}
 	}

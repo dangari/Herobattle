@@ -78,15 +78,16 @@ private:
 	// calculates score for character most time this function is used for the owner
 	TArray<FActionScore> calcTempSkillScore(UAISimCharacter* owner, FCharacterState characterState, USkill* skill, int slot);
 
-	TArray<FActionScore> getSkillScore(UAIGameState* newGameState, UAISimCharacter* owner, int depth);
+	TArray<FActionScore> getSkillScore(UAIGameState* newGameState, UAISimCharacter* owner, int depth, float startTime);
 
-	UAIGameState* simulateNextState(UAIGameState* newGameState,FActionScore action);
+	UAIGameState* simulateNextState(UAIGameState* newGameState,FActionScore action, float startTime);
 
 
 
 	FActionScore getBestAutoAttack(TArray<FCharacterState> chracterState);
 
 	FActionScore getBestScore();
+	float getActionTime(FActionScore action);
 	TArray<FActionScore> m_ActionList;
 
 

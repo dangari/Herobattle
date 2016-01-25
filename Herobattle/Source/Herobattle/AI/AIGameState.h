@@ -50,7 +50,7 @@ public:
 
 	FCharacterState getOwnerState();
 
-	UAIGameState* simulate(float DeltaTime);
+	UAIGameState* simulate(float DeltaTime, float StartTime, float duration);
 
 	void addDeltaTime(float DeltaTime);
 
@@ -61,7 +61,7 @@ public:
 	UAIGameState* copy();
 
 
-	void simulateCharacter(float DeltaTime, TArray<FCharacterState> stateList, UAIGameState* gameState);
+	void simulateCharacter(float DeltaTime, TArray<FCharacterState> stateList, UAIGameState* gameState, float StartTime, float duration);
 	void setSimOwner(UAISimCharacter* character);
 	UAISimCharacter* getSimOwner();
 	UPROPERTY()

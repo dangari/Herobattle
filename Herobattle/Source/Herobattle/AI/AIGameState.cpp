@@ -157,13 +157,13 @@ FCharacterState UAIGameState::getOwnerState()
 	return m_ownerState;
 }
 
-UAIGameState* UAIGameState::simulate(float DeltaTime)
+UAIGameState* UAIGameState::simulate(float DeltaTime, float StartTime, float duration)
 {
 	UAIGameState* gameState = copy();
 	createSimCharacters();
 	gameState->newState(m_owner);
-	simulateCharacter(DeltaTime, AlliesCurrentAIState, gameState);
-	simulateCharacter(DeltaTime, EnemyCurrentAIState, gameState);
+	simulateCharacter(DeltaTime, AlliesCurrentAIState, gameState, StartTime, duration);
+	simulateCharacter(DeltaTime, EnemyCurrentAIState, gameState, StartTime, duration);
 	return gameState;
 }
 
@@ -248,7 +248,7 @@ UAIGameState* UAIGameState::copy()
 	return newGamestate;
 }
 
-void UAIGameState::simulateCharacter(float DeltaTime, TArray<FCharacterState> stateList, UAIGameState* gameState)
+void UAIGameState::simulateCharacter(float DeltaTime, TArray<FCharacterState> stateList, UAIGameState* gameState, float StartTime, float duration)
 {
 	AHerobattleCharacter* dummyCharacter = Cast<AHerobattleCharacter>(m_owner->owningPlayer);
 
@@ -259,7 +259,7 @@ void UAIGameState::simulateCharacter(float DeltaTime, TArray<FCharacterState> st
 	for (auto& state : stateList)
 	{
 		
-		TArray<USimAction*> actionList = dummyCharacter->getBlackBoard()->getTargetAction(state.name);
+		TArray<USimAction*> actionList = dummyCharacter->getBlackBoard()->getTargetAction(state.name, StartTime, duration);
 
 		character->init(state);
 		character->simulate(actionList, getCharacterList(), DeltaTime);

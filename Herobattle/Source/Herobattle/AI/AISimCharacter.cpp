@@ -137,32 +137,10 @@ void UAISimCharacter::simulate(TArray<USimAction*> actionList, TMap<FString, FCh
 	float duration = 0.f;
 	for (auto& action : actionList)
 	{
-		if (duration + action->time > DeltaTime)
-		{
 
-			simulateAction(action, characterList, duration);
+		simulateAction(action, characterList, duration);
 
-			duration += action->time - duration;
-		}
-		else
-		{
-			switch (action->action)
-			{
-			case AIAction::IDLE:
-				m_State = HBCharacterState::IDLE;
-				break;
-			case AIAction::AUTOATACK:
-				m_State = HBCharacterState::AUTOATTACK;
-				break;
-			case AIAction::SKILL:
-				currentSkill.castingSkill = true;
-				currentSkill.castTime = action->skill->properties.castTime;
-				currentSkill.leftCastTime = currentSkill.castTime - (action->time - duration);
-				break;
-			default:
-				break;
-			}
-		}
+		duration += action->time - duration;
 	}
 }
 

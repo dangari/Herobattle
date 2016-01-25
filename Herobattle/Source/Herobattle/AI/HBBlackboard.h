@@ -59,7 +59,7 @@ public:
 	TArray<USimAction*> getActions(FString name, float DeltaTime);
 
 
-	TArray<USimAction*> getTargetAction(FString name);
+	TArray<USimAction*> getTargetAction(FString name, float StartTime, float duration);
 
 
 private:

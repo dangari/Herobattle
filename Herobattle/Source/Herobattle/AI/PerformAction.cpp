@@ -249,7 +249,7 @@ FActionScore UPerformAction::TemporalSkillScore(UAIGameState* aiGameState, ABase
 		UAISimCharacter* simOwner = NewObject<UAISimCharacter>(this);
 		simOwner->init(owner->getProperties());
 
-		TArray<FActionScore> bestActionList = getSkillScore(newGameState, simOwner, 1);
+		TArray<FActionScore> bestActionList = getSkillScore(newGameState, simOwner, 1, 0);
 		TArray<USimAction*> simActionList;
 		int size = bestActionList.Num() - 1;
 		float time = 0.f;
@@ -293,7 +293,7 @@ FActionScore UPerformAction::TemporalSkillScore(UAIGameState* aiGameState, ABase
 	return action;
 }
 
-TArray<FActionScore> UPerformAction::getSkillScore(UAIGameState* newGameState, UAISimCharacter* owner, int depth)
+TArray<FActionScore> UPerformAction::getSkillScore(UAIGameState* newGameState, UAISimCharacter* owner, int depth, float StartTime)
 {
 	
 	TArray<FActionScore> temporalActionScoreList;
@@ -357,9 +357,9 @@ TArray<FActionScore> UPerformAction::getSkillScore(UAIGameState* newGameState, U
 		TArray<FActionScore> bestActionList;
 		for (auto& action : temporalActionScoreList)
 		{
-
-			UAIGameState* nextGameState = simulateNextState(newGameState, action);
-			TArray<FActionScore> bestTempActionList = getSkillScore(nextGameState, nextGameState->getSimOwner(), depth - 1);
+			float time = StartTime + getActionTime(action);
+			UAIGameState* nextGameState = simulateNextState(newGameState, action, StartTime);
+			TArray<FActionScore> bestTempActionList = getSkillScore(nextGameState, nextGameState->getSimOwner(), depth - 1, time);
 			float score = action.score;
 			for (auto& tempAction : bestTempActionList)
 			{
@@ -384,37 +384,27 @@ TArray<FActionScore> UPerformAction::getSkillScore(UAIGameState* newGameState, U
 
 }
 
-UAIGameState* UPerformAction::simulateNextState(UAIGameState* newGameState,FActionScore action)
+UAIGameState* UPerformAction::simulateNextState(UAIGameState* newGameState,FActionScore action, float startTime)
 {
 
 	USimAction* simAction = NewObject<USimAction>();
 	simAction->action = action.action;
 	simAction->ownerName = m_owner->m_Name;
 	simAction->targetName = action.targetName;
-	switch (action.action)
+	simAction->time = getActionTime(action);
+	if (action.action == AIAction::SKILL)
 	{
-	case AIAction::IDLE:
-		simAction->time = 0.5;
-		break;
-	case AIAction::AUTOATACK:
-		simAction->time = m_owner->getWeapon().attackSpeed;
-		break;
-	case AIAction::SKILL:
-		simAction->time = m_owner->skillList[action.slot]->properties.castTime;
 		simAction->skill = m_owner->skillList[action.slot];
-		break;
-	default:
-		break;
 	}
 	UAISimCharacter* newOwner = NewObject<UAISimCharacter>(m_owner);
 	newOwner->init(newGameState->getSimOwner()->getProperties());
 	AHerobattleCharacter* hbCharacter = Cast<AHerobattleCharacter>(m_owner->owningPlayer);
 	TMap<FString, FCharacterState> charachterList = newGameState->getCharacterList();
-	newOwner->simulate(hbCharacter->getBlackBoard()->getTargetAction(m_owner->m_Name), charachterList, simAction->time);
+	newOwner->simulate(hbCharacter->getBlackBoard()->getTargetAction(m_owner->m_Name, startTime, simAction->time), charachterList, simAction->time);
 	newOwner->simulateAction(simAction, charachterList, 0.f);
 
 
-	newGameState = newGameState->simulate(simAction->time);
+	newGameState = newGameState->simulate(simAction->time, startTime, simAction->time);
 	charachterList = newGameState->getCharacterList();
 	
 	if (simAction->targetName.Equals(newOwner->m_Name))
@@ -466,3 +456,24 @@ FActionScore UPerformAction::getBestScore()
 	FActionScore last = m_ActionList[m_ActionList.Num() - 1];
 	return m_ActionList[0];
 }
+
+float UPerformAction::getActionTime(FActionScore action)
+{
+	float time = 0.0f;
+	switch (action.action)
+	{
+	case AIAction::IDLE:
+		time = 0.5;
+		break;
+	case AIAction::AUTOATACK:
+		time = m_owner->getWeapon().attackSpeed;
+		break;
+	case AIAction::SKILL:
+		time = m_owner->skillList[action.slot]->properties.castTime;
+		break;
+	default:
+		break;
+	}
+	return time;
+}
+

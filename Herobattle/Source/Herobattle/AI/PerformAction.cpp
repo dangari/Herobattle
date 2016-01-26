@@ -168,30 +168,36 @@ void UPerformAction::calcSkillScore(TArray<FCharacterState> characterState, USki
 {
 	for (FCharacterState& character : characterState)
 	{
-		float score = skill->getScore(m_owner, character);
-		if (score > 0)
+		if (skill->properties.range > character.airDistance)
 		{
-			FActionScore aScore;
-			aScore.action = AIAction::SKILL;
-			aScore.slot = slot;
-			aScore.targetName = character.name;
-			aScore.score = score;
-			m_ActionList.Add(aScore);
+			float score = skill->getScore(m_owner, character);
+			if (score > 0)
+			{
+				FActionScore aScore;
+				aScore.action = AIAction::SKILL;
+				aScore.slot = slot;
+				aScore.targetName = character.name;
+				aScore.score = score;
+				m_ActionList.Add(aScore);
+			}
 		}
 	}
 }
 
 void UPerformAction::calcSkillScore(FCharacterState characterState, USkill* skill, int slot)
 {
-	float score = skill->getScore(m_owner, characterState);
-	if (score > 0)
+	if (skill->properties.range > characterState.airDistance)
 	{
-		FActionScore aScore;
-		aScore.action = AIAction::SKILL;
-		aScore.slot = slot;
-		aScore.targetName = characterState.name;
-		aScore.score = score;
-		m_ActionList.Add(aScore);
+		float score = skill->getScore(m_owner, characterState);
+		if (score > 0)
+		{
+			FActionScore aScore;
+			aScore.action = AIAction::SKILL;
+			aScore.slot = slot;
+			aScore.targetName = characterState.name;
+			aScore.score = score;
+			m_ActionList.Add(aScore);
+		}
 	}
 }
 
@@ -205,15 +211,18 @@ TArray<FActionScore> UPerformAction::calcTempSkillScore(UAISimCharacter* owner, 
 
 	for (auto& character : characterState)
 	{
-		float score = skill->getScoreSim(owner, character);
-		if (score > 0)
+		if (skill->properties.range > character.airDistance)
 		{
-			FActionScore aScore;
-			aScore.action = AIAction::SKILL;
-			aScore.slot = slot;
-			aScore.targetName = character.name;
-			aScore.score = score;
-			actionList.Add(aScore);
+			float score = skill->getScoreSim(owner, character);
+			if (score > 0)
+			{
+				FActionScore aScore;
+				aScore.action = AIAction::SKILL;
+				aScore.slot = slot;
+				aScore.targetName = character.name;
+				aScore.score = score;
+				actionList.Add(aScore);
+			}
 		}
 	}
 	return actionList;
@@ -223,14 +232,17 @@ TArray<FActionScore> UPerformAction::calcTempSkillScore(UAISimCharacter* owner, 
 {
 	TArray<FActionScore> actionList;
 	float score = skill->getScoreSim(owner, characterState);
-	if (score > 0)
+	if (skill->properties.range > characterState.airDistance)
 	{
-		FActionScore aScore;
-		aScore.action = AIAction::SKILL;
-		aScore.slot = slot;
-		aScore.targetName = characterState.name;
-		aScore.score = score;
-		actionList.Add(aScore);
+	if (score > 0)
+		{
+			FActionScore aScore;
+			aScore.action = AIAction::SKILL;
+			aScore.slot = slot;
+			aScore.targetName = characterState.name;
+			aScore.score = score;
+			actionList.Add(aScore);
+		}
 	}
 
 	return actionList;

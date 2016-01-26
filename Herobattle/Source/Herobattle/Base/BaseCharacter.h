@@ -168,6 +168,9 @@ public:
 	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = Info)
 	ProfessionName proffession;
 
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
+	HBCharacterState m_State = HBCharacterState::IDLE;
+
 	UPROPERTY(Replicated)
 	TArray<USkill*> skillList;
 
@@ -274,7 +277,7 @@ protected:
 	FWeaponValues weapon;
 
 	bool useAutoAttack;
-	HBCharacterState m_State = HBCharacterState::IDLE;
+	
 
 	UPROPERTY()
 	int32 m_ManaReduction;

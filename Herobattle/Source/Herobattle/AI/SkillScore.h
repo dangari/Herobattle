@@ -50,7 +50,7 @@ private:
 
 	int regen = 0;
 	float m_healOffset = 30.f;
-	float m_damageOffset = 30.f;
+	float m_damageOffset = 0.9;
 	float m_regenOffset = 7;
 	
 };

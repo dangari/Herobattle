@@ -164,7 +164,7 @@ float USkill::manaScoreSim(UAISimCharacter* caster, FCharacterState charcterStat
 	if (properties.costType == CostType::ADRENALINE && (properties.skillType == SkillType::ATTACK || properties.skillType == SkillType::RANGEATTACK))
 		return 1;
 	else if (properties.costType == CostType::ADRENALINE)
-		return 0.8;
+		return 0.5;
 	if (properties.costType == CostType::NONE)
 		return 1;
 	float currentMana = caster->m_Mana;

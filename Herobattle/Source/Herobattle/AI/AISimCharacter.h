@@ -250,7 +250,8 @@ public:
 	float getAirDistance(APawn* pawn);
 
 	float getWalkDistance(APawn* pawn);
-	
+	float missingAdrenaline();
+
 
 	Profession primaryProfession;
 	Profession secondaryProfession;

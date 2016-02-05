@@ -40,8 +40,10 @@ EBTNodeResult::Type UPerformAction::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 	UAIGameState* aiGameState = Cast<UAIGameState>(BlackboardComp->GetValue<UBlackboardKeyType_Object>(keyName));
 
 	
-
-	if (aiGameState && aiGameState->m_owner)
+	UWorld* world = GetWorld();
+	AHBGameState* gameState = world->GetGameState<AHBGameState>();
+	ULogging* logging = gameState->logging;
+	if (aiGameState && aiGameState->m_owner && aiGameState->m_owner->m_State != HBCharacterState::CASTING)
 	{
 		TMap<FString, ABaseCharacter*> characterList = aiGameState->getCharacterInstanceList();
 		if (temporalPlanning)
@@ -61,11 +63,18 @@ EBTNodeResult::Type UPerformAction::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 			case AIAction::SKILL:
 				m_owner->UseSkill(target, action.slot);
 				m_owner->selectedTarget = target;
+				if (logging)
+					logging->addSkill(action.slot, aiGameState->getOwner()->m_Name);
 				break;
 			case  AIAction::AUTOATACK:
 				m_owner->setState(HBCharacterState::AUTOATTACK, target);
 				m_owner->selectedTarget = target;
+				if (logging)
+					logging->addSkill(10, aiGameState->getOwner()->m_Name);
 				break;
+			case  AIAction::IDLE:
+				if (logging)
+					logging->addSkill(11, aiGameState->getOwner()->m_Name);
 			default:
 				break;
 			}

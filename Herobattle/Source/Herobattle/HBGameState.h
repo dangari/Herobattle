@@ -10,6 +10,8 @@
  * 
  */
 
+class ULogging;
+
 USTRUCT(BlueprintType)
 struct FDebugSkill
 {
@@ -27,8 +29,15 @@ class HEROBATTLE_API AHBGameState : public AGameState
 	GENERATED_BODY()
 public:
 
+	AHBGameState();
+	~AHBGameState();
+
+	virtual void BeginPlay() override;
 
 	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = Info)
 	TArray<FDebugSkill> DebugSkillList;
 	
+	UPROPERTY()
+	ULogging* logging;
+
 };

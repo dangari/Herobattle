@@ -137,7 +137,7 @@ float USkillScore::uFunctionDamage(float missingHealth, float damage)
 {
 	if (damage == 0)
 		return 0;
-	float score = (damage - m_damageOffset) / missingHealth;
+	float score = (damage * m_damageOffset) / missingHealth;
 	if (score > 1)
 	{
 		score = 2 - score;

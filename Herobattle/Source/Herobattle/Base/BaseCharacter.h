@@ -97,6 +97,8 @@ public:
 
 	void applyMovementSpeed(float value);
 
+	float missingAdrenaline();
+
 	void addAdrenaline(int value);
 
 	uint8 getCondtionCount();

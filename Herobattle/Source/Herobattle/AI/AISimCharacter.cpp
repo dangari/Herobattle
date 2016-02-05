@@ -436,7 +436,7 @@ void UAISimCharacter::setAttributeCoolDown(float Time)
 
 bool UAISimCharacter::skillIsOnCooldown(int slot)
 {
-	if (skillcooldowns[slot].currentCooldown <= 0.001f)
+	if (skillcooldowns[slot].currentCooldown <= 0.00000001f)
 		return false;
 	else
 	{
@@ -462,6 +462,24 @@ float UAISimCharacter::getAirDistance(APawn* pawn)
 float UAISimCharacter::getWalkDistance(APawn* pawn)
 {
 	return 1.0f;
+}
+
+float UAISimCharacter::missingAdrenaline()
+{
+	int count = 0;
+	int missing = 0;
+	for (int i = 0; i < 8; i++)
+	{
+		if (m_AdrenalineList[i].maxAdrenaline > 0)
+		{
+			count++;
+			missing += m_AdrenalineList[i].currentAdrenaline - m_AdrenalineList[i].maxAdrenaline;
+		}
+	}
+	if (count > 0)
+		return missing / count;
+	else
+		return 0;
 }
 
 void UAISimCharacter::addAdrenaline(int value)

@@ -840,6 +840,21 @@ void ABaseCharacter::applyMovementSpeed(float value)
 	m_MovementSpeed = m_DefaultMovementSpeed * value;
 }
 
+float ABaseCharacter::missingAdrenaline()
+{
+	int count = 0;
+	int missing = 0;
+	for (int i = 0; i < 8; i++)
+	{
+		if (m_AdrenalineList[i].maxAdrenaline > 0)
+		{
+			count++;
+			missing += m_AdrenalineList[i].currentAdrenaline - m_AdrenalineList[i].maxAdrenaline;
+		}
+	}
+	return missing / count;
+}
+
 void ABaseCharacter::addAdrenaline(int value)
 {
 	for (int i = 0; i < 8; i++)

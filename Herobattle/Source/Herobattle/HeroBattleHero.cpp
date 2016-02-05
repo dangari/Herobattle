@@ -26,7 +26,10 @@ void AHeroBattleHero::BeginPlay()
 // Called every frame
 void AHeroBattleHero::Tick( float DeltaTime )
 {
+	
 	Super::Tick( DeltaTime );
+	
+	
 
 }
 

@@ -7,6 +7,7 @@
 
 
 class AHeroBattleHero;
+class ULogging;
 
 UCLASS(minimalapi)
 class AHerobattleGameMode : public AGameMode
@@ -41,14 +42,14 @@ public:
 
 	UPROPERTY(Replicated)
 	int32 m_PlayerCount;
-
+	ULogging* logging;
 	void PostLogin(APlayerController * NewPlayer) override;
 
 	UFUNCTION(BlueprintNativeEvent, Category = "after Login")
 	void finishedPostLogin(APlayerController * NewPlayer);
 	void finishedPostLogin_Implementation(APlayerController * NewPlayer);
 	virtual void BeginPlay() override;
-
+	virtual void Tick(float DeltaSeconds) override;
 };
 
 

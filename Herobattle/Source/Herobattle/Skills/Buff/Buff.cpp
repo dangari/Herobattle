@@ -14,6 +14,7 @@
 #include "BcDamageReduction.h"
 #include "BcAttackSpeed.h"
 #include "BcMovementSpeed.h"
+#include "BcAdrenaline.h"
 
 
 TMap<FString, bCclassFuncPtr>  UBuff::bcObjectNameList;
@@ -31,6 +32,7 @@ UBuff::UBuff()
 	bcObjectNameList.Add(TEXT("damagereduction"), &createBcInstance<UBcDamageReduction>);
 	bcObjectNameList.Add(TEXT("attackspeed"), &createBcInstance<UBcAttackSpeed>);
 	bcObjectNameList.Add(TEXT("movementspeed"), &createBcInstance<UBcMovementSpeed>);
+	bcObjectNameList.Add(TEXT("giveadrenaline"), &createBcInstance<UBcAdrenaline>);
 }
 
 
@@ -140,10 +142,6 @@ bool UBuff::isExpired()
 	if (m_Duration <= 0 || (m_Usage <= 0 && !m_IsInfinityUsage))
 		return true;
 	bool b = false;
-	for (auto& sc : m_BcList)
-	{
-		b = sc->isExpired();
-	}
 	return b;
 }
 

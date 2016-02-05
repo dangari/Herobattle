@@ -197,7 +197,16 @@
 						<movementspeed value="25" scaling="NONE" target="SELF"/>
 					</buff>
           <buff value="1" scaling="STRENGTH" usage="1" trigger="HIT" type="STANCE">
-              <giveadrenaline value="0" scaling="STRNGTH" target="SELF">
+            <step key="1" value="6"/>
+            <step key="3" value="7"/>
+            <step key="4" value="8"/>
+            <step key="6" value="9"/>
+            <step key="7" value="10"/>
+            <step key="9" value="11"/>
+            <step key="10" value="12"/>
+            <step key="12" value="13"/>
+            <step key="13" value="14"/>
+              <giveadrenaline value="0" scaling="STRENGTH" target="SELF">
                 <step key="3" value="1"/>
                 <step key="8" value="2"/>
                 <step key="13" value="3"/>

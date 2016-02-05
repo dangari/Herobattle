@@ -109,6 +109,8 @@ public:
 
 	void applyMovementSpeed(float value);
 
+	void addAdrenaline(int m_AdrenalineValue);
+
 	uint8 getCondtionCount();
 
 	uint8 getDebuffCount();
@@ -248,7 +250,7 @@ protected:
 	float getAirDistance(APawn* pawn);
 
 	float getWalkDistance(APawn* pawn);
-
+	
 
 	Profession primaryProfession;
 	Profession secondaryProfession;

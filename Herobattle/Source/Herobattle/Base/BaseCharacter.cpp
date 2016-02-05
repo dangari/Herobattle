@@ -546,6 +546,7 @@ void ABaseCharacter::UpdateAttack(float deltaTime)
 		selectedTarget->damage(this,damage,HBDamageType::FIRE);
 		UpdateAdrenaline();
 		m_leftAttackTime = m_AttackSpeed;
+		RunBuff(Trigger::HIT, this);
 	}
 }
 
@@ -822,6 +823,16 @@ void ABaseCharacter::applyAttackSpeed(float value)
 void ABaseCharacter::applyMovementSpeed(float value)
 {
 	m_MovementSpeed = m_DefaultMovementSpeed * value;
+}
+
+void ABaseCharacter::addAdrenaline(int value)
+{
+	for (int i = 0; i < 8; i++)
+	{
+		m_AdrenalineList[i].currentAdrenaline += value;
+		if (m_AdrenalineList[i].currentAdrenaline > m_AdrenalineList[i].maxAdrenaline)
+			m_AdrenalineList[i].currentAdrenaline = m_AdrenalineList[i].maxAdrenaline;
+	}
 }
 
 uint8 ABaseCharacter::getCondtionCount()

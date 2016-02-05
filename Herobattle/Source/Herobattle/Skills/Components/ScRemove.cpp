@@ -86,6 +86,8 @@ float UScRemove::getScoreSim(UAISimCharacter* caster, FCharacterState characterS
 		{
 			int count = scaleTable[caster->getAttributeValue(scaleAttribute)];
 			score = characterState.conditions.Num() / count;
+			if (score > 1)
+				score = 1.f;
 		}
 		break;
 	default:

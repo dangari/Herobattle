@@ -12,9 +12,9 @@
 #include "AI/AISimCharacter.h"
 
 ABaseCharacter::ABaseCharacter()
-:m_MaxHealth(480),
+:m_MaxHealth(600),
 m_MaxMana(25),
-m_Health(480),
+m_Health(600),
 m_Mana(25),
 m_HealthRegeneration(0),
 m_ManaRegeneration(4),
@@ -149,9 +149,19 @@ void ABaseCharacter::InitializeSkills()
 		break;
 	case ProfessionName::ELEMENTALIST:
 		fileName = TEXT("Source/Herobattle/Definitions/EleHero.xml");
+		m_MaxHealth = 600;
+		m_MaxMana = 75;
+		m_Mana = 75;
+		m_Health = 600;
+		m_ManaRegeneration = 4;
 		break;
 	case ProfessionName::MONK:
 		fileName = TEXT("Source/Herobattle/Definitions/Monk.xml");
+		m_MaxHealth = 600;
+		m_MaxMana = 40;
+		m_Mana = 40;
+		m_Health = 600;
+		m_ManaRegeneration = 4;
 		break;
 	case ProfessionName::DERWISH:
 		break;
@@ -161,6 +171,11 @@ void ABaseCharacter::InitializeSkills()
 		break;
 	case ProfessionName::WARRIOR:
 		fileName = TEXT("Source/Herobattle/Definitions/Warrior.xml");
+		m_MaxHealth = 630;
+		m_MaxMana = 22;
+		m_Mana = 22;
+		m_Health = 630;
+		m_ManaRegeneration = 2;
 		break;
 	case ProfessionName::MESMER:
 		break;

@@ -186,7 +186,7 @@ public:
 
 
 
-protected:
+//protected:
 	// starts or stop AutoAttack
 	UFUNCTION(Server, WithValidation, reliable)
 	void setAttack(bool b);

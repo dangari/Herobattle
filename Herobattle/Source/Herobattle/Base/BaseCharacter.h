@@ -183,7 +183,7 @@ public:
 	void setAttack(bool b);
 
 	UFUNCTION(Server, WithValidation, reliable)
-	void stopCurrenSkill();
+	void stopCurrentSkill();
 
 	void getBuffs();
 

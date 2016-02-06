@@ -262,7 +262,7 @@ void AHerobattleCharacter::startAttack()
 void AHerobattleCharacter::stopAllActions()
 {
 	setAttack(false);
-	stopCurrenSkill();
+	stopCurrentSkill();
 }
 
 void AHerobattleCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const

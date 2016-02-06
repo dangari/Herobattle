@@ -109,7 +109,7 @@ void ABaseCharacter::SetupPlayerInputComponent(class UInputComponent* InputCompo
 
 }
 
-void ABaseCharacter::stopCurrenSkill_Implementation()
+void ABaseCharacter::stopCurrentSkill_Implementation()
 {
 	if (isCastingSkill())
 	{
@@ -117,7 +117,7 @@ void ABaseCharacter::stopCurrenSkill_Implementation()
 		m_State = HBCharacterState::IDLE;
 	}
 }
-bool ABaseCharacter::stopCurrenSkill_Validate()
+bool ABaseCharacter::stopCurrentSkill_Validate()
 {
 	return true;
 }
@@ -431,6 +431,10 @@ bool ABaseCharacter::canUseSkill(int slot)
 		if (skillList[slot]->properties.cost < m_Mana + m_ManaReduction)
 			return true;
 	}
+	else if (skillList[slot]->properties.costType == CostType::NONE)
+	{
+		return true;
+	}
 	return false;
 }
 
@@ -534,10 +538,10 @@ void ABaseCharacter::UpdateCurrentSkill(float deltaTime)
 	currentSkill.leftCastTime -= deltaTime;
 	if (currentSkill.leftCastTime <= 0)
 	{
-		currentSkill.skill->run(currentSkill.target, this);
 		currentSkill.castingSkill = false;
 		skillcooldowns[currentSkill.slot].currentCooldown = currentSkill.skill->properties.recharge;
 		skillcooldowns[currentSkill.slot].maxCooldown = currentSkill.skill->properties.recharge + skillcooldowns[currentSkill.slot].additionalCoolDown;
+		currentSkill.skill->run(currentSkill.target, this);
 		m_ManaReduction = 0;
 		RunBuff(Trigger::AFTERCAST, this);
 		if (currentSkill.skill->properties.skillType == SkillType::RANGEATTACK || currentSkill.skill->properties.skillType == SkillType::MELEEATTACK)
@@ -671,6 +675,7 @@ bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
 			m_State = HBCharacterState::CASTING;
 			UE_LOG(LogTemp, Warning, TEXT("Skill name: %s"), *(currentSkill.skillName));
 			useAutoAttack = false;
+			m_leftAttackTime = m_AttackSpeed;
 			//bool b = skill->run(target, this);
 			return true;
 		}
@@ -859,9 +864,12 @@ void ABaseCharacter::addAdrenaline(int value)
 {
 	for (int i = 0; i < 8; i++)
 	{
-		m_AdrenalineList[i].currentAdrenaline += value;
-		if (m_AdrenalineList[i].currentAdrenaline > m_AdrenalineList[i].maxAdrenaline)
-			m_AdrenalineList[i].currentAdrenaline = m_AdrenalineList[i].maxAdrenaline;
+		if (skillcooldowns[i].currentCooldown < 0.0001)
+		{
+			m_AdrenalineList[i].currentAdrenaline += value;
+			if (m_AdrenalineList[i].currentAdrenaline > m_AdrenalineList[i].maxAdrenaline)
+				m_AdrenalineList[i].currentAdrenaline = m_AdrenalineList[i].maxAdrenaline;
+		}
 	}
 }
 
@@ -958,11 +966,11 @@ void ABaseCharacter::updateHealthRegen(float regen)
 
 void ABaseCharacter::UpdateAdrenaline()
 {
-	for (auto& adrenaline : m_AdrenalineList)
+	for (int i = 0; i < 8; i++)
 	{
-		if (adrenaline.currentAdrenaline < adrenaline.maxAdrenaline)
+		if (m_AdrenalineList[i].currentAdrenaline < m_AdrenalineList[i].maxAdrenaline && skillcooldowns[i].currentCooldown < 0.0001)
 		{
-			adrenaline.currentAdrenaline++;
+			m_AdrenalineList[i].currentAdrenaline++;
 		}
 	}
 }

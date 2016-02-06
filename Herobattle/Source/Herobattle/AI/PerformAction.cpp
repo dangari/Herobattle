@@ -8,6 +8,9 @@
 #include "Skills/Skill.h"
 #include "AISimCharacter.h"
 #include "HerobattleCharacter.h"
+#include "HBGameState.h"
+#include "HeroBattleHero.h"
+#include "Base/Logging.h"
 
 
 
@@ -15,7 +18,7 @@
 UPerformAction::UPerformAction()
 {
 	bCreateNodeInstance = true;
-	temporalPlanning = true;
+	temporalPlanning = false;
 }
 
 UPerformAction::~UPerformAction()
@@ -27,6 +30,7 @@ EBTNodeResult::Type UPerformAction::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 {
 	count++;
 	FActionScore action;
+	bool succsess = false;
 
 	if (!character)
 		character = NewObject<UAISimCharacter>(this);
@@ -61,9 +65,9 @@ EBTNodeResult::Type UPerformAction::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 			switch (action.action)
 			{
 			case AIAction::SKILL:
-				m_owner->UseSkill(target, action.slot);
+				succsess = m_owner->UseSkill(target, action.slot);
 				m_owner->selectedTarget = target;
-				if (logging)
+				if (logging && succsess)
 					logging->addSkill(action.slot, aiGameState->getOwner()->m_Name);
 				break;
 			case  AIAction::AUTOATACK:

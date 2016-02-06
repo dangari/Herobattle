@@ -486,9 +486,12 @@ void UAISimCharacter::addAdrenaline(int value)
 {
 	for (int i = 0; i < 8; i++)
 	{
+		if (skillcooldowns[i].currentCooldown < 0.0001)
+		{
 		m_AdrenalineList[i].currentAdrenaline += value;
 		if (m_AdrenalineList[i].currentAdrenaline > m_AdrenalineList[i].maxAdrenaline)
 			m_AdrenalineList[i].currentAdrenaline = m_AdrenalineList[i].maxAdrenaline;
+		}
 	}
 }
 
@@ -981,11 +984,11 @@ void UAISimCharacter::updateHealthRegen(float regen)
 
 void UAISimCharacter::UpdateAdrenaline()
 {
-	for (auto& adrenaline : m_AdrenalineList)
+	for (int i = 0; i < 8; i++)
 	{
-		if (adrenaline.currentAdrenaline < adrenaline.maxAdrenaline)
+		if (m_AdrenalineList[i].currentAdrenaline < m_AdrenalineList[i].maxAdrenaline && skillcooldowns[i].currentCooldown < 0.0001)
 		{
-			adrenaline.currentAdrenaline++;
+			m_AdrenalineList[i].currentAdrenaline++;
 		}
 	}
 }

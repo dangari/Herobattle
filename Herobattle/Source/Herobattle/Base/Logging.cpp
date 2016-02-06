@@ -68,8 +68,87 @@ void ULogging::update(float DeltaTime)
 			addMana(hero->m_Mana, m_completeTime, hero->m_Name);
 		}
 	}
-	if (m_completeTime > 180)
+	if (m_completeTime > 120  && !isPrinted)
 	{
-		//do something
+		printToLog();
+		isPrinted = true;
 	}
+}
+
+void ULogging::printToLog()
+{
+	FString values = TEXT("");
+	FString timeStamps = TEXT("");
+	//skill log
+	for (auto& element : skill)
+	{
+		FSimpleArray valueArray = element.Value;
+		values = values.Append(element.Key).Append(TEXT("|")).Append(valueArray.slotsToString());
+		timeStamps = timeStamps.Append(*element.Key).Append(TEXT("|")).Append(valueArray.timeStampsToString());
+		UE_LOG(SkillLog, Log, TEXT("%s"), *values);
+		UE_LOG(SkillLog, Log, TEXT("%s"), *timeStamps);
+		values = TEXT("");
+		timeStamps = TEXT("");
+	}
+	//health log
+	for (auto& element : health)
+	{
+		FSimpleArray valueArray = element.Value;
+		values = values.Append(element.Key).Append(TEXT("|")).Append(valueArray.valueToString());
+		timeStamps = timeStamps.Append(*element.Key).Append(TEXT("|")).Append(valueArray.timeStampsToString());
+		UE_LOG(HealthLog, Log, TEXT("%s"), *values);
+		UE_LOG(HealthLog, Log, TEXT("%s"), *timeStamps);
+		values = TEXT("");
+		timeStamps = TEXT("");
+	}
+	//mana log
+	for (auto& element : mana)
+	{
+		FSimpleArray valueArray = element.Value;
+		values = values.Append(element.Key).Append(TEXT("|")).Append(valueArray.valueToString());
+		timeStamps = timeStamps.Append(*element.Key).Append(TEXT("|")).Append(valueArray.timeStampsToString());
+		UE_LOG(ManaLog, Log, TEXT("%s"), *values);
+		UE_LOG(ManaLog, Log, TEXT("%s"), *timeStamps);
+		values = TEXT("");
+		timeStamps = TEXT("");
+	}
+
+
+}
+
+FString FSimpleArray::valueToString()
+{
+	return arrayToString(valueArray, TEXT("values"));
+}
+
+FString FSimpleArray::timeStampsToString()
+{
+	return arrayToString(timeStamps, TEXT("timeStamps"));
+}
+
+FString FSimpleArray::slotsToString()
+{
+	FString s = TEXT(" ");
+	s = s.Append("slot").Append(TEXT("|"));
+	for (auto& element : slotArray)
+	{
+		int32 value = element;
+		s.AppendInt(value);
+		s.Append(TEXT("|"));
+	}
+
+	return s;
+}
+
+FString FSimpleArray::arrayToString(TArray<float> array, FString name)
+{
+	FString s = TEXT(" ");
+	s = s.Append(name).Append(TEXT("|"));
+	for (auto& element : array)
+	{
+		FString value = FString::SanitizeFloat(element);
+		s = s.Append(value).Append(TEXT("|"));
+	}
+
+	return s;
 }

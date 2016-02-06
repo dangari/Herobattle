@@ -22,6 +22,12 @@ struct FSimpleArray
 	TArray<float> timeStamps;
 	UPROPERTY()
 	TArray<uint8> slotArray;
+
+	FString valueToString();
+	FString timeStampsToString();
+	FString slotsToString();
+
+	FString arrayToString(TArray<float> array, FString name);
 };
 
 UCLASS()
@@ -35,6 +41,8 @@ public:
 
 	void update(float DeltaTime);
 
+	void printToLog();
+
 	UPROPERTY()
 	TMap<FString, FSimpleArray> health;
 	UPROPERTY()
@@ -47,4 +55,6 @@ public:
 
 	float m_completeTime;
 	float m_timeStamp;
+
+	bool isPrinted = false;
 };

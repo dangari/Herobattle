@@ -16,6 +16,7 @@
 #include "Components/ScForEach.h"
 #include "Components/ScGiveMana.h"
 #include "Components/ScRemove.h"
+#include "Components/ScAdrenaline.h"
 
 //Buff Components
 #include "Buff/BaseBuffCompenent.h"
@@ -48,6 +49,7 @@ XMLSkillReader::XMLSkillReader()
 	scObjectNameList.Add(TEXT("foreach"), &createScInstance<UScForEach>);
 	scObjectNameList.Add(TEXT("givemana"), &createScInstance<UScGiveMana>);
 	scObjectNameList.Add(TEXT("remove"), &createScInstance<UScRemove>);
+	scObjectNameList.Add(TEXT("giveadrenaline"), &createScInstance<UScAdrenaline>);
 }
 
 XMLSkillReader::~XMLSkillReader()

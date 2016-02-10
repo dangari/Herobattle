@@ -140,7 +140,7 @@ void ABaseCharacter::InitializeAdrenaline()
 void ABaseCharacter::InitializeSkills()
 {
 	XMLSkillReader* skillReader = new XMLSkillReader();
-	FString fileName = TEXT("Source/Herobattle/Definitions/Warrior.xml");
+	FString fileName = TEXT("Source/Herobattle/Definitions/EleHero.xml");
 	switch (proffession)
 	{
 	case ProfessionName::NONE:

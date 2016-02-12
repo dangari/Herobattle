@@ -18,6 +18,7 @@ class ABaseCharacter;
 class FXmlNode;
 class USkillScore;
 class UAISimCharacter;
+class UBuff;
 
 UCLASS()
 class HEROBATTLE_API UBaseBuffCompenent : public UObject

@@ -5,6 +5,7 @@
 #include "../../../Base/BaseCharacter.h"
 #include "Base/Weapon.h"
 #include "Enum/CharacterEnums.h"
+#include "AI/AISimCharacter.h"
 
 
 UBoolAttack::UBoolAttack()

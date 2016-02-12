@@ -2,7 +2,9 @@
 
 #include "Herobattle.h"
 #include "ScRemove.h"
-
+#include "Base/BaseCharacter.h"
+#include "AI/AISimCharacter.h"
+#include "AI/SkillScore.h"
 
 
 

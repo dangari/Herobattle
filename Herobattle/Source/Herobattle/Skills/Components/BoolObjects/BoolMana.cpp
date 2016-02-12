@@ -3,6 +3,7 @@
 #include "Herobattle.h"
 #include "BoolMana.h"
 #include "../../../Base/BaseCharacter.h"
+#include "AI/AISimCharacter.h"
 
 
 UBoolMana::UBoolMana()

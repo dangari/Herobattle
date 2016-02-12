@@ -3,6 +3,8 @@
 #include "Herobattle.h"
 #include "ScDamage.h"
 #include "../../Base/BaseCharacter.h"
+#include "Base/BaseCharacter.h"
+#include "AI/AISimCharacter.h"
 #include "AI/SkillScore.h"
 
 UScDamage::UScDamage()

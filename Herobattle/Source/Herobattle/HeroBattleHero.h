@@ -15,7 +15,7 @@ enum class HeroState : uint8
 
 DECLARE_LOG_CATEGORY_EXTERN(SkillLog, Log, All);
 DECLARE_LOG_CATEGORY_EXTERN(HealthLog, Log, All);
-DECLARE_LOG_CATEGORY_EXTERN( , Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(ManaLog, Log, All);
 
 class AHerobattleGameMode;
 UCLASS()

@@ -3,6 +3,7 @@
 #include "Herobattle.h"
 #include "ScRegeneratio.h"
 #include "Base/BaseCharacter.h"
+#include "AI/AISimCharacter.h"
 #include "AI/SkillScore.h"
 
 

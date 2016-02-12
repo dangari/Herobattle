@@ -5,6 +5,7 @@
 #include "../RegisterSkillComponents.h"
 #include "../../Base/BaseCharacter.h"
 #include "AI/SkillScore.h"
+#include "AI/AISimCharacter.h"
 
 
 UBaseSkillComponent::UBaseSkillComponent()

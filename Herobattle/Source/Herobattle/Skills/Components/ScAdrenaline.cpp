@@ -2,6 +2,9 @@
 
 #include "Herobattle.h"
 #include "ScAdrenaline.h"
+#include "Base/BaseCharacter.h"
+#include "AI/AISimCharacter.h"
+#include "AI/SkillScore.h"
 
 
 

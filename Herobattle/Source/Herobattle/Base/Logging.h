@@ -61,5 +61,5 @@ public:
 	float m_timeStamp;
 
 	bool isPrinted = false;
-	bool logginOn;
+	bool loggingOn;
 };

@@ -2,6 +2,10 @@
 
 #include "Herobattle.h"
 #include "BcAdrenaline.h"
+#include "AI/SkillScore.h"
+#include "AI/AISimCharacter.h"
+#include "Buff.h"
+#include "Base/BaseCharacter.h"
 
 
 

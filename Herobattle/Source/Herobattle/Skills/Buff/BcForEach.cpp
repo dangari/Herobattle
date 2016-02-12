@@ -3,14 +3,11 @@
 #include "Herobattle.h"
 #include "BcForEach.h"
 #include "BaseBuffCompenent.h"
+#include "Base/BaseCharacter.h"
+#include "AI/SkillScore.h"
+#include "AI/AISimCharacter.h"
 #include "Buff.h"
-//#include "XmlParser.h"
-//#include "../XMLSkillReader.h"
-//#include "Base/BaseCharacter.h"
-//#include "AI/SkillScore.h"
-//
-//
-//
+
 UBcForEach::UBcForEach()
 {
 

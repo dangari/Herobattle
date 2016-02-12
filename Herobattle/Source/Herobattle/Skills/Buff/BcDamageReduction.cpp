@@ -2,7 +2,10 @@
 
 #include "Herobattle.h"
 #include "BcDamageReduction.h"
+#include "Base/BaseCharacter.h"
+#include "AI/SkillScore.h"
 #include "AI/AISimCharacter.h"
+#include "Buff.h"
 
 
 

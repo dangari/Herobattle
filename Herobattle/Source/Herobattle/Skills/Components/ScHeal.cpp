@@ -1,7 +1,9 @@
 #include "Herobattle.h"
 #include "ScHeal.h"
-#include "../../Base/BaseCharacter.h"
+#include "Base/BaseCharacter.h"
+#include "AI/AISimCharacter.h"
 #include "AI/SkillScore.h"
+
 
 UScHeal::UScHeal()
 {

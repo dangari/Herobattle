@@ -5,7 +5,10 @@
 #include "Enum/CharacterEnums.h"
 #include "Base/Weapon.h"
 #include "Engine.h"
+#include "Base/BaseCharacter.h"
+#include "AI/SkillScore.h"
 #include "AI/AISimCharacter.h"
+#include "Buff.h"
 
 
 

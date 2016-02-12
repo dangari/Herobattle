@@ -9,12 +9,17 @@
 
 ULogging::ULogging()
 {
-	logginOn = false;
+	loggingOn = false;
+}
+
+ULogging::~ULogging()
+{
+
 }
 
 void ULogging::addHealth(float value, float timeStamp, FString name)
 {
-	if (logginOn)
+	if (loggingOn)
 	{
 		if (health.Contains(name))
 		{
@@ -33,7 +38,7 @@ void ULogging::addHealth(float value, float timeStamp, FString name)
 
 void ULogging::addMana(float value, float timeStamp, FString name)
 {
-	if (logginOn)
+	if (loggingOn)
 	{
 		if (mana.Contains(name))
 		{
@@ -52,7 +57,7 @@ void ULogging::addMana(float value, float timeStamp, FString name)
 
 void ULogging::addSkill(int slot, FString name)
 {
-	if (logginOn)
+	if (loggingOn)
 	{
 		if (skill.Contains(name))
 		{
@@ -71,7 +76,7 @@ void ULogging::addSkill(int slot, FString name)
 
 void ULogging::update(float DeltaTime)
 {
-	if (logginOn)
+	if (loggingOn)
 	{
 		m_timeStamp += DeltaTime;
 		m_completeTime += DeltaTime;

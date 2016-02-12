@@ -12,9 +12,9 @@
 #include "AI/AISimCharacter.h"
 
 ABaseCharacter::ABaseCharacter()
-:m_MaxHealth(480),
+:m_MaxHealth(600),
 m_MaxMana(25),
-m_Health(480),
+m_Health(600),
 m_Mana(25),
 m_HealthRegeneration(0),
 m_ManaRegeneration(4),
@@ -109,7 +109,7 @@ void ABaseCharacter::SetupPlayerInputComponent(class UInputComponent* InputCompo
 
 }
 
-void ABaseCharacter::stopCurrenSkill_Implementation()
+void ABaseCharacter::stopCurrentSkill_Implementation()
 {
 	if (isCastingSkill())
 	{
@@ -117,7 +117,7 @@ void ABaseCharacter::stopCurrenSkill_Implementation()
 		m_State = HBCharacterState::IDLE;
 	}
 }
-bool ABaseCharacter::stopCurrenSkill_Validate()
+bool ABaseCharacter::stopCurrentSkill_Validate()
 {
 	return true;
 }
@@ -149,9 +149,19 @@ void ABaseCharacter::InitializeSkills()
 		break;
 	case ProfessionName::ELEMENTALIST:
 		fileName = TEXT("Source/Herobattle/Definitions/EleHero.xml");
+		m_MaxHealth = 600;
+		m_MaxMana = 75;
+		m_Mana = 75;
+		m_Health = 600;
+		m_ManaRegeneration = 4;
 		break;
 	case ProfessionName::MONK:
 		fileName = TEXT("Source/Herobattle/Definitions/Monk.xml");
+		m_MaxHealth = 600;
+		m_MaxMana = 40;
+		m_Mana = 40;
+		m_Health = 600;
+		m_ManaRegeneration = 4;
 		break;
 	case ProfessionName::DERWISH:
 		break;
@@ -161,6 +171,11 @@ void ABaseCharacter::InitializeSkills()
 		break;
 	case ProfessionName::WARRIOR:
 		fileName = TEXT("Source/Herobattle/Definitions/Warrior.xml");
+		m_MaxHealth = 630;
+		m_MaxMana = 22;
+		m_Mana = 22;
+		m_Health = 630;
+		m_ManaRegeneration = 2;
 		break;
 	case ProfessionName::MESMER:
 		break;
@@ -416,6 +431,10 @@ bool ABaseCharacter::canUseSkill(int slot)
 		if (skillList[slot]->properties.cost < m_Mana + m_ManaReduction)
 			return true;
 	}
+	else if (skillList[slot]->properties.costType == CostType::NONE)
+	{
+		return true;
+	}
 	return false;
 }
 
@@ -519,10 +538,10 @@ void ABaseCharacter::UpdateCurrentSkill(float deltaTime)
 	currentSkill.leftCastTime -= deltaTime;
 	if (currentSkill.leftCastTime <= 0)
 	{
-		currentSkill.skill->run(currentSkill.target, this);
 		currentSkill.castingSkill = false;
 		skillcooldowns[currentSkill.slot].currentCooldown = currentSkill.skill->properties.recharge;
 		skillcooldowns[currentSkill.slot].maxCooldown = currentSkill.skill->properties.recharge + skillcooldowns[currentSkill.slot].additionalCoolDown;
+		currentSkill.skill->run(currentSkill.target, this);
 		m_ManaReduction = 0;
 		RunBuff(Trigger::AFTERCAST, this);
 		if (currentSkill.skill->properties.skillType == SkillType::RANGEATTACK || currentSkill.skill->properties.skillType == SkillType::MELEEATTACK)
@@ -656,6 +675,7 @@ bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
 			m_State = HBCharacterState::CASTING;
 			UE_LOG(LogTemp, Warning, TEXT("Skill name: %s"), *(currentSkill.skillName));
 			useAutoAttack = false;
+			m_leftAttackTime = m_AttackSpeed;
 			//bool b = skill->run(target, this);
 			return true;
 		}
@@ -825,13 +845,31 @@ void ABaseCharacter::applyMovementSpeed(float value)
 	m_MovementSpeed = m_DefaultMovementSpeed * value;
 }
 
+float ABaseCharacter::missingAdrenaline()
+{
+	int count = 0;
+	int missing = 0;
+	for (int i = 0; i < 8; i++)
+	{
+		if (m_AdrenalineList[i].maxAdrenaline > 0)
+		{
+			count++;
+			missing += m_AdrenalineList[i].currentAdrenaline - m_AdrenalineList[i].maxAdrenaline;
+		}
+	}
+	return missing / count;
+}
+
 void ABaseCharacter::addAdrenaline(int value)
 {
 	for (int i = 0; i < 8; i++)
 	{
-		m_AdrenalineList[i].currentAdrenaline += value;
-		if (m_AdrenalineList[i].currentAdrenaline > m_AdrenalineList[i].maxAdrenaline)
-			m_AdrenalineList[i].currentAdrenaline = m_AdrenalineList[i].maxAdrenaline;
+		if (skillcooldowns[i].currentCooldown < 0.0001)
+		{
+			m_AdrenalineList[i].currentAdrenaline += value;
+			if (m_AdrenalineList[i].currentAdrenaline > m_AdrenalineList[i].maxAdrenaline)
+				m_AdrenalineList[i].currentAdrenaline = m_AdrenalineList[i].maxAdrenaline;
+		}
 	}
 }
 
@@ -928,11 +966,11 @@ void ABaseCharacter::updateHealthRegen(float regen)
 
 void ABaseCharacter::UpdateAdrenaline()
 {
-	for (auto& adrenaline : m_AdrenalineList)
+	for (int i = 0; i < 8; i++)
 	{
-		if (adrenaline.currentAdrenaline < adrenaline.maxAdrenaline)
+		if (m_AdrenalineList[i].currentAdrenaline < m_AdrenalineList[i].maxAdrenaline && skillcooldowns[i].currentCooldown < 0.0001)
 		{
-			adrenaline.currentAdrenaline++;
+			m_AdrenalineList[i].currentAdrenaline++;
 		}
 	}
 }

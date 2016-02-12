@@ -12,6 +12,11 @@ enum class HeroState : uint8
 	FLAGALL, FLAGSINGEL, NONE
 };
 
+
+DECLARE_LOG_CATEGORY_EXTERN(SkillLog, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(HealthLog, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN( , Log, All);
+
 class AHerobattleGameMode;
 UCLASS()
 class HEROBATTLE_API AHeroBattleHero : public ABaseCharacter
@@ -46,7 +51,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
 
-
+	
+	
 
 private:
 	

@@ -436,7 +436,7 @@ void UAISimCharacter::setAttributeCoolDown(float Time)
 
 bool UAISimCharacter::skillIsOnCooldown(int slot)
 {
-	if (skillcooldowns[slot].currentCooldown <= 0.001f)
+	if (skillcooldowns[slot].currentCooldown <= 0.00000001f)
 		return false;
 	else
 	{
@@ -464,13 +464,34 @@ float UAISimCharacter::getWalkDistance(APawn* pawn)
 	return 1.0f;
 }
 
+float UAISimCharacter::missingAdrenaline()
+{
+	int count = 0;
+	int missing = 0;
+	for (int i = 0; i < 8; i++)
+	{
+		if (m_AdrenalineList[i].maxAdrenaline > 0)
+		{
+			count++;
+			missing += m_AdrenalineList[i].currentAdrenaline - m_AdrenalineList[i].maxAdrenaline;
+		}
+	}
+	if (count > 0)
+		return missing / count;
+	else
+		return 0;
+}
+
 void UAISimCharacter::addAdrenaline(int value)
 {
 	for (int i = 0; i < 8; i++)
 	{
+		if (skillcooldowns[i].currentCooldown < 0.0001)
+		{
 		m_AdrenalineList[i].currentAdrenaline += value;
 		if (m_AdrenalineList[i].currentAdrenaline > m_AdrenalineList[i].maxAdrenaline)
 			m_AdrenalineList[i].currentAdrenaline = m_AdrenalineList[i].maxAdrenaline;
+		}
 	}
 }
 
@@ -963,11 +984,11 @@ void UAISimCharacter::updateHealthRegen(float regen)
 
 void UAISimCharacter::UpdateAdrenaline()
 {
-	for (auto& adrenaline : m_AdrenalineList)
+	for (int i = 0; i < 8; i++)
 	{
-		if (adrenaline.currentAdrenaline < adrenaline.maxAdrenaline)
+		if (m_AdrenalineList[i].currentAdrenaline < m_AdrenalineList[i].maxAdrenaline && skillcooldowns[i].currentCooldown < 0.0001)
 		{
-			adrenaline.currentAdrenaline++;
+			m_AdrenalineList[i].currentAdrenaline++;
 		}
 	}
 }

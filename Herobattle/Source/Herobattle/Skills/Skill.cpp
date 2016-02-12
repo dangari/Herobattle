@@ -152,22 +152,29 @@ float USkill::manaScore(ABaseCharacter* caster, FCharacterState charcterState)
 	float maxMana = caster->m_MaxMana;
 	int regen = caster->m_ManaRegeneration;
 
-	currentMana += (charcterState.DeltaTime * (regen / 3.0));
-	float score = currentMana / maxMana;
+	int mana_cost = properties.cost - caster->m_ManaReduction;
+	if (mana_cost < 0)
+		mana_cost = 0;
+	float score =  (1 - properties.cost / currentMana) * (regen / 4.0);
 	return score;
 }
 
 float USkill::manaScoreSim(UAISimCharacter* caster, FCharacterState charcterState)
 {
-	if (properties.costType == CostType::ADRENALINE || properties.costType == CostType::NONE)
+	if (properties.costType == CostType::ADRENALINE && (properties.skillType == SkillType::ATTACK || properties.skillType == SkillType::RANGEATTACK))
 		return 1;
-
+	else if (properties.costType == CostType::ADRENALINE)
+		return 0.5;
+	if (properties.costType == CostType::NONE)
+		return 1;
 	float currentMana = caster->m_Mana;
 	float maxMana = caster->m_MaxMana;
 	int regen = caster->m_ManaRegeneration;
 
-	currentMana += (charcterState.DeltaTime * (regen / 3.0));
-	float score = currentMana / maxMana;
+	int mana_cost = properties.cost - caster->m_ManaReduction;
+	if (mana_cost < 0)
+		mana_cost = 0;
+	float score = (1 - properties.cost / currentMana) * (regen / 4.0);
 	return score;
 }
 

@@ -196,6 +196,15 @@ void AHerobattleCharacter::addHero(uint8 index, AHeroBattleHero* hero)
 	if (index < 3)
 	{
 		heroList[index] = hero;
+		if (HasAuthority())
+		{
+			UWorld* world = GetWorld();
+			AHBGameState* gameState = world->GetGameState<AHBGameState>();
+			ULogging* logging = gameState->logging;
+			if (!logging)
+				logging = NewObject<ULogging>(gameState);
+			logging->heroes.Add(hero);
+		}
 	}
 }
 
@@ -253,7 +262,7 @@ void AHerobattleCharacter::startAttack()
 void AHerobattleCharacter::stopAllActions()
 {
 	setAttack(false);
-	stopCurrenSkill();
+	stopCurrentSkill();
 }
 
 void AHerobattleCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const

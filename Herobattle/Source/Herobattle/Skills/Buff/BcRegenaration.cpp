@@ -32,11 +32,13 @@ bool UBcRegenaration::runSim(UAISimCharacter* caster, UAISimCharacter* self, int
 
 float UBcRegenaration::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration)
 {
+	skillScore->addRegneration(m_Regenration);
 	return 1.f;
 }
 
 float UBcRegenaration::getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration)
 {
+	skillScore->addRegneration(m_Regenration);
 	return 1.f;
 }
 

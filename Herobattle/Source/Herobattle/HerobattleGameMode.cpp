@@ -8,6 +8,8 @@
 #include "Skills/XMLSkillReader.h"
 #include "UnrealNetwork.h"
 #include "Engine.h"
+#include "HBGameState.h"
+#include "Base/Logging.h"
 
 AHerobattleGameMode::AHerobattleGameMode()
 {
@@ -29,7 +31,9 @@ AHerobattleGameMode::AHerobattleGameMode()
 }
 void AHerobattleGameMode::PostLogin(APlayerController * NewPlayer)
 {
-	
+	UWorld* world = GetWorld();
+	AHBGameState* gameState = GetWorld()->GetGameState<AHBGameState>();
+	logging = gameState->logging;
 	Super::PostLogin(NewPlayer);
 	if (HasAuthority())
 	{
@@ -72,6 +76,18 @@ void AHerobattleGameMode::BeginPlay()
 		skillList = test->ReadXmlSkillFile(TEXT("Source/Herobattle/Definitions/Warrior.xml"), this);
 	}
 	Super::BeginPlay();
+}
+
+void AHerobattleGameMode::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	if (HasAuthority())
+	{
+		if (logging)
+		{
+			logging->update(DeltaSeconds);
+		}
+	}
 }
 
 void AHerobattleGameMode::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const

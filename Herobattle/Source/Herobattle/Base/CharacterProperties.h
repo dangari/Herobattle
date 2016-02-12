@@ -26,7 +26,7 @@ struct FAdrenaline
 	int32 currentAdrenaline = 0;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterProperties)
-		int32 maxAdrenaline = 0;
+	int32 maxAdrenaline = 0;
 };
 
 

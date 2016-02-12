@@ -59,9 +59,10 @@ float UScRemove::getScore(ABaseCharacter* caster, FCharacterState characterState
 	default:
 		break;
 	}
+	skillScore->addScore(score, componentName);
 	return 1.f;
 
-	skillScore->addScore(score, componentName);
+	
 }
 
 float UScRemove::getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore)
@@ -93,6 +94,7 @@ float UScRemove::getScoreSim(UAISimCharacter* caster, FCharacterState characterS
 	default:
 		break;
 	}
+	skillScore->addScore(score, componentName);
 	return 1.f;
 }
 
@@ -103,7 +105,7 @@ void UScRemove::init(FXmlNode* node, FSkillProperties properties)
 	rType = SkillEnums::stringToRemoveType(node->GetAttribute(TEXT("type")));
 	TArray<FXmlNode*> propertyList = node->GetChildrenNodes();
 	FString tagName = node->GetTag();
-	if (tagName.Equals(TEXT("damage")))
+	if (tagName.Equals(TEXT("remove")))
 	{
 		fillScaleTable(node);
 	}

@@ -97,6 +97,8 @@ public:
 
 	void applyMovementSpeed(float value);
 
+	float missingAdrenaline();
+
 	void addAdrenaline(int value);
 
 	uint8 getCondtionCount();
@@ -175,13 +177,13 @@ public:
 
 	
 
-protected:
+//protected:
 	// starts or stop AutoAttack
 	UFUNCTION(Server, WithValidation, reliable)
 	void setAttack(bool b);
 
 	UFUNCTION(Server, WithValidation, reliable)
-	void stopCurrenSkill();
+	void stopCurrentSkill();
 
 	void getBuffs();
 

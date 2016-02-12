@@ -245,7 +245,7 @@
 
   <profession value="WARRIOR">
     <spell type="UNIQUE_BUFF">
-      <name value="Balance Stance"/>
+      <name value="Balanced Stance"/>
       <costs value="5" type="MANA"/>
       <casttime value="0"/>
       <cooldown value="30"/>

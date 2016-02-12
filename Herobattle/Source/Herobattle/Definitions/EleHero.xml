@@ -70,7 +70,7 @@
     </spell>
 
     <spell type="SPELL">
-      <name value="Glowing Glaze"/>
+      <name value="Glowing Gaze"/>
       <costs value="5" type="MANA"/>
       <casttime value="1"/>
       <cooldown value="8"/>
@@ -115,7 +115,7 @@
     </spell>
 
     <spell type="Spell">
-      <name value="Aura of Resoration"/>
+      <name value="Aura of Restoration"/>
       <costs value="5" type="MANA"/>
       <casttime value="0.25"/>
       <cooldown value="30"/>

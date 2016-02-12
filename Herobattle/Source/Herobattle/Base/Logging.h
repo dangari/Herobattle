@@ -35,6 +35,10 @@ class HEROBATTLE_API ULogging : public UObject
 {
 	GENERATED_BODY()
 public:
+
+	ULogging();
+	~ULogging();
+
 	void addHealth(float value, float timeStamp, FString name);
 	void addMana(float value, float timeStamp, FString name);
 	void addSkill(int slot, FString name);
@@ -57,4 +61,5 @@ public:
 	float m_timeStamp;
 
 	bool isPrinted = false;
+	bool logginOn;
 };

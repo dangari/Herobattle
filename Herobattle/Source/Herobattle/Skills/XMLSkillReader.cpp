@@ -62,12 +62,16 @@ TArray<USkill*> XMLSkillReader::ReadXmlSkillFile(FString path, UObject* owner)
 	FString projectDir = FPaths::GameDir();
 	FXmlFile* file = new FXmlFile();
 	projectDir += path;
-	file->LoadFile(projectDir, EConstructMethod::ConstructFromFile);
+	if (file->LoadFile(projectDir, EConstructMethod::ConstructFromFile))
+	{
 
-	// get Root node
-	auto pRoot = file->GetRootNode();
-	
-	return readeSkillsFromXml(pRoot, owner);
+		// get Root node
+		auto pRoot = file->GetRootNode();
+
+		return readeSkillsFromXml(pRoot, owner);
+	}
+	TArray < USkill* > empty;
+	return empty;
 }
 
 

@@ -140,7 +140,7 @@ void ABaseCharacter::InitializeAdrenaline()
 void ABaseCharacter::InitializeSkills()
 {
 	XMLSkillReader* skillReader = new XMLSkillReader();
-	FString fileName = TEXT("Source/Herobattle/Definitions/Warrior.xml");
+	FString fileName = TEXT("/Content/Definitions/Warrior.xml");
 	switch (proffession)
 	{
 	case ProfessionName::NONE:
@@ -148,7 +148,7 @@ void ABaseCharacter::InitializeSkills()
 	case ProfessionName::ASSASINE:
 		break;
 	case ProfessionName::ELEMENTALIST:
-		fileName = TEXT("Source/Herobattle/Definitions/EleHero.xml");
+		fileName = TEXT("/Content/Definitions/EleHero.xml");
 		m_MaxHealth = 600;
 		m_MaxMana = 75;
 		m_Mana = 75;
@@ -156,7 +156,7 @@ void ABaseCharacter::InitializeSkills()
 		m_ManaRegeneration = 4;
 		break;
 	case ProfessionName::MONK:
-		fileName = TEXT("Source/Herobattle/Definitions/Monk.xml");
+		fileName = TEXT("/Content/Definitions/Monk.xml");
 		m_MaxHealth = 600;
 		m_MaxMana = 40;
 		m_Mana = 40;
@@ -170,7 +170,7 @@ void ABaseCharacter::InitializeSkills()
 	case ProfessionName::PARAGON:
 		break;
 	case ProfessionName::WARRIOR:
-		fileName = TEXT("Source/Herobattle/Definitions/Warrior.xml");
+		fileName = TEXT("/Content/Definitions/Warrior.xml");
 		m_MaxHealth = 630;
 		m_MaxMana = 22;
 		m_Mana = 22;
@@ -185,15 +185,19 @@ void ABaseCharacter::InitializeSkills()
 		break;
 	}
 	TArray<USkill*> curSkillList = skillReader->ReadXmlSkillFile(fileName, this);
-	skillList.Empty();
-	skillList.Add(curSkillList[0]);
-	skillList.Add(curSkillList[1]);
-	skillList.Add(curSkillList[2]);
-	skillList.Add(curSkillList[3]);
-	skillList.Add(curSkillList[4]);
-	skillList.Add(curSkillList[5]);
-	skillList.Add(curSkillList[6]);
-	skillList.Add(curSkillList[7]);
+	if (curSkillList.Num() > 7)
+	{
+		skillList.Empty();
+		skillList.Add(curSkillList[0]);
+		skillList.Add(curSkillList[1]);
+		skillList.Add(curSkillList[2]);
+		skillList.Add(curSkillList[3]);
+		skillList.Add(curSkillList[4]);
+		skillList.Add(curSkillList[5]);
+		skillList.Add(curSkillList[6]);
+		skillList.Add(curSkillList[7]);
+	}
+	
 }
 
 void ABaseCharacter::UpdateResources(float DeltaSeconds){
@@ -420,20 +424,23 @@ bool ABaseCharacter::hasCondition(Condition condition)
 
 bool ABaseCharacter::canUseSkill(int slot)
 {
-	if (skillList[slot]->properties.costType == CostType::ADRENALINE)
+	if (skillList.Num() > 0)
 	{
-		if (m_AdrenalineList[slot].currentAdrenaline == m_AdrenalineList[slot].maxAdrenaline)
+		if (skillList[slot]->properties.costType == CostType::ADRENALINE)
+		{
+			if (m_AdrenalineList[slot].currentAdrenaline == m_AdrenalineList[slot].maxAdrenaline)
+				return true;
+
+		}
+		else if (skillList[slot]->properties.costType == CostType::MANA)
+		{
+			if (skillList[slot]->properties.cost < m_Mana + m_ManaReduction)
+				return true;
+		}
+		else if (skillList[slot]->properties.costType == CostType::NONE)
+		{
 			return true;
-		
-	}
-	else if (skillList[slot]->properties.costType == CostType::MANA)
-	{
-		if (skillList[slot]->properties.cost < m_Mana + m_ManaReduction)
-			return true;
-	}
-	else if (skillList[slot]->properties.costType == CostType::NONE)
-	{
-		return true;
+		}
 	}
 	return false;
 }

@@ -73,7 +73,7 @@ void ABaseCharacter::BeginPlay()
 // Called every frame
 void ABaseCharacter::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
+	Super::Tick(DeltaTime);	
 	if (HasAuthority())
 	{
 		Update(DeltaTime);

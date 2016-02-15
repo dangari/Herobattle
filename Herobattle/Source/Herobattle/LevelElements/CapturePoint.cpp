@@ -3,10 +3,15 @@
 #include "Herobattle.h"
 #include "CapturePoint.h"
 #include "Engine.h"
+#include "Base/BaseCharacter.h"
 
 
 // Sets default values
 ACapturePoint::ACapturePoint()
+	:m_BlueCount(0)
+	, m_RedCount(0)
+	, PipGain(1)
+	, CaptureTime(11)
 {
 
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -33,16 +38,111 @@ void ACapturePoint::BeginPlay()
 void ACapturePoint::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
+	if (HasAuthority())
+	{
+		CaptureState progressColor;
+		int pips = 0;
+
+		if (m_RedCount > m_BlueCount)
+		{
+			pips = m_RedCount - m_BlueCount;
+			progressColor = CaptureState::REDPROGRESS;
+		}
+		else if (m_RedCount < m_BlueCount)
+		{
+			pips = m_BlueCount - m_RedCount;
+			progressColor = CaptureState::BLUEPROGRESS;
+		}
+		else
+		{
+			return;
+		}
+		float capturePrec = getCaptureSpeed(pips) * CaptureTime * DeltaTime;
+		if (progressColor == CaptureState::REDPROGRESS)
+		{
+			capturePrec = capturePrec * -1;
+		}
+		m_CurrentCaptureTime += capturePrec;
+		if (m_CurrentCaptureTime >= (CaptureTime * 2) && state != CaptureState::BLUE)
+		{
+			state = CaptureState::BLUE;
+			m_CurrentCaptureTime = CaptureTime * 2;
+			//todo add function to add point to game mode
+		}
+		else if (m_CurrentCaptureTime <= 0 && state != CaptureState::RED)
+		{
+			state = CaptureState::RED;
+			m_CurrentCaptureTime = CaptureTime * 2;
+			//todo add function to add point to game mode
+		}
+		else if ((m_CurrentCaptureTime >= CaptureTime && state == CaptureState::RED) || (m_CurrentCaptureTime <= CaptureTime && state == CaptureState::BLUE))
+		{
+			//todo add function to remove point from game mode
+			state = CaptureState::NEUTRAL;
+		}
+		
+	}
 
 }
 
 void ACapturePoint::OnOverlapBegin(class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Entered Area"));
+	if (HasAuthority())
+	{
+		ABaseCharacter* character = Cast<ABaseCharacter>(OtherActor);
+		if (character && character->ETeam == TeamColor::BLUE)
+		{
+			m_BlueCount++;
+		}
+		else
+		{
+			m_RedCount++;
+		}
+		FString outPut = TEXT("Enter Area, RedTeam: ");
+		outPut.AppendInt(m_RedCount);
+		outPut = outPut.Append(TEXT(" BlueTeam: "));
+		outPut.AppendInt(m_BlueCount);
+
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, outPut);
+	}
+	
 }
 
 void ACapturePoint::OnOverlapEnd(class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Left Area"));
+	if (HasAuthority())
+	{
+		ABaseCharacter* character = Cast<ABaseCharacter>(OtherActor);
+		if (character && character->ETeam == TeamColor::BLUE && m_BlueCount > 0)
+		{
+			m_BlueCount--;
+		}
+		else if (m_RedCount > 0)
+		{
+			m_RedCount--;
+		}
+		FString outPut = TEXT("Left Area, RedTeam: ");
+		outPut.AppendInt(m_RedCount);
+		outPut = outPut.Append(TEXT(" BlueTeam: "));
+		outPut.AppendInt(m_BlueCount);
+
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, outPut);
+
+	}
+	
+}
+
+float ACapturePoint::getCaptureSpeed(uint8 pips)
+{ 
+	if (pips <= 0)
+	{
+		return 0;
+	}
+		
+	else
+	{
+		float speed = 1 / CaptureTime + (((1 / CaptureTime) * 0.1) * (pips - 1));
+		return speed;
+	}
 }
 

@@ -5,6 +5,10 @@
 #include "GameFramework/Actor.h"
 #include "CapturePoint.generated.h"
 
+UENUM(BlueprintType)
+enum class CaptureState : uint8{ RED, BLUE, NEUTRAL, REDPROGRESS, BLUEPROGRESS};
+
+
 UCLASS()
 class HEROBATTLE_API ACapturePoint : public AActor
 {
@@ -12,11 +16,18 @@ class HEROBATTLE_API ACapturePoint : public AActor
 	
 public:	
 
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "General")
+	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category = "General")
 	UCapsuleComponent* BaseCollisionComponent;
 
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "General")
+	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category = "General")
 	UStaticMeshComponent* CapturePointMesh;
+	
+
+	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category = "General")
+	uint8 PipGain;
+
+	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category = "General")
+	float CaptureTime;
 
 	// Sets default values for this actor's properties
 	ACapturePoint();
@@ -33,6 +44,20 @@ public:
 	UFUNCTION()
 	void OnOverlapEnd(class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+private:
+
+	UPROPERTY()
+	uint8 m_BlueCount;
+
+	UPROPERTY()
+	uint8 m_RedCount;
 	
-	
+	UPROPERTY()
+	float m_CurrentCaptureTime = 11;
+
+	UPROPERTY()
+	CaptureState state = CaptureState::NEUTRAL;
+
+
+	float getCaptureSpeed(uint8 pips);
 };

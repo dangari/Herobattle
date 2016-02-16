@@ -40,6 +40,17 @@ public:
 	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = TeamRed)
 	TArray<USkill*> skillList;
 
+
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = Scores)
+	float BlueScore;
+
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = Scores)
+	float RedScore;
+
+
+	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category = "General")
+	uint8 CapturePointSpeed = 107;
+
 	UPROPERTY(Replicated)
 	int32 m_PlayerCount;
 	ULogging* logging;
@@ -50,6 +61,19 @@ public:
 	void finishedPostLogin_Implementation(APlayerController * NewPlayer);
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
+
+	//get called when a shrine gets captured
+	void addShrine(uint8 pips, TeamColor team);
+
+	//get called when a shrine gets decapped
+	void removeShrine(uint8 pips, TeamColor team);
+	void UpdateScore(float DeltaSeconds);
+private:
+
+	UPROPERTY()
+	uint8 m_BluePips;
+	UPROPERTY()
+	uint8 m_RedPips;
 };
 
 

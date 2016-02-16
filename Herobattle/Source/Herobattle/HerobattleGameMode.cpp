@@ -83,11 +83,65 @@ void AHerobattleGameMode::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 	if (HasAuthority())
 	{
-		if (logging)
+		if (logging && logging->loggingOn)
 		{
 			logging->update(DeltaSeconds);
 		}
+		UpdateScore(float DeltaSeconds);
 	}
+}
+
+void AHerobattleGameMode::addShrine(uint8 pips, TeamColor team)
+{
+	if (HasAuthority())
+	{
+		if (team == TeamColor::BLUE)
+		{
+			m_BluePips += pips;
+		}
+
+		if (team == TeamColor::RED)
+		{
+			m_RedPips += pips;
+		}
+	}
+}
+
+void AHerobattleGameMode::removeShrine(uint8 pips, TeamColor team)
+{
+	if (HasAuthority())
+	{
+		if (team == TeamColor::BLUE)
+		{
+			m_BluePips -= pips;
+			if (m_BluePips < 0)
+			{
+				m_BluePips = 0;
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Blue Pips dropped bellow zero"));
+			}
+
+		}
+
+		if (team == TeamColor::RED)
+		{
+			m_RedPips -= pips;
+			if (m_RedPips < 0)
+			{
+				m_RedPips = 0;
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Red Pips dropped bellow zero"));
+			}
+
+		}
+	}
+		
+}
+
+void AHerobattleGameMode::UpdateScore(float DeltaSeconds)
+{
+	float speed = 1 / CapturePointSpeed;
+
+	RedScore += speed * m_RedPips;
+	BlueScore += speed * m_BluePips;
 }
 
 void AHerobattleGameMode::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
@@ -95,4 +149,6 @@ void AHerobattleGameMode::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AHerobattleGameMode, skillList);
 	DOREPLIFETIME(AHerobattleGameMode, m_PlayerCount);
+	DOREPLIFETIME(AHerobattleGameMode, BlueScore);
+	DOREPLIFETIME(AHerobattleGameMode, RedScore);
 }

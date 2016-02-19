@@ -4,6 +4,7 @@
 #include "CapturePoint.h"
 #include "Engine.h"
 #include "Base/BaseCharacter.h"
+#include "HerobattleGameMode.h"
 
 
 // Sets default values
@@ -67,17 +68,29 @@ void ACapturePoint::Tick( float DeltaTime )
 		{
 			state = CaptureState::BLUE;
 			m_CurrentCaptureTime = CaptureTime * 2;
-			//todo add function to add point to game mode
+			AHerobattleGameMode* gameMode = Cast<AHerobattleGameMode>(GetWorld()->GetAuthGameMode());
+			gameMode->addShrine(PipGain, TeamColor::BLUE);
+			
 		}
 		else if (m_CurrentCaptureTime <= 0 && state != CaptureState::RED)
 		{
 			state = CaptureState::RED;
 			m_CurrentCaptureTime = CaptureTime * 2;
-			//todo add function to add point to game mode
+			AHerobattleGameMode* gameMode = Cast<AHerobattleGameMode>(GetWorld()->GetAuthGameMode());
+			gameMode->addShrine(PipGain, TeamColor::BLUE);
 		}
-		else if ((m_CurrentCaptureTime >= CaptureTime && state == CaptureState::RED) || (m_CurrentCaptureTime <= CaptureTime && state == CaptureState::BLUE))
+		else if ((m_CurrentCaptureTime > CaptureTime && state == CaptureState::RED) || (m_CurrentCaptureTime < CaptureTime && state == CaptureState::BLUE))
 		{
-			//todo add function to remove point from game mode
+			AHerobattleGameMode* gameMode = Cast<AHerobattleGameMode>(GetWorld()->GetAuthGameMode());
+			if (state == CaptureState::BLUE)
+			{
+				gameMode->removeShrine(PipGain, TeamColor::BLUE);
+			}
+			else if (state == CaptureState::RED)
+			{
+				gameMode->removeShrine(PipGain, TeamColor::RED);
+			}
+			
 			state = CaptureState::NEUTRAL;
 		}
 		

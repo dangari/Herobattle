@@ -48,8 +48,8 @@ public:
 	float RedScore;
 
 
-	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category = "General")
-	uint8 CapturePointSpeed = 107;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = General)
+	float CapturePointSpeed = 107.0f;
 
 	UPROPERTY(Replicated)
 	int32 m_PlayerCount;

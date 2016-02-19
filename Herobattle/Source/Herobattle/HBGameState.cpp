@@ -12,9 +12,13 @@ void AHBGameState::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutL
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AHBGameState, DebugSkillList);
+	DOREPLIFETIME(AHBGameState, BlueScore);
+	DOREPLIFETIME(AHBGameState, RedScore);
 }
 
 AHBGameState::AHBGameState()
+	:RedScore(0)
+	, BlueScore(0)
 {
 	
 }

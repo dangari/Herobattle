@@ -69,7 +69,6 @@ void AHerobattleGameMode::finishedPostLogin_Implementation(APlayerController * N
 
 void AHerobattleGameMode::BeginPlay()
 {
-	
 	if (HasAuthority())
 	{
 		XMLSkillReader* test = new XMLSkillReader();
@@ -87,7 +86,7 @@ void AHerobattleGameMode::Tick(float DeltaSeconds)
 		{
 			logging->update(DeltaSeconds);
 		}
-		UpdateScore(float DeltaSeconds);
+		UpdateScore(DeltaSeconds);
 	}
 }
 
@@ -138,10 +137,11 @@ void AHerobattleGameMode::removeShrine(uint8 pips, TeamColor team)
 
 void AHerobattleGameMode::UpdateScore(float DeltaSeconds)
 {
-	float speed = 1 / CapturePointSpeed;
+	float speed = 1.0f / CapturePointSpeed;
 
-	RedScore += speed * m_RedPips;
-	BlueScore += speed * m_BluePips;
+	AHBGameState* gameState = GetWorld()->GetGameState<AHBGameState>();
+	gameState->RedScore += speed * m_RedPips  * DeltaSeconds;
+	gameState->BlueScore += speed * m_BluePips  * DeltaSeconds;
 }
 
 void AHerobattleGameMode::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const

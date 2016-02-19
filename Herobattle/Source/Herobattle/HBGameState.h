@@ -40,4 +40,10 @@ public:
 	UPROPERTY()
 	ULogging* logging;
 
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = Scores)
+	float BlueScore;
+
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = Scores)
+	float RedScore;
+
 };

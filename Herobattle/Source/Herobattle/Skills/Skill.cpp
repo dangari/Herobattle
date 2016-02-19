@@ -94,6 +94,20 @@ bool USkill::isValidTargetSim(UAISimCharacter* target, UAISimCharacter* self)
 	}
 }
 
+bool USkill::isInRange(ABaseCharacter* target, ABaseCharacter* self)
+{
+	FVector location = self->GetActorLocation();
+	float airDistance = (location - target->GetActorLocation()).Size();
+	if (properties.range > airDistance)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 float USkill::getScore(ABaseCharacter* caster, FCharacterState charcterState)
 {
 

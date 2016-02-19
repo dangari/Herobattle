@@ -671,7 +671,7 @@ bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
 
 		RunBuff(Trigger::BEFORECAST, this);
 
-		if (newTarget && !skillIsOnCooldown(slot) && !isCastingSkill() && skill->isValidTarget(newTarget, this) && skillCost(slot))
+		if (newTarget && !skillIsOnCooldown(slot) && !isCastingSkill() && skill->isValidTarget(newTarget, this) && skill->isInRange(newTarget, this) && skillCost(slot))
 		{
 			currentSkill.registerSkill(skill, newTarget, slot);
 			if (skill->properties.skillType == SkillType::MELEEATTACK || skill->properties.skillType == SkillType::RANGEATTACK)
@@ -718,6 +718,26 @@ bool ABaseCharacter::isCastingSkill(FString message)
 FAdrenaline ABaseCharacter::GetCurrentAdrenaline(uint8 slot)
 {
 	return m_AdrenalineList[slot];
+}
+
+bool ABaseCharacter::changeState(HBCharacterState state)
+{
+	if (HasAuthority())
+	{
+		if (m_State == HBCharacterState::AUTOATTACK)
+		{
+			setAttack(false);
+			m_leftAttackTime = m_AttackSpeed;
+		}
+		m_State = state;
+		return true;
+	}
+	return false;
+}
+
+HBCharacterState ABaseCharacter::getCurrentState()
+{
+	return m_State;
 }
 
 void ABaseCharacter::heal(ABaseCharacter* caster, float value, bool withBuff)
@@ -1024,5 +1044,6 @@ void ABaseCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & Ou
 	DOREPLIFETIME(ABaseCharacter, weapon);
 	DOREPLIFETIME(ABaseCharacter, skillcooldowns);
 	DOREPLIFETIME(ABaseCharacter, m_AdrenalineList);
+	DOREPLIFETIME(ABaseCharacter, m_State);
 }
 

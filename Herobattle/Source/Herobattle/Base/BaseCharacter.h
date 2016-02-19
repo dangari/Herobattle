@@ -68,8 +68,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Meachnics)
 	FAdrenaline GetCurrentAdrenaline(uint8 slot);
 
+	UFUNCTION(BlueprintCallable, Category = Base)
+	bool changeState(HBCharacterState state);
 
-	
+	UFUNCTION(BlueprintCallable, Category = Base)
+	HBCharacterState getCurrentState();
 
 
 // this Functions get called by Skills
@@ -176,6 +179,7 @@ public:
 	TArray<USkill*> skillList;
 
 	
+	
 
 //protected:
 	// starts or stop AutoAttack
@@ -246,6 +250,9 @@ public:
 	Profession primaryProfession;
 	Profession secondaryProfession;
 
+	UPROPERTY(Replicated)
+	HBCharacterState m_State = HBCharacterState::IDLE;
+
 	UPROPERTY()
 	TMap<Condition, UBaseCondition*> m_condtionList;
 
@@ -278,7 +285,7 @@ public:
 	FWeaponValues weapon;
 
 	bool useAutoAttack;
-	HBCharacterState m_State = HBCharacterState::IDLE;
+	
 
 	UPROPERTY()
 	int32 m_ManaReduction;

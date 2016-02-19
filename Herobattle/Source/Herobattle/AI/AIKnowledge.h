@@ -19,7 +19,7 @@ class HEROBATTLE_API UAIKnowledge : public UBTService
 public:
 
 	UPROPERTY(EditDefaultsOnly, Category = Properties)
-	int32 fRange = 30000;
+	int32 fRange = 2000;
 
 	UAIKnowledge();
 	~UAIKnowledge();

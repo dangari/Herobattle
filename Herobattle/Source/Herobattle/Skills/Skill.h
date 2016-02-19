@@ -59,6 +59,8 @@ public:
 	bool isValidTarget(ABaseCharacter* target, ABaseCharacter* self);
 	bool isValidTargetSim(UAISimCharacter* target, UAISimCharacter* self);
 
+	bool isInRange(ABaseCharacter* target, ABaseCharacter* self);
+
 	float getScore(ABaseCharacter* caster, FCharacterState charcterState);
 	float getScoreSim(UAISimCharacter* caster, FCharacterState charcterState);
 

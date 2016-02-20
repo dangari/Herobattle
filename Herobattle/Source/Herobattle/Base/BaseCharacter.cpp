@@ -102,6 +102,43 @@ void ABaseCharacter::Update(float DeltaTime)
 	}
 }
 
+void ABaseCharacter::Death()
+{
+	m_State = HBCharacterState::DEATH;
+	stopCurrentSkill();
+	m_leftAttackTime = m_AttackSpeed;
+	emptyConditionList();
+	emptyBuffList();
+	emptyDebuffList();
+	AHerobattleGameMode* gameMode = Cast<AHerobattleGameMode>(GetWorld()->GetAuthGameMode());
+	gameMode->addDeathCharacter(this);
+}
+
+void ABaseCharacter::Respawn()
+{
+	m_Health = m_MaxHealth;
+	m_Mana = m_MaxMana;
+	m_State = HBCharacterState::IDLE;
+}
+
+void ABaseCharacter::emptyConditionList()
+{
+	m_ConditionCount = 0;
+	m_condtionList.Empty();
+}
+
+void ABaseCharacter::emptyBuffList()
+{
+	m_BuffCount = 0;
+	m_BuffList.Empty();
+	m_CompleteBuffList.Empty();
+}
+
+void ABaseCharacter::emptyDebuffList()
+{
+	m_DebuffCount = 0;
+}
+
 // Called to bind functionality to input
 void ABaseCharacter::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 {
@@ -203,21 +240,26 @@ void ABaseCharacter::InitializeSkills()
 void ABaseCharacter::UpdateResources(float DeltaSeconds){
 
 
-	m_Health += DeltaSeconds * ((m_HealthRegeneration) * 2.0f);
-	m_Mana += DeltaSeconds * (m_ManaRegeneration / 3.0f);
-
-	if (m_Health >= m_MaxHealth){
-		m_Health = m_MaxHealth;
-	}
+	if (m_State != HBCharacterState::DEATH)
+	{
+		m_Health += DeltaSeconds * ((m_HealthRegeneration) * 2.0f);
+		m_Mana += DeltaSeconds * (m_ManaRegeneration / 3.0f);
 	
-	if (m_Mana >= m_MaxMana){
-		m_Mana = m_MaxMana;
+		if (m_Health >= m_MaxHealth){
+			m_Health = m_MaxHealth;
+		}
+		
+		if (m_Mana >= m_MaxMana){
+			m_Mana = m_MaxMana;
+		}
+		
+		if (m_Mana < 0)
+			m_Mana = 0;
+		if (m_Health < 0)
+		{
+			Death();
+		}
 	}
-	
-	if (m_Mana < 0)
-		m_Mana = 0;
-	if (m_Health < 0)
-		m_Health = m_MaxHealth;
 	m_HealthBuffRegneration = 0;
 }
 
@@ -573,6 +615,10 @@ void ABaseCharacter::UpdateAttack(float deltaTime)
 		UpdateAdrenaline();
 		m_leftAttackTime = m_AttackSpeed;
 		RunBuff(Trigger::HIT, this);
+		if (selectedTarget->getState() == HBCharacterState::DEATH)
+		{
+			changeState(HBCharacterState::IDLE);
+		}
 	}
 }
 
@@ -657,7 +703,7 @@ struct FSkillHUD ABaseCharacter::getCurrentCast()
 
 bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
 {
-	if (HasAuthority())
+	if (HasAuthority() && m_State != HBCharacterState::DEATH)
 	{
 		USkill* skill = skillList[slot];
 		ABaseCharacter* newTarget = target;
@@ -762,7 +808,7 @@ void ABaseCharacter::heal(ABaseCharacter* caster, float value, bool withBuff)
 
 void ABaseCharacter::damage(ABaseCharacter* caster, float value, HBDamageType damageType, bool withBuff)
 {
-	if (HasAuthority())
+	if (HasAuthority() && m_State != HBCharacterState::DEATH)
 	{
 		bool b = true;
 		if (withBuff)
@@ -777,7 +823,10 @@ void ABaseCharacter::damage(ABaseCharacter* caster, float value, HBDamageType da
 		}
 		// test if target is dead
 		if (m_Health < 0)
-			m_Health = m_MaxHealth;
+		{
+			Death();
+			return;
+		}
 		m_DamageReduction = 0;
 	}
 }

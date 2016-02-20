@@ -118,7 +118,7 @@ void AHerobattleCharacter::LookUpAtRate(float Rate)
 
 void AHerobattleCharacter::MoveForward(float Value)
 {
-	if ((Controller != NULL) && (Value != 0.0f) && !(isCastingSkill()))
+	if ((Controller != NULL) && (Value != 0.0f) && !(isCastingSkill()) && m_State != HBCharacterState::DEATH)
 	{
 		// find out which way is forward
 		const FRotator Rotation = Controller->GetControlRotation();
@@ -133,7 +133,7 @@ void AHerobattleCharacter::MoveForward(float Value)
 
 void AHerobattleCharacter::MoveRight(float Value)
 {
-	if ((Controller != NULL) && (Value != 0.0f) && !(isCastingSkill()))
+	if ((Controller != NULL) && (Value != 0.0f) && !(isCastingSkill()) && m_State != HBCharacterState::DEATH)
 	{
 		if (bCameraIsLocked){
 			// find out which way is right

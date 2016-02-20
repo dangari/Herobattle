@@ -47,7 +47,9 @@ bool USkill::runSim(UAISimCharacter* target, UAISimCharacter* self)
 
 bool USkill::isValidTarget(ABaseCharacter* target, ABaseCharacter* self)
 {
-	if (target->isEnemy(self->ETeam) && properties.targetType == TargetType::ENEMY)
+	if (target->getState() == HBCharacterState::DEATH)
+		return false;
+	else if (target->isEnemy(self->ETeam) && properties.targetType == TargetType::ENEMY)
 	{
 		return true;
 	}
@@ -98,7 +100,11 @@ bool USkill::isInRange(ABaseCharacter* target, ABaseCharacter* self)
 {
 	FVector location = self->GetActorLocation();
 	float airDistance = (location - target->GetActorLocation()).Size();
-	if (properties.range > airDistance)
+	if (properties.targetType == TargetType::SELF)
+	{
+		return true;
+	}
+	else if (properties.range > airDistance)
 	{
 		return true;
 	}

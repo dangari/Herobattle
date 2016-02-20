@@ -10,6 +10,7 @@
 #include "Engine.h"
 #include "HBGameState.h"
 #include "Base/Logging.h"
+#include "Base/BaseCharacter.h"
 
 AHerobattleGameMode::AHerobattleGameMode()
 {
@@ -67,6 +68,11 @@ void AHerobattleGameMode::finishedPostLogin_Implementation(APlayerController * N
 
 }
 
+void AHerobattleGameMode::moveToSpawnLocation_Implementation(ABaseCharacter* character)
+{
+
+}
+
 void AHerobattleGameMode::BeginPlay()
 {
 	if (HasAuthority())
@@ -87,6 +93,7 @@ void AHerobattleGameMode::Tick(float DeltaSeconds)
 			logging->update(DeltaSeconds);
 		}
 		UpdateScore(DeltaSeconds);
+		updateDeathList(DeltaSeconds);
 	}
 }
 
@@ -144,11 +151,32 @@ void AHerobattleGameMode::UpdateScore(float DeltaSeconds)
 	gameState->BlueScore += speed * m_BluePips  * DeltaSeconds;
 }
 
+void AHerobattleGameMode::addDeathCharacter(ABaseCharacter* character)
+{
+	FDeathCharacter deathCharacter;
+	deathCharacter.character = character;
+	deathCharacter.leftTime = RespawnTime;
+
+	deathList.Add(character->m_Name,deathCharacter);
+}
+
+void AHerobattleGameMode::updateDeathList(float DeltaSeconds)
+{
+	for (auto& Itr : deathList)
+	{
+		Itr.Value.leftTime -= DeltaSeconds;
+		if (Itr.Value.leftTime <= 0)
+		{
+			moveToSpawnLocation(Itr.Value.character);
+			Itr.Value.character->Respawn();
+			deathList.Remove(Itr.Key);
+		}
+	}
+}
+
 void AHerobattleGameMode::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AHerobattleGameMode, skillList);
 	DOREPLIFETIME(AHerobattleGameMode, m_PlayerCount);
-	DOREPLIFETIME(AHerobattleGameMode, BlueScore);
-	DOREPLIFETIME(AHerobattleGameMode, RedScore);
 }

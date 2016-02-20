@@ -8,6 +8,20 @@
 
 class AHeroBattleHero;
 class ULogging;
+class ABaseCharacter;
+
+USTRUCT()
+struct FDeathCharacter
+{
+
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY()
+	float leftTime;
+
+	UPROPERTY()
+	ABaseCharacter* character;
+};
 
 UCLASS(minimalapi)
 class AHerobattleGameMode : public AGameMode
@@ -41,11 +55,8 @@ public:
 	TArray<USkill*> skillList;
 
 
-	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = Scores)
-	float BlueScore;
-
-	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = Scores)
-	float RedScore;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = General)
+	float RespawnTime = 30.f;
 
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = General)
@@ -56,9 +67,15 @@ public:
 	ULogging* logging;
 	void PostLogin(APlayerController * NewPlayer) override;
 
-	UFUNCTION(BlueprintNativeEvent, Category = "after Login")
+	UFUNCTION(BlueprintNativeEvent, Category = afterLogin)
 	void finishedPostLogin(APlayerController * NewPlayer);
 	void finishedPostLogin_Implementation(APlayerController * NewPlayer);
+
+	UFUNCTION(BlueprintNativeEvent, Category = Respawn)
+	void moveToSpawnLocation(ABaseCharacter* character);
+
+	void moveToSpawnLocation_Implementation(ABaseCharacter* character);
+
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
 
@@ -67,13 +84,22 @@ public:
 
 	//get called when a shrine gets decapped
 	void removeShrine(uint8 pips, TeamColor team);
+	
 	void UpdateScore(float DeltaSeconds);
+
+	void addDeathCharacter(ABaseCharacter* character);
+
 private:
 
 	UPROPERTY()
 	uint8 m_BluePips;
 	UPROPERTY()
 	uint8 m_RedPips;
+
+	UPROPERTY()
+	TMap<FString, FDeathCharacter> deathList;
+
+	void updateDeathList(float DeltaSeconds);
 };
 
 

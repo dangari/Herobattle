@@ -9,5 +9,5 @@ enum class TeamColor : uint8
 UENUM(BlueprintType)
 enum class HBCharacterState : uint8
 {
-	MOVEING, IDLE, AUTOATTACK, CASTING
+	MOVEING, IDLE, AUTOATTACK, CASTING, DEATH
 };

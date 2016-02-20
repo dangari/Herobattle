@@ -193,7 +193,15 @@ public:
 
 	void Update(float DeltaTime);
 
+	void Death();
 
+	void Respawn();
+
+	void emptyConditionList();
+
+	void emptyBuffList();
+
+	void emptyDebuffList();
 
 	void InitializeAdrenaline();
 	

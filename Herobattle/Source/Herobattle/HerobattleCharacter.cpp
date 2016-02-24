@@ -238,7 +238,7 @@ UHBBlackboard* AHerobattleCharacter::getBlackBoard()
 	else
 	{
 		blackboard = NewObject<UHBBlackboard>();
-		blackboard->SetFlags(RF_RootSet);
+		//blackboard->SetFlags(RF_RootSet);
 		return blackboard;
 	}
 }

@@ -19,8 +19,5 @@ public:
 	
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
-
-	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = CharacterProperties)
-	FVector PositionAtSpawn;
 	
 };

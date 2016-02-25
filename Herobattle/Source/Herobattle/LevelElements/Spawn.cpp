@@ -6,7 +6,6 @@
 
 // Sets default values
 ASpawn::ASpawn()
-	:PositionAtSpawn(0,0,0)
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -27,10 +26,4 @@ void ASpawn::Tick( float DeltaTime )
 
 }
 
-void ASpawn::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(ASpawn, PositionAtSpawn);
-
-}
 

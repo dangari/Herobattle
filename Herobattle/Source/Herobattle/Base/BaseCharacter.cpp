@@ -1096,5 +1096,7 @@ void ABaseCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & Ou
 	DOREPLIFETIME(ABaseCharacter, skillcooldowns);
 	DOREPLIFETIME(ABaseCharacter, m_AdrenalineList);
 	DOREPLIFETIME(ABaseCharacter, m_State);
+	DOREPLIFETIME(ABaseCharacter, SpawnPoint);
+	DOREPLIFETIME(ABaseCharacter, PositionAtSpawn);
 }
 

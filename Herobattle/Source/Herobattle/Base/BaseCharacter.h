@@ -179,10 +179,11 @@ public:
 	UPROPERTY(Replicated)
 	TArray<USkill*> skillList;
 
-	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = General)
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = Spawn)
 	ASpawn* SpawnPoint;
 
-	
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = Spawn)
+	FVector PositionAtSpawn;
 	
 
 //protected:

@@ -112,6 +112,8 @@ void ABaseCharacter::Death()
 	emptyDebuffList();
 	AHerobattleGameMode* gameMode = Cast<AHerobattleGameMode>(GetWorld()->GetAuthGameMode());
 	gameMode->addDeathCharacter(this);
+	m_Health = 0;
+	m_Mana = 0;
 }
 
 void ABaseCharacter::Respawn()

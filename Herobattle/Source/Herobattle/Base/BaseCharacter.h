@@ -24,6 +24,7 @@ class UBuff;
 class UBaseCondition;
 class USkillMessages;
 class UAISimCharacter;
+class ASpawn;
 
 
 
@@ -177,6 +178,9 @@ public:
 
 	UPROPERTY(Replicated)
 	TArray<USkill*> skillList;
+
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = General)
+	ASpawn* SpawnPoint;
 
 	
 	

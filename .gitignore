@@ -72,3 +72,4 @@ Herobattle/DerivedDataCache/*
 
 # ignore build
 Herobattle/WindowsNoEditor
+*.opendb

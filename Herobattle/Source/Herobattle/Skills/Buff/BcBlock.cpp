@@ -5,7 +5,10 @@
 #include "Enum/CharacterEnums.h"
 #include "Base/Weapon.h"
 #include "Engine.h"
+#include "Base/BaseCharacter.h"
+#include "AI/SkillScore.h"
 #include "AI/AISimCharacter.h"
+#include "Buff.h"
 
 
 
@@ -203,5 +206,18 @@ float UBcBlock::getScore(ABaseCharacter* caster, FCharacterState characterState,
 
 float UBcBlock::getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration)
 {
+	if (blockType == SkillType::ATTACK && characterState.attackers > 0)
+	{
+		skillScore->addScore(1.f, TEXT("block"));
+	}
+	else if (characterState.caster > 0)
+	{
+		skillScore->addScore(1.f, TEXT("block"));
+	}
+	else
+	{
+		skillScore->addScore(0.f, TEXT("block"));
+	}
+
 	return 1.f;
 }

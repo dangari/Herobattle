@@ -11,6 +11,10 @@
 #include "../Components/BoolObjects/BoolAttack.h"
 #include "../Components/BoolObjects/BoolCondition.h"
 #include "../Components/BoolObjects/BoolHex.h"
+#include "Base/BaseCharacter.h"
+#include "AI/SkillScore.h"
+#include "AI/AISimCharacter.h"
+#include "Buff.h"
 
 UBcWhenCondition::UBcWhenCondition()
 {

@@ -5,8 +5,8 @@
 #include "XmlParser.h"
 #include "../XMLSkillReader.h"
 #include "Base/BaseCharacter.h"
+#include "AI/AISimCharacter.h"
 #include "AI/SkillScore.h"
-
 
 
 UScForEach::UScForEach()

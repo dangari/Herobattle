@@ -6,11 +6,13 @@
 #include "BoolObjects/BoolHealth.h"
 #include "../XMLSkillReader.h"
 #include "UnrealNetwork.h"
-#include "AI/SkillScore.h"
 #include "BoolObjects/BoolAttack.h"
 #include "BoolObjects/BoolCondition.h"
 #include "BoolObjects/BoolMana.h"
 #include "BoolObjects/BoolHex.h"
+#include "Base/BaseCharacter.h"
+#include "AI/AISimCharacter.h"
+#include "AI/SkillScore.h"
 
 UScWhenCondition::UScWhenCondition()
 {

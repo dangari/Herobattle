@@ -118,7 +118,7 @@ void AHerobattleCharacter::LookUpAtRate(float Rate)
 
 void AHerobattleCharacter::MoveForward(float Value)
 {
-	if ((Controller != NULL) && (Value != 0.0f) && !(isCastingSkill()))
+	if ((Controller != NULL) && (Value != 0.0f) && !(isCastingSkill()) && m_State != HBCharacterState::DEATH)
 	{
 		// find out which way is forward
 		const FRotator Rotation = Controller->GetControlRotation();
@@ -133,7 +133,7 @@ void AHerobattleCharacter::MoveForward(float Value)
 
 void AHerobattleCharacter::MoveRight(float Value)
 {
-	if ((Controller != NULL) && (Value != 0.0f) && !(isCastingSkill()))
+	if ((Controller != NULL) && (Value != 0.0f) && !(isCastingSkill()) && m_State != HBCharacterState::DEATH)
 	{
 		if (bCameraIsLocked){
 			// find out which way is right
@@ -196,6 +196,15 @@ void AHerobattleCharacter::addHero(uint8 index, AHeroBattleHero* hero)
 	if (index < 3)
 	{
 		heroList[index] = hero;
+		if (HasAuthority())
+		{
+			UWorld* world = GetWorld();
+			AHBGameState* gameState = world->GetGameState<AHBGameState>();
+			ULogging* logging = gameState->logging;
+			if (!logging)
+				logging = NewObject<ULogging>(gameState);
+			logging->heroes.Add(hero);
+		}
 	}
 }
 
@@ -229,7 +238,7 @@ UHBBlackboard* AHerobattleCharacter::getBlackBoard()
 	else
 	{
 		blackboard = NewObject<UHBBlackboard>();
-		blackboard->SetFlags(RF_RootSet);
+		//blackboard->SetFlags(RF_RootSet);
 		return blackboard;
 	}
 }
@@ -253,7 +262,7 @@ void AHerobattleCharacter::startAttack()
 void AHerobattleCharacter::stopAllActions()
 {
 	setAttack(false);
-	stopCurrenSkill();
+	stopCurrentSkill();
 }
 
 void AHerobattleCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const

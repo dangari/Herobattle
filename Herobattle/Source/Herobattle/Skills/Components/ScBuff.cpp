@@ -2,12 +2,14 @@
 
 #include "Herobattle.h"
 #include "ScBuff.h"
-#include "../../Base/BaseCharacter.h"
 #include "../XMLSkillReader.h"
 #include "../Buff/Buff.h"
 #include "../Buff/BuffContainer.h"
 #include "AI/SkillScore.h"
 #include "AI/CharacterState.h"
+#include "Base/BaseCharacter.h"
+#include "AI/AISimCharacter.h"
+#include "AI/SkillScore.h"
 
 UScBuff::UScBuff()
 {

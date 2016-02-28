@@ -8,6 +8,9 @@
 #include "Skills/XMLSkillReader.h"
 #include "UnrealNetwork.h"
 #include "Engine.h"
+#include "HBGameState.h"
+#include "Base/Logging.h"
+#include "Base/BaseCharacter.h"
 
 AHerobattleGameMode::AHerobattleGameMode()
 {
@@ -29,7 +32,9 @@ AHerobattleGameMode::AHerobattleGameMode()
 }
 void AHerobattleGameMode::PostLogin(APlayerController * NewPlayer)
 {
-	
+	UWorld* world = GetWorld();
+	AHBGameState* gameState = GetWorld()->GetGameState<AHBGameState>();
+	logging = gameState->logging;
 	Super::PostLogin(NewPlayer);
 	if (HasAuthority())
 	{
@@ -63,15 +68,110 @@ void AHerobattleGameMode::finishedPostLogin_Implementation(APlayerController * N
 
 }
 
+void AHerobattleGameMode::moveToSpawnLocation_Implementation(ABaseCharacter* character)
+{
+
+}
+
 void AHerobattleGameMode::BeginPlay()
 {
-	
 	if (HasAuthority())
 	{
 		XMLSkillReader* test = new XMLSkillReader();
 		skillList = test->ReadXmlSkillFile(TEXT("Source/Herobattle/Definitions/Warrior.xml"), this);
 	}
 	Super::BeginPlay();
+}
+
+void AHerobattleGameMode::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	if (HasAuthority())
+	{
+		if (logging && logging->loggingOn)
+		{
+			logging->update(DeltaSeconds);
+		}
+		UpdateScore(DeltaSeconds);
+		updateDeathList(DeltaSeconds);
+	}
+}
+
+void AHerobattleGameMode::addShrine(uint8 pips, TeamColor team)
+{
+	if (HasAuthority())
+	{
+		if (team == TeamColor::BLUE)
+		{
+			m_BluePips += pips;
+		}
+
+		if (team == TeamColor::RED)
+		{
+			m_RedPips += pips;
+		}
+	}
+}
+
+void AHerobattleGameMode::removeShrine(uint8 pips, TeamColor team)
+{
+	if (HasAuthority())
+	{
+		if (team == TeamColor::BLUE)
+		{
+			m_BluePips -= pips;
+			if (m_BluePips < 0)
+			{
+				m_BluePips = 0;
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Blue Pips dropped bellow zero"));
+			}
+
+		}
+
+		if (team == TeamColor::RED)
+		{
+			m_RedPips -= pips;
+			if (m_RedPips < 0)
+			{
+				m_RedPips = 0;
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Red Pips dropped bellow zero"));
+			}
+
+		}
+	}
+		
+}
+
+void AHerobattleGameMode::UpdateScore(float DeltaSeconds)
+{
+	float speed = 1.0f / CapturePointSpeed;
+
+	AHBGameState* gameState = GetWorld()->GetGameState<AHBGameState>();
+	gameState->RedScore += speed * m_RedPips  * DeltaSeconds;
+	gameState->BlueScore += speed * m_BluePips  * DeltaSeconds;
+}
+
+void AHerobattleGameMode::addDeathCharacter(ABaseCharacter* character)
+{
+	FDeathCharacter deathCharacter;
+	deathCharacter.character = character;
+	deathCharacter.leftTime = RespawnTime;
+
+	deathList.Add(character->m_Name,deathCharacter);
+}
+
+void AHerobattleGameMode::updateDeathList(float DeltaSeconds)
+{
+	for (auto& Itr : deathList)
+	{
+		Itr.Value.leftTime -= DeltaSeconds;
+		if (Itr.Value.leftTime <= 0)
+		{
+			moveToSpawnLocation(Itr.Value.character);
+			Itr.Value.character->Respawn();
+			deathList.Remove(Itr.Key);
+		}
+	}
 }
 
 void AHerobattleGameMode::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const

@@ -1,0 +1,294 @@
+<!DOCTYPE skills SYSTEM "skill.dtd">
+<skills>
+  <profession value="MONK">
+    <spell type="SPELL">
+      <name value="Word of Healing"/>
+      <costs value="5" type="MANA"/>
+      <casttime value="0.75"/>
+      <cooldown value="3"/>
+      <targettype value="SELFFRIEND"/>
+      <range value="800"/>
+      <effects>
+        <impact>
+          <heal value="5" scaling="HEALING_PRAYERS" target="TARGET">
+            <step key="1" value="11"/>
+            <step key="2" value="18"/>
+            <step key="3" value="24"/>
+            <step key="4" value="30"/>
+            <step key="5" value="37"/>
+            <step key="6" value="43"/>
+            <step key="7" value="49"/>
+            <step key="8" value="56"/>
+            <step key="9" value="62"/>
+            <step key="10" value="68"/>
+            <step key="11" value="75"/>
+            <step key="12" value="81"/>
+            <step key="13" value="87"/>
+            <step key="14" value="94"/>
+          </heal>
+          <when value="TARGERT">
+            <whencondition>
+              <hp value="50" type="-"/>
+            </whencondition>
+            <then>
+              <heal value="30" scaling="HEALING_PRAYERS" target="TARGET">
+                <step key="1" value="36"/>
+                <step key="2" value="41"/>
+                <step key="3" value="47"/>
+                <step key="4" value="53"/>
+                <step key="5" value="58"/>
+                <step key="6" value="64"/>
+                <step key="7" value="70"/>
+                <step key="8" value="75"/>
+                <step key="9" value="81"/>
+                <step key="10" value="87"/>
+                <step key="11" value="92"/>
+                <step key="12" value="98"/>
+                <step key="13" value="104"/>
+                <step key="14" value="109"/>
+              </heal>
+            </then>
+          </when>
+        </impact>
+      </effects>
+    </spell>
+
+    <spell type="SIGNET">
+      <name value="Signet of Rejuvenation"/>
+      <costs value="0" type="NONE"/>
+      <casttime value="1"/>
+      <cooldown value="10"/>
+      <targettype value="SELFFRIEND"/>
+      <range value="800"/>
+      <effects>
+        <impact>
+          <heal value="15" scaling="HEALING_PRAYERS" target="TARGET">
+            <step key="1" value="19"/>
+            <step key="2" value="23"/>
+            <step key="3" value="27"/>
+            <step key="4" value="31"/>
+            <step key="5" value="35"/>
+            <step key="6" value="39"/>
+            <step key="7" value="43"/>
+            <step key="8" value="47"/>
+            <step key="9" value="51"/>
+            <step key="10" value="55"/>
+            <step key="11" value="59"/>
+            <step key="12" value="63"/>
+            <step key="13" value="67"/>
+            <step key="14" value="71"/>
+          </heal>
+          <when value="TARGET">
+            <whencondition>
+              <attack type="ATTACK"/>
+            </whencondition>
+            <then>
+              <heal value="15" scaling="HEALING_PRAYERS" target="TARGET">
+                <step key="1" value="19"/>
+                <step key="2" value="23"/>
+                <step key="3" value="27"/>
+                <step key="4" value="31"/>
+                <step key="5" value="35"/>
+                <step key="6" value="39"/>
+                <step key="7" value="43"/>
+                <step key="8" value="47"/>
+                <step key="9" value="51"/>
+                <step key="10" value="55"/>
+                <step key="11" value="59"/>
+                <step key="12" value="63"/>
+                <step key="13" value="67"/>
+                <step key="14" value="71"/>
+              </heal>
+            </then>
+          </when>
+        </impact>
+      </effects>
+    </spell>
+
+    <spell type="SPELL">
+      <name value="Shielding Hands"/>
+      <costs value="5" type="MANA"/>
+      <casttime value="0.25"/>
+      <cooldown value="15"/>
+      <targettype value="SELFFRIEND"/>
+      <range value="800"/>
+      <effects>
+        <impact>
+          <buff value="8" scaling="NONE" type="ENTCHANTMENT" usage="INF" trigger="DAMAGE">
+            <heal value="5" scaling="PROTECTION_PRAYERS" target="TARGET">
+              <step key="1" value="8"/>
+              <step key="2" value="11"/>
+              <step key="3" value="14"/>
+              <step key="4" value="17"/>
+              <step key="5" value="20"/>
+              <step key="6" value="23"/>
+              <step key="7" value="26"/>
+              <step key="8" value="29"/>
+              <step key="9" value="32"/>
+              <step key="10" value="35"/>
+              <step key="11" value="38"/>
+              <step key="12" value="41"/>
+              <step key="13" value="44"/>
+              <step key="14" value="47"/>
+            </heal>
+            <damagereduction value="3" scaling="PROTECTION_PRAYERS" type="VALUE" target="SELF">
+              <step key="1" value="4"/>
+              <step key="2" value="5"/>
+              <step key="3" value="6"/>
+              <step key="4" value="7"/>
+              <step key="5" value="8"/>
+              <step key="6" value="9"/>
+              <step key="7" value="10"/>
+              <step key="8" value="11"/>
+              <step key="9" value="12"/>
+              <step key="10" value="50"/>
+              <step key="11" value="14"/>
+              <step key="12" value="15"/>
+              <step key="13" value="16"/>
+              <step key="14" value="17"/>
+            </damagereduction>
+          </buff>
+        </impact>
+      </effects>
+    </spell>
+
+    <spell type="SPELL">
+      <name value="Guardian"/>
+      <costs value="5" type="MANA"/>
+      <casttime value="1"/>
+      <cooldown value="4"/>
+      <targettype value="SELFFRIEND"/>
+      <range value="800"/>
+      <effects>
+        <impact>
+          <buff value="2" type="ENCHANTMENT" scaling="PROTECTION_PRAYERS" usage="INF" trigger="DAMAGE">
+            <step key="2" value="3"/>
+            <step key="5" value="4"/>
+            <step key="8" value="5"/>
+            <step key="11" value="6"/>
+            <step key="14" value="7"/>
+            <block type="ATTACK" value="50" scaling= "NONE" usage="INF"/>
+          </buff>
+        </impact>
+      </effects>
+    </spell>
+
+    <spell type="SPELL">
+      <name value="Cure Hex"/>
+      <costs value="5" type="MANA"/>
+      <casttime value="1"/>
+      <cooldown value="12"/>
+      <targettype value="SELFFRIEND"/>
+      <range value="800"/>
+      <effects>
+        <impact> 
+          <when value="TARGET">
+            <whencondition>
+              <hex/>
+            </whencondition>
+            <then>
+              <remove value="1" scaling="NONE" target="TARGET" type="HEX"/>
+              <heal value="30" scaling="HEALING_PRAYERS" target="TARGET">
+                <step key="1" value="36"/>
+                <step key="2" value="42"/>
+                <step key="3" value="48"/>
+                <step key="4" value="54"/>
+                <step key="5" value="60"/>
+                <step key="6" value="66"/>
+                <step key="7" value="72"/>
+                <step key="8" value="78"/>
+                <step key="9" value="84"/>
+                <step key="10" value="90"/>
+                <step key="11" value="96"/>
+                <step key="12" value="102"/>
+                <step key="13" value="108"/>
+                <step key="14" value="114"/>
+              </heal>
+            </then>
+          </when>
+        </impact>
+      </effects> 
+    </spell>
+
+    <spell type="SPELL">
+      <name value="Mend Ailment"/>
+      <costs value="5" type="MANA"/>
+      <casttime value="0.75"/>
+      <cooldown value="5"/>
+      <targettype value="SELFFRIEND"/>
+      <range value="800"/>
+      <effects>
+        <impact>
+          <remove value="1" scaling="NONE" target="TARGET" type="CONDI"/>
+          <foreach type="CONDI">
+            <heal value="5" scaling="PROTECTION_PRAYERS" target="TARGET">
+              <step key="1" value="9"/>
+              <step key="2" value="14"/>
+              <step key="3" value="18"/>
+              <step key="4" value="22"/>
+              <step key="5" value="27"/>
+              <step key="6" value="31"/>
+              <step key="7" value="35"/>
+              <step key="8" value="40"/>
+              <step key="9" value="44"/>
+              <step key="10" value="48"/>
+              <step key="11" value="53"/>
+              <step key="12" value="57"/>
+              <step key="13" value="61"/>
+              <step key="14" value="66"/>
+            </heal>
+          </foreach>
+        </impact>
+      </effects>
+    </spell>
+  </profession>
+
+  <profession value="WARRIOR">
+    <spell type="UNIQUE_BUFF">
+      <name value="Balanced Stance"/>
+      <costs value="5" type="MANA"/>
+      <casttime value="0"/>
+      <cooldown value="30"/>
+      <targettype value="SELF"/>
+      <range value="0"/>
+      <effects>
+        <impact>
+          <buff value="8" scaling="TACTICS" type="STANCE" usage="INF" trigger="NONE">
+            <step key="1" value="9"/>
+            <step key="2" value="10"/>
+            <step key="4" value="11"/>
+            <step key="5" value="12"/>
+            <step key="6" value="13"/>
+            <step key="7" value="14"/>
+            <step key="9" value="15"/>
+            <step key="10" value="16"/>
+            <step key="11" value="17"/>
+            <step key="12" value="18"/>
+            <step key="14" value="19"/>
+            <immune type="KNOCKDOWN"/>
+            <immune type="CRITS"/>
+          </buff>
+        </impact>
+      </effects>
+    </spell>
+
+    <spell type="UNIQUE_BUFF">
+      <name value="Disciplined Stance"/>
+      <costs value="5" type="MANA"/>
+      <casttime value="0"/>
+      <cooldown value="30"/>
+      <targettype value="SELF"/>
+      <range value="0"/>
+      <effects>
+        <impact>
+          <buff value="1" scaling="TACTICS" type="STANCE" usage="INF" trigger="DAMAGE">
+            <step key="3" value="2"/>
+            <step key="8" value="3"/>
+            <step key="13" value="4"/>
+            <block value="75" scaling="NONE" type="ATTACK" usage="INF"/>
+          </buff>
+        </impact>
+      </effects>
+    </spell>   
+  </profession>
+</skills>

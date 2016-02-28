@@ -186,7 +186,7 @@ public:
 
 
 
-protected:
+//protected:
 	// starts or stop AutoAttack
 	UFUNCTION(Server, WithValidation, reliable)
 	void setAttack(bool b);
@@ -250,7 +250,8 @@ protected:
 	float getAirDistance(APawn* pawn);
 
 	float getWalkDistance(APawn* pawn);
-	
+	float missingAdrenaline();
+
 
 	Profession primaryProfession;
 	Profession secondaryProfession;

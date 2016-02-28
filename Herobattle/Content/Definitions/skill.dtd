@@ -1,0 +1,212 @@
+<!ELEMENT skills (profession)*>
+
+<!ELEMENT profession (spell)*>
+<!ATTLIST  profession
+	value CDATA #REQUIRED
+>
+
+<!ELEMENT spell (name, costs, casttime, cooldown, targettype, range, weapon?, effects)>
+<!ATTLIST spell
+  type CDATA #REQUIRED
+  >
+<!-- spell nodes  -->
+<!ELEMENT name EMPTY>
+<!ATTLIST name
+  value CDATA #REQUIRED
+  >
+<!ELEMENT costs EMPTY>
+<!ATTLIST costs
+  value CDATA #REQUIRED
+  type (MANA|ADRENALINE|NONE) #REQUIRED
+  >
+<!ELEMENT casttime EMPTY>
+<!ATTLIST casttime
+  value CDATA #REQUIRED
+  >
+<!ELEMENT cooldown EMPTY>
+<!ATTLIST cooldown
+  value CDATA #REQUIRED
+  >
+<!ELEMENT targettype EMPTY>
+<!ATTLIST targettype
+  value (SELF|SELFFRIEND|FRIEND|ENEMY) #REQUIRED
+  >
+<!ELEMENT range EMPTY>
+<!ATTLIST range
+  value CDATA #REQUIRED
+  >
+
+<!ELEMENT weapon EMPTY>
+<!ATTLIST weapon 
+  value CDATA #REQUIRED
+  >
+
+
+<!ELEMENT effects (impact)>
+<!-- impact nodes  -->
+<!ELEMENT impact (heal|damage|buff|condition|foreach|when|remove|givemana|giveadrenaline)*>
+<!ELEMENT heal (step?)*>
+<!ATTLIST heal 
+  value CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  target (TARGET|SELF|OWNER) #REQUIRED
+  trigger (HEAL|DAMAGE|CAST|CASTMANA) #IMPLIED
+  >
+<!ELEMENT damage (step?)*>
+<!ATTLIST damage 
+  value CDATA #REQUIRED
+  type CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  target (TARGET|SELF|OWNER) #REQUIRED
+  trigger (HEAL|DAMAGE|CAST) #IMPLIED
+  >
+<!ELEMENT buff (step?|heal|damage|buff|regeneration|foreach|when|block|knockdown|skillcooldown|reducemanacost|givemana|givemanavalue|giveadrenaline|damagereduction|immune|attackspeed|movementspeed)*>
+<!ATTLIST buff 
+  value CDATA #REQUIRED
+  type CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  usage CDATA #REQUIRED
+  trigger (HIT|AFTERCAST|BEFORECAST|AFTERATTACK|DAMAGE|HEAL|NONE) #REQUIRED
+  >
+<!ELEMENT condition (step)*>
+<!ATTLIST condition 
+  value CDATA #REQUIRED
+  type CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  target (TARGET|SELF|OWNER) #REQUIRED
+  >
+<!ELEMENT regeneration (step?)*>
+<!ATTLIST regeneration 
+  value CDATA #REQUIRED
+  type CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  target (TARGET|SELF|OWNER) #REQUIRED
+  >
+<!ELEMENT foreach (heal|damage|buff|condition|regeneration|when|givemana|giveadrenaline)*>
+<!ATTLIST foreach
+  type CDATA #REQUIRED
+  >
+<!ELEMENT when (whencondition, then)>
+<!ATTLIST when
+  value CDATA #REQUIRED
+  >
+<!ELEMENT whencondition (attack|hp|mana|condi|casting|hex)>
+
+<!ELEMENT remove (step?)*>
+<!ATTLIST remove 
+  value CDATA #REQUIRED
+  type CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  target (TARGET|SELF) #REQUIRED
+  >
+
+<!ELEMENT givemana (step?)*>
+<!ATTLIST givemana 
+  value CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  target (TARGET|SELF) #REQUIRED
+  >
+
+<!ELEMENT givemanavalue (step?)*>
+<!ATTLIST givemanavalue 
+  value CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  target (TARGET|SELF) #REQUIRED
+  type (MANA|DAMAGe) #REQUIRED
+  >
+
+<!ELEMENT giveadrenaline (step?)*>
+<!ATTLIST giveadrenaline
+  value CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  target (TARGET|SELF) #REQUIRED
+  >
+
+<!ELEMENT reducemanacost (step?)*>
+<!ATTLIST reducemanacost 
+  value CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  >
+
+<!ELEMENT damagereduction (step?)*>
+<!ATTLIST damagereduction
+  value CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  type CDATA #REQUIRED
+  target (TARGET|SELF|OWNER) #REQUIRED
+  >
+<!ELEMENT immune EMPTY>
+<!ATTLIST immune 
+  type (KNOCKDOWN|HEX|CONDTIONS|CRITS) #REQUIRED
+  >
+
+<!ELEMENT attackspeed (step?)*>
+<!ATTLIST attackspeed
+  value CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  target (TARGET|SELF) #REQUIRED
+  >
+
+<!ELEMENT movementspeed (step?)*>
+<!ATTLIST movementspeed 
+  value CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  target (TARGET|SELF) #REQUIRED
+  >
+
+<!ELEMENT knockdown (step?)*>
+<!ATTLIST knockdown 
+  value CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  target (TARGET|SELF) #REQUIRED
+  >
+<!ELEMENT skillcooldown (step?)*>
+<!ATTLIST skillcooldown 
+  value CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  type (ALL|CURRENTSKILL|INTERRUPT|ATTRIBUTE) #REQUIRED
+  target (TARGET|SELF) #REQUIRED
+  >
+
+<!-- sub nodes -->
+<!ELEMENT then (heal|damage|buff|condition|regeneration|knockdown|skillcooldown|givemana|giveadrenaline|remove)*>
+
+<!ELEMENT attack EMPTY>
+<!ATTLIST attack
+  type CDATA #REQUIRED
+  >
+<!ELEMENT hp EMPTY>
+<!ATTLIST hp
+  value CDATA #REQUIRED
+  type CDATA #REQUIRED
+  >
+
+<!ELEMENT mana EMPTY>
+<!ATTLIST mana
+  value CDATA #REQUIRED
+  type CDATA #REQUIRED
+  >
+
+<!ELEMENT condi EMPTY>
+<!ATTLIST condi
+  type CDATA #REQUIRED
+  >
+<!ELEMENT casting EMPTY>
+
+<!ELEMENT hex EMPTY>
+
+<!ELEMENT step EMPTY>
+<!ATTLIST step
+  key CDATA #REQUIRED
+  value CDATA #REQUIRED
+  >
+
+
+
+<!ELEMENT block (step?)*>
+<!ATTLIST block
+  value CDATA #REQUIRED
+  type CDATA #REQUIRED
+  scaling CDATA #REQUIRED
+  usage CDATA #REQUIRED
+  >

@@ -3,6 +3,7 @@
 #include "Herobattle.h"
 #include "BoolHealth.h"
 #include "../../../Base/BaseCharacter.h"
+#include "AI/AISimCharacter.h"
 
 
 UBoolHealth::UBoolHealth()

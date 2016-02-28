@@ -52,7 +52,7 @@ void UAIKnowledge::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory
 
 		for (TActorIterator<ABaseCharacter> ActorItr(GetWorld()); ActorItr; ++ActorItr)
 		{
-			if (owner != *ActorItr)
+			if (owner != *ActorItr && ActorItr->m_Name.Len() > 9 && ActorItr->getCurrentState() != HBCharacterState::DEATH)
 			{
 				FCharacterState characterState = ActorItr->AiExtractor(owner);
 				if (fRange > characterState.airDistance)

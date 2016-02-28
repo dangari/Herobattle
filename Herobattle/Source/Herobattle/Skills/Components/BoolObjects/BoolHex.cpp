@@ -2,6 +2,8 @@
 
 #include "Herobattle.h"
 #include "BoolHex.h"
+#include "AI/AISimCharacter.h"
+#include "Base/BaseCharacter.h"
 
 
 

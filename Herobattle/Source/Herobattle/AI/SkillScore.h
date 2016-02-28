@@ -33,6 +33,8 @@ public:
 	void calcDamageScore(float cHealthSelf, float maxHealthSelf, float cHealthTarget, float maxHealthTarget);
 	void calcHealScore(float cHealthSelf, float maxHealthSelf, float cHealthTarget, float maxHealthTarget);
 
+	void addRegneration(int value);
+
 	float calcCompleteScore();
 
 
@@ -44,9 +46,11 @@ private:
 	
 	float uFunctionHeal(float missingHealth, float heal);
 	float uFunctionDamage(float missingHealth, float damage);
+	void clacRegenScore();
 
-
+	int regen = 0;
 	float m_healOffset = 30.f;
-	float m_damageOffset = 30.f;
+	float m_damageOffset = 0.9;
+	float m_regenOffset = 7;
 	
 };

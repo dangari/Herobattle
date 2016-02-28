@@ -24,6 +24,7 @@ class UBuff;
 class UBaseCondition;
 class USkillMessages;
 class UAISimCharacter;
+class ASpawn;
 
 
 
@@ -68,8 +69,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Meachnics)
 	FAdrenaline GetCurrentAdrenaline(uint8 slot);
 
+	UFUNCTION(BlueprintCallable, Category = Base)
+	bool changeState(HBCharacterState state);
 
-	
+	UFUNCTION(BlueprintCallable, Category = Base)
+	HBCharacterState getCurrentState();
 
 
 // this Functions get called by Skills
@@ -96,6 +100,8 @@ public:
 	void applyAttackSpeed(float value);
 
 	void applyMovementSpeed(float value);
+
+	float missingAdrenaline();
 
 	void addAdrenaline(int value);
 
@@ -176,21 +182,34 @@ public:
 	UPROPERTY(Replicated)
 	TArray<USkill*> skillList;
 
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = Spawn)
+	ASpawn* SpawnPoint;
+
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = Spawn)
+	FVector PositionAtSpawn;
 	
 
-protected:
+//protected:
 	// starts or stop AutoAttack
 	UFUNCTION(Server, WithValidation, reliable)
 	void setAttack(bool b);
 
 	UFUNCTION(Server, WithValidation, reliable)
-	void stopCurrenSkill();
+	void stopCurrentSkill();
 
 	void getBuffs();
 
 	void Update(float DeltaTime);
 
+	void Death();
 
+	void Respawn();
+
+	void emptyConditionList();
+
+	void emptyBuffList();
+
+	void emptyDebuffList();
 
 	void InitializeAdrenaline();
 	
@@ -246,6 +265,9 @@ protected:
 
 	Profession primaryProfession;
 	Profession secondaryProfession;
+
+	UPROPERTY(Replicated)
+	HBCharacterState m_State = HBCharacterState::IDLE;
 
 	UPROPERTY()
 	TMap<Condition, UBaseCondition*> m_condtionList;

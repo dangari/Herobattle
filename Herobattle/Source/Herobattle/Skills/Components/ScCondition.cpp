@@ -1,9 +1,10 @@
 #include "Herobattle.h"
 #include "ScCondition.h"
 #include "../Condition/BaseCondition.h"
-#include "../../Base/BaseCharacter.h"
 #include "../RegisterSkillComponents.h"
 #include "../../Enum/SkillEnums.h"
+#include "Base/BaseCharacter.h"
+#include "AI/AISimCharacter.h"
 #include "AI/SkillScore.h"
 
 UScCondition::UScCondition()

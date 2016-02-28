@@ -69,3 +69,7 @@ Herobattle/DerivedDataCache/*
 *.swp
 *.swo
 .ctrlp_cache/s
+
+# ignore build
+Herobattle/WindowsNoEditor
+*.opendb

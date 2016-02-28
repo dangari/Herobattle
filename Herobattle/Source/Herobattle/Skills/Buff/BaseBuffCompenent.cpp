@@ -5,6 +5,9 @@
 #include "XmlParser.h"
 #include "Base/BaseCharacter.h"
 #include "AI/CharacterState.h"
+#include "AI/SkillScore.h"
+#include "Buff.h"
+#include "AI/AISimCharacter.h"
 
 
 

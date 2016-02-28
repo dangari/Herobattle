@@ -3,14 +3,11 @@
 #include "Herobattle.h"
 #include "BcForEach.h"
 #include "BaseBuffCompenent.h"
+#include "Base/BaseCharacter.h"
+#include "AI/SkillScore.h"
+#include "AI/AISimCharacter.h"
 #include "Buff.h"
-//#include "XmlParser.h"
-//#include "../XMLSkillReader.h"
-//#include "Base/BaseCharacter.h"
-//#include "AI/SkillScore.h"
-//
-//
-//
+
 UBcForEach::UBcForEach()
 {
 
@@ -86,12 +83,72 @@ void UBcForEach::update(float deltaTime)
 
 float UBcForEach::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration)
 {	
-	return 1.f;
+	uint8 count = 0;
+	if (skillType.Equals(TEXT("CONDITION")))
+	{
+		count = characterState.conditions.Num();
+	}
+	else if (skillType.Equals(TEXT("ENCHANTMENT")) && characterState.isBuffed)
+	{
+		if (characterState.name.Equals(caster->m_Name))
+		{
+			count = caster->m_BuffCount;
+		}
+		else
+		{
+			count = 1;
+		}
+		
+	}
+	if (count > 0){
+		for (int i = 1; i <= count; i++)
+		{
+			for (auto& scObj : bcList)
+			{
+				scObj->getScore(caster, characterState, skillScore, duration);
+			}
+		}
+	}
+	else
+	{
+		skillScore->addScore(0.f, TEXT("foreach"));
+	}
+	return 0.f;
 }
 
 float UBcForEach::getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration)
 {
-	return 1.f;
+	uint8 count = 0;
+	if (skillType.Equals(TEXT("CONDITION")))
+	{
+		count = characterState.conditions.Num();
+	}
+	else if (skillType.Equals(TEXT("ENCHANTMENT")) && characterState.isBuffed)
+	{
+		if (characterState.name.Equals(caster->m_Name))
+		{
+			count = caster->m_BuffCount;
+		}
+		else
+		{
+			count = 1;
+		}
+
+	}
+	if (count > 0){
+		for (int i = 1; i <= count; i++)
+		{
+			for (auto& scObj : bcList)
+			{
+				scObj->getScoreSim(caster, characterState, skillScore, duration);
+			}
+		}
+	}
+	else
+	{
+		skillScore->addScore(0.f, TEXT("foreach"));
+	}
+	return 0.f;
 }
 
 void UBcForEach::init(FBuffContainer bContainer, ABaseCharacter* owner, FSkillProperties properties, UBuff* ownerBuff)

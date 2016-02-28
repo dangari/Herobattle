@@ -12,9 +12,9 @@
 #include "AI/AISimCharacter.h"
 
 ABaseCharacter::ABaseCharacter()
-:m_MaxHealth(480),
+:m_MaxHealth(600),
 m_MaxMana(25),
-m_Health(480),
+m_Health(600),
 m_Mana(25),
 m_HealthRegeneration(0),
 m_ManaRegeneration(4),
@@ -73,7 +73,7 @@ void ABaseCharacter::BeginPlay()
 // Called every frame
 void ABaseCharacter::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
+	Super::Tick(DeltaTime);	
 	if (HasAuthority())
 	{
 		Update(DeltaTime);
@@ -102,6 +102,45 @@ void ABaseCharacter::Update(float DeltaTime)
 	}
 }
 
+void ABaseCharacter::Death()
+{
+	m_State = HBCharacterState::DEATH;
+	stopCurrentSkill();
+	m_leftAttackTime = m_AttackSpeed;
+	emptyConditionList();
+	emptyBuffList();
+	emptyDebuffList();
+	AHerobattleGameMode* gameMode = Cast<AHerobattleGameMode>(GetWorld()->GetAuthGameMode());
+	gameMode->addDeathCharacter(this);
+	m_Health = 0;
+	m_Mana = 0;
+}
+
+void ABaseCharacter::Respawn()
+{
+	m_Health = m_MaxHealth;
+	m_Mana = m_MaxMana;
+	m_State = HBCharacterState::IDLE;
+}
+
+void ABaseCharacter::emptyConditionList()
+{
+	m_ConditionCount = 0;
+	m_condtionList.Empty();
+}
+
+void ABaseCharacter::emptyBuffList()
+{
+	m_BuffCount = 0;
+	m_BuffList.Empty();
+	m_CompleteBuffList.Empty();
+}
+
+void ABaseCharacter::emptyDebuffList()
+{
+	m_DebuffCount = 0;
+}
+
 // Called to bind functionality to input
 void ABaseCharacter::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 {
@@ -109,7 +148,7 @@ void ABaseCharacter::SetupPlayerInputComponent(class UInputComponent* InputCompo
 
 }
 
-void ABaseCharacter::stopCurrenSkill_Implementation()
+void ABaseCharacter::stopCurrentSkill_Implementation()
 {
 	if (isCastingSkill())
 	{
@@ -117,7 +156,7 @@ void ABaseCharacter::stopCurrenSkill_Implementation()
 		m_State = HBCharacterState::IDLE;
 	}
 }
-bool ABaseCharacter::stopCurrenSkill_Validate()
+bool ABaseCharacter::stopCurrentSkill_Validate()
 {
 	return true;
 }
@@ -140,7 +179,7 @@ void ABaseCharacter::InitializeAdrenaline()
 void ABaseCharacter::InitializeSkills()
 {
 	XMLSkillReader* skillReader = new XMLSkillReader();
-	FString fileName = TEXT("Source/Herobattle/Definitions/Warrior.xml");
+	FString fileName = TEXT("/Content/Definitions/Warrior.xml");
 	switch (proffession)
 	{
 	case ProfessionName::NONE:
@@ -148,10 +187,20 @@ void ABaseCharacter::InitializeSkills()
 	case ProfessionName::ASSASINE:
 		break;
 	case ProfessionName::ELEMENTALIST:
-		fileName = TEXT("Source/Herobattle/Definitions/EleHero.xml");
+		fileName = TEXT("/Content/Definitions/EleHero.xml");
+		m_MaxHealth = 600;
+		m_MaxMana = 75;
+		m_Mana = 75;
+		m_Health = 600;
+		m_ManaRegeneration = 4;
 		break;
 	case ProfessionName::MONK:
-		fileName = TEXT("Source/Herobattle/Definitions/Monk.xml");
+		fileName = TEXT("/Content/Definitions/Monk.xml");
+		m_MaxHealth = 600;
+		m_MaxMana = 40;
+		m_Mana = 40;
+		m_Health = 600;
+		m_ManaRegeneration = 4;
 		break;
 	case ProfessionName::DERWISH:
 		break;
@@ -160,7 +209,12 @@ void ABaseCharacter::InitializeSkills()
 	case ProfessionName::PARAGON:
 		break;
 	case ProfessionName::WARRIOR:
-		fileName = TEXT("Source/Herobattle/Definitions/Warrior.xml");
+		fileName = TEXT("/Content/Definitions/Warrior.xml");
+		m_MaxHealth = 630;
+		m_MaxMana = 22;
+		m_Mana = 22;
+		m_Health = 630;
+		m_ManaRegeneration = 2;
 		break;
 	case ProfessionName::MESMER:
 		break;
@@ -170,35 +224,44 @@ void ABaseCharacter::InitializeSkills()
 		break;
 	}
 	TArray<USkill*> curSkillList = skillReader->ReadXmlSkillFile(fileName, this);
-	skillList.Empty();
-	skillList.Add(curSkillList[0]);
-	skillList.Add(curSkillList[1]);
-	skillList.Add(curSkillList[2]);
-	skillList.Add(curSkillList[3]);
-	skillList.Add(curSkillList[4]);
-	skillList.Add(curSkillList[5]);
-	skillList.Add(curSkillList[6]);
-	skillList.Add(curSkillList[7]);
+	if (curSkillList.Num() > 7)
+	{
+		skillList.Empty();
+		skillList.Add(curSkillList[0]);
+		skillList.Add(curSkillList[1]);
+		skillList.Add(curSkillList[2]);
+		skillList.Add(curSkillList[3]);
+		skillList.Add(curSkillList[4]);
+		skillList.Add(curSkillList[5]);
+		skillList.Add(curSkillList[6]);
+		skillList.Add(curSkillList[7]);
+	}
+	
 }
 
 void ABaseCharacter::UpdateResources(float DeltaSeconds){
 
 
-	m_Health += DeltaSeconds * ((m_HealthRegeneration) * 2.0f);
-	m_Mana += DeltaSeconds * (m_ManaRegeneration / 3.0f);
-
-	if (m_Health >= m_MaxHealth){
-		m_Health = m_MaxHealth;
-	}
+	if (m_State != HBCharacterState::DEATH)
+	{
+		m_Health += DeltaSeconds * ((m_HealthRegeneration) * 2.0f);
+		m_Mana += DeltaSeconds * (m_ManaRegeneration / 3.0f);
 	
-	if (m_Mana >= m_MaxMana){
-		m_Mana = m_MaxMana;
+		if (m_Health >= m_MaxHealth){
+			m_Health = m_MaxHealth;
+		}
+		
+		if (m_Mana >= m_MaxMana){
+			m_Mana = m_MaxMana;
+		}
+		
+		if (m_Mana < 0)
+			m_Mana = 0;
+		if (m_Health < 0)
+		{
+			Death();
+		}
 	}
-	
-	if (m_Mana < 0)
-		m_Mana = 0;
-	if (m_Health < 0)
-		m_Health = m_MaxHealth;
 	m_HealthBuffRegneration = 0;
 }
 
@@ -405,16 +468,23 @@ bool ABaseCharacter::hasCondition(Condition condition)
 
 bool ABaseCharacter::canUseSkill(int slot)
 {
-	if (skillList[slot]->properties.costType == CostType::ADRENALINE)
+	if (skillList.Num() > 0)
 	{
-		if (m_AdrenalineList[slot].currentAdrenaline == m_AdrenalineList[slot].maxAdrenaline)
+		if (skillList[slot]->properties.costType == CostType::ADRENALINE)
+		{
+			if (m_AdrenalineList[slot].currentAdrenaline == m_AdrenalineList[slot].maxAdrenaline)
+				return true;
+
+		}
+		else if (skillList[slot]->properties.costType == CostType::MANA)
+		{
+			if (skillList[slot]->properties.cost < m_Mana + m_ManaReduction)
+				return true;
+		}
+		else if (skillList[slot]->properties.costType == CostType::NONE)
+		{
 			return true;
-		
-	}
-	else if (skillList[slot]->properties.costType == CostType::MANA)
-	{
-		if (skillList[slot]->properties.cost < m_Mana + m_ManaReduction)
-			return true;
+		}
 	}
 	return false;
 }
@@ -519,10 +589,10 @@ void ABaseCharacter::UpdateCurrentSkill(float deltaTime)
 	currentSkill.leftCastTime -= deltaTime;
 	if (currentSkill.leftCastTime <= 0)
 	{
-		currentSkill.skill->run(currentSkill.target, this);
 		currentSkill.castingSkill = false;
 		skillcooldowns[currentSkill.slot].currentCooldown = currentSkill.skill->properties.recharge;
 		skillcooldowns[currentSkill.slot].maxCooldown = currentSkill.skill->properties.recharge + skillcooldowns[currentSkill.slot].additionalCoolDown;
+		currentSkill.skill->run(currentSkill.target, this);
 		m_ManaReduction = 0;
 		RunBuff(Trigger::AFTERCAST, this);
 		if (currentSkill.skill->properties.skillType == SkillType::RANGEATTACK || currentSkill.skill->properties.skillType == SkillType::MELEEATTACK)
@@ -547,6 +617,10 @@ void ABaseCharacter::UpdateAttack(float deltaTime)
 		UpdateAdrenaline();
 		m_leftAttackTime = m_AttackSpeed;
 		RunBuff(Trigger::HIT, this);
+		if (selectedTarget->getState() == HBCharacterState::DEATH)
+		{
+			changeState(HBCharacterState::IDLE);
+		}
 	}
 }
 
@@ -631,7 +705,7 @@ struct FSkillHUD ABaseCharacter::getCurrentCast()
 
 bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
 {
-	if (HasAuthority())
+	if (HasAuthority() && m_State != HBCharacterState::DEATH)
 	{
 		USkill* skill = skillList[slot];
 		ABaseCharacter* newTarget = target;
@@ -645,7 +719,7 @@ bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
 
 		RunBuff(Trigger::BEFORECAST, this);
 
-		if (newTarget && !skillIsOnCooldown(slot) && !isCastingSkill() && skill->isValidTarget(newTarget, this) && skillCost(slot))
+		if (newTarget && !skillIsOnCooldown(slot) && !isCastingSkill() && skill->isValidTarget(newTarget, this) && skill->isInRange(newTarget, this) && skillCost(slot))
 		{
 			currentSkill.registerSkill(skill, newTarget, slot);
 			if (skill->properties.skillType == SkillType::MELEEATTACK || skill->properties.skillType == SkillType::RANGEATTACK)
@@ -656,6 +730,7 @@ bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
 			m_State = HBCharacterState::CASTING;
 			UE_LOG(LogTemp, Warning, TEXT("Skill name: %s"), *(currentSkill.skillName));
 			useAutoAttack = false;
+			m_leftAttackTime = m_AttackSpeed;
 			//bool b = skill->run(target, this);
 			return true;
 		}
@@ -693,6 +768,26 @@ FAdrenaline ABaseCharacter::GetCurrentAdrenaline(uint8 slot)
 	return m_AdrenalineList[slot];
 }
 
+bool ABaseCharacter::changeState(HBCharacterState state)
+{
+	if (HasAuthority())
+	{
+		if (m_State == HBCharacterState::AUTOATTACK)
+		{
+			setAttack(false);
+			m_leftAttackTime = m_AttackSpeed;
+		}
+		m_State = state;
+		return true;
+	}
+	return false;
+}
+
+HBCharacterState ABaseCharacter::getCurrentState()
+{
+	return m_State;
+}
+
 void ABaseCharacter::heal(ABaseCharacter* caster, float value, bool withBuff)
 {
 
@@ -715,7 +810,7 @@ void ABaseCharacter::heal(ABaseCharacter* caster, float value, bool withBuff)
 
 void ABaseCharacter::damage(ABaseCharacter* caster, float value, HBDamageType damageType, bool withBuff)
 {
-	if (HasAuthority())
+	if (HasAuthority() && m_State != HBCharacterState::DEATH)
 	{
 		bool b = true;
 		if (withBuff)
@@ -730,7 +825,10 @@ void ABaseCharacter::damage(ABaseCharacter* caster, float value, HBDamageType da
 		}
 		// test if target is dead
 		if (m_Health < 0)
-			m_Health = m_MaxHealth;
+		{
+			Death();
+			return;
+		}
 		m_DamageReduction = 0;
 	}
 }
@@ -825,13 +923,31 @@ void ABaseCharacter::applyMovementSpeed(float value)
 	m_MovementSpeed = m_DefaultMovementSpeed * value;
 }
 
+float ABaseCharacter::missingAdrenaline()
+{
+	int count = 0;
+	int missing = 0;
+	for (int i = 0; i < 8; i++)
+	{
+		if (m_AdrenalineList[i].maxAdrenaline > 0)
+		{
+			count++;
+			missing += m_AdrenalineList[i].currentAdrenaline - m_AdrenalineList[i].maxAdrenaline;
+		}
+	}
+	return missing / count;
+}
+
 void ABaseCharacter::addAdrenaline(int value)
 {
 	for (int i = 0; i < 8; i++)
 	{
-		m_AdrenalineList[i].currentAdrenaline += value;
-		if (m_AdrenalineList[i].currentAdrenaline > m_AdrenalineList[i].maxAdrenaline)
-			m_AdrenalineList[i].currentAdrenaline = m_AdrenalineList[i].maxAdrenaline;
+		if (skillcooldowns[i].currentCooldown < 0.0001)
+		{
+			m_AdrenalineList[i].currentAdrenaline += value;
+			if (m_AdrenalineList[i].currentAdrenaline > m_AdrenalineList[i].maxAdrenaline)
+				m_AdrenalineList[i].currentAdrenaline = m_AdrenalineList[i].maxAdrenaline;
+		}
 	}
 }
 
@@ -928,11 +1044,11 @@ void ABaseCharacter::updateHealthRegen(float regen)
 
 void ABaseCharacter::UpdateAdrenaline()
 {
-	for (auto& adrenaline : m_AdrenalineList)
+	for (int i = 0; i < 8; i++)
 	{
-		if (adrenaline.currentAdrenaline < adrenaline.maxAdrenaline)
+		if (m_AdrenalineList[i].currentAdrenaline < m_AdrenalineList[i].maxAdrenaline && skillcooldowns[i].currentCooldown < 0.0001)
 		{
-			adrenaline.currentAdrenaline++;
+			m_AdrenalineList[i].currentAdrenaline++;
 		}
 	}
 }
@@ -979,5 +1095,8 @@ void ABaseCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & Ou
 	DOREPLIFETIME(ABaseCharacter, weapon);
 	DOREPLIFETIME(ABaseCharacter, skillcooldowns);
 	DOREPLIFETIME(ABaseCharacter, m_AdrenalineList);
+	DOREPLIFETIME(ABaseCharacter, m_State);
+	DOREPLIFETIME(ABaseCharacter, SpawnPoint);
+	DOREPLIFETIME(ABaseCharacter, PositionAtSpawn);
 }
 

@@ -2,7 +2,10 @@
 
 #include "Herobattle.h"
 #include "BcMovementSpeed.h"
-
+#include "Base/BaseCharacter.h"
+#include "AI/SkillScore.h"
+#include "AI/AISimCharacter.h"
+#include "Buff.h"
 
 
 
@@ -71,8 +74,6 @@ float UBcMovementSpeed::getScore(ABaseCharacter* caster, FCharacterState charact
 			score = 1.f;
 		}
 	}
-	if (m_MovementSpeed < 0 && characterState.state != HBCharacterState::MOVEING)
-		score = 1.f;
 	skillScore->addScore(score, TEXT("movementspeed"));
 	return 1.f;
 }
@@ -92,8 +93,6 @@ float UBcMovementSpeed::getScoreSim(UAISimCharacter* caster, FCharacterState cha
 			score = 1.f;
 		}
 	}
-	if (m_MovementSpeed < 0 && characterState.state != HBCharacterState::MOVEING)
-		score = 1.f;
 	skillScore->addScore(score, TEXT("movementspeed"));
 	return 1.f;
 }

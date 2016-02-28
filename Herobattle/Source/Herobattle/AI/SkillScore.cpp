@@ -91,8 +91,14 @@ void USkillScore::calcHealScore(float cHealthSelf, float maxHealthSelf, float cH
 	m_ScoreList.Add(TEXT("Heal"), score);
 }
 
+void USkillScore::addRegneration(int value)
+{
+	regen += value;
+}
+
 float USkillScore::calcCompleteScore()
 {
+	clacRegenScore();
 	int i = 0;
 	float compScore = 0.f;
 	for (auto& score : m_ScoreList)
@@ -131,7 +137,7 @@ float USkillScore::uFunctionDamage(float missingHealth, float damage)
 {
 	if (damage == 0)
 		return 0;
-	float score = (damage - m_damageOffset) / missingHealth;
+	float score = (damage * m_damageOffset) / missingHealth;
 	if (score > 1)
 	{
 		score = 2 - score;
@@ -144,4 +150,15 @@ float USkillScore::uFunctionDamage(float missingHealth, float damage)
 	{
 		return score;
 	}
+}
+
+void USkillScore::clacRegenScore()
+{
+	float score = regen / m_regenOffset;
+	if (score > 1)
+		score = 1;
+	if (score < 0)
+		score = 0;
+
+	addScore(score, TEXT("regen"));
 }

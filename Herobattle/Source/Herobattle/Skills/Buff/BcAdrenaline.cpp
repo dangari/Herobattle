@@ -2,6 +2,10 @@
 
 #include "Herobattle.h"
 #include "BcAdrenaline.h"
+#include "AI/SkillScore.h"
+#include "AI/AISimCharacter.h"
+#include "Buff.h"
+#include "Base/BaseCharacter.h"
 
 
 
@@ -32,13 +36,19 @@ bool UBcAdrenaline::runSim(UAISimCharacter* caster, UAISimCharacter* self, int v
 
 float UBcAdrenaline::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration)
 {
-	skillScore->addScore(1.f, TEXT("adrenaline"));
+	float score = caster->missingAdrenaline() / m_AdrenalineValue;
+	if (score > 1)
+		score = 1;
+	skillScore->addScore(score, TEXT("adrenaline"));
 	return 1.f;
 }
 
 float UBcAdrenaline::getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration)
 {
-	skillScore->addScore(1.f, TEXT("adrenaline"));
+	float score = caster->missingAdrenaline() / m_AdrenalineValue;
+	if (score > 1)
+		score = 1;
+	skillScore->addScore(score, TEXT("adrenaline"));
 	return 1.f;
 }
 

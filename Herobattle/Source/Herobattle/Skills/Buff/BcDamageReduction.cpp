@@ -2,7 +2,10 @@
 
 #include "Herobattle.h"
 #include "BcDamageReduction.h"
+#include "Base/BaseCharacter.h"
+#include "AI/SkillScore.h"
 #include "AI/AISimCharacter.h"
+#include "Buff.h"
 
 
 
@@ -61,11 +64,17 @@ void UBcDamageReduction::initSim(FBuffContainer bContainer, UAISimCharacter* own
 
 float UBcDamageReduction::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration)
 {
+	float healthPrec = 1 - characterState.health / characterState.maxHealth;
+	if (characterState.attackers > 0)
+		skillScore->addScore(healthPrec, TEXT("damageReduction"));
 	return 0.0f;
 }
 
 float UBcDamageReduction::getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration)
 {
+	float healthPrec = 1 - characterState.health / characterState.maxHealth;
+	if (characterState.attackers > 0)
+		skillScore->addScore(healthPrec, TEXT("damageReduction"));
 	return 0.0f;
 }
 

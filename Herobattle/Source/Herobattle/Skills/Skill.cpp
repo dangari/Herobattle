@@ -47,7 +47,9 @@ bool USkill::runSim(UAISimCharacter* target, UAISimCharacter* self)
 
 bool USkill::isValidTarget(ABaseCharacter* target, ABaseCharacter* self)
 {
-	if (target->isEnemy(self->ETeam) && properties.targetType == TargetType::ENEMY)
+	if (target->getState() == HBCharacterState::DEATH)
+		return false;
+	else if (target->isEnemy(self->ETeam) && properties.targetType == TargetType::ENEMY)
 	{
 		return true;
 	}
@@ -85,6 +87,24 @@ bool USkill::isValidTargetSim(UAISimCharacter* target, UAISimCharacter* self)
 		return true;
 	}
 	else if (target == self && properties.targetType == TargetType::SELF)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool USkill::isInRange(ABaseCharacter* target, ABaseCharacter* self)
+{
+	FVector location = self->GetActorLocation();
+	float airDistance = (location - target->GetActorLocation()).Size();
+	if (properties.targetType == TargetType::SELF)
+	{
+		return true;
+	}
+	else if (properties.range > airDistance)
 	{
 		return true;
 	}
@@ -152,22 +172,29 @@ float USkill::manaScore(ABaseCharacter* caster, FCharacterState charcterState)
 	float maxMana = caster->m_MaxMana;
 	int regen = caster->m_ManaRegeneration;
 
-	currentMana += (charcterState.DeltaTime * (regen / 3.0));
-	float score = currentMana / maxMana;
+	int mana_cost = properties.cost - caster->m_ManaReduction;
+	if (mana_cost < 0)
+		mana_cost = 0;
+	float score =  (1 - properties.cost / currentMana) * (regen / 4.0);
 	return score;
 }
 
 float USkill::manaScoreSim(UAISimCharacter* caster, FCharacterState charcterState)
 {
-	if (properties.costType == CostType::ADRENALINE || properties.costType == CostType::NONE)
+	if (properties.costType == CostType::ADRENALINE && (properties.skillType == SkillType::ATTACK || properties.skillType == SkillType::RANGEATTACK))
 		return 1;
-
+	else if (properties.costType == CostType::ADRENALINE)
+		return 0.5;
+	if (properties.costType == CostType::NONE)
+		return 1;
 	float currentMana = caster->m_Mana;
 	float maxMana = caster->m_MaxMana;
 	int regen = caster->m_ManaRegeneration;
 
-	currentMana += (charcterState.DeltaTime * (regen / 3.0));
-	float score = currentMana / maxMana;
+	int mana_cost = properties.cost - caster->m_ManaReduction;
+	if (mana_cost < 0)
+		mana_cost = 0;
+	float score = (1 - properties.cost / currentMana) * (regen / 4.0);
 	return score;
 }
 

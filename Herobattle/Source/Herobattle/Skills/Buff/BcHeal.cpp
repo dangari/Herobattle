@@ -4,7 +4,10 @@
 #include "BcHeal.h"
 #include "Base/BaseCharacter.h"
 #include "Enum/SkillEnums.h"
-
+#include "Base/BaseCharacter.h"
+#include "AI/SkillScore.h"
+#include "AI/AISimCharacter.h"
+#include "Buff.h"
 
 
 

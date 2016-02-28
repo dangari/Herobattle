@@ -3,6 +3,7 @@
 #include "Herobattle.h"
 #include "HBGameState.h"
 #include "UnrealNetwork.h"
+#include "Base/Logging.h"
 
 
 
@@ -11,5 +12,26 @@ void AHBGameState::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutL
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AHBGameState, DebugSkillList);
+	DOREPLIFETIME(AHBGameState, BlueScore);
+	DOREPLIFETIME(AHBGameState, RedScore);
+}
+
+AHBGameState::AHBGameState()
+	:RedScore(0)
+	, BlueScore(0)
+{
+	
+}
+
+AHBGameState::~AHBGameState()
+{
+
+}
+
+void AHBGameState::BeginPlay()
+{
+	Super::BeginPlay();
+	if (HasAuthority() && !logging)
+		logging = NewObject<ULogging>(this);
 }
 

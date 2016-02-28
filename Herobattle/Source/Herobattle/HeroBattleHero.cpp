@@ -6,6 +6,12 @@
 #include "UnrealNetwork.h"
 #include "Engine.h"
 
+
+DEFINE_LOG_CATEGORY(SkillLog);
+DEFINE_LOG_CATEGORY(HealthLog);
+DEFINE_LOG_CATEGORY(ManaLog);
+
+
 // Sets default values
 AHeroBattleHero::AHeroBattleHero() : AHeroBattleHero::ABaseCharacter()
 {
@@ -26,7 +32,10 @@ void AHeroBattleHero::BeginPlay()
 // Called every frame
 void AHeroBattleHero::Tick( float DeltaTime )
 {
+	
 	Super::Tick( DeltaTime );
+	
+	
 
 }
 

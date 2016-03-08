@@ -43,10 +43,10 @@ void ABaseCharacter::BeginPlay()
 	Super::BeginPlay();
 	m_SimCharacter = NewObject<UAISimCharacter>(this);
 	m_SimCharacterTarget = NewObject<UAISimCharacter>(this);
+	InitializeSkills();
 	if (HasAuthority())
 	{
 		m_DefaultMovementSpeed = GetCharacterMovement()->MaxWalkSpeed;
-		InitializeSkills();
 		InitializeAdrenaline();
 		messages = NewObject<USkillMessages>();
 		weapon = FWeaponValues(Weapon::STAFF);
@@ -788,6 +788,29 @@ HBCharacterState ABaseCharacter::getCurrentState()
 	return m_State;
 }
 
+FString ABaseCharacter::GetSkillName(uint8 slot)
+{
+	USkill* skill = skillList[slot];
+	FString name = TEXT("Dummy");
+	if (skill)
+	{
+		name = skill->name;
+		name = name.Replace(TEXT(" "), TEXT("_"));
+	}
+	return name;
+}
+
+UTexture2D* ABaseCharacter::GetSkillImage(uint8 slot)
+{
+	USkill* skill = skillList[slot];
+	UTexture2D* image = nullptr;
+	if (skill)
+	{
+		image = skill->getImage();
+	}
+	return image;
+}
+
 void ABaseCharacter::heal(ABaseCharacter* caster, float value, bool withBuff)
 {
 
@@ -1098,5 +1121,6 @@ void ABaseCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & Ou
 	DOREPLIFETIME(ABaseCharacter, m_State);
 	DOREPLIFETIME(ABaseCharacter, SpawnPoint);
 	DOREPLIFETIME(ABaseCharacter, PositionAtSpawn);
+	DOREPLIFETIME(ABaseCharacter, skillList);
 }
 

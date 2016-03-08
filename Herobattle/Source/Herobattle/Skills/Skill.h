@@ -67,6 +67,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Debug)
 	FString ToString();
 
+	UTexture2D* getImage();
+
 
 private: 
 	float manaScore(ABaseCharacter* caster, FCharacterState charcterState);

@@ -75,6 +75,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Base)
 	HBCharacterState getCurrentState();
 
+	UFUNCTION(BlueprintCallable, Category = Information)
+	FString GetSkillName(uint8 slot);
+
+	UFUNCTION(BlueprintCallable, Category = Information)
+	UTexture2D* GetSkillImage(uint8 slot);
 
 // this Functions get called by Skills
 	void heal(ABaseCharacter* caster, float value, bool withBuff = true);

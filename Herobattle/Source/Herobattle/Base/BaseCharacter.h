@@ -81,6 +81,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Information)
 	UTexture2D* GetSkillImage(uint8 slot);
 
+	UFUNCTION(BlueprintCallable, Category = Profession)
+	void switchBuildByProfession(ProfessionName p);
+	
 // this Functions get called by Skills
 	void heal(ABaseCharacter* caster, float value, bool withBuff = true);
 
@@ -179,7 +182,7 @@ public:
 	TeamColor ETeam;
 
 	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = Info)
-	ProfessionName proffession;
+	ProfessionName profession;
 
 	UPROPERTY(Replicated)
 	TArray<USkill*> skillList;

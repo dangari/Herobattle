@@ -172,6 +172,10 @@ void ABaseCharacter::InitializeAdrenaline()
 		{
 			m_AdrenalineList[i].maxAdrenaline = skill->properties.cost;
 		}
+		else
+		{
+			m_AdrenalineList[i].maxAdrenaline = 0;
+		}
 		i++;
 	}
 }
@@ -180,7 +184,7 @@ void ABaseCharacter::InitializeSkills()
 {
 	XMLSkillReader* skillReader = new XMLSkillReader();
 	FString fileName = TEXT("/Content/Definitions/Warrior.xml");
-	switch (proffession)
+	switch (profession)
 	{
 	case ProfessionName::NONE:
 		break;
@@ -423,7 +427,7 @@ FCharacterProperties ABaseCharacter::getProperties()
 	properties.m_Mana = m_Mana;
 	properties.m_ManaRegeneration = m_ManaRegeneration;
 	properties.ETeam = ETeam;
-	properties.proffession = proffession;
+	properties.proffession = profession;
 	properties.selectedTarget = selectedTarget;
 	properties.simSelectedTarget = nullptr;
 	properties.skillList = skillList;
@@ -811,6 +815,13 @@ UTexture2D* ABaseCharacter::GetSkillImage(uint8 slot)
 	return image;
 }
 
+void ABaseCharacter::switchBuildByProfession(ProfessionName p)
+{
+	profession = p;
+	InitializeSkills();
+	InitializeAdrenaline();
+}
+
 void ABaseCharacter::heal(ABaseCharacter* caster, float value, bool withBuff)
 {
 
@@ -1106,6 +1117,7 @@ bool ABaseCharacter::RunBuff(Trigger trigger, ABaseCharacter* caster, int value 
 void ABaseCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(ABaseCharacter, m_Name);
 	DOREPLIFETIME(ABaseCharacter, m_MaxHealth);
 	DOREPLIFETIME(ABaseCharacter, m_MaxMana);
 	DOREPLIFETIME(ABaseCharacter, m_Health);

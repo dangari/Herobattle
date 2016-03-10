@@ -115,7 +115,7 @@ private:
 	AHBPlayerController* MyController;
 
 	UPROPERTY(Replicated)
-	AHeroBattleHero* heroList[3];
+	TArray<AHeroBattleHero*> heroList;
 
 	void startAttack();
 

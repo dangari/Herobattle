@@ -66,6 +66,7 @@ void ABaseCharacter::BeginPlay()
 	else
 	{
 		currentSkill.castingSkill = false;
+		finishedLoadingSkills();
 	}
 
 }
@@ -820,6 +821,11 @@ void ABaseCharacter::switchBuildByProfession(ProfessionName p)
 	profession = p;
 	InitializeSkills();
 	InitializeAdrenaline();
+}
+
+void ABaseCharacter::finishedLoadingSkills_Implementation()
+{
+
 }
 
 void ABaseCharacter::heal(ABaseCharacter* caster, float value, bool withBuff)

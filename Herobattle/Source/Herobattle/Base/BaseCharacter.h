@@ -83,6 +83,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = Profession)
 	void switchBuildByProfession(ProfessionName p);
+
+	UFUNCTION(BlueprintNativeEvent, Category = afterLogin)
+	void finishedLoadingSkills();
+	void finishedLoadingSkills_Implementation();
 	
 // this Functions get called by Skills
 	void heal(ABaseCharacter* caster, float value, bool withBuff = true);

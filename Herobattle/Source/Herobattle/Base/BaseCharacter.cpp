@@ -1133,6 +1133,5 @@ void ABaseCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & Ou
 	DOREPLIFETIME(ABaseCharacter, m_State);
 	DOREPLIFETIME(ABaseCharacter, SpawnPoint);
 	DOREPLIFETIME(ABaseCharacter, PositionAtSpawn);
-	DOREPLIFETIME(ABaseCharacter, skillList);
 }
 

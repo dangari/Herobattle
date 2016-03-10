@@ -184,7 +184,7 @@ public:
 	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = Info)
 	ProfessionName profession;
 
-	UPROPERTY(Replicated)
+	UPROPERTY()
 	TArray<USkill*> skillList;
 
 	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = Spawn)

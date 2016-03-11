@@ -197,6 +197,8 @@ void AHerobattleCharacter::addHero(uint8 index, AHeroBattleHero* hero)
 {
 	if (index < 3)
 	{
+		hero->InitializeSkills();
+		hero->InitializeAdrenaline();
 		heroList[index] = hero;
 		if (HasAuthority())
 		{

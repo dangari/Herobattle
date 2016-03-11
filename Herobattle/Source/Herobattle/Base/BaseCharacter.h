@@ -81,8 +81,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Information)
 	UTexture2D* GetSkillImage(uint8 slot);
 
+	UFUNCTION(BlueprintCallable, Category = Animation)
+	float GetAttackSpeed();
+
 	UFUNCTION(BlueprintCallable, Category = Profession)
 	void switchBuildByProfession(ProfessionName p);
+
 
 	UFUNCTION(BlueprintNativeEvent, Category = afterLogin)
 	void finishedLoadingSkills();
@@ -291,16 +295,17 @@ public:
 	TMap<Attributes, uint8> attrList;
 
 	UPROPERTY(Replicated)
-	FSkillCooldown skillcooldowns[8];
+	TArray<FSkillCooldown> skillcooldowns;
 	
 	UPROPERTY(Replicated)
-	FAdrenaline m_AdrenalineList[8];
+	TArray<FAdrenaline> m_AdrenalineList;
 	
 	int m_ConditionCount;
 	int m_BuffCount;
 	int m_DebuffCount;
 
 	float m_NewAttackSpeed;
+	UPROPERTY(Replicated)
 	float m_AttackSpeed;
 	float m_leftAttackTime;
 	float m_DefaultMovementSpeed;

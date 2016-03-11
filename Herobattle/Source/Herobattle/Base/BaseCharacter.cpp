@@ -29,6 +29,8 @@ m_NewAttackSpeed(1)
 {
 	bReplicates = true;
 	currentSkill.castingSkill = false;
+	skillcooldowns.AddDefaulted(8);
+	m_AdrenalineList.AddDefaulted(8);
 }
 
 ABaseCharacter::~ABaseCharacter()
@@ -821,6 +823,11 @@ UTexture2D* ABaseCharacter::GetSkillImage(uint8 slot)
 	return image;
 }
 
+float ABaseCharacter::GetAttackSpeed()
+{
+	return m_AttackSpeed;
+}
+
 void ABaseCharacter::switchBuildByProfession(ProfessionName p)
 {
 	profession = p;
@@ -1145,5 +1152,6 @@ void ABaseCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & Ou
 	DOREPLIFETIME(ABaseCharacter, SpawnPoint);
 	DOREPLIFETIME(ABaseCharacter, PositionAtSpawn);
 	DOREPLIFETIME(ABaseCharacter, profession);
+	DOREPLIFETIME(ABaseCharacter, m_AttackSpeed);
 }
 

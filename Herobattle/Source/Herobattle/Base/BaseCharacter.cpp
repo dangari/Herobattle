@@ -807,6 +807,11 @@ FString ABaseCharacter::GetSkillName(uint8 slot)
 
 UTexture2D* ABaseCharacter::GetSkillImage(uint8 slot)
 {
+	if (skillList.Num() < 8)
+	{
+		InitializeSkills();
+		InitializeAdrenaline();
+	}
 	USkill* skill = skillList[slot];
 	UTexture2D* image = nullptr;
 	if (skill)
@@ -1139,5 +1144,6 @@ void ABaseCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & Ou
 	DOREPLIFETIME(ABaseCharacter, m_State);
 	DOREPLIFETIME(ABaseCharacter, SpawnPoint);
 	DOREPLIFETIME(ABaseCharacter, PositionAtSpawn);
+	DOREPLIFETIME(ABaseCharacter, profession);
 }
 

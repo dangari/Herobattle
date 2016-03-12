@@ -60,6 +60,10 @@ void AHerobattleGameMode::PostLogin(APlayerController * NewPlayer)
 		FString name = TEXT("Gamemode: c++");
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, name);
 	}
+	else
+	{
+		finishedPostLogin(NewPlayer);
+	}
 	
 }
 

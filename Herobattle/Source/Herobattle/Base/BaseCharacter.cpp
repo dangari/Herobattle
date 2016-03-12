@@ -10,6 +10,7 @@
 #include "Engine.h"
 #include "Skills/XMLSkillReader.h"
 #include "AI/AISimCharacter.h"
+#include "LoadImages.h"
 
 ABaseCharacter::ABaseCharacter()
 :m_MaxHealth(600),
@@ -31,6 +32,7 @@ m_NewAttackSpeed(1)
 	currentSkill.castingSkill = false;
 	skillcooldowns.AddDefaulted(8);
 	m_AdrenalineList.AddDefaulted(8);
+	skillNames.AddDefaulted(8);
 }
 
 ABaseCharacter::~ABaseCharacter()
@@ -45,9 +47,10 @@ void ABaseCharacter::BeginPlay()
 	Super::BeginPlay();
 	m_SimCharacter = NewObject<UAISimCharacter>(this);
 	m_SimCharacterTarget = NewObject<UAISimCharacter>(this);
-	InitializeSkills();
+	
 	if (HasAuthority())
 	{
+		InitializeSkills();
 		m_DefaultMovementSpeed = GetCharacterMovement()->MaxWalkSpeed;
 		InitializeAdrenaline();
 		messages = NewObject<USkillMessages>();
@@ -235,13 +238,21 @@ void ABaseCharacter::InitializeSkills()
 	{
 		skillList.Empty();
 		skillList.Add(curSkillList[0]);
+		skillNames[0] = curSkillList[0]->name;
 		skillList.Add(curSkillList[1]);
+		skillNames[1] = curSkillList[1]->name;
 		skillList.Add(curSkillList[2]);
+		skillNames[2] = curSkillList[2]->name;
 		skillList.Add(curSkillList[3]);
+		skillNames[3] = curSkillList[3]->name;
 		skillList.Add(curSkillList[4]);
+		skillNames[4] = curSkillList[4]->name;
 		skillList.Add(curSkillList[5]);
+		skillNames[5] = curSkillList[5]->name;
 		skillList.Add(curSkillList[6]);
+		skillNames[6] = curSkillList[6]->name;
 		skillList.Add(curSkillList[7]);
+		skillNames[7] = curSkillList[7]->name;
 	}
 	
 }
@@ -814,11 +825,12 @@ UTexture2D* ABaseCharacter::GetSkillImage(uint8 slot)
 		InitializeSkills();
 		InitializeAdrenaline();
 	}
-	USkill* skill = skillList[slot];
+	FString skillName = skillNames[slot];
 	UTexture2D* image = nullptr;
-	if (skill)
+	if (!skillName.IsEmpty())
 	{
-		image = skill->getImage();
+		ULoadImages* loader = NewObject<ULoadImages>(this);
+		image = loader->LoadSkillImage(skillName);
 	}
 	return image;
 }
@@ -1153,5 +1165,6 @@ void ABaseCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & Ou
 	DOREPLIFETIME(ABaseCharacter, PositionAtSpawn);
 	DOREPLIFETIME(ABaseCharacter, profession);
 	DOREPLIFETIME(ABaseCharacter, m_AttackSpeed);
+	DOREPLIFETIME(ABaseCharacter, skillNames);
 }
 

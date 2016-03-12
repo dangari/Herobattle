@@ -39,10 +39,10 @@ struct FSkillCooldown
 	float currentCooldown = 0.f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skills)
-		float maxCooldown = 0.f;
+	float maxCooldown = 0.f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skills)
-		float additionalCoolDown = 0.f;
+	float additionalCoolDown = 0.f;
 };
 
 USTRUCT(BlueprintType)

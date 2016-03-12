@@ -329,4 +329,7 @@ public:
 	UAISimCharacter* m_SimCharacter;
 	UAISimCharacter* m_SimCharacterTarget;
 
+	UPROPERTY(Replicated)
+	TArray<FString> skillNames;
+
 };

@@ -5,6 +5,7 @@
 #include "Engine.h"
 #include "Base/BaseCharacter.h"
 #include "HerobattleGameMode.h"
+#include "UnrealNetwork.h"
 
 
 // Sets default values
@@ -17,6 +18,8 @@ ACapturePoint::ACapturePoint()
 
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	bReplicates = true;
 
 	BaseCollisionComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("BaseUCapsuleComponent"));
 	BaseCollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &ACapturePoint::OnOverlapBegin);
@@ -64,20 +67,28 @@ void ACapturePoint::Tick( float DeltaTime )
 			capturePrec = capturePrec * -1;
 		}
 		m_CurrentCaptureTime += capturePrec;
-		if (m_CurrentCaptureTime >= (CaptureTime * 2) && state != CaptureState::BLUE)
+		if (m_CurrentCaptureTime >= (CaptureTime * 2))
 		{
-			state = CaptureState::BLUE;
 			m_CurrentCaptureTime = CaptureTime * 2;
-			AHerobattleGameMode* gameMode = Cast<AHerobattleGameMode>(GetWorld()->GetAuthGameMode());
-			gameMode->addShrine(PipGain, TeamColor::BLUE);
+			if (state != CaptureState::BLUE)
+			{
+				AHerobattleGameMode* gameMode = Cast<AHerobattleGameMode>(GetWorld()->GetAuthGameMode());
+				gameMode->addShrine(PipGain, TeamColor::BLUE);
+				state = CaptureState::BLUE;
+			}
 			
 		}
-		else if (m_CurrentCaptureTime <= 0 && state != CaptureState::RED)
+		else if (m_CurrentCaptureTime <= 0)
 		{
-			state = CaptureState::RED;
-			m_CurrentCaptureTime = CaptureTime * 2;
-			AHerobattleGameMode* gameMode = Cast<AHerobattleGameMode>(GetWorld()->GetAuthGameMode());
-			gameMode->addShrine(PipGain, TeamColor::BLUE);
+			
+			m_CurrentCaptureTime = 0;
+			if (state != CaptureState::RED)
+			{
+				AHerobattleGameMode* gameMode = Cast<AHerobattleGameMode>(GetWorld()->GetAuthGameMode());
+				gameMode->addShrine(PipGain, TeamColor::RED);
+				state = CaptureState::RED;
+			}
+			
 		}
 		else if ((m_CurrentCaptureTime > CaptureTime && state == CaptureState::RED) || (m_CurrentCaptureTime < CaptureTime && state == CaptureState::BLUE))
 		{
@@ -134,6 +145,22 @@ void ACapturePoint::OnOverlapEnd(class AActor* OtherActor, class UPrimitiveCompo
 		{
 			m_RedCount--;
 		}
+		if (m_RedCount == 0 && m_BlueCount == 0)
+		{
+			switch (state)
+			{
+			case CaptureState::RED:
+				m_CurrentCaptureTime = 0;
+				break;
+			case CaptureState::BLUE:
+				m_CurrentCaptureTime = 2 * CaptureTime;
+				break;
+			case CaptureState::NEUTRAL:
+				m_CurrentCaptureTime = CaptureTime;
+			default:
+				break;
+			}
+		}
 		FString outPut = TEXT("Left Area, RedTeam: ");
 		outPut.AppendInt(m_RedCount);
 		outPut = outPut.Append(TEXT(" BlueTeam: "));
@@ -158,4 +185,12 @@ float ACapturePoint::getCaptureSpeed(uint8 pips)
 		return speed;
 	}
 }
+
+void ACapturePoint::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(ACapturePoint, m_CurrentCaptureTime);
+	DOREPLIFETIME(ACapturePoint, state);
+}
+
 

@@ -29,6 +29,12 @@ public:
 	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category = "General")
 	float CaptureTime;
 
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = General)
+	float m_CurrentCaptureTime = 11;
+
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = General)
+	CaptureState state = CaptureState::NEUTRAL;
+
 	// Sets default values for this actor's properties
 	ACapturePoint();
 
@@ -51,12 +57,7 @@ private:
 
 	UPROPERTY()
 	uint8 m_RedCount;
-	
-	UPROPERTY()
-	float m_CurrentCaptureTime = 11;
 
-	UPROPERTY()
-	CaptureState state = CaptureState::NEUTRAL;
 
 
 	float getCaptureSpeed(uint8 pips);

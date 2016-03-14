@@ -188,36 +188,60 @@ void UBcBlock::update(float deltaTime)
 
 float UBcBlock::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration)
 {
-	if (blockType == SkillType::ATTACK && characterState.attackers > 0)
+	float durationScore = blockChance * duration / 1.5f;
+	int count = 0;
+	if (blockType == SkillType::ATTACK)
 	{
-		skillScore->addScore(1.f, TEXT("block"));
-	}
-	else if (characterState.caster > 0)
-	{
-		skillScore->addScore(1.f, TEXT("block"));
+		count = characterState.attackers;
 	}
 	else
 	{
-		skillScore->addScore(0.f, TEXT("block"));
+		count = characterState.caster;
 	}
+	float blockCountScore = blockChance * count;
+
+	float score = (durationScore * blockCountScore) / 2;
+
+	if (score > 1)
+	{
+		score = 1;
+	}
+	if (score < 0)
+	{
+		score = 0;
+	}
+
+	skillScore->addScore(score, TEXT("block"));
 		
 	return 1.f;
 }
 
 float UBcBlock::getScoreSim(UAISimCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration)
 {
-	if (blockType == SkillType::ATTACK && characterState.attackers > 0)
+	float durationScore = blockChance * duration / 1.5f;
+	int count = 0;
+	if (blockType == SkillType::ATTACK)
 	{
-		skillScore->addScore(1.f, TEXT("block"));
-	}
-	else if (characterState.caster > 0)
-	{
-		skillScore->addScore(1.f, TEXT("block"));
+		count = characterState.attackers;
 	}
 	else
 	{
-		skillScore->addScore(0.f, TEXT("block"));
+		count = characterState.caster;
 	}
+	float blockCountScore = blockChance * count;
+
+	float score = (durationScore * blockCountScore) / 2;
+
+	if (score > 1)
+	{
+		score = 1;
+	}
+	if (score < 0)
+	{
+		score = 0;
+	}
+
+	skillScore->addScore(score, TEXT("block"));
 
 	return 1.f;
 }

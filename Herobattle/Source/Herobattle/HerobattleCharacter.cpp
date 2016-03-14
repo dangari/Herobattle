@@ -227,9 +227,13 @@ void AHerobattleCharacter::updateTeamColor()
 	int i = 1;
 	for (auto& hero : heroList)
 	{
-		hero->ETeam = ETeam;
-		hero->m_Name.Append(m_Name).Append(TEXT("_Hero_")).AppendInt(i);
+		if (hero)
+		{
+			hero->ETeam = ETeam;
+			hero->m_Name.Append(m_Name).Append(TEXT("_Hero_")).AppendInt(i);
+		}
 		i++;
+	
 	}
 }
 

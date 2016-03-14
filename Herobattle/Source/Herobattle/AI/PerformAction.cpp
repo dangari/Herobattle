@@ -8,6 +8,7 @@
 #include "Skills/Skill.h"
 #include "AISimCharacter.h"
 #include "HerobattleCharacter.h"
+#include "HerobattleHero.h"
 
 
 
@@ -15,7 +16,7 @@
 UPerformAction::UPerformAction()
 {
 	bCreateNodeInstance = true;
-	temporalPlanning = true;
+	temporalPlanning = false;
 }
 
 UPerformAction::~UPerformAction()
@@ -41,7 +42,7 @@ EBTNodeResult::Type UPerformAction::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 
 	
 
-	if (aiGameState && aiGameState->m_owner)
+	if (aiGameState && aiGameState->m_owner && aiGameState->m_owner->m_State != HBCharacterState::DEATH)
 	{
 		TMap<FString, ABaseCharacter*> characterList = aiGameState->getCharacterInstanceList();
 		if (temporalPlanning)

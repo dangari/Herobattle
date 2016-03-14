@@ -9,7 +9,7 @@
 
 ULogging::ULogging()
 {
-	loggingOn = false;
+	loggingOn = true;
 }
 
 ULogging::~ULogging()

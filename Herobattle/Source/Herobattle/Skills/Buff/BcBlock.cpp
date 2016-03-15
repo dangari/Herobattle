@@ -188,7 +188,7 @@ void UBcBlock::update(float deltaTime)
 
 float UBcBlock::getScore(ABaseCharacter* caster, FCharacterState characterState, USkillScore* skillScore, float duration)
 {
-	float durationScore = blockChance * duration / 1.5f;
+	float durationScore = (blockChance/100.f) * duration / 1.5f;
 	int count = 0;
 	if (blockType == SkillType::ATTACK)
 	{
@@ -198,7 +198,7 @@ float UBcBlock::getScore(ABaseCharacter* caster, FCharacterState characterState,
 	{
 		count = characterState.caster;
 	}
-	float blockCountScore = blockChance * count;
+	float blockCountScore = (blockChance / 100.f) * count;
 
 	float score = (durationScore * blockCountScore) / 2;
 

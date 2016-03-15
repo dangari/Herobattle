@@ -16,7 +16,7 @@
 UPerformAction::UPerformAction()
 {
 	bCreateNodeInstance = true;
-	temporalPlanning = false;
+	temporalPlanning = true;
 }
 
 UPerformAction::~UPerformAction()
@@ -44,6 +44,7 @@ EBTNodeResult::Type UPerformAction::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 
 	if (aiGameState && aiGameState->m_owner && aiGameState->m_owner->m_State != HBCharacterState::DEATH)
 	{
+		aiGameState->UpdateAttackerNumber();
 		TMap<FString, ABaseCharacter*> characterList = aiGameState->getCharacterInstanceList();
 		if (temporalPlanning)
 		{
@@ -261,7 +262,7 @@ FActionScore UPerformAction::TemporalSkillScore(UAIGameState* aiGameState, ABase
 	
 		UAISimCharacter* simOwner = NewObject<UAISimCharacter>(this);
 		simOwner->init(owner->getProperties());
-
+		newGameState->UpdateAttackerNumber();
 		TArray<FActionScore> bestActionList = getSkillScore(newGameState, simOwner, 1, 0);
 		TArray<USimAction*> simActionList;
 		int size = bestActionList.Num() - 1;
@@ -434,6 +435,7 @@ UAIGameState* UPerformAction::simulateNextState(UAIGameState* newGameState,FActi
 	
 	
 	DestroyObj(simAction);
+	newGameState->UpdateAttackerNumber();
 	return newGameState;
 }
 

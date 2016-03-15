@@ -538,6 +538,10 @@ FCharacterState ABaseCharacter::AiExtractor(ABaseCharacter* character)
 	characterState.attrList = attrList;
 
 	characterState.name = m_Name;
+	if (selectedTarget)
+	{
+		characterState.selectedTargetName = selectedTarget->m_Name;
+	}
 	return characterState;
 }
 
@@ -568,6 +572,11 @@ FCharacterState ABaseCharacter::AiExtractorSim(UAISimCharacter* character)
 		characterState.skillType = currentSkill.skill->properties.skillType;
 	else
 		characterState.skillType = SkillType::NONE;
+
+	if (selectedTarget)
+	{
+		characterState.selectedTargetName = selectedTarget->m_Name;
+	}
 
 	characterState.attrList = attrList;
 	characterState.name = m_Name;

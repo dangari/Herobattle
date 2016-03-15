@@ -41,6 +41,7 @@ struct FCharacterState
 
 	ABaseCharacter* selectedTarget;
 	UAISimCharacter* selectedTargetSim;
+	FString selectedTargetName;
 	ABaseCharacter* self;
 	UAISimCharacter* selfSim;
 

@@ -77,9 +77,11 @@ void UAIGameState::UpdateAttackerNumber()
 {
 	for (auto& ally : AlliesCurrentAIState)
 	{
+		ally.attackers = 0;
+		ally.caster = 0;
 		for (auto enemy : EnemyCurrentAIState)
 		{
-			if (enemy.name.Equals(ally.name))
+			if (enemy.selectedTargetName.Equals(ally.name))
 			{
 				if (enemy.state == HBCharacterState::AUTOATTACK ||
 					(enemy.state == HBCharacterState::CASTING && (enemy.skillType == SkillType::MELEEATTACK || enemy.skillType == SkillType::RANGEATTACK)))
@@ -94,9 +96,11 @@ void UAIGameState::UpdateAttackerNumber()
 			}
 		}
 	}
+	m_ownerState.attackers = 0;
+	m_ownerState.caster = 0;
 	for (auto enemy : EnemyCurrentAIState)
 	{
-		if (enemy.selectedTarget == m_owner)
+		if (enemy.selectedTargetName.Equals(m_ownerState.name))
 		{
 			if (enemy.state == HBCharacterState::AUTOATTACK ||
 				(enemy.state == HBCharacterState::CASTING && (enemy.skillType == SkillType::MELEEATTACK || enemy.skillType == SkillType::RANGEATTACK)))

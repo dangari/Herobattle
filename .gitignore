@@ -73,3 +73,7 @@ Herobattle/DerivedDataCache/*
 # ignore build
 Herobattle/WindowsNoEditor
 *.opendb
+
+
+#ignore assets from infinity pack
+Herobattle/Content/InfinityBladeGrassLands

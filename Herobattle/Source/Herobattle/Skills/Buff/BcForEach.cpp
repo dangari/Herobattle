@@ -92,7 +92,7 @@ float UBcForEach::getScore(ABaseCharacter* caster, FCharacterState characterStat
 	{
 		if (characterState.name.Equals(caster->m_Name))
 		{
-			count = caster->m_BuffCount;
+			count = caster->m_BuffCount + 1;
 		}
 		else
 		{
@@ -123,11 +123,11 @@ float UBcForEach::getScoreSim(UAISimCharacter* caster, FCharacterState character
 	{
 		count = characterState.conditions.Num();
 	}
-	else if (skillType.Equals(TEXT("ENCHANTMENT")) && characterState.isBuffed)
+	else if (skillType.Equals(TEXT("ENCHANTMENT")))
 	{
 		if (characterState.name.Equals(caster->m_Name))
 		{
-			count = caster->m_BuffCount;
+			count = caster->m_BuffCount + 1;
 		}
 		else
 		{

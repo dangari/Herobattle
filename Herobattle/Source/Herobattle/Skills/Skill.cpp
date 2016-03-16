@@ -147,7 +147,7 @@ float USkill::getScoreSim(UAISimCharacter* caster, FCharacterState characterStat
 	UAISimCharacter* target = characterState.selfSim;
 	skillScore->calcDamageScore(caster->m_Health, caster->m_MaxHealth, target->m_Health, target->m_MaxHealth);
 	skillScore->calcHealScore(caster->m_Health, caster->m_MaxHealth, target->m_Health, target->m_MaxHealth);
-	float score = skillScore->calcCompleteScore() *  manaScoreSim(caster, characterState);
+	float score = skillScore->calcCompleteScore() *  ((manaScoreSim(caster, characterState) + skillScore->DurationScore())/2);
 	return score;
 }
 

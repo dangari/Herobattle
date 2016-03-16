@@ -213,7 +213,7 @@ TArray<FActionScore> UPerformAction::calcTempSkillScore(UAISimCharacter* owner, 
 
 	for (auto& character : characterState)
 	{
-		if (skill->properties.range > character.airDistance)
+		if (skill->properties.range >= character.airDistance)
 		{
 			float score = skill->getScoreSim(owner, character);
 			if (score > 0)
@@ -234,7 +234,7 @@ TArray<FActionScore> UPerformAction::calcTempSkillScore(UAISimCharacter* owner, 
 {
 	TArray<FActionScore> actionList;
 	float score = skill->getScoreSim(owner, characterState);
-	if (skill->properties.range > characterState.airDistance)
+	if (skill->properties.range >= characterState.airDistance)
 	{
 	if (score > 0)
 		{

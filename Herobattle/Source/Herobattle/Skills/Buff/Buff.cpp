@@ -15,6 +15,7 @@
 #include "BcAttackSpeed.h"
 #include "BcMovementSpeed.h"
 #include "BcAdrenaline.h"
+#include "AI/SkillScore.h"
 
 
 TMap<FString, bCclassFuncPtr>  UBuff::bcObjectNameList;
@@ -151,6 +152,7 @@ float UBuff::getScore(ABaseCharacter* caster, FCharacterState characterState, US
 	{
 		bC->getScore(caster, characterState, skillScore, m_Duration);
 	}
+	skillScore->addDuration(m_Duration);
 	return 1.f;
 }
 
@@ -161,6 +163,7 @@ float UBuff::getScoreSim(UAISimCharacter* caster, FCharacterState characterState
 	{
 		bC->getScoreSim(caster, characterState, skillScore, m_Duration);
 	}
+	skillScore->addDuration(m_Duration);
 	return 1.f;
 }
 

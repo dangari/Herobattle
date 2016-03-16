@@ -626,6 +626,7 @@ void ABaseCharacter::UpdateCurrentSkill(float deltaTime)
 		{
 			UpdateAdrenaline();
 			m_State = HBCharacterState::AUTOATTACK;
+			RunBuff(Trigger::HIT, this);
 		}
 		else
 		{
@@ -739,6 +740,14 @@ bool ABaseCharacter::UseSkill(ABaseCharacter* target, int32 slot)
 
 		//automatically sets target to self if the skill can be used on self and the target is enemy
 		//also sets target to self if targettype is self
+		if (skill->properties.castTime <= 0 && skill->properties.targetType == TargetType::SELF && !skillIsOnCooldown(slot) && skillCost(slot))
+		{
+			skillcooldowns[slot].currentCooldown = skill->properties.recharge;
+			skillcooldowns[slot].maxCooldown = skill->properties.recharge + skillcooldowns[currentSkill.slot].additionalCoolDown;
+			skill->run(this, this);
+			m_ManaReduction = 0;
+			return true;
+		}
 		if (skill->properties.targetType == TargetType::SELF || skill->properties.targetType == TargetType::SELFFRIEND && ((!target || target->isEnemy(ETeam))))
 		{
 			newTarget = this;

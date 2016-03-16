@@ -473,11 +473,11 @@ float UAISimCharacter::missingAdrenaline()
 		if (m_AdrenalineList[i].maxAdrenaline > 0)
 		{
 			count++;
-			missing += m_AdrenalineList[i].currentAdrenaline - m_AdrenalineList[i].maxAdrenaline;
+			missing += m_AdrenalineList[i].maxAdrenaline - m_AdrenalineList[i].currentAdrenaline;
 		}
 	}
 	if (count > 0)
-		return missing / count;
+		return 2 * missing / count;
 	else
 		return 0;
 }

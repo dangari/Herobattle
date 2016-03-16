@@ -8,6 +8,7 @@
 
 void USkillScore::addDamage(float Damage, ComponentTarget target)
 {
+	m_damageAdded = true;
 	FComponentScore cScore;
 	cScore.value = Damage;
 	cScore.target = target;
@@ -16,6 +17,7 @@ void USkillScore::addDamage(float Damage, ComponentTarget target)
 
 void USkillScore::addHeal(float Heal, ComponentTarget target)
 {
+	m_healAdded = true;
 	FComponentScore cScore;
 	cScore.value = Heal;
 	cScore.target = target;
@@ -27,78 +29,91 @@ void USkillScore::addScore(float score, FString componentName)
 	m_ScoreList.Add(componentName, score);
 }
 
+void USkillScore::addDuration(float duration)
+{
+	m_duration = duration;
+}
+
 void USkillScore::calcDamageScore(float cHealthSelf, float maxHealthSelf, float cHealthTarget, float maxHealthTarget)
 {
-	float missingHealthSelf = maxHealthSelf - cHealthSelf;
-	float missingHealthTarget = maxHealthTarget - cHealthTarget;
-	float completeDamageTarget = 0.f;
-	float completeDamageSelf = 0.f;
-	for (auto& damage : m_DamageList)
+	if(m_damageAdded)
 	{
-		switch (damage.target)
+		float missingHealthSelf = maxHealthSelf - cHealthSelf;
+		float missingHealthTarget = maxHealthTarget - cHealthTarget;
+		float completeDamageTarget = 0.f;
+		float completeDamageSelf = 0.f;
+		for (auto& damage : m_DamageList)
 		{
-		case ComponentTarget::SELF:
-			completeDamageSelf += damage.value;
-			break;
-		case ComponentTarget::TARGET:
-			completeDamageTarget += damage.value;
-			break;
-		default:
-			break;
+			switch (damage.target)
+			{
+			case ComponentTarget::SELF:
+				completeDamageSelf += damage.value;
+				break;
+			case ComponentTarget::TARGET:
+				completeDamageTarget += damage.value;
+				break;
+			default:
+				break;
+			}
 		}
+		float selfScore = uFunctionDamage(missingHealthSelf, completeDamageSelf);
+		float targetScore = uFunctionDamage(missingHealthTarget, completeDamageTarget);
+		float score;
+		if (targetScore <= 0.01 || selfScore <= 0.01)
+			score = (selfScore + targetScore);
+		else
+			score = (selfScore + targetScore) / 2;
+		m_ScoreList.Add(TEXT("Damage"), score);
 	}
-	float selfScore = uFunctionDamage(missingHealthSelf, completeDamageSelf);
-	float targetScore = uFunctionDamage(missingHealthTarget, completeDamageTarget);
-	float score;
-	if (targetScore <= 0.01 || selfScore <= 0.01)
-		score = (selfScore + targetScore);
-	else
-		score = (selfScore + targetScore) / 2;
-	m_ScoreList.Add(TEXT("Damage"), score);
 }
 
 void USkillScore::calcHealScore(float cHealthSelf, float maxHealthSelf, float cHealthTarget, float maxHealthTarget)
 {
-	float missingHealthSelf = maxHealthSelf - cHealthSelf;
-	float missingHealthTarget = maxHealthTarget - cHealthTarget;
-	float completeHealTarget = 0.f;
-	float completeHealSelf = 0.f;
-	if (missingHealthTarget == 0 && missingHealthSelf == 0)
+	if(m_healAdded)
 	{
-		return;
-	}
-	for (FComponentScore& heal : m_HealList)
-	{
-		switch (heal.target)
+		float missingHealthSelf = maxHealthSelf - cHealthSelf;
+		float missingHealthTarget = maxHealthTarget - cHealthTarget;
+		float completeHealTarget = 0.f;
+		float completeHealSelf = 0.f;
+		if (missingHealthTarget == 0 && missingHealthSelf == 0)
 		{
-		case ComponentTarget::SELF:
-			completeHealSelf += heal.value;
-			break;
-		case ComponentTarget::TARGET:
-			completeHealTarget += heal.value;
-			break;
-		default:
-			break;
+			return;
 		}
+		for (FComponentScore& heal : m_HealList)
+		{
+			switch (heal.target)
+			{
+			case ComponentTarget::SELF:
+				completeHealSelf += heal.value;
+				break;
+			case ComponentTarget::TARGET:
+				completeHealTarget += heal.value;
+				break;
+			default:
+				break;
+			}
+		}
+		float selfScore = uFunctionHeal(missingHealthSelf, completeHealSelf);
+		float targetScore = uFunctionHeal(missingHealthTarget, completeHealTarget);
+		float score;
+		if (targetScore <= 0.01 || selfScore <= 0.01)
+			score = (selfScore + targetScore);
+		else
+			score = (selfScore + targetScore) / 2;
+		m_ScoreList.Add(TEXT("Heal"), score);
 	}
-	float selfScore = uFunctionHeal(missingHealthSelf, completeHealSelf);
-	float targetScore = uFunctionHeal(missingHealthTarget, completeHealTarget);
-	float score;
-	if (targetScore <= 0.01 || selfScore <= 0.01)
-		score = (selfScore + targetScore);
-	else
-		score = (selfScore + targetScore) / 2;
-	m_ScoreList.Add(TEXT("Heal"), score);
 }
 
 void USkillScore::addRegneration(int value)
 {
+	m_regenChanged = true;
 	regen += value;
 }
 
 float USkillScore::calcCompleteScore()
 {
-	clacRegenScore();
+	if(m_regenChanged)
+		clacRegenScore();
 	int i = 0;
 	float compScore = 0.f;
 	for (auto& score : m_ScoreList)
@@ -148,6 +163,23 @@ float USkillScore::uFunctionDamage(float missingHealth, float damage)
 	}
 	else
 	{
+		return score;
+	}
+}
+
+float USkillScore::DurationScore()
+{
+	if (m_duration <= 0)
+	{
+		return 1;
+	}
+	else
+	{
+		float score = m_duration / m_durationOffset;
+		if (score > 2)
+		{
+			return 2;
+		}
 		return score;
 	}
 }

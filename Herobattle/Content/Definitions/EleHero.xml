@@ -124,7 +124,7 @@
       <effects>
         <impact>
           <buff value="30" scaling="NONE" usage="INF" type="ENCHANTMENT" trigger="AFTERCAST">
-            <heal value="200" target="SELF" scaling="ENERGY_STORAGE">
+            <heal value="200" target="SELF" scaling="ENERGY_STORAGE" trigger="AFTERCAST>
               <step key="1" value="213"/>
               <step key="2" value="227"/>
               <step key="3" value="240"/>
@@ -218,7 +218,7 @@
   <spell type="SPELL">
     <name value="Mirage Cloak"/>
     <costs value="10" type="MANA"/>
-    <casttime value="0"/>
+    <casttime value="0.01"/>
     <cooldown value="10"/>
     <targettype value="SELF"/>
     <range value="0"/>

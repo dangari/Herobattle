@@ -23,7 +23,7 @@ bool UScForEach::run(ABaseCharacter* target, ABaseCharacter* self, FString Skill
 {
 	bool b = true;
 	uint8 count = 0;
-	if (skillType.Equals(TEXT("CONDITION")))
+	if (skillType.Equals(TEXT("CONDI")))
 	{
 		count = target->getCondtionCount();
 	}

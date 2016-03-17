@@ -87,6 +87,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Profession)
 	void switchBuildByProfession(ProfessionName p);
 
+	UFUNCTION(BlueprintCallable, Category = Debug)
+	void DamageSelf(float damage);
+
 
 	UFUNCTION(BlueprintNativeEvent, Category = afterLogin)
 	void finishedLoadingSkills();
@@ -284,6 +287,9 @@ public:
 
 	UPROPERTY()
 	TMap<Condition, UBaseCondition*> m_condtionList;
+
+	UPROPERTY()
+	TArray<Condition> m_ConditionOrder;
 
 	UPROPERTY()
 	TMap<FString, Trigger> m_BuffList;

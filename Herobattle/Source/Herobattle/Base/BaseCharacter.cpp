@@ -292,6 +292,8 @@ void ABaseCharacter::UpdateCondtion(float DeltaTime)
 		if (condi.Value->duration <= 0)
 		{
 			m_condtionList.Remove(condi.Key);
+			m_ConditionOrder.Remove(condi.Key);
+			m_ConditionCount--;
 		}
 			
 	}
@@ -865,6 +867,14 @@ void ABaseCharacter::switchBuildByProfession(ProfessionName p)
 	InitializeAdrenaline();
 }
 
+void ABaseCharacter::DamageSelf(float damage)
+{
+	if (HasAuthority())
+	{
+		m_Health -= damage;
+	}
+}
+
 void ABaseCharacter::finishedLoadingSkills_Implementation()
 {
 
@@ -956,6 +966,7 @@ void ABaseCharacter::applyCondition(UBaseCondition* condition)
 	if (!(m_condtionList.Contains(condition->condition)))
 		m_ConditionCount++;
 	m_condtionList.Add(condition->condition, condition);
+	m_ConditionOrder.AddUnique(condition->condition);
 	
 }
 
@@ -1077,6 +1088,14 @@ void ABaseCharacter::Remove(RemoveType type, int count)
 	switch (type)
 	{
 	case RemoveType::CONDI:
+		if (m_ConditionCount > 0)
+		{
+			Condition condi = m_ConditionOrder.Last();
+			m_condtionList.Remove(condi);
+			m_ConditionOrder.Remove(condi);
+			m_ConditionCount--;
+		}
+		
 		break;
 	case  RemoveType::HEX:
 		break;

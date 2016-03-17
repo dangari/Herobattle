@@ -102,7 +102,7 @@ bool UBcBlock::run(ABaseCharacter* caster, ABaseCharacter* self, int value)
 		FString TheFloatStr = FString::SanitizeFloat(rng);
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TheFloatStr);
 		int blockRand = FPlatformMath::RoundToInt(rng);
-		if (blockChance <= blockRand)
+		if (blockChance >= blockRand)
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Blocked"));
 			return true;

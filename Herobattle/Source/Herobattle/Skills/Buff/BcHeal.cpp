@@ -45,7 +45,13 @@ bool UBcHeal::run(ABaseCharacter* caster, ABaseCharacter* self, int value)
 		ABaseCharacter* testTarget = getTarget(caster, self);
 		testTarget->heal(testTarget, heal, false);
 	}
-	if (Trigger::CASTMANA == trigger)
+	else if (Trigger::CASTMANA == trigger)
+	{
+		ABaseCharacter* testTarget = getTarget(caster, self);
+		float currentHeal = testTarget->currentSkill.skill->properties.cost * (heal / 100);
+		testTarget->heal(testTarget, currentHeal, false);
+	}
+	else if (Trigger::AFTERCAST == trigger)
 	{
 		ABaseCharacter* testTarget = getTarget(caster, self);
 		float currentHeal = testTarget->currentSkill.skill->properties.cost * (heal / 100);
@@ -61,12 +67,19 @@ bool UBcHeal::runSim(UAISimCharacter* caster, UAISimCharacter* self, int value /
 		UAISimCharacter* testTarget = getTargetSim(caster, self);
 		testTarget->heal(testTarget, heal, false);
 	}
-	if (Trigger::CASTMANA == trigger)
+	else if (Trigger::CASTMANA == trigger)
 	{
 		UAISimCharacter* testTarget = getTargetSim(caster, self);
 		float currentHeal = testTarget->currentSkill.skill->properties.cost * (heal / 100);
 		testTarget->heal(testTarget, currentHeal, false);
 	}
+	else if (Trigger::AFTERCAST == trigger)
+	{
+		UAISimCharacter* testTarget = getTargetSim(caster, self);
+		float currentHeal = testTarget->currentSkill.skill->properties.cost * (heal / 100);
+		testTarget->heal(testTarget, currentHeal, false);
+	}
+
 	return true;
 }
 
